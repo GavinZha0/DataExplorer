@@ -1,0 +1,15 @@
+.target-popper {
+  display: none;
+  margin: 20px 20px 20px 20px !important;
+  max-width: 200px;
+  padding: 1rem;
+  text-align: left;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  z-index: 1000;
+}
+
+.target-popper.active {
+  display: block;
+}

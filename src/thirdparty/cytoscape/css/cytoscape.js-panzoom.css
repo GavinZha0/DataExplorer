@@ -1,0 +1,201 @@
+.cy-toolkit {
+	position: absolute;
+  width: 150px;
+  height: 64px;
+	font-size: 12px;
+	font-family: arial, helvetica, sans-serif;
+	line-height: 1;
+	color: #666;
+	z-index: 99999;
+	box-sizing: content-box;
+}
+
+.cy-toolkit-button {
+	cursor: pointer;
+	padding-top: 10px;
+	text-align: center;
+  float: left;
+	border-radius: 3px;
+	width: 30px;
+	height: 20px;
+	background: #fff;
+	border: 1px solid #999;
+	box-sizing: content-box;
+}
+
+.cy-search-button {
+  cursor: pointer;
+  padding-top: 10px;
+  text-align: center;
+  float: left;
+  border-radius: 3px;
+  width: 30px;
+  height: 20px;
+  background: #fff;
+  border: 1px solid #999;
+  box-sizing: content-box;
+}
+
+.cy-search-input:focus {
+  transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  background-color: white;
+  color: black;
+}
+
+.cy-search-input {
+  position: absolute;
+  left: 49px; /* Button width-1px (Not 50px/100% because that will sometimes show a 1px line between the search box and button) */
+  background-color: white;
+  outline: none;
+  border: none;
+  padding: 0;
+  width: 0;
+  height: 100%;
+  z-index: 10;
+  transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+}
+
+.cy-search-button:focus {
+  width: 363px; /* Bar width+1px */
+  padding: 0 16px 0 0;
+}
+
+.cy-toolkit-button:hover {
+  background: papayawhip;
+}
+
+.cy-toolkit-button:active {
+	background: #ddd;
+	box-sizing: content-box;
+}
+
+.cy-file-dlg {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.cy-toolkit-layout {
+  border-radius: 3px;
+  margin-right: 2px;
+  height: 25px;
+  min-width: 60px;
+  font-size: 12px;
+  box-sizing: content-box;
+  border: 1px solid gray;
+  }
+
+.cy-toolkit-layout:hover {
+  background: papayawhip;
+}
+
+.cy-info-panel {
+  position: absolute;
+  display: inline;
+  top: 90px;
+  width: 150px;
+  max-width: 300px;
+  min-width: 30px;
+  height: 80%;
+  font-size: 12px;
+  font-family: arial, helvetica, sans-serif;
+  color: #666;
+  background-color: papayawhip;
+  border-radius: 5px;
+  z-index: 99999;
+  box-sizing: content-box;
+  border: 1px solid gray;
+  opacity: 0.5;
+  display: none;
+}
+
+.cy-info-item {
+  float: left;
+  margin-left: 3px;
+  margin-top: 3px;
+  width: 95%;
+  color: #fff;
+  font-size: 12px;
+  text-align: left;
+  border-radius: 4px;
+  background: #46b8da;
+  cursor: pointer;
+  padding: 3px 3px;
+  span {
+    margin-left: 2px;
+  }
+}
+
+.cy-legend-panel {
+  position: absolute;
+  font-family: arial, helvetica, sans-serif;
+  line-height: 1;
+  color: #666;
+  font-size: 11px;
+  z-index: 99999;
+  right: 0px;
+  max-width: 300px;
+  min-width: 30px;
+  height: 95%;
+  box-sizing: content-box;
+}
+
+.cy-legend-button:active {
+  background: #ddd;
+  box-sizing: content-box;
+}
+
+.cy-legend-area {
+  max-width: 300px;
+  min-width: 30px;
+  padding: 5px;
+  position: absolute;
+  border-radius: 5px;
+  right: 0px;
+  top: 32px;
+  height: 90%;
+  border: 1px solid #999;
+  background-color: papayawhip;
+  opacity: 0.5;
+}
+
+.cy-legend-item {
+  float: left;
+  margin-left: 5px;
+  margin-top: 8px;
+  width: max-content;
+  color: black;
+  font-size: 12px;
+
+  span {
+    margin-left: 5px;
+  }
+
+  input {
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+}
+
+.cy-legend-item:hover {
+  background: yellowgreen;
+  cursor: pointer;
+}
+
+.cy-panel-info {
+  position: absolute;
+  border-radius: 3px;
+  right: 2px;
+  max-width: 300px;
+  min-width: 30px;
+  height: 95%;
+  border: 1px solid #999;
+}
+
+

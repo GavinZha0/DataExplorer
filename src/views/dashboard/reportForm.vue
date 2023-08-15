@@ -1,0 +1,595 @@
+<template>
+  <BasicDrawer
+    v-bind="$attrs"
+    :isDetail="true"
+    @register="registerDrawer"
+    :title="drawerTitle"
+    :closable="true"
+    :showDetailBack="false"
+    :keyboard="false"
+  >
+    <template #titleToolbar>
+      <Tooltip>
+        <template #title>{{ t('common.toolbar.picker') }}</template>
+        <a-range-picker
+          v-model:value="dateRange"
+          :ranges="ranges"
+          :format="datePickerFormat"
+          :disabled-date="disabledDate"
+          :locale="getLocale"
+        />
+      </Tooltip>
+      <Tooltip>
+        <template #title>{{ t('common.toolbar.refresh') }}</template>
+        <InteractionOutlined class="toolbar-button" @click="execute" style="color: seagreen" />
+      </Tooltip>
+    </template>
+    <a-row type="flex" :gutter="4">
+      <a-col :md="24 - rightPanelSize" :sm="24">
+        <div
+          id="reportcontainer"
+          ref="reportContainer"
+          style="height: 100%; width: 100%; text-align: center; background-color: white"
+        >
+          <grid-layout
+            v-model:layout="selectedPage.grid"
+            :col-num="12"
+            :maxRows="18"
+            :row-height="30"
+            :is-draggable="false"
+            :is-resizable="false"
+            :autoSize="false"
+            :margin="[10, 10]"
+            :vertical-compact="true"
+            :preventCollision="false"
+            :use-css-transforms="true"
+          >
+            <grid-item
+              v-for="item in selectedPage.grid"
+              :key="item.i"
+              :i="item.i"
+              :x="item.x"
+              :y="item.y"
+              :w="item.w"
+              :h="item.h"
+              drag-allow-from=".dragger"
+              :class="vue - grid - item"
+              :style="{
+                borderWidth: selectedPage.border ? '1px' : '0px',
+                borderStyle: selectedPage.border,
+              }"
+            >
+              <div id="header" class="dragger">
+                <span v-if="selectedPage.label" :style="{ float: 'left', marginLeft: '5px' }">
+                  {{ item.name }}
+                </span>
+                <span v-if="selectedPage.toolbar" class="dragger-button">
+                  <FullscreenExitOutlined
+                    v-if="item.max"
+                    :style="{ fontSize: '20px', color: 'green' }"
+                    @click="handleMaxMin(item)"
+                  />
+                  <FullscreenOutlined
+                    v-else
+                    :style="{ fontSize: '20px', color: 'green' }"
+                    @click="handleMaxMin(item)"
+                  />
+                </span>
+                <span v-if="selectedPage.interval > 0" class="dragger-button">
+                  <SyncOutlined :style="{ fontSize: '16px', color: 'green' }" />
+                </span>
+              </div>
+              <div
+                :id="item.type + item.id"
+                :ref="setGridDivRef"
+                style="
+                  width: 98%;
+                  height: 90%;
+                  text-align: center;
+                  vertical-align: middle;
+                  padding: 5px;
+                "
+              ></div>
+            </grid-item>
+          </grid-layout>
+        </div>
+      </a-col>
+      <div class="layout-area">
+        <div
+          @click="
+            () => {
+              rightPanelSize = 3 - rightPanelSize;
+            }
+          "
+        >
+          <span v-if="rightPanelSize == 0" class="expand"><LeftOutlined /></span>
+          <span v-else class="collapse"><RightOutlined /></span>
+        </div>
+      </div>
+      <a-col :md="rightPanelSize" :sm="24">
+        <div class="ml-2 overflow-hidden bg-white">
+          <a-tabs default-active-key="page" hide-add size="middle" centered style="height: 750px">
+            <a-tab-pane
+              key="page"
+              :forceRender="true"
+              :closable="false"
+              :tab="t('dataviz.datareport.form.pages.title')"
+            >
+              <Card
+                v-for="(item, index) of rawData.pages"
+                :key="index"
+                hoverable
+                style="width: 100%; margin-top: 10px"
+              >
+                <CardMeta>
+                  <template #title>
+                    <div class="report-page" @click="handlePageSwitch(index)">{{ item.title }}</div>
+                  </template>
+                </CardMeta>
+                <template #actions>
+                  <span>{{ index + 1 }}</span>
+                </template>
+              </Card>
+            </a-tab-pane>
+            <a-tab-pane
+              key="filter"
+              :forceRender="true"
+              :closable="false"
+              :tab="t('dataviz.datareport.form.filter.title')"
+            >
+              <BasicForm
+                ref="filterRef"
+                :schemas="selectedPage.filter"
+                layout="vertical"
+                :baseColProps="{ span: 24 }"
+                :showActionButtonGroup="false"
+              />
+            </a-tab-pane>
+          </a-tabs>
+        </div>
+      </a-col>
+    </a-row>
+  </BasicDrawer>
+</template>
+
+<script lang="ts" setup name="ReportForm">
+  import { nextTick, ref, unref } from 'vue';
+  import { BasicForm, FormActionType } from '/@/components/Form/index';
+  import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
+  import {
+    LeftOutlined,
+    RightOutlined,
+    SyncOutlined,
+    InteractionOutlined,
+    FullscreenOutlined,
+    FullscreenExitOutlined,
+  } from '@ant-design/icons-vue';
+  import 'splitpanes/dist/splitpanes.css';
+  import { useI18n } from '/@/hooks/web/useI18n';
+
+  import {
+    Tooltip,
+    Row as ARow,
+    Col as ACol,
+    Tabs as ATabs,
+    TabPane as ATabPane,
+    Card,
+    CardMeta,
+    RangePicker as ARangePicker,
+  } from 'ant-design-vue';
+  import { API_DATAVIEW_EXECUTE } from '/@/api/dataviz/dataview';
+  import { setGlobal } from '@antv/g2plot';
+  import ApexCharts from 'apexcharts';
+  import { g2plotRender } from '@antv/antv-spec';
+  import * as echarts from 'echarts';
+  import { cloneDeep } from 'lodash-es';
+  import { useLocale } from '/@/locales/useLocale';
+  import {
+    ApiDatareportDataType,
+    initReportData,
+    initReportPage,
+    ReportPageType,
+  } from '/@/api/dataviz/model/datareport';
+  import dayjs, { Dayjs } from 'dayjs';
+  import { RangeValue } from 'ant-design-vue/es/vc-picker/interface';
+
+  const { t } = useI18n();
+  const drawerTitle = ref<string>();
+  // rawData is dataview record which is from backend
+  const rawData = ref<ApiDatareportDataType>({ ...initReportData });
+  const selectedPage = ref<ReportPageType>({ ...initReportPage });
+  const rightPanelSize = ref<number>(3);
+  let gridRefs: any = {};
+  const filterRef = ref<Nullable<FormActionType>>(null);
+
+  // set locale of G2Plot
+  const { getLocale } = useLocale();
+  setGlobal({ locale: getLocale.value });
+
+  const datePickerFormat = ref<string>('MM/DD/YYYY');
+  const dateRange = ref<any>();
+  const ranges = ref<any>({
+    Today: [dayjs(), dayjs()] as RangeValue,
+    'This Week': [dayjs().startOf('week'), dayjs()] as RangeValue,
+    'This Month': [dayjs().startOf('month'), dayjs()] as RangeValue,
+    'This Year': [dayjs().startOf('year'), dayjs()] as RangeValue,
+  });
+
+  // disable future date selection
+  const disabledDate = (current: Dayjs) => {
+    // Can not select days after today
+    return current && current > dayjs().endOf('day');
+  };
+
+  // drawer data initialization
+  const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (data) => {
+    // remove old data of filter form
+    await filterRef.value?.resetFields();
+    for (let rf in gridRefs) {
+      // clean up the old charts
+      gridRefs[rf].innerHTML = '';
+    }
+    gridRefs = {};
+    selectedPage.value = {};
+    setDrawerProps({ confirmLoading: false });
+
+    if (!data || !data.id) {
+      return;
+    }
+
+    drawerTitle.value = data.name;
+    rawData.value = unref(data);
+
+    // default selected page 0
+    selectedPage.value = rawData.value.pages[0];
+    selectedPage.value.filter = [
+      {
+        field: 'name',
+        label: t('common.table.title.name'),
+        component: 'Input',
+      },
+      {
+        field: 'desc',
+        label: t('common.table.title.desc'),
+        component: 'Select',
+        defaultValue: 'aaa',
+        componentProps: {
+          options: [
+            {
+              label: 'aaa',
+              value: 'aaa',
+            },
+            {
+              label: 'bbb',
+              value: 'bbb',
+            },
+          ],
+        },
+      },
+    ];
+    // query config and data
+    execute();
+  });
+
+  /*
+   * maximize or normalize a view
+   */
+  const handleMaxMin = (view: any) => {
+    if (view.max) {
+      delete view.max;
+    } else {
+      view.max = true;
+    }
+  };
+
+  /*
+   * switch a page
+   */
+  const handlePageSwitch = async (idx: number) => {
+    if (selectedPage.value == rawData.value.pages[idx]) {
+      //do nothing when selected page is current page
+      return;
+    }
+
+    for (let rf in gridRefs) {
+      // clean up the old charts
+      gridRefs[rf].innerHTML = '';
+    }
+    gridRefs = {};
+    selectedPage.value = rawData.value.pages[idx];
+
+    // query config and data
+    execute();
+  };
+
+  /*
+   * run every dataview to get data and config then render it
+   */
+  const execute = () => {
+    if (selectedPage.value && selectedPage.value.grid) {
+      for (let grid of selectedPage.value.grid) {
+        if (grid.type == 'view' && !grid.data) {
+          // get data and chart config
+          API_DATAVIEW_EXECUTE(grid.id, 0).then((response) => {
+            let viewData = buildRecords(response.records, response.columns);
+
+            // find existing view grid
+            let gridView = selectedPage.value.grid.find((g) => {
+              return g.id == response.id;
+            });
+
+            if (gridView) {
+              gridView['name'] = response.name;
+              gridView['group'] = response.group;
+              gridView['libName'] = response.libName;
+              gridView['libVer'] = response.libVer;
+              gridView['libCfg'] = response.libCfg;
+              gridView['interval'] = response.interval; // interval(min) of auto refresh
+              gridView['data'] = viewData;
+
+              // render view
+              renderChart(gridView);
+            }
+          });
+        } else if (grid.type == 'view' && grid.data) {
+          // render view with existing data and chart config
+          renderChart(grid);
+        }
+      }
+    }
+  };
+
+  /*
+   * build records based on received data
+   */
+  function buildRecords(records: any[], columns: any[]) {
+    // convert 2 dimensional array([[]]) to json array([{}]) for table to show
+    let jsonArray: any[] = [];
+
+    for (let i = 0; i < records.length; i++) {
+      let dt = {};
+      for (let j = 0; j < columns.length; j++) {
+        dt[columns[j].name] = records[i][j];
+        let cValue = records[i][j];
+        // convert string to number(integer or float)
+        if (columns[j].type == 'number') {
+          // float covers integer
+          cValue = parseFloat(cValue);
+        }
+        dt[columns[j].name] = cValue;
+      }
+      jsonArray.push(dt);
+    }
+    return jsonArray;
+  }
+
+  // it's chart container
+  const setGridDivRef = (el) => {
+    if (el && selectedPage.value.grid) {
+      for (let item of selectedPage.value.grid) {
+        if (el.id == item.type + item.id) {
+          item.container = el;
+          gridRefs[el.id] = el;
+          break;
+        }
+      }
+    }
+  };
+
+  /*
+   * render chart
+   */
+  const renderChart = (grid: any) => {
+    if (grid.container) {
+      // clean it up before render
+      grid.container.innerHTML = '';
+    }
+    // render charts when DOM is ready
+    nextTick(() => {
+      if (!grid.libName || grid.libName === 'G2Plot') {
+        grid.instance = g2plotRender(
+          {
+            chartType: grid.libCfg.chartType,
+            config: { ...grid.libCfg.config, data: grid.data },
+          },
+          grid.container,
+        );
+      } else if (grid.libName === 'ECharts') {
+        let clonedCfg = cloneDeep(grid.libCfg);
+        clonedCfg.dataset.source = grid.data;
+        grid.instance = echarts.init(grid.container);
+        grid.instance.setOption(clonedCfg);
+      } else if (grid.libName === 'ApexCharts') {
+        let clonedCfg = cloneDeep(grid.libCfg);
+        for (let i = 0; i < rawData.value.dim.length; i++) {
+          const idx = grid.columns.findIndex((ele) => {
+            return ele.name == rawData.value.dim[i];
+          });
+          const catData = grid.data.map(function (value, index) {
+            return value[idx];
+          });
+          clonedCfg.xaxis.categories = catData;
+        }
+        for (let i = 0; i < rawData.value.metrics.length; i++) {
+          const idx = grid.columns.findIndex((ele) => {
+            return ele.name == rawData.value.metrics[i];
+          });
+          const valData = grid.data.map(function (value, index) {
+            return value[idx];
+          });
+          clonedCfg.series[i].data = valData;
+        }
+
+        grid.instance = new ApexCharts(grid.container, clonedCfg);
+        grid.instance.render();
+      }
+    });
+  };
+</script>
+
+<style lang="less" scoped>
+  .toolbar-input {
+    width: 40% !important;
+    max-width: 100%;
+    top: -5px;
+    margin-right: 8px;
+  }
+
+  .toolbar-button {
+    font-size: 25px;
+    margin-left: 5px;
+  }
+
+  .toolbar-button:hover {
+    background-color: orange;
+    cursor: pointer;
+  }
+
+  ::v-deep(.ant-card-actions) {
+    height: 25px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
+    zoom: 1;
+  }
+
+  ::v-deep(.ant-card-actions > li) {
+    float: left;
+    margin: 0;
+    color: rgba(0, 0, 0, 0.45);
+    text-align: center;
+    align-content: center;
+  }
+
+  ::v-deep(.ant-card-grid) {
+    padding: 5px;
+  }
+
+  .vue-grid-layout {
+    background: #eee;
+  }
+  .vue-grid-item:not(.vue-grid-placeholder) {
+    background: white;
+    border-width: 1px;
+    border-color: gray;
+    border-style: dashed;
+  }
+  .vue-grid-item .resizing {
+    opacity: 0.9;
+  }
+  .vue-grid-item .static {
+    background: #cce;
+  }
+  .vue-grid-item .text {
+    font-size: 24px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 100%;
+    width: 100%;
+  }
+  .vue-grid-item .no-drag {
+    height: 100%;
+    width: 100%;
+  }
+  .vue-grid-item .minMax {
+    font-size: 12px;
+  }
+  .vue-grid-item .add {
+    cursor: pointer;
+  }
+
+  .card-item {
+    background-color: #fdfdfd;
+    cursor: move;
+  }
+
+  .card-item:hover {
+    background-color: #f1f1f1;
+    cursor: move;
+  }
+
+  .dragger {
+    width: 100%;
+    height: 24px;
+    background-color: antiquewhite;
+  }
+
+  .dragger-button {
+    float: right;
+    margin-top: 2px;
+    margin-right: 2px;
+  }
+
+  .report-page {
+    width: 100%;
+    height: 80px;
+    opacity: 0.9;
+  }
+
+  .report-page::after {
+    content: '';
+    background: url('/@/assets/images/report-page-4.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+    width: 100%;
+    height: 80px;
+    left: 0;
+    top: 0;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .report-page-index {
+    text-align: right;
+    right: 2px;
+    bottom: 0;
+  }
+
+  /* 伸缩按钮部分 */
+  .layout-area {
+    width: 10px;
+    height: 100%;
+    float: left;
+    color: green;
+    position: absolute;
+    top: 3px;
+    right: 0px;
+    z-index: 999;
+  }
+
+  /* 伸缩按钮居中 */
+  .layout-area .collapse {
+    border: 1px solid #f0f000;
+    border-radius: 0px 10px 10px 0px;
+    position: absolute;
+    right: 0px;
+    top: 3px;
+    background-color: #f0f000;
+    height: 50px;
+    padding-top: 15px;
+    cursor: pointer;
+    z-index: 999;
+  }
+
+  /* 伸缩按钮居中 */
+  .layout-area .expand {
+    border: 1px solid #f0f000;
+    border-radius: 10px 0px 0px 10px;
+    position: absolute;
+    right: 0px;
+    top: 3px;
+    background-color: #f0f000;
+    height: 50px;
+    padding-top: 15px;
+    cursor: pointer;
+    z-index: 999;
+  }
+</style>

@@ -1,0 +1,104 @@
+.leaflet-control-slidemenu{
+    cursor: pointer;
+}
+
+.slidemenu-image{
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  background-size: contain;
+  margin-top: 2px;
+  background-image: url(../img/info.png);
+}
+
+.leaflet-menu{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 255);
+    overflow: auto;
+    cursor: default;
+    z-index: 9999;
+    box-shadow: #222 -1px -1px 20px 0px;
+    opacity: 1;
+}
+
+.leaflet-menu-contents {
+    padding: 10px;
+}
+
+.leaflet-menu-contents > a {
+  display: block;
+  width: 100%;
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+  margin-bottom: 5px;
+  font-size: 14px;
+  text-align: left;
+  white-space: nowrap;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+.leaflet-menu::-webkit-scrollbar{
+    width: 7px;
+    height: 7px;
+    background: #f2f2f2;
+}
+
+.leaflet-menu::-webkit-scrollbar-thumb{
+    border-radius: 2px;
+    background: #777;   
+}
+
+.leaflet-menu-close-button{
+    background-color: white;
+    width: 16px;
+    height: 16px;
+    border: none;
+    font-size: 14pt;
+    color: #777;
+    cursor: pointer;
+}
+
+.leaflet-menu-close-button:hover{
+    color: #0443a8;
+}
+
+.slide-button-close-up{
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  background-size: contain;
+  margin-top: 2px;
+  background-image: url(../img/up-arrow.png);
+}
+
+.slide-button-close-down{
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  background-size: contain;
+  margin-top: 2px;
+  background-image: url(../img/down-arrow.png);
+}
+
+.slide-button-close-left{
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  background-size: contain;
+  margin-top: 2px;
+  background-image: url(../img/left-arrow.png);
+}
+
+.slide-button-close-right{
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  background-size: contain;
+  margin-top: 2px;
+  background-image: url(../img/right-arrow.png);
+}

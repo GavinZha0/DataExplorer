@@ -65,6 +65,4 @@ If you think this project is helpful to you, you can help the author buy a cup o
 
 - [github discussions](https://github.com/GavinZha0/DataPie/discussions)
 
-## License
 
-[MIT © DataPie-2020](./LICENSE)

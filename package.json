@@ -131,7 +131,6 @@
     "vue-json-pretty": "^2.2.4",
     "vue-router": "^4.2.2",
     "vue-types": "^4.2.1",
-    "vue3-colorpicker": "^2.2.2",
     "vuedraggable": "^4.1.0",
     "weaverjs": "^1.2.0",
     "xlsx": "^0.18.5"

@@ -164,10 +164,8 @@
     PaperClipOutlined,
     AppstoreOutlined,
   } from '@ant-design/icons-vue';
-  import { nextTick, reactive, ref, unref } from 'vue';
+  import { nextTick, reactive, unref } from 'vue';
   import htmlColors from 'html-colors';
-  //import { ColorPicker } from 'vue3-colorpicker';
-  //import 'vue3-colorpicker/style.css';
   import { cloneDeep } from 'lodash-es';
 
   const { t } = useI18n();

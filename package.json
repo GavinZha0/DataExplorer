@@ -1,6 +1,7 @@
 {
   "name": "DataPie",
   "version": "0.5.0",
+  "main": "server.js",
   "author": {
     "name": "GavinZhao",
     "email": "jichun.zhao@outlook.com",
@@ -86,11 +87,14 @@
     "elkjs": "^0.8.2",
     "exceljs": "^4.3.0",
     "expr-eval": "^2.0.2",
+    "express": "^4.18.2",
+    "express-generator": "^4.16.1",
     "file-saver": "^2.0.5",
     "geojson-vt": "^3.2.1",
     "heatmap.js": "^2.0.5",
     "html-colors": "^0.0.6",
     "html2canvas": "^1.4.1",
+    "http-proxy-middleware": "^2.0.6",
     "interactjs": "^1.10.17",
     "intro.js": "^5.1.0",
     "jquery": "^3.6.4",

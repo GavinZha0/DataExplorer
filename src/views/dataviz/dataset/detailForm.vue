@@ -58,7 +58,7 @@
                     ref="erGraphRef"
                     style="width: 100%; height: 750px; border: solid 1px"
                   >
-                    <span style="font-weight: bold; margin-left: 10px;">Database table fields</span>
+                    <span style="font-weight: bold; margin-left: 10px">Database table fields</span>
                     <BasicTable
                       size="small"
                       :bordered="true"
@@ -1194,9 +1194,15 @@
    * event is from varModal
    */
   function handleVarSuccess(data) {
-    let varIdx = rawData.value.variable.findIndex((ele) => {
-      return ele.name == data.name;
-    });
+    let varIdx;
+    if (rawData.value.variable) {
+      varIdx = rawData.value.variable.findIndex((ele) => {
+        return ele.name == data.name;
+      });
+    } else {
+      rawData.value.variable = [];
+    }
+
     if (varIdx != undefined && varIdx >= 0) {
       rawData.value.variable[varIdx] = data;
     } else {

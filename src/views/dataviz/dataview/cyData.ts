@@ -153,7 +153,7 @@ export const cyLayoutLib = [
     options: {
       widget: 'gojs',
       balance: true,
-      dirField: '',
+      dirField: 'dir',
     },
   },
   {

@@ -189,7 +189,7 @@
                         :size="36"
                         :src="
                           'data:image/svg+xml;utf8,' +
-                          encodeURIComponent(Thumbnails[item.type].svgCode)
+                          encodeURIComponent(chartTypes[item.type].svgCode)
                         "
                       />
                       <span>{{ item.name }}</span>
@@ -256,9 +256,9 @@
     API_DATAVIEW_BY_GROUP,
     API_DATAVIEW_EXECUTE,
   } from '/@/api/dataviz/dataview';
-  import draggable from 'vuedraggable';
   import Thumbnails from '@antv/thumbnails';
   import { setGlobal } from '@antv/g2plot';
+  import draggable from 'vuedraggable';
   import ApexCharts from 'apexcharts';
   import { g2plotRender } from '@antv/antv-spec';
   import * as echarts from 'echarts';
@@ -275,6 +275,7 @@
     API_DATAREPORT_GROUPS,
     API_DATAREPORT_UPDATE,
   } from '/@/api/dataviz/datareport';
+  import { mapTypes, netTypes } from '/@/views/dataviz/dataview/data';
 
   const { t } = useI18n();
   const drawerTitle = ref<string>(t('common.form.new'));
@@ -286,6 +287,7 @@
   const dataviewGroupName = ref<string>();
   const configFormRef = ref<Nullable<FormActionType>>(null);
   let gridRefs: any = {};
+  const chartTypes = ref<any>({ ...Thumbnails, ...mapTypes, ...netTypes });
 
   // set locale of G2Plot
   const { getLocale } = useLocale();

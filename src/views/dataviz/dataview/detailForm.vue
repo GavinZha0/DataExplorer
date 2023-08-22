@@ -59,10 +59,14 @@
             <DownSquareOutlined
               class="toolbar-button"
               style="color: #08c; margin-top: 5px; float: right"
+              @click="() => (thumbnailPage = 1 - thumbnailPage)"
             />
-            <div v-for="item of chartTypes" :key="item.id">
+            <div v-for="(item, name, index) in chartTypes" :key="item.id">
               <img
-                v-if="item.active"
+                v-if="
+                  item.active &&
+                  ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
+                "
                 height="40"
                 width="40"
                 style="
@@ -74,7 +78,10 @@
                 :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
               />
               <img
-                v-else-if="item.advised"
+                v-else-if="
+                  item.advised &&
+                  ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
+                "
                 height="40"
                 width="40"
                 style="border: 2px solid gray; margin: 0 4px 4px 0; cursor: pointer; float: right"
@@ -82,7 +89,7 @@
                 :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
               />
               <img
-                v-else
+                v-else-if="(thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20)"
                 height="40"
                 width="40"
                 style="
@@ -802,6 +809,7 @@
   const cyRef = ref();
   const uploadRef = ref();
   const chartTypes = ref<any>({ ...Thumbnails, ...mapTypes, ...netTypes });
+  const thumbnailPage = ref<number>(0);
   const advancedInfo = reactive<any>({
     disabled: true,
     libs: [],
@@ -875,6 +883,7 @@
       if (data.type) {
         // selected chart type
         chartTypes.value[data.type].active = true;
+        thumbnailPage.value = chartTypes.value[data.type].page ? 1 : 0;
       }
     }
 
@@ -1143,7 +1152,7 @@
 
       // render chart
       renderChart();
-    } else if(key == 'prec') {
+    } else if (key == 'prec') {
       rawData.value[key] = operation;
       // apply aggregation to data
       dataTransform();
@@ -1230,7 +1239,7 @@
       if (rawData.value.prec) {
         for (let cell of dv.rows) {
           for (let mField of rawData.value.metrics) {
-            cell[mField] = (cell[mField]+Number.EPSILON).toFixed(rawData.value.prec);
+            cell[mField] = (cell[mField] + Number.EPSILON).toFixed(rawData.value.prec);
           }
         }
       }
@@ -1363,6 +1372,7 @@
     // select the first advised chart as default one
     antAvaInfo.current = 0;
     chartTypes.value[antAvaInfo.advices[0].type].active = true;
+    thumbnailPage.value = chartTypes.value[antAvaInfo.advices[0].type].page ? 1 : 0;
     // update chart type name which is the name in chartTypes
     rawData.value.type = antAvaInfo.advices[0].type;
     rawData.value.libCfg = antAvaInfo.libCfg[0];
@@ -1884,6 +1894,7 @@
     const advice = antAvaInfo.advices[idx];
     // highlight selected chart
     chartTypes.value[advice.type].active = true;
+    thumbnailPage.value = chartTypes.value[advice.type].page ? 1 : 0;
     antAvaInfo.current = idx;
     // chart type name (id in chartTypes)
     rawData.value.type = advice.type;
@@ -2462,17 +2473,22 @@
 
     var cyUtilApi = inst.viewUtilities({
       highlightStyles: [
-        { node: { 'underlay-color': '#0b9bcd', 'underlay-padding': 1, 'underlay-opacity': 0.5 }, edge: {'underlay-color': '#0b9bcd', 'underlay-padding': 1, 'underlay-opacity': 0.5 } },
-        { node: { 'underlay-color': '#f5e663', 'underlay-padding': 1, 'underlay-opacity': 0.5 }, edge: {'underlay-color': '#f5e663', 'underlay-padding': 1, 'underlay-opacity': 0.5 } },
+        {
+          node: { 'underlay-color': '#0b9bcd', 'underlay-padding': 1, 'underlay-opacity': 0.5 },
+          edge: { 'underlay-color': '#0b9bcd', 'underlay-padding': 1, 'underlay-opacity': 0.5 },
+        },
+        {
+          node: { 'underlay-color': '#f5e663', 'underlay-padding': 1, 'underlay-opacity': 0.5 },
+          edge: { 'underlay-color': '#f5e663', 'underlay-padding': 1, 'underlay-opacity': 0.5 },
+        },
       ],
       setVisibilityOnHide: false, // whether to set visibility on hide/show
       setDisplayOnHide: true, // whether to set display on hide/show
       zoomAnimationDuration: 1000, //default duration for zoom animation speed
-      neighbor: function(ele){
+      neighbor: function (ele) {
         if (ele.isNode()) {
           return ele.closedNeighborhood();
-        }
-        else if (ele.isEdge()) {
+        } else if (ele.isEdge()) {
           return ele.source().closedNeighborhood().union(ele.target().closedNeighborhood());
         }
       },
@@ -2513,7 +2529,7 @@
       fileName: 'network.png',
       dataFile: cyDataFile,
       viewUtil: cyUtilApi,
-      toolkit: { ...libCfg.config.toolkit, panel: libCfg.config.aux?.panel},
+      toolkit: { ...libCfg.config.toolkit, panel: libCfg.config.aux?.panel },
     });
 
     // build fixed style
@@ -2536,9 +2552,17 @@
             netInfo.element.edges = [...netInfo.element.edges, ...virElement.edges];
           }
         }
-        if (libCfg.config.layout[0].options?.widget && libCfg.config.layout[0].options?.widget == 'gojs') {
+        if (
+          libCfg.config.layout[0].options?.widget &&
+          libCfg.config.layout[0].options?.widget == 'gojs'
+        ) {
           // build layout by gojs then map to cy and render
-          const goElements = getGojsLayout(netInfo.element, libCfg.config.layout[0], gojsContainerRef.value, inst);
+          const goElements = getGojsLayout(
+            netInfo.element,
+            libCfg.config.layout[0],
+            gojsContainerRef.value,
+            inst,
+          );
           renderGoLayoutByCy(inst, goElements);
         } else {
           inst
@@ -2618,9 +2642,7 @@
       antAvaInfo.inst.add(newVal.edges);
     }
 
-    antAvaInfo.inst
-      .layout({ name: netInfo.layout[0].name, ...netInfo.layout.options })
-      .run();
+    antAvaInfo.inst.layout({ name: netInfo.layout[0].name, ...netInfo.layout.options }).run();
     antAvaInfo.inst.style().update();
   });
 
@@ -2687,6 +2709,10 @@
           mapInfo.heatmapLayer = heatMap.heatmapLayer;
           mapInfo.heatmapLayer.addTo(inst);
           inst.fitBounds(mapInfo.cluster.all.getBounds());
+          // the widget has a bug which need to be fixed
+          // Cannot assign to read only property 'data' of object '#<ImageData>'
+          // img.data = imgData;
+          // this should be comment out
         }
         break;
       }
@@ -3285,10 +3311,16 @@
           // enable or disable animation of layout
           const layouts = cloneDeep(unref(rawData.value.libCfg.config.layout));
           $.fn.cyPanUpdate({ layouts });
-        } else if (key == 'collapse' || key == 'highlight' || key == 'rankField' || key == 'rankOrder' || key == 'infoField') {
+        } else if (
+          key == 'collapse' ||
+          key == 'highlight' ||
+          key == 'rankField' ||
+          key == 'rankOrder' ||
+          key == 'infoField'
+        ) {
           buildCyNetEvents(antAvaInfo.inst, rawData.value.libCfg.config.aux, $);
         } else if (key == 'panel') {
-          $.fn.cyPanUpdate({ tool: key, enabled: value?true:false });
+          $.fn.cyPanUpdate({ tool: key, enabled: value ? true : false });
           buildCyNetEvents(antAvaInfo.inst, rawData.value.libCfg.config.aux, $);
         }
         break;
@@ -3450,6 +3482,7 @@
           if (key.indexOf(chartType.toLowerCase()) == 0) {
             rawData.value.type = key;
             chartTypes.value[rawData.value.type].active = true;
+            thumbnailPage.value = chartTypes.value[rawData.value.type].page ? 1 : 0;
             break;
           }
         }
@@ -3458,6 +3491,7 @@
           if (key.indexOf(chartType.toLowerCase()) == 0) {
             rawData.value.type = key;
             chartTypes.value[rawData.value.type].active = true;
+            thumbnailPage.value = chartTypes.value[rawData.value.type].page ? 1 : 0;
             break;
           }
         }

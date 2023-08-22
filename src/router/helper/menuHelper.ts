@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash-es';
 import { isUrl } from '/@/utils/is';
 import { RouteParams } from 'vue-router';
 import { toRaw } from 'vue';
-import {MenuItem} from "/@/api/sys/model/menuModel";
+import { MenuItem } from '/@/api/sys/model/menuModel';
 
 export function getAllParentPath<T = Recordable>(treeData: T[], path: string) {
   const menuList = findPath(treeData, (n) => n.path === path) as Menu[];
@@ -41,12 +41,12 @@ export function transformMenuModule(menuModule: MenuModule): Menu {
   return menuList[0];
 }
 
-export function transformRouteToMenu(menuList: MenuItem[]) {
+export function transformRouteToMenu(menuList: MenuItem[], lang: string) {
   // iterate menu tree and build menu to show on GUI
   const list = treeMap(menuList, {
     conversion: (node: MenuItem) => {
       return {
-        name: node.title, // menu title to show on GUI
+        name: lang == 'en-US' ? node.name : node.title, // menu title to show on GUI
         icon: node.icon,
         pos: node.pos,
         path: node.path,

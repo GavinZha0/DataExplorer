@@ -35,6 +35,7 @@
 
   import { REDIRECT_NAME } from '/@/router/constant';
   import { getAllParentPath } from '/@/router/helper/menuHelper';
+  import { useLocale } from '/@/locales/useLocale';
 
   export default defineComponent({
     name: 'LayoutBreadcrumb',
@@ -48,6 +49,7 @@
       const { prefixCls } = useDesign('layout-breadcrumb');
       const { getShowBreadCrumbIcon } = useRootSetting();
       const go = useGo();
+      const { getLocale } = useLocale();
 
       const { t } = useI18n();
       watchEffect(async () => {
@@ -73,7 +75,7 @@
         if (currentRoute.value.meta?.currentActiveMenu) {
           breadcrumbList.push({
             ...currentRoute.value,
-            name: currentRoute.value.meta?.title || currentRoute.value.name,
+            name: getLocale.value == 'en-US' ? currentRoute.value.name : currentRoute.value.meta?.title || currentRoute.value.name,
           } as unknown as RouteLocationMatched);
         }
         routes.value = breadcrumbList;
@@ -85,7 +87,7 @@
           if (parent.includes(item.path)) {
             metched.push({
               ...item,
-              name: item.meta?.title || item.name,
+              name: getLocale.value == 'en-US' ? item.name : item.meta?.title || item.name,
             });
           }
           if (item.children?.length) {

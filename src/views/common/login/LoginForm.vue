@@ -120,8 +120,8 @@
   const rememberMe = ref(false);
 
   const formData = reactive({
-    identity: 'superman',
-    passcode: '123456',
+    identity: '',
+    passcode: '',
   });
 
   const { validForm } = useFormValid(formRef);

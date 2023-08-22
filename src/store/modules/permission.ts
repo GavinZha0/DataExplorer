@@ -22,7 +22,8 @@ import { API_AUTH_PERMIT } from '/@/api/sys/auth';
 
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
-import {MenuItem} from "/@/api/sys/model/menuModel";
+import { MenuItem } from '/@/api/sys/model/menuModel';
+import {useLocale} from "/@/locales/useLocale";
 
 interface PermissionState {
   // Permission code list
@@ -227,10 +228,11 @@ export const usePermissionStore = defineStore({
             console.error(error);
           }
 
+          const { getLocale } = useLocale();
           // build routes and components from backend menu
-          let routeList: AppRouteRecordRaw[] = transformObjToRoute(authMenus);
+          let routeList: AppRouteRecordRaw[] = transformObjToRoute(authMenus, getLocale.value);
           //  build menu to show on GUI
-          const backMenuList = transformRouteToMenu(authMenus);
+          const backMenuList = transformRouteToMenu(authMenus, getLocale.value);
           this.setBackMenuList(backMenuList);
 
           // remove meta.ignoreRoute item

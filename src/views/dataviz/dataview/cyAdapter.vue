@@ -40,6 +40,9 @@
           <BasicForm v-else-if="customConfig.selectedLayout == 'Layered'" @register="registerLayoutElkLayeredForm" />
           <BasicForm v-else-if="customConfig.selectedLayout == 'Mrtree'" @register="registerLayoutElkMrtreeForm" />
           <BasicForm v-else-if="customConfig.selectedLayout == 'Radial'" @register="registerLayoutElkRadialForm" />
+          <BasicForm v-else-if="customConfig.selectedLayout == 'DoubleTree'" @register="registerLayoutDoubleTreeForm" />
+          <BasicForm v-else-if="customConfig.selectedLayout == 'Spiral'" @register="registerLayoutSpiralForm" />
+          <BasicForm v-else-if="customConfig.selectedLayout == 'Fishbone'" @register="registerLayoutFishboneForm" />
         </Col>
       </Row>
     </a-tab-pane>
@@ -472,7 +475,7 @@
     formLayoutElkMrtree,
     formLayoutElkRadial,
     formLayoutElkLayered,
-    nodeBodyMap, formLayoutSpread,
+    nodeBodyMap, formLayoutSpread, formLayoutDoubleTree, formLayoutFishbone, formLayoutSpiral,
   } from './cyData';
   import {
     FundOutlined,
@@ -830,6 +833,57 @@
     showActionButtonGroup: false,
     submitOnChange: true,
     submitFunc: handleElkRadialChange,
+  });
+
+  // layout ELK Radial options
+  const [
+    registerLayoutDoubleTreeForm,
+    {
+      setFieldsValue: setDoubleTreeFields,
+      resetFields: resetDoubleTreeFields,
+      validate: valDoubleTreeFields,
+    },
+  ] = useForm({
+    labelWidth: 130,
+    baseColProps: { span: 24 },
+    schemas: formLayoutDoubleTree,
+    showActionButtonGroup: false,
+    submitOnChange: true,
+    submitFunc: handleDoubleTreeChange,
+  });
+
+  // layout ELK Radial options
+  const [
+    registerLayoutSpiralForm,
+    {
+      setFieldsValue: setSpiralFields,
+      resetFields: resetSpiralFields,
+      validate: valSpiralFields,
+    },
+  ] = useForm({
+    labelWidth: 130,
+    baseColProps: { span: 24 },
+    schemas: formLayoutSpiral,
+    showActionButtonGroup: false,
+    submitOnChange: true,
+    submitFunc: handleSpiralChange,
+  });
+
+  // layout ELK Radial options
+  const [
+    registerLayoutFishboneForm,
+    {
+      setFieldsValue: setFishboneFields,
+      resetFields: resetFishboneFields,
+      validate: valFishboneFields,
+    },
+  ] = useForm({
+    labelWidth: 130,
+    baseColProps: { span: 24 },
+    schemas: formLayoutFishbone,
+    showActionButtonGroup: false,
+    submitOnChange: true,
+    submitFunc: handleFishboneChange,
   });
 
   // show delete icon in variable tree
@@ -1731,6 +1785,66 @@
   async function handleElkRadialChange() {
     const values = await valElkRadialFields();
     const customLayout = customConfig.layout.find((ele)=>{return ele.alias == 'Radial';});
+    // compare with customConfig to detect the changed object
+    for (const key in values) {
+      if (customLayout.options.elk[key] != values[key]) {
+        customLayout.options.elk[key] = values[key];
+        break;
+      }
+    }
+
+    if (customLayout.checked) {
+      // update libCfg if it is checked
+      updateConfig('layout', customLayout.alias, customLayout);
+    }
+  }
+
+  /*
+   * handle the change of layout Double Tree
+   */
+  async function handleDoubleTreeChange() {
+    const values = await valElkRadialFields();
+    const customLayout = customConfig.layout.find((ele) => { return ele.alias == 'DoubleTree'; });
+    // compare with customConfig to detect the changed object
+    for (const key in values) {
+      if (customLayout.options.elk[key] != values[key]) {
+        customLayout.options.elk[key] = values[key];
+        break;
+      }
+    }
+
+    if (customLayout.checked) {
+      // update libCfg if it is checked
+      updateConfig('layout', customLayout.alias, customLayout);
+    }
+  }
+
+  /*
+   * handle the change of layout Spiral
+   */
+  async function handleSpiralChange() {
+    const values = await valElkRadialFields();
+    const customLayout = customConfig.layout.find((ele) => { return ele.alias == 'Spiral'; });
+    // compare with customConfig to detect the changed object
+    for (const key in values) {
+      if (customLayout.options.elk[key] != values[key]) {
+        customLayout.options.elk[key] = values[key];
+        break;
+      }
+    }
+
+    if (customLayout.checked) {
+      // update libCfg if it is checked
+      updateConfig('layout', customLayout.alias, customLayout);
+    }
+  }
+
+  /*
+   * handle the change of layout Fishbone
+   */
+  async function handleFishboneChange() {
+    const values = await valElkRadialFields();
+    const customLayout = customConfig.layout.find((ele) => { return ele.alias == 'Fishbone'; });
     // compare with customConfig to detect the changed object
     for (const key in values) {
       if (customLayout.options.elk[key] != values[key]) {

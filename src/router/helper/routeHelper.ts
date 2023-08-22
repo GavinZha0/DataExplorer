@@ -70,7 +70,7 @@ function dynamicImport(
 }
 
 // Turn background objects into routing objects
-export function transformObjToRoute<T = AppRouteModule>(menuList: MenuItem[]): T[] {
+export function transformObjToRoute<T = AppRouteModule>(menuList: MenuItem[], lang: string): T[] {
   // iterate menu tree and build routes
   const routeList: any[] = treeMap(menuList, {
     conversion: (node: MenuItem) => {
@@ -80,25 +80,23 @@ export function transformObjToRoute<T = AppRouteModule>(menuList: MenuItem[]): T
         component: node.component,
         redirect: node.redirect,
         meta: {
-          title: node.title,
+          title: lang == 'en-US' ? node.name : node.title,
           icon: node.icon,
           pos: node.pos,
-          ignoreKeepAlive: true
-        }
+          ignoreKeepAlive: true,
+        },
       };
-    }
+    },
   });
 
   // convert components
   routeList.forEach((route) => {
-    if (route.component=='') {
+    if (route.component == '') {
       warn('Incorrect component of menu ' + route.name);
-    }
-    else if (route.component.toUpperCase() === 'BLANKLAYOUT') {
+    } else if (route.component.toUpperCase() === 'BLANKLAYOUT') {
       // get LAYOUT template
-      route.component = LayoutMap.get('LAYOUT')
-    }
-    else {
+      route.component = LayoutMap.get('LAYOUT');
+    } else {
       route.children = [cloneDeep(route)];
       route.component = LAYOUT;
       route.name = `${route.name}Parent`;

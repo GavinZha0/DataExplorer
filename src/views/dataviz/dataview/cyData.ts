@@ -1702,6 +1702,38 @@ export const formLayoutDoubleTree: FormSchema[] = [
   },
 ];
 
+// layout Double Tree options
+export const formLayoutSpiral: FormSchema[] = [
+  {
+    field: 'balance',
+    component: 'Switch',
+    label: t('dataviz.dataview.form.custom.cy.layout.doubletree.balance'),
+    colProps: { span: 24 },
+  },
+  {
+    field: 'dirField',
+    label: t('dataviz.dataview.form.custom.cy.layout.doubletree.dirField'),
+    component: 'Input',
+    colProps: { span: 24 },
+  },
+];
+
+// layout Double Tree options
+export const formLayoutFishbone: FormSchema[] = [
+  {
+    field: 'balance',
+    component: 'Switch',
+    label: t('dataviz.dataview.form.custom.cy.layout.doubletree.balance'),
+    colProps: { span: 24 },
+  },
+  {
+    field: 'dirField',
+    label: t('dataviz.dataview.form.custom.cy.layout.doubletree.dirField'),
+    component: 'Input',
+    colProps: { span: 24 },
+  },
+];
+
 export const initCyLayout = cloneDeep(cyLayoutLib);
 
 export const initToolkit = {

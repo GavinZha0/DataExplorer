@@ -1,5 +1,5 @@
-import {ApiDatasetDataType, ApiExeSqlReqType, ColumnFieldType} from './model/dataset';
-import { ApiListReqType, ApiPublicReqType, VarFieldType } from '/@/api/model/baseModel';
+import { ApiDatasetDataType } from './model/dataset';
+import { ApiListReqType, ApiPublicReqType } from '/@/api/model/baseModel';
 import { defHttp } from '/@/utils/http/axios';
 import { AxiosResponse } from 'axios';
 

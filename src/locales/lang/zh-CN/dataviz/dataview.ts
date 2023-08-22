@@ -223,6 +223,10 @@ export default {
             edgeRoutingMode: 'Route Mode',
             compactor: 'Compactor',
           },
+          doubletree: {
+            balance: '平衡',
+            dirField: '方向域',
+          },
         },
         toolkit: {
           title: '工具箱',

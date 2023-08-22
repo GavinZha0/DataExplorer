@@ -8,7 +8,7 @@
     >
       <Row>
         <Col :span="9">
-          <div style="border-right-width: 2px; height: 100%; overflow-y: auto">
+          <div style="border-right-width: 2px; height: 700px; overflow-y: auto">
             <div v-for="(item, index) in cyLayoutLib" :key="item.alias" class="preview_img">
               <img
                 :src="'/resource/img/layout-' + item.alias.toLowerCase() + '.png'"

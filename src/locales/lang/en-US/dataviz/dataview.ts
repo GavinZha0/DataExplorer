@@ -222,6 +222,10 @@ export default {
             nodeNodeBetweenLayers: 'Between Layers',
             compactor: 'Compactor',
           },
+          doubletree: {
+            balance: 'Balance',
+            dirField: 'Dir Field',
+          },
         },
         toolkit: {
           title: 'Toolkit',

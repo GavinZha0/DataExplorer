@@ -2536,9 +2536,9 @@
             netInfo.element.edges = [...netInfo.element.edges, ...virElement.edges];
           }
         }
-        if (true) {
+        if (libCfg.config.layout[0].options?.widget && libCfg.config.layout[0].options?.widget == 'gojs') {
           // build layout by gojs then map to cy and render
-          const goElements = getGojsLayout(netInfo.element, 'Fishbone', gojsContainerRef.value);
+          const goElements = getGojsLayout(netInfo.element, libCfg.config.layout[0], gojsContainerRef.value, inst);
           renderGoLayoutByCy(inst, goElements);
         } else {
           inst

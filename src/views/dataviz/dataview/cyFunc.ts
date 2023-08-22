@@ -148,7 +148,7 @@ export const buildCyStyle = (cyInst: any, cfg: any) => {
           : '',
         'background-color': cfg.node.body?.colorField
           ? 'data(bodyColor)'
-          : (cfg.node.body?.shape && cfg.node.body?.color)
+          : cfg.node.body?.shape && cfg.node.body?.color
           ? cfg.node.body.color
           : undefined,
         'background-opacity':
@@ -162,10 +162,7 @@ export const buildCyStyle = (cyInst: any, cfg: any) => {
         'background-opacity': cfg.node.body?.shape && cfg.node.body?.color ? 1 : 0.5,
       });
 
-    cyInst
-      .style()
-      .selector('node[?collapsed]')
-      .style({
+    cyInst.style().selector('node[?collapsed]').style({
       'border-color': 'green',
       'border-width': 3,
     });
@@ -574,7 +571,9 @@ export const buildCyNetTooltip = (cy: any) => {
  * build tooltip of node
  */
 export const buildCyNetEvents = (cy: any, aux: any, jQuery: any) => {
-  if (cy == null) { return; }
+  if (cy == null) {
+    return;
+  }
   // remove events first
   try {
     cy.off('click', 'node');
@@ -656,12 +655,11 @@ export const buildCyNetEvents = (cy: any, aux: any, jQuery: any) => {
           }
 
           // update panel with ranked nodes
-          jQuery.fn.cyPanUpdate({rankNodes: sortedNodes, rankField: aux.rankField});
+          jQuery.fn.cyPanUpdate({ rankNodes: sortedNodes, rankField: aux.rankField });
         } else if (aux.panel == 'single') {
           // update panel with selected node info
-          jQuery.fn.cyPanUpdate({infoNode: tappedNode, infoFields: aux.nodeField});
+          jQuery.fn.cyPanUpdate({ infoNode: tappedNode, infoFields: aux.nodeField });
         }
-
       }, cy.multiClickDebounceTime());
     });
 
@@ -674,7 +672,9 @@ export const buildCyNetEvents = (cy: any, aux: any, jQuery: any) => {
         // from the node to root
         const linkedNodes = tappedEdge.source().predecessors('node');
         linkedNodes.roots();
-        let aStar = cy.elements().aStar({ root: linkedNodes.roots(), goal: tappedEdge.source(), directed: true });
+        const aStar = cy
+          .elements()
+          .aStar({ root: linkedNodes.roots(), goal: tappedEdge.source(), directed: true });
         if (aStar.path) {
           aStar.path.style('opacity', 1);
         }
@@ -703,7 +703,7 @@ export const buildCyNetEvents = (cy: any, aux: any, jQuery: any) => {
         clickTimer = undefined;
         const tappedNode = evt.target;
         // update panel with selected node info
-        jQuery.fn.cyPanUpdate({infoNode: tappedNode, infoFields: aux.nodeField});
+        jQuery.fn.cyPanUpdate({ infoNode: tappedNode, infoFields: aux.nodeField });
       }, cy.multiClickDebounceTime());
     });
   }
@@ -747,7 +747,7 @@ export const buildCyNetEvents = (cy: any, aux: any, jQuery: any) => {
     //rank nodes when zoomin, zoomout or zoomfit
     cy.on('viewport', function (evt) {
       // rank nodes based on specific field
-      let nodes = cy.nodes('[rec]').sort(function( a, b ){
+      const nodes = cy.nodes('[rec]').sort(function (a, b) {
         if (aux.rankOrder == 'asc') {
           return a.data('rec')[aux.rankField] - b.data('rec')[aux.rankField];
         } else {
@@ -765,7 +765,7 @@ export const buildCyNetEvents = (cy: any, aux: any, jQuery: any) => {
     // rank selected nodes
     cy.on('boxselect', function (evt) {
       // rank nodes based on specific field
-      const nodes = cy.nodes(':selected[rec]').sort(function( a, b ){
+      const nodes = cy.nodes(':selected[rec]').sort(function (a, b) {
         if (aux.rankOrder == 'asc') {
           return a.data('rec')[aux.rankField] - b.data('rec')[aux.rankField];
         } else {
@@ -807,7 +807,7 @@ export const addVirRootNode = (cy: any) => {
 /*
  * build gojs network
  */
-export const getGojsLayout = (cyElements: any, layout: string, gojsContainer: any) => {
+export const getGojsLayout = (cyElements: any, layout: any, gojsContainer: any, cyInst: any) => {
   const nodes: any[] = [],
     links: any[] = [];
 
@@ -815,12 +815,31 @@ export const getGojsLayout = (cyElements: any, layout: string, gojsContainer: an
     return null;
   }
 
+  const dirField = layout.options.dirField;
+  const rootNodes = cyInst.nodes().roots();
+  const keyNodes = rootNodes.connectedEdges().targets();
+  for (const kNode of keyNodes) {
+    if (kNode.data()[dirField]) {
+      // the kNode is a leaf and has a value of dirField
+      continue;
+    }
+    const kLeafNodes = kNode.outgoers().filter('node');
+    if (kLeafNodes && kLeafNodes != null && kLeafNodes.length > 0) {
+      const targetNode = cyElements.nodes.find((el) => {
+        return el.data.id == kNode.id();
+      });
+      if (targetNode != null && kLeafNodes[0].data().rec && kLeafNodes[0].data().rec[dirField]){
+        targetNode.data[dirField] = kLeafNodes[0].data().rec[dirField];
+      }
+    }
+  }
+
   // build gojs data, nodes and edges from cy data
   for (const node of cyElements.nodes) {
     nodes.push({
       key: node.data['id'],
       text: node.data['nodeLabel'],
-      dir: node.data.nodeLabel == 'WA' ? 'left' : 'right',
+      dir: node.data[dirField],
     });
   }
   for (const edge of cyElements.edges) {
@@ -867,7 +886,7 @@ export const getGojsLayout = (cyElements: any, layout: string, gojsContainer: an
   );
 
   // update layout of diagram
-  switch (layout) {
+  switch (layout.name) {
     case 'ForceDirected': {
       goDiagram.layout = new go.ForceDirectedLayout({ comparer: go.GridLayout.smartComparer });
       break;

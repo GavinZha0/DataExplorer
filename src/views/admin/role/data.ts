@@ -24,7 +24,7 @@ export const columns: BasicColumn[] = [
     sorter: true,
   },
   {
-    title: t('admin.role.table.title.users'),
+    title: t('admin.role.table.title.user_count'),
     dataIndex: 'userCount',
     sorter: true,
     width: 100,

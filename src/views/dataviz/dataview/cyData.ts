@@ -146,6 +146,32 @@ export const cyLayoutLib = [
       },
     },
   },
+  {
+    alias: 'DoubleTree',
+    name: 'DoubleTree',
+    gojs: true,
+    options: {
+      widget: 'gojs',
+      balance: true,
+      dirField: '',
+    },
+  },
+  {
+    alias: 'Spiral',
+    name: 'Spiral',
+    gojs: true,
+    options: {
+      widget: 'gojs',
+    },
+  },
+  {
+    alias: 'Fishbone',
+    name: 'Fishbone',
+    gojs: true,
+    options: {
+      widget: 'gojs',
+    },
+  },
 ];
 
 // custom toolkit
@@ -1657,6 +1683,22 @@ export const formLayoutElkRadial: FormSchema[] = [
     componentProps: {
       min: 0,
     },
+  },
+];
+
+// layout Double Tree options
+export const formLayoutDoubleTree: FormSchema[] = [
+  {
+    field: 'balance',
+    component: 'Switch',
+    label: t('dataviz.dataview.form.custom.cy.layout.doubletree.balance'),
+    colProps: { span: 24 },
+  },
+  {
+    field: 'dirField',
+    label: t('dataviz.dataview.form.custom.cy.layout.doubletree.dirField'),
+    component: 'Input',
+    colProps: { span: 24 },
   },
 ];
 

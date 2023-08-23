@@ -5,6 +5,24 @@ import { PackedLayout } from '/@/thirdparty/gojs/PackedLayout';
 import { ArrangingLayout } from '/@/thirdparty/gojs/ArrangingLayout';
 import { DoubleTreeLayout } from '/@/thirdparty/gojs/DoubleTreeLayout';
 import { FishboneLayout } from '/@/thirdparty/gojs/FishboneLayout';
+import { initNetInfo } from '/@/views/dataviz/dataview/data';
+import { ref } from 'vue';
+import { defaultCyStyle, nodeBodyMap } from '/@/views/dataviz/dataview/cyData';
+import cytoscape from 'cytoscape';
+import viewUtilities from 'cytoscape-view-utilities';
+import { panzoom } from '/@/thirdparty/cytoscape/cytoscape-panzoom';
+import '/@/thirdparty/cytoscape/css/cytoscape.js-panzoom.css';
+import '/@/thirdparty/cytoscape/css/cytoscape.js-popper.css';
+import fcose from 'cytoscape-fcose';
+import cise from 'cytoscape-cise';
+import d3Force from 'cytoscape-d3-force';
+import dagre from 'cytoscape-dagre';
+import cola from 'cytoscape-cola';
+import klay from 'cytoscape-klay';
+import popper from 'cytoscape-popper';
+import spread from 'cytoscape-spread';
+import avsdf from 'cytoscape-avsdf';
+import elk from 'cytoscape-elk';
 
 const cySvgCache = { diagram: undefined };
 const gojsInfo: any = {};
@@ -1078,4 +1096,204 @@ export const renderGoLayoutByCy = (cy: any, goElement: any) => {
   }
   cy.endBatch();
   cy.fit();
+};
+
+/*
+   * render cy network
+   */
+let netInfo = { ...initNetInfo };
+let cyDataFile = ref<any>();
+netInfo.dataFile = cyDataFile;
+export const renderCyNet2 = (
+  container: any,
+  gojsContainer: any,
+  data: any[],
+  libCfg: any,
+  libVer = '1.7',
+  jQuery,
+) => {
+  panzoom(cytoscape, jQuery);
+  fcose(cytoscape);
+  cise(cytoscape);
+  d3Force(cytoscape);
+  dagre(cytoscape);
+  cola(cytoscape);
+  klay(cytoscape);
+  spread(cytoscape);
+  avsdf(cytoscape);
+  elk(cytoscape);
+  popper(cytoscape);
+  viewUtilities(cytoscape);
+
+  const inst = cytoscape({
+    container: container,
+    autounselectify: false,
+    multiClickDebounceTime: 200,
+    wheelSensitivity: 0.2,
+    elements: {
+      nodes: [],
+      edges: [],
+    },
+    layout: {
+      name: 'random',
+    },
+    style: defaultCyStyle,
+  });
+
+  const cyUtilApi = inst.viewUtilities({
+    highlightStyles: [
+      {
+        node: { 'underlay-color': '#0b9bcd', 'underlay-padding': 1, 'underlay-opacity': 0.5 },
+        edge: { 'underlay-color': '#0b9bcd', 'underlay-padding': 1, 'underlay-opacity': 0.5 },
+      },
+      {
+        node: { 'underlay-color': '#f5e663', 'underlay-padding': 1, 'underlay-opacity': 0.5 },
+        edge: { 'underlay-color': '#f5e663', 'underlay-padding': 1, 'underlay-opacity': 0.5 },
+      },
+    ],
+    setVisibilityOnHide: false, // whether to set visibility on hide/show
+    setDisplayOnHide: true, // whether to set display on hide/show
+    zoomAnimationDuration: 1000, //default duration for zoom animation speed
+    neighbor: function (ele) {
+      if (ele.isNode()) {
+        return ele.closedNeighborhood();
+      } else if (ele.isEdge()) {
+        return ele.source().closedNeighborhood().union(ele.target().closedNeighborhood());
+      }
+    },
+    neighborSelectTime: 1000,
+  });
+
+  let legends = [];
+  let shapeField = undefined;
+  let colorField = undefined;
+  if (libCfg.config.node.icon.shapeMap) {
+    legends = [...legends, ...libCfg.config.node.icon.shapeMap];
+    shapeField = libCfg.config.node.icon.shapeField;
+  } else if (libCfg.config.node.body.shapeMap) {
+    const mappedShape = libCfg.config.node.body.shapeMap.map((item) => ({
+      shape: nodeBodyMap[item.shape],
+      label: item.label,
+      value: item.value,
+    }));
+    legends = [...legends, ...mappedShape];
+    shapeField = libCfg.config.node.body.shapeField;
+  }
+
+  if (libCfg.config.node.icon.colorMap) {
+    legends = [...legends, ...libCfg.config.node.icon.colorMap];
+    colorField = 'iconColor';
+  } else if (libCfg.config.node.body.colorMap) {
+    legends = [...legends, ...libCfg.config.node.body.colorMap];
+    colorField = 'bodyColor';
+  }
+
+  netInfo.layout = libCfg.config.layout;
+  inst.userLayouts = libCfg.config.layout;
+  inst.selectedLayout = 0;
+
+  if (inst.panzoom) {
+    inst.panzoom({
+      layouts: [...libCfg.config.layout],
+      legend: { items: [...legends], shapeField: shapeField, colorField: colorField },
+      fileName: 'network.png',
+      dataFile: cyDataFile,
+      viewUtil: cyUtilApi,
+      toolkit: { ...libCfg.config.toolkit, panel: libCfg.config.aux?.panel },
+    });
+  }
+
+  // build fixed style
+  buildCyStyle(inst, libCfg.config);
+  inst.elements().selectify();
+  inst.autounselectify(false);
+
+  // build cy node and edge
+  switch (libCfg.chartType) {
+    case 'Tree': {
+      netInfo.element = buildCyTreeNet(data, libCfg.config);
+      inst.add(netInfo.element.nodes);
+      inst.add(netInfo.element.edges);
+      if (true) {
+        const virElement: any = addVirRootNode(inst);
+        if (virElement) {
+          inst.add(virElement.nodes);
+          inst.add(virElement.edges);
+          netInfo.element.nodes = [...netInfo.element.nodes, ...virElement.nodes];
+          netInfo.element.edges = [...netInfo.element.edges, ...virElement.edges];
+        }
+      }
+      if (
+        libCfg.config.layout[0].options?.widget &&
+        libCfg.config.layout[0].options?.widget == 'gojs'
+      ) {
+        // build layout by gojs then map to cy and render
+        const goElements = getGojsLayout(
+          netInfo.element,
+          libCfg.config.layout[0],
+          gojsContainer,
+          inst,
+        );
+        renderGoLayoutByCy(inst, goElements);
+      } else {
+        inst
+          .layout({ name: libCfg.config.layout[0].name, ...libCfg.config.layout[0].options })
+          .run();
+        inst.style().update();
+      }
+      break;
+    }
+    case 'Star': {
+      netInfo.element = buildCyTreeNet(data, libCfg.config);
+      inst.add(netInfo.element.nodes);
+      inst.add(netInfo.element.edges);
+      if (true) {
+        const virElement: any = addVirRootNode(inst);
+        if (virElement) {
+          inst.add(virElement.nodes);
+          inst.add(virElement.edges);
+          netInfo.element.nodes = [...netInfo.element.nodes, ...virElement.nodes];
+          netInfo.element.edges = [...netInfo.element.edges, ...virElement.edges];
+        }
+      }
+      inst
+        .layout({ name: libCfg.config.layout[0].name, ...libCfg.config.layout[0].options })
+        .run();
+      inst.style().update();
+      break;
+    }
+    case 'Gojs': {
+      netInfo.element = buildCyTreeNet(data, libCfg.config);
+      inst.add(netInfo.element.nodes);
+      inst.add(netInfo.element.edges);
+      if (true) {
+        const virElement: any = addVirRootNode(inst);
+        if (virElement) {
+          inst.add(virElement.nodes);
+          inst.add(virElement.edges);
+          netInfo.element.nodes = [...netInfo.element.nodes, ...virElement.nodes];
+          netInfo.element.edges = [...netInfo.element.edges, ...virElement.edges];
+        }
+      }
+      // build layout by gojs then map to cy and render
+      const goElements = getGojsLayout(netInfo.element, 'Tree', gojsContainer);
+      renderGoLayoutByCy(inst, goElements);
+      break;
+    }
+    case 'Nest': {
+      netInfo.element = buildCyNestNet(data, libCfg.config);
+      inst.add(netInfo.element.nodes);
+      //inst.add(netInfo.element.edges);
+      inst
+        .layout({ name: libCfg.config.layout[0].name, ...libCfg.config.layout[0].options })
+        .run();
+      inst.style().update();
+      break;
+    }
+  }
+
+  inst.elements().selectify();
+  buildCyNetTooltip(inst);
+  buildCyNetEvents(inst, libCfg.config.aux, $);
+  return inst;
 };

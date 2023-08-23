@@ -12,7 +12,15 @@ import 'heatmap.js/build/heatmap';
 import * as HeatmapOverlay from 'heatmap.js/plugins/leaflet-heatmap';
 import { AntPath } from 'leaflet-ant-path';
 import { us_states } from '/@/assets/geojson/us-states';
-
+import { initMapInfo, pointsData } from '/@/views/dataviz/dataview/data';
+import { ZoomBar } from '/@/thirdparty/leaflet/L.Control.ZoomBar';
+import { baseLayerLib, overLayerLib } from '/@/views/dataviz/dataview/leafletData';
+import { cloneDeep } from 'lodash-es';
+import { PanelLayers } from '/@/thirdparty/leaflet/leaflet-panel-layers.src';
+import { GeoNames } from '/@/thirdparty/leaflet/L.Control.Geonames';
+import { SlideMenu } from '/@/thirdparty/leaflet/L.Control.SlideMenu';
+import { EasyPrint } from '/@/thirdparty/leaflet/easyPrint';
+import Locate from 'leaflet.locatecontrol';
 /*
  * build visible markers on current map
  */
@@ -624,7 +632,7 @@ function style(feature) {
 }
 
 function highlightFeature(e) {
-  let layer = e.target;
+  const layer = e.target;
   layer.setStyle({
     weight: 5,
     color: '#666',
@@ -650,3 +658,347 @@ function onEachFeature(feature, layer) {
     click: zoomToFeature,
   });
 }
+
+/*
+ * render leaflet map
+ */
+const mapInfo = { ...initMapInfo };
+export const renderLeafletMap2 = (
+  container: any,
+  datasetInfo: any,
+  data: any[],
+  libCfg: any,
+  libVer = '1.7',
+  upLoadRef: any,
+) => {
+  // create basic map
+  const inst = L.map(container, {
+    zoom: 5,
+    minZoom: 2,
+    maxZoom: 18,
+    zoomControl: false,
+    center: [40, 100],
+    attributionControl: false,
+  });
+
+  // add zoom bar by default
+  ZoomBar({ position: 'topleft' }).addTo(inst);
+
+  switch (libCfg.chartType) {
+    case 'Marker': {
+      // build markers and add them to map
+      const clusteredMarkers = buildMarkerMap(data, libCfg.config);
+      if (clusteredMarkers) {
+        mapInfo.cluster.all = clusteredMarkers.all;
+        mapInfo.cluster.shape = clusteredMarkers.shape;
+        mapInfo.cluster.color = clusteredMarkers.color;
+        if (mapInfo.cluster.all) {
+          mapInfo.cluster.all.addTo(inst);
+          inst.fitBounds(mapInfo.cluster.all.getBounds());
+        }
+      }
+      break;
+    }
+    case 'Bubble': {
+      // build markers and add them to map
+      if(datasetInfo!=null){
+        const clusteredMarkers = buildBubbleMap(data, libCfg.config, datasetInfo.dataInfo);
+        if (clusteredMarkers) {
+          mapInfo.cluster.all = clusteredMarkers.all;
+          mapInfo.cluster.shape = clusteredMarkers.shape;
+          mapInfo.cluster.color = clusteredMarkers.color;
+          if (mapInfo.cluster.all) {
+            mapInfo.cluster.all.addTo(inst);
+            inst.fitBounds(mapInfo.cluster.all.getBounds());
+          }
+        }
+      }
+      break;
+    }
+    case 'Choropleth': {
+      const choropletMap: any = buildChoroplethMap(data, libCfg.config, inst);
+      if (choropletMap) {
+        mapInfo.choroplethLayer = choropletMap.choroplethLayer;
+        mapInfo.choroplethLayer.addTo(inst);
+        inst.fitBounds(mapInfo.choroplethLayer.getBounds());
+      }
+      break;
+    }
+    case 'Heat': {
+      const heatMap: any = buildHeatMap(data, libCfg.config);
+      if (heatMap) {
+        mapInfo.cluster.all = heatMap.all;
+        mapInfo.heatmapLayer = heatMap.heatmapLayer;
+        mapInfo.heatmapLayer.addTo(inst);
+        inst.fitBounds(mapInfo.cluster.all.getBounds());
+        // the widget has a bug which need to be fixed
+        // Cannot assign to read only property 'data' of object '#<ImageData>'
+        // img.data = imgData;
+        // this should be comment out
+      }
+      break;
+    }
+    case 'Timeline': {
+      buildTimelineMap(data, libCfg.config);
+      break;
+    }
+    case 'Movement': {
+      const movementMap: any = buildMovementMap(data, libCfg.config);
+      if (movementMap) {
+        mapInfo.cluster.all = movementMap.all;
+        mapInfo.cluster.color = movementMap.color;
+        mapInfo.antPath = movementMap.antPath;
+        mapInfo.antPath.addTo(inst);
+        mapInfo.cluster.all.addTo(inst);
+        inst.fitBounds(mapInfo.cluster.all.getBounds());
+      }
+      break;
+    }
+    case 'Migration': {
+      const migrationMap: any = buildMigrationMap(data, libCfg.config, inst);
+      if (migrationMap) {
+        mapInfo.cluster.all = migrationMap.all;
+        mapInfo.cluster.color = migrationMap.color;
+        mapInfo.migrationLayer = migrationMap.migrationLayer;
+        mapInfo.migrationLayer.addTo(inst);
+        //mapInfo.cluster.all.addTo(inst);
+        inst.fitBounds(mapInfo.cluster.all.getBounds());
+      }
+      break;
+    }
+  }
+
+  buildPanelBar2(libCfg.config, inst, libCfg.chartType, upLoadRef);
+
+  return inst;
+};
+
+/*
+ * build panel and toolbar
+ */
+const buildPanelBar2 = async (cfg: any, map: any, type, uploadRef) => {
+  const baseLayerCfg = { group: 'Map', collapsed: true, layers: [] };
+  const overLayerCfg = { group: 'Overlayer', collapsed: true, layers: [] };
+  const markerLayerCfg = { group: 'Marker', layers: [] };
+
+  // build base layer options
+  if (cfg.baselayer && Array.isArray(cfg.baselayer)) {
+    for (const layerName of cfg.baselayer) {
+      // get base layer config based on layer name
+      const selectedLayer = baseLayerLib.find((item) => {
+        return item.name == layerName;
+      });
+      if (selectedLayer) {
+        baseLayerCfg.layers.push(cloneDeep(selectedLayer));
+      }
+    }
+  }
+  // activate the first one by default
+  baseLayerCfg.layers[0].active = true;
+
+  // build over layer options
+  if (cfg.overlayer && Array.isArray(cfg.overlayer?.layers)) {
+    for (const layerName of cfg.overlayer?.layers) {
+      // get over layer config based on layer name
+      const selectedLayer = overLayerLib.find((item) => {
+        return item.name == layerName;
+      });
+      if (selectedLayer) {
+        // activate all overlayers by default
+        selectedLayer.active = true;
+        overLayerCfg.layers.push(cloneDeep(selectedLayer));
+      }
+    }
+  }
+
+  let overPanel = [];
+  if (overLayerCfg.layers.length > 0) {
+    // add overlayer options to panel
+    overPanel.push(overLayerCfg);
+  }
+
+  // build marker layer for legend
+  const legendLayers: any = [];
+  // shape first
+  if (mapInfo.cluster.shape && !mapInfo.cluster.shape.default && cfg.marker) {
+    for (const key of Object.keys(mapInfo.cluster.shape)) {
+      const cfgShape = cfg.marker?.shapeMap?.find((v) => {
+        return v.label == key;
+      });
+      legendLayers.push({
+        name: key,
+        active: true,
+        icon: '<i class="fas fa-' + cfgShape.shape + '" style="color:skyblue"></i>',
+        filter: true,
+        layer: mapInfo.cluster.shape[key],
+      });
+    }
+  }
+
+  // color after shape
+  let colorMap = cfg.marker ? cfg.marker.colorMap : undefined;
+  if (cfg.bubble && cfg.bubble.colorMap) {
+    colorMap = cfg.bubble.colorMap;
+  } else if (cfg.movement && cfg.movement.colorMap) {
+    colorMap = cfg.movement.colorMap;
+  } else if (cfg.line && cfg.line.colorMap) {
+    colorMap = cfg.line.colorMap;
+  }
+
+  if (mapInfo.cluster.color && !mapInfo.cluster.color.default && colorMap) {
+    for (const cfgColor of colorMap) {
+      legendLayers.push({
+        name: cfgColor.label,
+        active: true,
+        icon: '<i class="fas fa-square" style="color:' + cfgColor.color + '"></i>',
+        filter: true,
+        layer: mapInfo.cluster.color[cfgColor.label],
+      });
+    }
+  }
+
+  if (type == 'Choropleth') {
+    for (const it of cfg.choropleth?.colorMap) {
+      legendLayers.push({
+        name: it.label,
+        active: true,
+        icon: '<i class="fas fa-square" style="color:' + it.color + '"></i>',
+        filter: false,
+        layer: {
+          type: 'geoJson',
+          args: [
+            {
+              type: 'Feature',
+              geometry: null,
+            },
+          ],
+        },
+      });
+    }
+  }
+
+  markerLayerCfg.layers = legendLayers;
+  mapInfo.cluster.legend = legendLayers;
+  if (legendLayers.length > 0) {
+    // add legend to over layer panel
+    overPanel.push(markerLayerCfg);
+  }
+
+  if (overPanel.length == 0) {
+    // set it to null if no overlayer option and legend
+    overPanel = null;
+  }
+
+  mapInfo.ctrlPanel = PanelLayers([baseLayerCfg], overPanel, {
+    position: 'topright',
+    title: '',
+    collapsibleGroups: true,
+    collapsed: false,
+    compact: false,
+    hideSingleBase: true,
+    autoZIndex: false,
+  }).addTo(map);
+
+  if (cfg.toolkit?.search) {
+    // button is shown on map but except when click. Gavin !!!
+    mapInfo.toolkit.search = GeoNames({
+      position: 'topcenter',
+      username: 'Mr_DataPie',
+      enablePostalCodes: false,
+    }).addTo(map);
+  }
+
+  if (cfg.toolkit?.fullscreen) {
+    mapInfo.toolkit.fullscreen = L.fullScreen({
+      position: 'topleft',
+      forceSeparateButton: true,
+    }).addTo(map);
+  }
+
+  if (cfg.panel?.rank || cfg.panel?.info) {
+    mapInfo.quadtree = L.quadtree();
+    for (const mk of mapInfo.cluster.all.getLayers()) {
+      mapInfo.quadtree.add(mk);
+    }
+    mapInfo.infoPanel = SlideMenu('<p>test</p>', {
+      position: 'topleft',
+      menuposition: 'topleft',
+      width: '15%',
+      height: '100%',
+      icon: 'fa-solid fa-user-secret',
+    }).addTo(map);
+    map.on('zoomend moveend resize', () => {
+      const htmlText = getVisibleMarkers(mapInfo.quadtree, map, 'sales', 'asc');
+      mapInfo.infoPanel.setContents(htmlText);
+    });
+  }
+
+  if (cfg.toolkit?.open) {
+    // file load button
+    mapInfo.toolkit.open = L.easyButton(
+      '<img src="/resource/img/open-folder.png">',
+      function (btn, map) {
+        if(uploadRef){
+          uploadRef.value.click();
+        }
+      },
+    ).addTo(map);
+  }
+
+  if (cfg.toolkit?.seek) {
+    mapInfo.toolkit.seek = new L.Control.Search({ layer: mapInfo.cluster.all });
+    map.addControl(mapInfo.toolkit.seek);
+  }
+
+  if (cfg.toolkit?.export) {
+    // it works when replace domtoimage with html2canvas
+    mapInfo.toolkit.export = EasyPrint({
+      title: 'Export',
+      position: 'topleft',
+      exportOnly: true,
+      hideControlContainer: true,
+    }).addTo(map);
+  }
+
+  if (cfg.toolkit?.locator) {
+    mapInfo.toolkit.locator = new Locate({
+      position: 'topleft',
+      strings: {
+        title: 'Locator',
+      },
+    }).addTo(map);
+  }
+
+  if (cfg.toolkit?.player) {
+    // add timeline player to map
+    mapInfo.toolkit.timeline = L.timeline(pointsData).addTo(map);
+    mapInfo.toolkit.player = L.timelineSliderControl({
+      formatOutput: function (date) {
+        return new Date(date).toLocaleDateString();
+      },
+    }).addTo(map);
+    mapInfo.toolkit.player.addTimelines(mapInfo.toolkit.timeline);
+  }
+
+  if (cfg.toolkit?.coordinator) {
+    // coordinator
+    mapInfo.toolkit.coordinator = L.control
+      .coordinates({
+        position: 'bottomleft',
+        decimals: 2,
+        useDMS: false,
+        labelTemplateLat: '{y},',
+        labelTemplateLng: '{x}',
+        useLatLngOrder: true, //ordering of labels, default false-> lng-lat
+        markerType: L.marker,
+        enableUserInput: true,
+      })
+      .addTo(map);
+  }
+
+  if (cfg.toolkit?.scale) {
+    mapInfo.toolkit.scale = L.control
+      .scale({ position: 'bottomright', imperial: false })
+      .addTo(map);
+  }
+};

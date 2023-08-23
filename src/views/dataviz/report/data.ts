@@ -79,7 +79,21 @@ export const formInfoSchema: FormSchema[] = [
   {
     field: 'type',
     label: t('common.table.title.type'),
-    component: 'Input',
+    component: 'Select',
+    defaultValue: 'report',
+    componentProps: {
+      allowClear: false,
+      options: [
+        {
+          label: 'Report',
+          value: 'report',
+        },
+        {
+          label: 'Story',
+          value: 'story',
+        },
+      ],
+    },
   },
   {
     field: 'createdBy',

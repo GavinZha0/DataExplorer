@@ -6,6 +6,7 @@ export interface ApiDatareportDataType {
   type?: string;
   pageCount?: number;
   pages?: ReportPageType[];
+  viewIds?: any[];
   pubFlag?: boolean;
   menuId?: number;
   menuName?: string;
@@ -78,6 +79,7 @@ export const initReportData: ApiDatareportDataType = {
   type: undefined,
   pageCount: 0,
   pages: [],
+  viewIds: [],
   pubFlag: false,
   menuId: 0,
   menuName: undefined,

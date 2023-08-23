@@ -90,6 +90,11 @@
             </grid-item>
           </grid-layout>
         </div>
+        <div
+          id="gojsContainer"
+          ref="gojsContainerRef"
+          style="height: 1%; width: 100%; display: none"
+        ></div>
       </a-col>
       <div class="layout-area">
         <div
@@ -262,8 +267,64 @@
   import ApexCharts from 'apexcharts';
   import { g2plotRender } from '@antv/antv-spec';
   import * as echarts from 'echarts';
+  import L from 'leaflet';
+  import { PanelLayers } from '/@/thirdparty/leaflet/leaflet-panel-layers.src';
+  import '/@/thirdparty/leaflet/css/MarkerCluster.Default.css';
+  import '/@/thirdparty/leaflet/css/MarkerCluster.css';
+  import 'leaflet.featuregroup.subgroup/dist/leaflet.featuregroup.subgroup-src';
+  //import { PruneCluster, PruneClusterForLeaflet } from '/@/thirdparty/leaflet/PruneCluster';
+  //import '/@/thirdparty/leaflet/css/PruneCluster.css';
+  import 'leaflet/dist/leaflet.css';
+  import { ZoomBar } from '/@/thirdparty/leaflet/L.Control.ZoomBar.js';
+  import '/@/thirdparty/leaflet/css/L.Control.ZoomBar.css';
+  import 'leaflet.fullscreen2';
+  import 'leaflet-search';
+  import '/@/thirdparty/leaflet/css/leaflet.fullscreen2.css';
+  import 'leaflet-search/dist/leaflet-search.src.css';
+  import { GeoNames } from '/@/thirdparty/leaflet/L.Control.Geonames';
+  import '/@/thirdparty/leaflet/css/L.Control.Geonames.css';
+  import Locate from 'leaflet.locatecontrol';
+  import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
+  //import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+  import 'leaflet-geosearch/dist/geosearch.css';
+  import { EasyPrint } from '/@/thirdparty/leaflet/easyPrint';
+  import 'leaflet-quadtree';
+  import { SlideMenu } from '/@/thirdparty/leaflet/L.Control.SlideMenu';
+  import '/@/thirdparty/leaflet/css/L.Control.SlideMenu.css';
+  import 'leaflet.timeline/dist/TimelineSliderControl';
+  import 'leaflet.timeline/dist/Timeline';
+  import '/@/thirdparty/leaflet/css/timeline.css';
+  import 'leaflet.coordinates/dist/Leaflet.Coordinates-0.1.5.src';
+  import 'leaflet.coordinates/dist/Leaflet.Coordinates-0.1.5.css';
+  import 'leaflet-easybutton';
+  import 'leaflet-easybutton/src/easy-button.css';
+  import '/@/thirdparty/leaflet/css/leaflet-panel-layers.src.css';
+  import '/@/thirdparty/leaflet/css/leaflet.extra-markers.css';
+  import '/@/assets/fontawesome-free/css/all.min.css';
+  import '/@/thirdparty/leaflet/css/leaflet-beautify-marker-icon.css';
+  import '@ansur/leaflet-pulse-icon/dist/L.Icon.Pulse.css';
+  import 'heatmap.js/build/heatmap';
+  import 'leaflet-choropleth';
+  import '/@/thirdparty/leaflet/leaflet.migrationLayer';
+  import chroma from 'chroma-js';
+  import cytoscape from 'cytoscape';
+  import viewUtilities from 'cytoscape-view-utilities';
+  import { panzoom } from '/@/thirdparty/cytoscape/cytoscape-panzoom';
+  import '/@/thirdparty/cytoscape/css/cytoscape.js-panzoom.css';
+  import '/@/thirdparty/cytoscape/css/cytoscape.js-popper.css';
+  import fcose from 'cytoscape-fcose';
+  import cise from 'cytoscape-cise';
+  import d3Force from 'cytoscape-d3-force';
+  import dagre from 'cytoscape-dagre';
+  import cola from 'cytoscape-cola';
+  import klay from 'cytoscape-klay';
+  import popper from 'cytoscape-popper';
+  import spread from 'cytoscape-spread';
+  import avsdf from 'cytoscape-avsdf';
+  import elk from 'cytoscape-elk';
   import { cloneDeep } from 'lodash-es';
   import { useLocale } from '/@/locales/useLocale';
+  import { renderLeafletMap2 } from '../dataview/leafletFunc';
   import {
     ApiDatareportDataType,
     initReportData,
@@ -276,6 +337,8 @@
     API_DATAREPORT_UPDATE,
   } from '/@/api/dataviz/datareport';
   import { mapTypes, netTypes } from '/@/views/dataviz/dataview/data';
+  import { renderCyNet2 } from '/@/views/dataviz/dataview/cyFunc';
+  import $ from 'jquery';
 
   const { t } = useI18n();
   const drawerTitle = ref<string>(t('common.form.new'));
@@ -288,6 +351,7 @@
   const configFormRef = ref<Nullable<FormActionType>>(null);
   let gridRefs: any = {};
   const chartTypes = ref<any>({ ...Thumbnails, ...mapTypes, ...netTypes });
+  const gojsContainerRef = ref<any>();
 
   // set locale of G2Plot
   const { getLocale } = useLocale();
@@ -569,43 +633,82 @@
     // render charts when DOM is ready
     nextTick(() => {
       if (!grid.libName || grid.libName === 'G2Plot') {
-        grid.instance = g2plotRender(
-          {
-            chartType: grid.libCfg.chartType,
-            config: { ...grid.libCfg.config, data: grid.data },
-          },
-          grid.container,
-        );
+        renderG2Plot(grid);
       } else if (grid.libName === 'ECharts') {
-        let clonedCfg = cloneDeep(grid.libCfg);
-        clonedCfg.dataset.source = grid.data;
-        grid.instance = echarts.init(grid.container);
-        grid.instance.setOption(clonedCfg);
+        renderECharts(grid);
       } else if (grid.libName === 'ApexCharts') {
-        let clonedCfg = cloneDeep(grid.libCfg);
-        for (let i = 0; i < rawData.value.dim.length; i++) {
-          const idx = grid.columns.findIndex((ele) => {
-            return ele.name == rawData.value.dim[i];
-          });
-          const catData = grid.data.map(function (value, index) {
-            return value[idx];
-          });
-          clonedCfg.xaxis.categories = catData;
-        }
-        for (let i = 0; i < rawData.value.metrics.length; i++) {
-          const idx = grid.columns.findIndex((ele) => {
-            return ele.name == rawData.value.metrics[i];
-          });
-          const valData = grid.data.map(function (value, index) {
-            return value[idx];
-          });
-          clonedCfg.series[i].data = valData;
-        }
-
-        grid.instance = new ApexCharts(grid.container, clonedCfg);
-        grid.instance.render();
+        renderApexCharts(grid);
+      } else if (grid.libName === 'Leaflet') {
+        renderLeafletMap(grid);
+      } else if (grid.libName === 'Cytoscape') {
+        renderCyNet(grid);
       }
     });
+  };
+
+  /*
+   * render G2Plot
+   */
+  const renderG2Plot = (grid: any) => {
+    grid.instance = g2plotRender(
+      {
+        chartType: grid.libCfg.chartType,
+        config: { ...grid.libCfg.config, data: grid.data },
+      },
+      grid.container,
+    );
+  };
+
+  /*
+   * render ECharts
+   */
+  const renderECharts = (grid: any) => {
+    let clonedCfg = cloneDeep(grid.libCfg);
+    clonedCfg.dataset.source = grid.data;
+    grid.instance = echarts.init(grid.container);
+    grid.instance.setOption(clonedCfg);
+  };
+
+  /*
+   * render ApexCharts
+   */
+  const renderApexCharts = (grid: any) => {
+    let clonedCfg = cloneDeep(grid.libCfg);
+    for (let i = 0; i < rawData.value.dim.length; i++) {
+      const idx = grid.columns.findIndex((ele) => {
+        return ele.name == rawData.value.dim[i];
+      });
+      const catData = grid.data.map(function (value, index) {
+        return value[idx];
+      });
+      clonedCfg.xaxis.categories = catData;
+    }
+    for (let i = 0; i < rawData.value.metrics.length; i++) {
+      const idx = grid.columns.findIndex((ele) => {
+        return ele.name == rawData.value.metrics[i];
+      });
+      const valData = grid.data.map(function (value, index) {
+        return value[idx];
+      });
+      clonedCfg.series[i].data = valData;
+    }
+
+    grid.instance = new ApexCharts(grid.container, clonedCfg);
+    grid.instance.render();
+  };
+
+  /*
+   * render Leaflet map
+   */
+  const renderLeafletMap = (grid: any) => {
+    grid.instance = renderLeafletMap2(grid.container, null, grid.data, grid.libCfg, '1.7', null);
+  };
+
+  /*
+   * render Cy net
+   */
+  const renderCyNet = (grid: any) => {
+    grid.instance = renderCyNet2(grid.container, gojsContainerRef.value, grid.data, grid.libCfg, '1.7', $);
   };
 
   /*
@@ -627,6 +730,7 @@
       }
 
       let clonedData = cloneDeep(unref(rawData));
+      clonedData.viewIds = [];
       for (let i = 0; i < clonedData.pages?.length; i++) {
         if (!clonedData.pages[i].grid || clonedData.pages[i].grid.length <= 0) {
           // remove empty page
@@ -634,6 +738,9 @@
           i--;
         } else {
           for (let grid of clonedData.pages[i].grid) {
+            if (grid.type == 'view' && !clonedData.viewIds.includes(Number(grid.id))) {
+              clonedData.viewIds.push(Number(grid.id));
+            }
             // remove unnecessary properties
             grid.name = grid.group + '/' + grid.name;
             delete grid.container;

@@ -701,7 +701,7 @@
   import '/@/thirdparty/leaflet/css/L.Control.Geonames.css';
   import Locate from 'leaflet.locatecontrol';
   import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
-  import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+  //import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
   import 'leaflet-geosearch/dist/geosearch.css';
   import { EasyPrint } from '/@/thirdparty/leaflet/easyPrint';
   import 'leaflet-quadtree';

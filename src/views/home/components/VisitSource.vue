@@ -1,5 +1,5 @@
 <template>
-  <Card title="访问来源" :loading="loading">
+  <Card title="Referer" :loading="loading">
     <div ref="chartRef" :style="{ width, height }"></div>
   </Card>
 </template>
@@ -37,7 +37,7 @@
         series: [
           {
             color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9'],
-            name: '访问来源',
+            name: 'Referer',
             type: 'pie',
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,
@@ -61,10 +61,10 @@
               show: false,
             },
             data: [
-              { value: 1048, name: '搜索引擎' },
-              { value: 735, name: '直接访问' },
-              { value: 580, name: '邮件营销' },
-              { value: 484, name: '联盟广告' },
+              { value: 1048, name: 'Search engine' },
+              { value: 735, name: 'Direct access' },
+              { value: 580, name: 'Email marketing' },
+              { value: 484, name: 'Affiliate advertising' },
             ],
             animationType: 'scale',
             animationEasing: 'exponentialInOut',

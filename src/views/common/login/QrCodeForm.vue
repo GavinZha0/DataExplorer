@@ -22,7 +22,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useLoginState, LoginStateEnum } from './useLogin';
 
-  const qrCodeUrl = 'https://vvbin.cn/next/login';
+  const qrCodeUrl = 'https://github.com/GavinZha0';
 
   const { t } = useI18n();
   const { handleBackLogin, getLoginState } = useLoginState();

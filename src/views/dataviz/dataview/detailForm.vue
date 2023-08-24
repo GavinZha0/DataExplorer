@@ -2605,7 +2605,12 @@
           }
         }
         // build layout by gojs then map to cy and render
-        const goElements = getGojsLayout(netInfo.element, 'Tree', gojsContainerRef.value);
+        const goElements = getGojsLayout(
+          netInfo.element,
+          libCfg.config.layout[0],
+          gojsContainerRef.value,
+          inst,
+        );
         renderGoLayoutByCy(inst, goElements);
         break;
       }

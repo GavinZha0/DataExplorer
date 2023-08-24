@@ -156,7 +156,7 @@
     pageSize,
     current: page,
     total,
-    showTotal: (total) => `总 ${total} 条`,
+    showTotal: (total) => `Total: ${total}`,
     onChange: pageChange,
     onShowSizeChange: pageSizeChange,
   });

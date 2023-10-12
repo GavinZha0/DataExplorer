@@ -30,7 +30,8 @@
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
-          <a @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
+          <a v-if="record.createdBy != loginUserName" @click="() => handleEdit(record)" style="margin-left: 5px; color: green">{{ record.name }}</a>
+          <a v-else @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
         <template v-else-if="column.key === 'type'">
           <img
@@ -61,6 +62,13 @@
         </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
+            v-if="record.createdBy != loginUserName"
+            v-model:checked="record.pubFlag"
+            size="small"
+            :disabled="true"
+          />
+          <Switch
+            v-else
             v-model:checked="record.pubFlag"
             size="small"
             @click="() => handlePublic(record.id, record.pubFlag)"
@@ -110,12 +118,14 @@
     API_DATAVIEW_LIST,
     API_DATAVIEW_PUBLIC,
   } from '/@/api/dataviz/dataview';
+  import { useUserStore } from '/@/store/modules/user';
 
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   let searchInfo = reactive<TableSearch>({ fields: ['name', 'group', 'desc'] });
   let searchText = ref<string>();
   const chartTypes = ref<any>({ ...Thumbnails, ...mapTypes, ...netTypes });
+  const loginUserName = ref<string>(useUserStore().getUserInfo.name);
 
   // table definition
   const [registerTable, { reload, updateTableDataRecord, deleteTableDataRecord }] = useTable({

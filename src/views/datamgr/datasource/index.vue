@@ -26,7 +26,8 @@
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
-          <a @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
+          <a v-if="record.createdBy != loginUserName" @click="() => handleEdit(record)" style="margin-left: 5px; color: green">{{ record.name }}</a>
+          <a v-else @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
         <template v-else-if="column.key === 'type'">
           <Tag color="green" style="margin-right: 2px">
@@ -35,6 +36,13 @@
         </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
+            v-if="record.createdBy != loginUserName"
+            v-model:checked="record.pubFlag"
+            size="small"
+            :disabled="true"
+          />
+          <Switch
+            v-else
             v-model:checked="record.pubFlag"
             size="small"
             @click="() => handlePublic(record.id, record.pubFlag)"
@@ -92,6 +100,7 @@
   } from '/@/api/dataviz/datasource';
   import { atob } from 'js-base64';
   import { ApiDsDataType } from '/@/api/dataviz/model/datasource';
+  import { useUserStore } from '/@/store/modules/user';
 
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
@@ -99,6 +108,7 @@
   // define the search fields for fuzzy search
   let searchInfo = reactive<TableSearch>({ fields: ['name', 'group', 'desc'] });
   const searchText = ref<string>();
+  const loginUserName = ref<string>(useUserStore().getUserInfo.name);
 
   // table definition
   const [registerTable, { reload, updateTableDataRecord, deleteTableDataRecord }] = useTable({

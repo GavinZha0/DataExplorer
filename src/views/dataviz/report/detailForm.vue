@@ -485,7 +485,7 @@
     if (ev) {
       //ev.preventDefault();
       // get view id from event
-      const view_id = ev.dataTransfer.getData('id');
+      const view_id = Number(ev.dataTransfer.getData('id'));
       const existingGrid = selectedPage.value.grid?.find((g) => {
         return g.id == view_id;
       });

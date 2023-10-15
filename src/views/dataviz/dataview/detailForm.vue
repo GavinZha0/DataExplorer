@@ -1215,6 +1215,7 @@
       });
     }
 
+    console.log('<Pie> aggregated data length: ' + dv.rows.length);
     // sort aggregated data
     if (rawData.value.sorter && rawData.value.sorter.length > 0) {
       transfered = true;
@@ -1234,7 +1235,7 @@
       });
     }
 
-    // aggregated data for chart rendering
+    // data precision
     if (transfered) {
       if (rawData.value.prec) {
         for (let cell of dv.rows) {

@@ -93,6 +93,11 @@
             </grid-item>
           </grid-layout>
         </div>
+        <div
+          id="gojsContainer"
+          ref="gojsContainerRef"
+          style="height: 1%; width: 100%; display: none"
+        ></div>
       </a-col>
       <div class="layout-area">
         <div
@@ -248,7 +253,7 @@
   import dayjs, { Dayjs } from 'dayjs';
   import { RangeValue } from 'ant-design-vue/es/vc-picker/interface';
   import { renderLeafletMap2 } from '/@/views/dataviz/dataview/leafletFunc';
-  import { renderCyNet2 } from '/@/views/dataviz/dataview/cyFunc';
+  import { convertGroupToTree, renderCyNet2 } from '/@/views/dataviz/dataview/cyFunc';
   import $ from 'jquery';
 
   const { t } = useI18n();
@@ -259,6 +264,7 @@
   const rightPanelSize = ref<number>(3);
   let gridRefs: any = {};
   const filterRef = ref<Nullable<FormActionType>>(null);
+  const gojsContainerRef = ref<any>();
 
   // set locale of G2Plot
   const { getLocale } = useLocale();
@@ -382,6 +388,7 @@
               gridView['libName'] = response.libName;
               gridView['libVer'] = response.libVer;
               gridView['libCfg'] = response.libCfg;
+              gridView['dim'] = response.dim;
               gridView['interval'] = response.interval; // interval(min) of auto refresh
               gridView['data'] = viewData;
 
@@ -520,6 +527,7 @@
    * render Cy net
    */
   const renderCyNet = (grid: any) => {
+    grid.data = convertGroupToTree(grid.data, grid.dim, 0);
     grid.instance = renderCyNet2(grid.container, gojsContainerRef.value, grid.data, grid.libCfg, '1.7', $);
   };
 

@@ -186,6 +186,7 @@
                     draggable="true"
                     style="cursor: pointer"
                     :ondragstart="(ev) => handleDragStart(ev)"
+                    @dblclick.native="handleClickAdd"
                   >
                     <span>
                       <Avatar
@@ -337,8 +338,10 @@
     API_DATAREPORT_UPDATE,
   } from '/@/api/dataviz/datareport';
   import { mapTypes, netTypes } from '/@/views/dataviz/dataview/data';
-  import { renderCyNet2 } from '/@/views/dataviz/dataview/cyFunc';
+  import { convertGroupToTree, renderCyNet2 } from '/@/views/dataviz/dataview/cyFunc';
   import $ from 'jquery';
+import { getEnvironmentData } from 'worker_threads';
+import { GoogleProvider } from 'leaflet-geosearch';
 
   const { t } = useI18n();
   const drawerTitle = ref<string>(t('common.form.new'));
@@ -511,6 +514,35 @@
   };
 
   /*
+   * add view to page when double click
+   */
+   const handleClickAdd = (ev: any) => {
+    const view_id = Number(ev.currentTarget.id);
+      const existingGrid = selectedPage.value.grid?.find((g) => {
+        return g.id == view_id;
+      });
+      if (existingGrid) {
+        // dragging view is on current page
+        return;
+      }
+
+      // add a new grid to selected page
+      selectedPage.value.grid?.push({
+        i: selectedPage.value.grid?.length,
+        x: 0,
+        y: 0,
+        w: 5,
+        h: 5,
+        id: view_id,
+        type: 'view',
+      });
+
+      // get view data and config to show
+      execute(view_id);
+   }
+
+
+  /*
    * remove a grid from page
    */
   const handleRemoveView = (id: number) => {
@@ -570,6 +602,7 @@
               gridView['libName'] = response.libName;
               gridView['libVer'] = response.libVer;
               gridView['libCfg'] = response.libCfg;
+              gridView['dim'] = response.dim;
               gridView['interval'] = response.interval; // interval(min) of auto refresh
               gridView['data'] = viewData;
 
@@ -708,6 +741,8 @@
    * render Cy net
    */
   const renderCyNet = (grid: any) => {
+    // convert flat data to tree data
+    grid.data = convertGroupToTree(grid.data, grid.dim, 0);
     grid.instance = renderCyNet2(grid.container, gojsContainerRef.value, grid.data, grid.libCfg, '1.7', $);
   };
 
@@ -729,29 +764,42 @@
         return;
       }
 
-      let clonedData = cloneDeep(unref(rawData));
+      let clonedData = Object.assign({}, unref(rawData));
+      // it will cause a issue if use cloneDeep() here
+      //let clonedData = unref(rawData); 
       clonedData.viewIds = [];
-      for (let i = 0; i < clonedData.pages?.length; i++) {
-        if (!clonedData.pages[i].grid || clonedData.pages[i].grid.length <= 0) {
-          // remove empty page
-          clonedData.pages?.splice(i, 1);
-          i--;
-        } else {
-          for (let grid of clonedData.pages[i].grid) {
-            if (grid.type == 'view' && !clonedData.viewIds.includes(Number(grid.id))) {
+      clonedData.pages = [];
+      for (const currentPage of rawData.value.pages) {
+        if (currentPage.grid && currentPage.grid.length > 0) {
+          let newPage = {
+              border: currentPage.border,
+              filter: currentPage.filter,
+              label: currentPage.label,
+              layout: currentPage.layout,
+              portrait: currentPage.portrait,
+              title: currentPage.title,
+              toolbar: currentPage.toolbar,
+              grid: []
+            };
+
+          for (let grid of currentPage.grid) {
+            if (grid.type == 'view' && !rawData.value.viewIds.includes(Number(grid.id))) {
               clonedData.viewIds.push(Number(grid.id));
             }
-            // remove unnecessary properties
-            grid.name = grid.group + '/' + grid.name;
-            delete grid.container;
-            delete grid.data;
-            delete grid.instance;
-            delete grid.group;
-            delete grid.libName;
-            delete grid.libVer;
-            delete grid.libCfg;
-            delete grid.moved;
+
+            let newGrid = {
+              id: grid.id,
+              name: grid.group + '/' + grid.name,
+              type: grid.type,
+              i: grid.i,
+              h: grid.h,
+              w: grid.w,
+              x: grid.x,
+              y: grid.y,
+            };
+            newPage.grid.push(newGrid);
           }
+          clonedData.pages.push(newPage);
         }
       }
 

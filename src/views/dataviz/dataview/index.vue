@@ -35,8 +35,9 @@
         </template>
         <template v-else-if="column.key === 'type'">
           <img
-            style="width: 32px; heigth: 32px; margin-right: 10px"
+            style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
             :src="'data:image/svg+xml;utf8,' + encodeURIComponent(chartTypes[record.type].svgCode)"
+            @click="() => handleEdit(record)"
           >
         </template>
         <template v-else-if="column.key === 'dim'">

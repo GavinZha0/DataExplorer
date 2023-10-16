@@ -9,12 +9,28 @@
     <BasicForm @register="registerForm">
       <template #menu="{ model, field }">
         <BasicTree
+          v-if="lang == 'zh-CN'"
           v-model:value="model[field]"
           v-model:checkedKeys="checkedMenus"
           v-model:selectedKeys="selectedMenus"
           v-model:expandedKeys="expandedKeys"
           :treeData="menuTreeData"
           :fieldNames="{ title: 'title', key: 'id' }"
+          autoExpandParent
+          defaultExpandAll
+          checkable
+          :title="t('dataviz.datareport.publish.menu')"
+          @select="handleMenuSelection"
+          @check="handleMenuCheck"
+        />
+        <BasicTree
+          v-else
+          v-model:value="model[field]"
+          v-model:checkedKeys="checkedMenus"
+          v-model:selectedKeys="selectedMenus"
+          v-model:expandedKeys="expandedKeys"
+          :treeData="menuTreeData"
+          :fieldNames="{ title: 'name', key: 'id' }"
           autoExpandParent
           defaultExpandAll
           checkable
@@ -36,6 +52,8 @@
   import { API_MENU_TREE } from '/@/api/admin/menu';
   import { message } from 'ant-design-vue';
   import { API_DATAREPORT_PUBLISH } from '/@/api/dataviz/datareport';
+  import { useLocaleStore } from '/@/store/modules/locale';
+  import { useLocale } from '/@/locales/useLocale';
 
   const { t } = useI18n();
   const rawData = ref<any>();
@@ -44,6 +62,8 @@
   const checkedMenus = ref<number[]>([]);
   const selectedMenus = ref<number[]>([]);
   const expandedKeys = ref<number[]>([]);
+  const localeStore = useLocaleStore();
+  const lang = ref<string>(useLocale().getLocale.value);
 
   // get drawer title
   const drawerTitle = computed(() => {

@@ -1,7 +1,7 @@
 import { FormSchema } from '/@/components/Form/index';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { BasicColumn } from '/@/components/Table';
-import { API_USER_LIST } from '/@/api/admin/user';
+import { API_USER_OPTIONS } from '/@/api/admin/user';
 
 const { t } = useI18n();
 export interface ListItem {
@@ -210,12 +210,12 @@ export const dialogFormSchema: FormSchema[] = [
     label: t('admin.center.msg.to'),
     component: 'ApiSelect',
     componentProps: {
-      api: API_USER_LIST,
+      api: API_USER_OPTIONS,
       resultField: 'records',
       fieldNames: {
         key: 'id',
-        label: 'realname',
-        value: 'realname',
+        label: 'name',
+        value: 'name',
       },
     },
   },

@@ -10,6 +10,18 @@
   >
     <template #titleToolbar>
       <Tooltip>
+        <template #title>{{ t('common.toolbar.timezone') }}</template>
+        <Select
+          style="width: 200px"
+          show-search
+          v-model:value="timeZone"
+          :options="
+            Intl.supportedValuesOf('timeZone').map((item) => ({ label: item, value: item }))
+            "
+        >
+        </Select>
+      </Tooltip>
+      <Tooltip>
         <template #title>{{ t('common.toolbar.picker') }}</template>
         <a-range-picker
           v-model:value="dateRange"
@@ -181,6 +193,7 @@
     Card,
     CardMeta,
     RangePicker as ARangePicker,
+    Select
   } from 'ant-design-vue';
   import { API_DATAVIEW_EXECUTE } from '/@/api/dataviz/dataview';
   import { setGlobal } from '@antv/g2plot';
@@ -270,6 +283,7 @@
   const { getLocale } = useLocale();
   setGlobal({ locale: getLocale.value });
 
+  const timeZone = ref<string>('America/New_York');
   const datePickerFormat = ref<string>('MM/DD/YYYY');
   const dateRange = ref<any>();
   const ranges = ref<any>({

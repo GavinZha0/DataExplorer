@@ -55,7 +55,7 @@
         <BasicForm
           ref="securityFormRef"
           :schemas="securitySchema"
-          :labelWidth="100"
+          :labelWidth="150"
           :baseColProps="{ span: 6 }"
           :showActionButtonGroup="false"
         />
@@ -85,7 +85,8 @@
   import { baseSchema, contactSchema, securitySchema, featureColumns } from './data';
   import { useUserStore } from '/@/store/modules/user';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { API_ORG_LIST } from '/@/api/admin/org';
+  import { API_ORG_OPTIONS } from '/@/api/admin/org';
+  import { API_LOG_ACC_LATEST } from '/@/api/system/log';
   import { API_USER_ONE, API_USER_PWD, API_USER_UPDATE, API_USER_UPLOAD } from '/@/api/admin/user';
 
   const { t } = useI18n();
@@ -109,7 +110,7 @@
 
   // table definition
   const [registerTable] = useTable({
-    api: API_ORG_LIST,
+    api:  API_ORG_OPTIONS,
     rowKey: 'id',
     columns: featureColumns,
     isTreeTable: false,
@@ -128,6 +129,16 @@
       baseFormRef.value.setFieldsValue(response);
       contactFormRef.value.setFieldsValue(response);
       securityFormRef.value.setFieldsValue(response);
+    })
+    .catch((err) => {
+      message.warning(t('common.exception.load'), err);
+    });
+
+  // get user list from backend
+  API_LOG_ACC_LATEST(userinfo.value.id)
+    .then((response) => {
+      userData.value = response;
+      baseFormRef.value.setFieldsValue({lastLogin: response.tsUtc});
     })
     .catch((err) => {
       message.warning(t('common.exception.load'), err);

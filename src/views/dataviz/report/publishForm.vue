@@ -88,10 +88,10 @@
 
     if (unref(menuTreeData).length === 0) {
       // get menu tree from backend
-      API_MENU_TREE('dashboard')
+      API_MENU_TREE('publish')
         .then((response) => {
           response.checkable = false;
-          menuTreeData.value = [response] as any as TreeItem[];
+          menuTreeData.value = response.records as any as TreeItem[];
           expandedKeys.value.length = 0;
           for (const item of response) {
             // expand all
@@ -104,7 +104,7 @@
     }
 
     // pass received data to info form
-    await setFieldsValue(data);
+    await setFieldsValue({publishPub: data.publishPub, publishPages: data.pages.length, menuId: [data.menuId]});
     checkedMenus.value[0] = data.menuId;
 
     // save received data
@@ -132,6 +132,34 @@
   };
 
   /*
+   * find item in a tree
+   */
+  const findTreeItem = (tree: any, id: number) => {
+    if(Array.isArray(tree)){
+      for(let subItem of tree){
+        let found = findTreeItem(subItem, id);
+        if(found && found != null){
+          return found;
+        }
+      }
+    } else if(tree.id == id){
+      return tree;
+    }
+
+    if(tree.children != undefined && tree.children.length > 0){
+      for(let subTree of tree.children){
+        let found = findTreeItem(subTree, id);
+        if(found && found != null){
+          return found;
+        }
+      }
+    } else {
+      return null;
+    }
+  };
+
+
+  /*
    * submit after data is updated
    */
   async function handleSubmit() {
@@ -139,14 +167,13 @@
       // validate form data
       let values = await validate();
       rawData.value.publishPub = values.publishPub;
-      if (values.menuId) {
+      if (values.menuId.length>0) {
         rawData.value.menuId = values.menuId[0];
-        const selectedMenu = menuTreeData.value[0].children.find((menu) => {
-          return menu.id == rawData.value.menuId;
-        });
+        const selectedMenu = findTreeItem(menuTreeData.value, rawData.value.menuId);
         rawData.value.menuName = selectedMenu.title;
       } else {
         rawData.value.menuId = undefined;
+        rawData.value.menuName = undefined;
       }
 
       setDrawerProps({ confirmLoading: true });

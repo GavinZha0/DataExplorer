@@ -61,46 +61,52 @@
               style="color: #08c; margin-top: 5px; float: right"
               @click="() => (thumbnailPage = 1 - thumbnailPage)"
             />
-            <div v-for="(item, name, index) in chartTypes" :key="item.id">
-              <img
-                v-if="
-                  item.active &&
-                  ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
-                "
-                height="40"
-                width="40"
-                style="
-                  border: 2px solid chocolate;
-                  margin: 0 4px 4px 0;
-                  cursor: pointer;
-                  float: right;
-                "
-                :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
-              />
-              <img
-                v-else-if="
-                  item.advised &&
-                  ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
-                "
-                height="40"
-                width="40"
-                style="border: 2px solid gray; margin: 0 4px 4px 0; cursor: pointer; float: right"
-                @click="handleChartSelection(item.id)"
-                :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
-              />
-              <img
-                v-else-if="(thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20)"
-                height="40"
-                width="40"
-                style="
-                  border: 1px solid silver;
-                  opacity: 0.7;
-                  margin: 0 4px 4px 0;
-                  cursor: not-allowed;
-                  float: right;
-                "
-                :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
-              />
+            <div v-for="(item, id, index) in chartTypes" :key="item.id">
+              <Tooltip v-if="
+                    item.active &&
+                    ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
+                  ">
+                <template #title>{{ item.name }}</template>
+                <img
+                  height="40"
+                  width="40"
+                  style="
+                    border: 2px solid chocolate;
+                    margin: 0 4px 4px 0;
+                    cursor: pointer;
+                    float: right;
+                  "
+                  :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
+                />
+              </Tooltip>
+              <Tooltip v-else-if="
+                    item.advised &&
+                    ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
+                  ">
+                <template #title>{{ item.name }}</template>
+                <img
+                  height="40"
+                  width="40"
+                  style="border: 2px solid gray; margin: 0 4px 4px 0; cursor: pointer; float: right"
+                  @click="handleChartSelection(item.id)"
+                  :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
+                />
+              </Tooltip>
+              <Tooltip v-else-if="(thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20)">
+                <template #title>{{ item.name }}</template>
+                <img
+                  height="40"
+                  width="40"
+                  style="
+                    border: 1px solid silver;
+                    opacity: 0.7;
+                    margin: 0 4px 4px 0;
+                    cursor: not-allowed;
+                    float: right;
+                  "
+                  :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
+                />
+              </Tooltip>
             </div>
             <splitpanes class="default-theme" horizontal style="width: 100%; height: 770px">
               <pane size="70">
@@ -445,7 +451,7 @@
               @change="handleCustomLeafletChange"
             />
             <cyAdapter
-              v-if="rawData.libName == 'Cytoscape'"
+              v-else-if="rawData.libName == 'Cytoscape'"
               ref="cyRef"
               version=""
               config="{}"

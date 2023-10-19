@@ -36,8 +36,8 @@
         >
           <grid-layout
             v-model:layout="selectedPage.grid"
-            :col-num="12"
-            :maxRows="18"
+            :col-num="24"
+            :maxRows="19"
             :row-height="30"
             :is-draggable="true"
             :is-resizable="true"
@@ -268,6 +268,9 @@
   import ApexCharts from 'apexcharts';
   import { g2plotRender } from '@antv/antv-spec';
   import * as echarts from 'echarts';
+  import * as am4core from '@amcharts/amcharts4/core';
+  import * as am4charts from '@amcharts/amcharts4/charts';
+  import am4themes_animated from '@amcharts/amcharts4/themes/animated';
   import L from 'leaflet';
   import { PanelLayers } from '/@/thirdparty/leaflet/leaflet-panel-layers.src';
   import '/@/thirdparty/leaflet/css/MarkerCluster.Default.css';
@@ -603,6 +606,7 @@ import { GoogleProvider } from 'leaflet-geosearch';
               gridView['libVer'] = response.libVer;
               gridView['libCfg'] = response.libCfg;
               gridView['dim'] = response.dim;
+              gridView['metrics'] = response.metrics;
               gridView['interval'] = response.interval; // interval(min) of auto refresh
               gridView['data'] = viewData;
 
@@ -669,6 +673,8 @@ import { GoogleProvider } from 'leaflet-geosearch';
         renderG2Plot(grid);
       } else if (grid.libName === 'ECharts') {
         renderECharts(grid);
+      } else if (grid.libName === 'AmCharts') {
+        renderAmCharts(grid);
       } else if (grid.libName === 'ApexCharts') {
         renderApexCharts(grid);
       } else if (grid.libName === 'Leaflet') {
@@ -707,27 +713,37 @@ import { GoogleProvider } from 'leaflet-geosearch';
    */
   const renderApexCharts = (grid: any) => {
     let clonedCfg = cloneDeep(grid.libCfg);
-    for (let i = 0; i < rawData.value.dim.length; i++) {
-      const idx = grid.columns.findIndex((ele) => {
-        return ele.name == rawData.value.dim[i];
-      });
-      const catData = grid.data.map(function (value, index) {
-        return value[idx];
-      });
-      clonedCfg.xaxis.categories = catData;
-    }
-    for (let i = 0; i < rawData.value.metrics.length; i++) {
-      const idx = grid.columns.findIndex((ele) => {
-        return ele.name == rawData.value.metrics[i];
-      });
-      const valData = grid.data.map(function (value, index) {
-        return value[idx];
+    const catData = grid.data.map(function (value) {
+      return value[grid.dim[0]];
+    });
+    clonedCfg.xaxis.categories = catData;
+
+    for (let i = 0; i < grid.metrics.length; i++) {
+      const valData = grid.data.map(function (value) {
+        return value[grid.metrics[i]];
       });
       clonedCfg.series[i].data = valData;
     }
 
     grid.instance = new ApexCharts(grid.container, clonedCfg);
     grid.instance.render();
+  };
+
+  /*
+   * render Amcharts
+   */
+   const renderAmCharts = (grid: any) => {
+    // check version first ......
+
+    // combine data  into config
+    let clonedCfg: any = cloneDeep(grid.libCfg.config);
+    clonedCfg.data = grid.data;
+
+    am4core.useTheme(am4themes_animated);
+    // render amCharts
+    let inst = am4core.createFromConfig(clonedCfg, grid.container, am4charts.XYChart);
+
+    return inst;
   };
 
   /*

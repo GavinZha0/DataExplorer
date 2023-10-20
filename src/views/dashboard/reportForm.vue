@@ -326,31 +326,6 @@
 
     // default selected page 0
     selectedPage.value = rawData.value.pages[0];
-    selectedPage.value.filter = [
-      {
-        field: 'name',
-        label: t('common.table.title.name'),
-        component: 'Input',
-      },
-      {
-        field: 'desc',
-        label: t('common.table.title.desc'),
-        component: 'Select',
-        defaultValue: 'aaa',
-        componentProps: {
-          options: [
-            {
-              label: 'aaa',
-              value: 'aaa',
-            },
-            {
-              label: 'bbb',
-              value: 'bbb',
-            },
-          ],
-        },
-      },
-    ];
     // query config and data
     execute();
   });
@@ -412,6 +387,24 @@
               gridView['metrics'] = response.metrics;
               gridView['interval'] = response.interval; // interval(min) of auto refresh
               gridView['data'] = viewData;
+
+              if(response.variable && response.variable.length > 0){
+                // build filter based on variable and filter later
+                if(selectedPage.value.filter == undefined){
+                  selectedPage.value.filter = [];
+                }
+                for(let param of response.variable){
+                  let filterItem = {
+                    enabled: false,
+                    label: param.name,
+                    defaultValue: param.value,
+                    component: 'Input'
+                  };
+
+                  filterItem.targetViews = [response.id];
+                  selectedPage.value.filter.push(filterItem);
+                }
+              }
 
               // render view
               renderChart(gridView);

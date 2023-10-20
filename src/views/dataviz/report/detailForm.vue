@@ -218,6 +218,48 @@
                 @fieldValueChange="handleConfigChange"
               />
             </a-tab-pane>
+            <a-tab-pane
+              key="dataview"
+              :forceRender="true"
+              :closable="false"
+              :tab="t('dataviz.datareport.form.filter.title')"
+            >
+              <ApiSelect
+                :api="API_DATAVIEW_GROUPS"
+                v-model:value="dataviewGroupName"
+                style="width: 100%"
+                :placeholder="t('common.table.title.group')"
+                resultField="records"
+                labelField="value"
+                valueField="value"
+                @change="handleDataviewGroupChange"
+              />
+              <Card>
+                <CardGrid v-for="item in dataviewList" :key="item.id" style="width: 100%">
+                  <div
+                    :id="item.id"
+                    draggable="true"
+                    style="cursor: pointer"
+                    :ondragstart="(ev) => handleDragStart(ev)"
+                    @dblclick.native="handleClickAdd"
+                  >
+                    <span>
+                      <Avatar
+                        :id="item.id"
+                        shape="square"
+                        :size="36"
+                        :src="
+                          'data:image/svg+xml;utf8,' +
+                          encodeURIComponent(chartTypes[item.type].svgCode)
+                        "
+                      />
+                      <span>{{ item.name }}</span>
+                      <div class="text-secondary">{{ item.desc }}</div>
+                    </span>
+                  </div>
+                </CardGrid>
+              </Card>
+            </a-tab-pane>
           </a-tabs>
         </div>
       </a-col>
@@ -345,6 +387,7 @@
   import $ from 'jquery';
 import { getEnvironmentData } from 'worker_threads';
 import { GoogleProvider } from 'leaflet-geosearch';
+import template from 'template_js';
 
   const { t } = useI18n();
   const drawerTitle = ref<string>(t('common.form.new'));
@@ -362,6 +405,7 @@ import { GoogleProvider } from 'leaflet-geosearch';
   // set locale of G2Plot
   const { getLocale } = useLocale();
   setGlobal({ locale: getLocale.value });
+  template.config({ sTag: '{', eTag: '}' });
 
   // info form definition
   const [
@@ -610,6 +654,24 @@ import { GoogleProvider } from 'leaflet-geosearch';
               gridView['interval'] = response.interval; // interval(min) of auto refresh
               gridView['data'] = viewData;
 
+              if(response.variable && response.variable.length > 0){
+                // build filter based on variable and filter later
+                if(selectedPage.value.filter == undefined){
+                  selectedPage.value.filter = [];
+                }
+                for(let param of response.variable){
+                  let filterItem = {
+                    enabled: false,
+                    label: param.name,
+                    defaultValue: param.value
+                  };
+
+                  filterItem.targetViews = [response.id];
+                  selectedPage.value.filter.push(filterItem);
+                }
+              }
+              
+
               // render view
               renderChart(gridView);
             }
@@ -664,6 +726,16 @@ import { GoogleProvider } from 'leaflet-geosearch';
    */
   const renderChart = (grid: any) => {
     if (grid.container) {
+      try {
+        grid.instance.remove();
+      } catch (e) {
+        //
+      }
+      try {
+        grid.instance.destroy();
+      } catch (e) {
+        //
+      }
       // clean it up before render
       grid.container.innerHTML = '';
     }

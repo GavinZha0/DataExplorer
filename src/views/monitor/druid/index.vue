@@ -17,14 +17,14 @@
   const druidRef = ref();
 
   /**
-   * iframe-宽高自适应显示
+   * iframe-fit width and height
    */
   function changeMobsfIframe() {
     const deviceWidth = document.body.clientWidth;
     const deviceHeight = document.body.clientHeight;
     if (druidRef.value) {
-      druidRef.value.style.width = Number(deviceWidth) - 240 + 'px'; //数字是页面布局宽度差值
-      druidRef.value.style.height = Number(deviceHeight) - 160 + 'px'; //数字是页面布局高度差
+      druidRef.value.style.width = Number(deviceWidth) - 240 + 'px'; 
+      druidRef.value.style.height = Number(deviceHeight) - 160 + 'px'; 
     }
   }
 

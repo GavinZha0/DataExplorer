@@ -42,8 +42,8 @@
             :col-num="24"
             :maxRows="19"
             :row-height="30"
-            :is-draggable="true"
-            :is-resizable="true"
+            :is-draggable="false"
+            :is-resizable="false"
             :autoSize="false"
             :margin="[10, 10]"
             :vertical-compact="true"
@@ -266,7 +266,8 @@
   import { renderLeafletMap2 } from '/@/views/dataviz/dataview/leafletFunc';
   import { convertGroupToTree, convertArrayToTree, renderCyNet2 } from '/@/views/dataviz/dataview/cyFunc';
   import $ from 'jquery';
-
+  import template from 'template_js';
+  
   const { t } = useI18n();
   // rawData is dataview record which is from backend
   const rawData = ref<ApiDatareportDataType>({ ...initReportData });
@@ -279,6 +280,7 @@
   // set locale of G2Plot
   const { getLocale } = useLocale();
   setGlobal({ locale: getLocale.value });
+  template.config({ sTag: '{', eTag: '}' });
 
   const timeZone = ref<string>('America/New_York');
   const datePickerFormat = ref<string>('MM/DD/YYYY');
@@ -357,6 +359,24 @@
               gridView['interval'] = response.interval; // interval(min) of auto refresh
               gridView['data'] = viewData;
 
+              if(response.variable && response.variable.length > 0){
+                // build filter based on variable and filter later
+                if(selectedPage.value.filter == undefined){
+                  selectedPage.value.filter = [];
+                }
+                for(let param of response.variable){
+                  let filterItem = {
+                    enabled: false,
+                    label: param.name,
+                    defaultValue: param.value,
+                    component: 'Input'
+                  };
+
+                  filterItem.targetViews = [response.id];
+                  selectedPage.value.filter.push(filterItem);
+                }
+              }
+
               // render view
               renderChart(gridView);
             }
@@ -411,6 +431,16 @@
    */
   const renderChart = (grid: any) => {
     if (grid.container) {
+      try {
+        grid.instance.remove();
+      } catch (e) {
+        //
+      }
+      try {
+        grid.instance.destroy();
+      } catch (e) {
+        //
+      }
       // clean it up before render
       grid.container.innerHTML = '';
     }

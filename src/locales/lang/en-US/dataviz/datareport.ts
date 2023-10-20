@@ -35,7 +35,7 @@ export default {
       name: 'Config',
       ratio: 'Page Ratio',
       layout: 'Layout',
-      title: 'Title',
+      title: 'Page Title',
       label: 'View Name',
       toolbar: 'Toolbar',
       border: 'Border',

@@ -50,12 +50,14 @@ export interface PageGridType {
 }
 
 export interface ReportFilterType {
-  component: string;
+  enabled: boolean;
+  component?: string;
+  componentProps?: any;
   label: string;
-  field: string;
+  field?: string;
   defaultValue?: string;
   selectedValue?: string;
-  componentProps?: any;
+  targetViews?: number[];
 }
 
 export const initReportPage: ReportPageType = {

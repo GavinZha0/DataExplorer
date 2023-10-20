@@ -27,7 +27,7 @@ export default {
       title: '页面',
     },
     config: {
-      name: '配置',
+      name: '页配置',
       ratio: '页面比例',
       layout: '视图布局',
       title: '页面标题',

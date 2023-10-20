@@ -45,18 +45,18 @@
   };
 
   /**
-   * iframe-宽高自适应显示
+   * iframe-fit width and height
    */
   function changeMobsfIframe() {
     const deviceWidth = document.body.clientWidth;
     const deviceHeight = document.body.clientHeight;
     if (swaggerRef.value && activeKey.value == 'knife4j') {
-      swaggerRef.value.style.width = Number(deviceWidth) - 240 + 'px'; //数字是页面布局宽度差值
-      swaggerRef.value.style.height = Number(deviceHeight) - 160 + 'px'; //数字是页面布局高度差
+      swaggerRef.value.style.width = Number(deviceWidth) - 240 + 'px'; 
+      swaggerRef.value.style.height = Number(deviceHeight) - 160 + 'px'; 
     }
     if (fastapiRef.value && activeKey.value == 'fastapi') {
-      fastapiRef.value.style.width = Number(deviceWidth) - 240 + 'px'; //数字是页面布局宽度差值
-      fastapiRef.value.style.height = Number(deviceHeight) - 160 + 'px'; //数字是页面布局高度差
+      fastapiRef.value.style.width = Number(deviceWidth) - 240 + 'px'; 
+      fastapiRef.value.style.height = Number(deviceHeight) - 160 + 'px'; 
     }
   }
 

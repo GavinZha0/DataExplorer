@@ -5,8 +5,8 @@ export function createFakeUserList() {
   return [
     {
       userId: '1',
-      username: 'vben',
-      realname: 'Vben Admin',
+      username: 'Alice',
+      realname: 'Alice Zhao',
       avatar: 'https://q1.qlogo.cn/g?b=qq&nk=190848757&s=640',
       desc: 'manager',
       password: '123456',

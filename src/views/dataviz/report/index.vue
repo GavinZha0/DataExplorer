@@ -29,6 +29,10 @@
           <a v-if="record.createdBy != loginUserName" @click="() => handleEdit(record)" style="margin-left: 5px; color: green">{{ record.name }}</a>
           <a v-else @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
+        <template v-else-if="column.key === 'menu'">
+          <a v-if="lang == 'zh-CN'">{{ record.menuTitle }}</a>
+          <a v-else >{{ record.menuName }}</a>
+        </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
             v-if="record.createdBy != loginUserName"
@@ -94,6 +98,7 @@
     API_DATAREPORT_LIST,
     API_DATAREPORT_PUBLIC,
   } from '/@/api/dataviz/datareport';
+  import { useLocale } from '/@/locales/useLocale';
 
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
@@ -101,6 +106,7 @@
   let searchInfo = reactive<TableSearch>({ fields: ['name', 'group', 'desc'] });
   let searchText = ref<string>();
   const loginUserName = ref<string>(useUserStore().getUserInfo.name);
+  const lang = ref<string>(useLocale().getLocale.value);
 
   // table definition
   const [registerTable, { reload, updateTableDataRecord, deleteTableDataRecord }] = useTable({

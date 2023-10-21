@@ -52,7 +52,6 @@
   import { API_MENU_TREE } from '/@/api/admin/menu';
   import { message } from 'ant-design-vue';
   import { API_DATAREPORT_PUBLISH } from '/@/api/dataviz/datareport';
-  import { useLocaleStore } from '/@/store/modules/locale';
   import { useLocale } from '/@/locales/useLocale';
 
   const { t } = useI18n();
@@ -62,7 +61,6 @@
   const checkedMenus = ref<number[]>([]);
   const selectedMenus = ref<number[]>([]);
   const expandedKeys = ref<number[]>([]);
-  const localeStore = useLocaleStore();
   const lang = ref<string>(useLocale().getLocale.value);
 
   // get drawer title

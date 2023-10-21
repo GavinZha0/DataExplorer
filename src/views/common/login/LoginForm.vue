@@ -149,11 +149,14 @@
         mode: 'none', //no default error
       });
       if (userInfo) {
+        // show message when login
+        /*
         notification.success({
           message: t('auth.login.tip.loginSuccessTitle'),
           description: `${t('auth.login.tip.loginSuccessDesc')}: ${userInfo.realname}`,
           duration: 1,
         });
+        */
       }
     } catch (error) {
       createErrorModal({

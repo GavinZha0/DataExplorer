@@ -94,7 +94,7 @@
     notification.success({
       message: t('auth.login.tip.success'),
       description: `${t('auth.login.tip.success')}: ${data.username}`,
-      duration: 1,
+      duration: 3,
     });
   }
 </script>

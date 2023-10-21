@@ -6,7 +6,7 @@ export default {
     title: {
       pages: '页面数',
       publish_pub: '发布属性',
-      menu: '仪表板菜单',
+      menu: '发布到',
       dataview: '视图',
     },
     action: {

@@ -6,7 +6,7 @@ export default {
     title: {
       pages: 'Pages',
       publish_pub: 'Publish Public',
-      menu: 'Dashboard Menu',
+      menu: 'Published To',
       dataview: 'Dataview',
     },
     action: {

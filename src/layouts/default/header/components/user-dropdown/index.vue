@@ -25,7 +25,7 @@
         />
         <MenuDivider v-if="getShowDoc" />
         <MenuItem
-          v-if="getUseLockPage"
+          v-if="getUseLockPage_Gavin_Disable"
           key="lock"
           :text="t('layout.header.tooltipLock')"
           icon="ion:lock-closed-outline"

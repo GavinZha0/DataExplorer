@@ -219,46 +219,19 @@
               />
             </a-tab-pane>
             <a-tab-pane
-              key="dataview"
+              key="filter"
               :forceRender="true"
               :closable="false"
               :tab="t('dataviz.datareport.form.filter.title')"
             >
-              <ApiSelect
-                :api="API_DATAVIEW_GROUPS"
-                v-model:value="dataviewGroupName"
-                style="width: 100%"
-                :placeholder="t('common.table.title.group')"
-                resultField="records"
-                labelField="value"
-                valueField="value"
-                @change="handleDataviewGroupChange"
+            <Select
+              size="small"
+              v-model:value="rawData.filter"
+              style="width: 100%"
+              mode="multiple"
+              :options="dimsForFilter.map((item) => ({ label: item, value: item }))"
+              :placeholder="t('dataviz.datareport.form.filter.title')"
               />
-              <Card>
-                <CardGrid v-for="item in dataviewList" :key="item.id" style="width: 100%">
-                  <div
-                    :id="item.id"
-                    draggable="true"
-                    style="cursor: pointer"
-                    :ondragstart="(ev) => handleDragStart(ev)"
-                    @dblclick.native="handleClickAdd"
-                  >
-                    <span>
-                      <Avatar
-                        :id="item.id"
-                        shape="square"
-                        :size="36"
-                        :src="
-                          'data:image/svg+xml;utf8,' +
-                          encodeURIComponent(chartTypes[item.type].svgCode)
-                        "
-                      />
-                      <span>{{ item.name }}</span>
-                      <div class="text-secondary">{{ item.desc }}</div>
-                    </span>
-                  </div>
-                </CardGrid>
-              </Card>
             </a-tab-pane>
           </a-tabs>
         </div>
@@ -298,6 +271,7 @@
     Col as ACol,
     Tabs as ATabs,
     TabPane as ATabPane,
+    Select
   } from 'ant-design-vue';
   import {
     API_DATAVIEW_GROUPS,
@@ -399,6 +373,7 @@ import template from 'template_js';
   const dataviewGroupName = ref<string>();
   const configFormRef = ref<Nullable<FormActionType>>(null);
   let gridRefs: any = {};
+  const dimsForFilter = ref<string[]>([]);
   const chartTypes = ref<any>({ ...Thumbnails, ...mapTypes, ...netTypes });
   const gojsContainerRef = ref<any>();
 
@@ -671,7 +646,14 @@ import template from 'template_js';
                 }
               }
               
-
+              if(response.dim){
+                for(const dim of response.dim){
+                  if(dimsForFilter.value.indexOf(dim)<0){
+                    dimsForFilter.value.push(dim);
+                  }
+                }
+              }
+              
               // render view
               renderChart(gridView);
             }

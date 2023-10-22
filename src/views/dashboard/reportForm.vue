@@ -15,10 +15,12 @@
           style="width: 200px"
           show-search
           v-model:value="timeZone"
+          @select="handleZoneSelect"
           :options="
             Intl.supportedValuesOf('timeZone').map((item) => ({ label: item, value: item }))
             "
         >
+        <template #suffixIcon><span>{{zoneOffsetStr}}</span></template>
         </Select>
       </Tooltip>
       <Tooltip>
@@ -29,7 +31,10 @@
           :format="datePickerFormat"
           :disabled-date="disabledDate"
           :locale="getLocale"
-        />
+          @change="handleDateRangeChange"
+        >
+          <!--template #suffixIcon><span :class="countryClass"></span></template-->
+        </a-range-picker>
       </Tooltip>
       <Tooltip>
         <template #title>{{ t('common.toolbar.refresh') }}</template>
@@ -266,11 +271,14 @@
     initReportPage,
     ReportPageType,
   } from '/@/api/dataviz/model/datareport';
-  import dayjs, { Dayjs } from 'dayjs';
   import { RangeValue } from 'ant-design-vue/es/vc-picker/interface';
   import { renderLeafletMap2 } from '/@/views/dataviz/dataview/leafletFunc';
   import { convertGroupToTree, convertArrayToTree, renderCyNet2 } from '/@/views/dataviz/dataview/cyFunc';
   import $ from 'jquery';
+  import { getTimezone, getCountryForTimezone } from 'countries-and-timezones';
+  import 'flag-icons/css/flag-icons.min.css';
+  import dayjs from 'dayjs';
+  import timezone from 'dayjs/plugin/timezone';
 
   const { t } = useI18n();
   const drawerTitle = ref<string>();
@@ -285,12 +293,16 @@
   // set locale of G2Plot
   const { getLocale } = useLocale();
   setGlobal({ locale: getLocale.value });
-
+  dayjs.extend(timezone);
+  dayjs.locale(getLocale.value);
+  const countryClass = ref<any>('fi fi-us');
   const timeZone = ref<string>('America/New_York');
+  const zoneOffsetStr = ref<string>('-05');
   const datePickerFormat = ref<string>('MM/DD/YYYY');
-    const dateRange = ref<[Dayjs, Dayjs]>([
-        dayjs('01/01/2004', 'MM/DD/YYYY'),
-        dayjs('12/31/2004', 'MM/DD/YYYY'),
+  // date should come from backend - Gavin
+  const dateRange = ref<[Dayjs, Dayjs]>([
+        dayjs('01/01/2011', 'MM/DD/YYYY'),
+        dayjs('12/31/2011', 'MM/DD/YYYY'),
       ]);
   const ranges = ref<any>({
     Today: [dayjs(), dayjs()] as RangeValue,
@@ -328,6 +340,7 @@
     selectedPage.value = rawData.value.pages[0];
     // query config and data
     execute();
+    handleZoneSelect('America/New_York');// default timezone
   });
 
   /*
@@ -340,6 +353,49 @@
       view.max = true;
     }
   };
+
+ /*
+   * get offset and country flag when timezone is changed
+   */
+   const handleZoneSelect = (value: any) => {
+    const countryZone = getCountryForTimezone(value);
+    // utcOffsetStr = -05:00, dstOffset = -4:00
+    //zoneOffsetStr.value = getTimezone(value).utcOffsetStr;
+    // country flag
+    countryClass.value = 'fi fi-' + countryZone.id.toLocaleLowerCase();
+    //return 'EDT'
+    const offsetName = Intl.DateTimeFormat(getLocale.value, {
+      timeZoneName: "short",
+      timeZone: value,
+    }).formatToParts()
+    .find((i) => i.type === "timeZoneName").value;
+
+    // convert date to new zone
+    //var newDate = new Date(dateRange.value[0]);
+    //newDate = newDate.toLocaleString(getLocale.value, { timeZone: value })
+
+    // initialize date time with specific timezone
+    if(dateRange.value) {
+      var selectDate = dayjs.tz(dateRange.value[0], value);
+      zoneOffsetStr.value = selectDate.utcOffset()/60;
+      //zoneOffsetStr.value += ':00';
+    }
+  };
+
+
+  /*
+   * get offset when date is changed
+   */
+  const handleDateRangeChange = (value: any) => {
+    // initialize date time with specific timezone
+    if(dateRange.value) {
+      var selectDate = dayjs.tz(dateRange.value[0], timeZone.value);
+      zoneOffsetStr.value = selectDate.utcOffset()/60;
+      //zoneOffsetStr.value += ':00';
+    }
+  
+  };
+
 
   /*
    * switch a page

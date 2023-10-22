@@ -5,6 +5,12 @@ import { useI18n } from '/@/hooks/web/useI18n';
 const { t } = useI18n();
 export const indexColumns: BasicColumn[] = [
   {
+    title: t('common.table.title.type'),
+    dataIndex: 'type',
+    width: 60,
+    align: 'left',
+  },
+  {
     title: t('common.table.title.name'),
     dataIndex: 'name',
     width: 200,
@@ -14,12 +20,6 @@ export const indexColumns: BasicColumn[] = [
   {
     title: t('common.table.title.desc'),
     dataIndex: 'desc',
-    align: 'left',
-  },
-  {
-    title: t('common.table.title.type'),
-    dataIndex: 'type',
-    width: 100,
     align: 'left',
   },
   {
@@ -90,6 +90,10 @@ export const formInfoSchema: FormSchema[] = [
         {
           label: 'Story',
           value: 'story',
+        },
+        {
+          label: 'Presentation',
+          value: 'presentation',
         },
       ],
     },

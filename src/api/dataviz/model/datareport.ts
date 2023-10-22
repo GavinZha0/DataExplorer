@@ -54,7 +54,7 @@ export interface ReportFilterType {
   component?: string;
   componentProps?: any;
   label: string;
-  field?: string;
+  fieldName?: string;
   defaultValue?: string;
   selectedValue?: string;
   targetViews?: number[];

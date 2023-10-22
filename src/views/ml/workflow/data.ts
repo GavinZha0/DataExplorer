@@ -13,19 +13,22 @@ export const indexColumns: BasicColumn[] = [
     width: 150,
     sorter: true,
     resizable: true,
+    align: 'left',
   },
   {
-    title: t('common.table.title.category'),
-    dataIndex: 'category',
-    key: 'category',
+    title: t('common.table.title.group'),
+    dataIndex: 'group',
+    key: 'group',
     width: 100,
     sorter: true,
     resizable: true,
+    align: 'left',
   },
   {
     title: t('common.table.title.desc'),
-    dataIndex: 'description',
+    dataIndex: 'desc',
     resizable: true,
+    align: 'left',
   },
   {
     title: t('ml.workflow.table.title.last_run'),
@@ -49,24 +52,16 @@ export const indexColumns: BasicColumn[] = [
     title: t('ml.workflow.table.title.error'),
     dataIndex: 'error',
     width: 180,
+    align: 'left',
   },
   {
     title: t('common.table.title.public'),
     dataIndex: 'pubFlag',
-    key: 'pubFlag',
     width: 80,
-    align: 'center',
-    slots: { customRender: 'public' },
     filters: [
-      {
-        text: t('common.table.title.public.true'),
-        value: true,
-      },{
-        text: t('common.table.title.public.false'),
-        value: false,
-      }
+      { text: 'true', value: 'true' },
+      { text: 'false', value: 'false' },
     ],
-    onFilter: (value: boolean, record) => record.pubFlag == value,
   },
 ];
 

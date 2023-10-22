@@ -5,7 +5,7 @@ export default {
     view: 'View',
   },
   toolbar: {
-    search: 'name, category or description',
+    search: 'name, group or description',
   },
   table: {
     title: {

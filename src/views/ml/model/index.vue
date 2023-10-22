@@ -32,8 +32,22 @@
         <template v-if="column.key === 'name'">
           <a @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
+        <template v-else-if="column.key === 'type'">
+          <img
+            style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
+            :src="'/resource/img/ml-' + record.type + '.png'"
+            @click="() => handleEdit(record)"
+          >
+        </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
+            v-if="record.createdBy != loginUserName"
+            v-model:checked="record.pubFlag"
+            size="small"
+            :disabled="true"
+          />
+          <Switch
+            v-else
             v-model:checked="record.pubFlag"
             size="small"
             @click="() => handlePublic(record.id, record.pubFlag)"
@@ -73,12 +87,13 @@
   import { PageWrapper } from '/@/components/Page';
   import { Switch, Tooltip, message } from 'ant-design-vue';
   import { indexColumns } from './data';
+  import { useUserStore } from '/@/store/modules/user';
   import {
-    API_ALGORITHM_CLONE,
-    API_ALGORITHM_DEL,
-    API_ALGORITHM_LIST,
-    API_ALGORITHM_PUBLIC,
-  } from '/@/api/ml/algorithm';
+    API_MODEL_CLONE,
+    API_MODEL_DEL,
+    API_MODEL_LIST,
+    API_MODEL_PUBLIC,
+  } from '/@/api/ml/model';
   import { useI18n } from 'vue-i18n';
   import { useDrawer } from '/@/components/Drawer';
 
@@ -86,11 +101,11 @@
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   let searchInfo = reactive<TableSearch>({ fields: ['name', 'group', 'desc'] });
   let searchText = ref<string>();
-
+    const loginUserName = ref<string>(useUserStore().getUserInfo.name);
   // table definition
   const [registerTable, { reload, updateTableDataRecord, deleteTableDataRecord }] = useTable({
     rowKey: 'id',
-    api: API_ALGORITHM_LIST,
+    api: API_MODEL_LIST,
     columns: indexColumns,
     useSearchForm: false, // don't use this.
     showTableSetting: true,
@@ -126,7 +141,7 @@
    * delete existing record
    */
   function handleDelete(id: number) {
-    API_ALGORITHM_DEL(id)
+    API_MODEL_DEL(id)
       .then(() => {
         // update table data after a record is deleted
         deleteTableDataRecord(id);
@@ -140,7 +155,7 @@
    * clone existing record
    */
   function handleClone(id: number) {
-    API_ALGORITHM_CLONE(id)
+    API_MODEL_CLONE(id)
       .then(() => {
         // update table data after a record is deleted
         reload();
@@ -163,7 +178,7 @@
    * set source to public or private
    */
   function handlePublic(id: number, pub: boolean) {
-    API_ALGORITHM_PUBLIC(id, pub)
+    API_MODEL_PUBLIC(id, pub)
       .then(() => {
         // update table
         updateTableDataRecord(id, { public: pub });

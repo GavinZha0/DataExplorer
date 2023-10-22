@@ -34,6 +34,13 @@
         </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
+            v-if="record.createdBy != loginUserName"
+            v-model:checked="record.pubFlag"
+            size="small"
+            :disabled="true"
+          />
+          <Switch
+            v-else
             v-model:checked="record.pubFlag"
             size="small"
             @click="() => handlePublic(record.id, record.pubFlag)"
@@ -71,14 +78,15 @@
   import { Icon } from '/@/components/Icon';
   import { BasicTable, useTable, TableAction, TableSearch } from '/@/components/Table';
   import { PageWrapper } from '/@/components/Page';
-  import { Switch,  Tooltip, message } from 'ant-design-vue';
+  import { Switch, Tooltip, message } from 'ant-design-vue';
   import { indexColumns } from './data';
+  import { useUserStore } from '/@/store/modules/user';
   import {
-    API_ALGORITHM_CLONE,
-    API_ALGORITHM_DEL,
-    API_ALGORITHM_LIST,
-    API_ALGORITHM_PUBLIC,
-  } from '/@/api/ml/algorithm';
+    API_WORKFLOW_CLONE,
+    API_WORKFLOW_DEL,
+    API_WORKFLOW_LIST,
+    API_WORKFLOW_PUBLIC,
+  } from '/@/api/ml/workflow';
   import { useI18n } from 'vue-i18n';
   import { useDrawer } from '/@/components/Drawer';
 
@@ -86,11 +94,11 @@
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   let searchInfo = reactive<TableSearch>({ fields: ['name', 'group', 'desc'] });
   let searchText = ref<string>();
-
+    const loginUserName = ref<string>(useUserStore().getUserInfo.name);
   // table definition
   const [registerTable, { reload, updateTableDataRecord, deleteTableDataRecord }] = useTable({
     rowKey: 'id',
-    api: API_ALGORITHM_LIST,
+    api: API_WORKFLOW_LIST,
     columns: indexColumns,
     useSearchForm: false, // don't use this.
     showTableSetting: true,
@@ -126,7 +134,7 @@
    * delete existing record
    */
   function handleDelete(id: number) {
-    API_ALGORITHM_DEL(id)
+    API_WORKFLOW_DEL(id)
       .then(() => {
         // update table data after a record is deleted
         deleteTableDataRecord(id);
@@ -140,7 +148,7 @@
    * clone existing record
    */
   function handleClone(id: number) {
-    API_ALGORITHM_CLONE(id)
+    API_WORKFLOW_CLONE(id)
       .then(() => {
         // update table data after a record is deleted
         reload();
@@ -163,7 +171,7 @@
    * set source to public or private
    */
   function handlePublic(id: number, pub: boolean) {
-    API_ALGORITHM_PUBLIC(id, pub)
+    API_WORKFLOW_PUBLIC(id, pub)
       .then(() => {
         // update table
         updateTableDataRecord(id, { public: pub });

@@ -32,8 +32,22 @@
         <template v-if="column.key === 'name'">
           <a @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
+        <template v-else-if="column.key === 'type'">
+          <img
+            style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
+            :src="'/resource/img/ml-' + record.type + '.png'"
+            @click="() => handleEdit(record)"
+          >
+        </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
+            v-if="record.createdBy != loginUserName"
+            v-model:checked="record.pubFlag"
+            size="small"
+            :disabled="true"
+          />
+          <Switch
+            v-else
             v-model:checked="record.pubFlag"
             size="small"
             @click="() => handlePublic(record.id, record.pubFlag)"
@@ -73,6 +87,7 @@
   import { PageWrapper } from '/@/components/Page';
   import { Switch, Tooltip, message } from 'ant-design-vue';
   import { indexColumns } from './data';
+  import { useUserStore } from '/@/store/modules/user';
   import {
     API_ALGORITHM_CLONE,
     API_ALGORITHM_DEL,
@@ -86,7 +101,7 @@
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   let searchInfo = reactive<TableSearch>({ fields: ['name', 'group', 'desc'] });
   let searchText = ref<string>();
-
+    const loginUserName = ref<string>(useUserStore().getUserInfo.name);
   // table definition
   const [registerTable, { reload, updateTableDataRecord, deleteTableDataRecord }] = useTable({
     rowKey: 'id',

@@ -7,32 +7,35 @@ const { t } = useI18n();
 // index form columns
 export const indexColumns: BasicColumn[] = [
   {
+    title: t('common.table.title.type'),
+    dataIndex: 'type',
+    key: 'type',
+    width: 80,
+    sorter: true,
+  },
+  {
     title: t('common.table.title.name'),
     dataIndex: 'name',
     key: 'name',
     width: 150,
     sorter: true,
     resizable: true,
+    align: 'left',
   },
   {
-    title: t('common.table.title.category'),
-    dataIndex: 'category',
-    key: 'category',
+    title: t('common.table.title.group'),
+    dataIndex: 'group',
+    key: 'group',
     width: 100,
     sorter: true,
     resizable: true,
+    align: 'left',
   },
   {
     title: t('common.table.title.desc'),
-    dataIndex: 'description',
+    dataIndex: 'desc',
     resizable: true,
-  },
-  {
-    title: t('common.table.title.type'),
-    dataIndex: 'type',
-    key: 'type',
-    width: 150,
-    sorter: true,
+    align: 'left',
   },
   {
     title: t('ml.algorithm.table.title.language'),
@@ -49,20 +52,11 @@ export const indexColumns: BasicColumn[] = [
   {
     title: t('common.table.title.public'),
     dataIndex: 'pubFlag',
-    key: 'pubFlag',
     width: 80,
-    align: 'center',
-    slots: { customRender: 'public' },
     filters: [
-      {
-        text: t('common.table.title.public.true'),
-        value: true,
-      },{
-        text: t('common.table.title.public.false'),
-        value: false,
-      }
+      { text: 'true', value: 'true' },
+      { text: 'false', value: 'false' },
     ],
-    onFilter: (value: boolean, record) => record.pubFlag == value,
   },
 ];
 

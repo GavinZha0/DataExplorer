@@ -57,7 +57,6 @@ export const indexColumns: BasicColumn[] = [
     title: t('common.table.title.public'),
     dataIndex: 'pubFlag',
     width: 80,
-    //slots: { customRender: 'active' },
     filters: [
       { text: 'true', value: 'true' },
       { text: 'false', value: 'false' },

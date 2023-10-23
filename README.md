@@ -1,4 +1,4 @@
-<div align="center"> <a href="https://github.com/GavinZha0/DataPie"> <img alt="DataPie Logo" width="200" height="200" src="/public/resource/img/solar-01.png"> </a> <br> <br>
+<div align="center"> <a href="https://github.com/GavinZha0/DataPie"> <img alt="DataPie Logo" width="200" height="200" src="/public/resource/img/solar.png"> </a> <br> <br>
 
 <h1>DataPie</h1>
 </div>
@@ -6,8 +6,11 @@
 **English** | [中文](./README.zh-CN.md)
 
 ## Introduction
-Low-code data platform for AI and BI.
-
+DataPie, a low-code data platform for AI and BI.
+DataPie, a low-code data platform for AI and BI.
+DataExplorer: Front end of DataPie(Js, Ts, Vue, Antd, G2plot, Leaflet, Cy...)
+DataMagic: Java server of DataPie(Springboot, Jwt, Jpa, Druid, Knife4j, Tablesaw, DJL, DL4J...)
+DataWonder: Python server of DataPie(FastApi, Sk-learn, Pytorch... )
 ## Feature
 
 - **Data visualization**：Connect datasource, build views and publish dashboard easily 
@@ -16,19 +19,41 @@ Low-code data platform for AI and BI.
 
 ## Preview
 
-- [DataPie](https://github.com/GavinZha0/DataPie/) - Full version demo
+- [DataPie](http://ec2-18-189-195-0.us-east-2.compute.amazonaws.com:3721/) - Prototype demo
 
-Test account: explorer/123456
+Guest account: guest/Guest@Pie3
 
 <p align="center">
-    <img alt="DataPie Logo" width="100%" src="https://github.com/GavinZha0/DataPie/blob/master/public/resource/img/preview1.png">
-    <img alt="DataPie Logo" width="100%" src="https://github.com/GavinZha0/DataPie/blob/master/public/resource/img/preview2.png">
-    <img alt="DataPie Logo" width="100%" src="https://github.com/GavinZha0/DataPie/blob/master/public/resource/img/preview3.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/login.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/home.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/dashboard.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-dataset.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-dataview1.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-dataview2.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-dataview3.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-report.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/source-datasource.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/source-import.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-user.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-role.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-menu.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-param.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-org.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-center.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/monitor-druid.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/monitor-knife4j.png">
 </p>
 
 ## Documentation
 
 [Document](https://github.com/GavinZha0/DataPie/)
+
+## How to build
+DataExplorer: npm run build
+DataMagic: mvn3 -DskipTests=true package (generate separate lib, config and jar)
+
+## How to execute
+DataExplorer: yarn dev
 
 ## How to contribute
 

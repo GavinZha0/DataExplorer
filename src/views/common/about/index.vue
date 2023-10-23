@@ -4,7 +4,7 @@
       <div class="flex justify-between items-center">
         <span class="flex-1">
           <a :href="GITHUB_URL" target="_blank">{{ name }}</a>
-          A low-code platform for AI and BI.
+          A low-code data platform for AI and BI!
         </span>
       </div>
     </template>

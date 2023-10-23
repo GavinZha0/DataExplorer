@@ -1,7 +1,7 @@
 export default {
   label: {
     productSlogan: 'See data, See the future!',
-    productDesc: 'DataPie, a low-code platform for AI and BI!',
+    productDesc: 'DataPie, a low-code data platform for AI and BI!',
     policy: 'I agree to the xxx Privacy Policy',
 
     login: 'Login',

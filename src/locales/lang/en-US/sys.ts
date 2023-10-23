@@ -73,7 +73,7 @@ export default {
     forgetFormTitle: 'Reset password',
 
     signInTitle: 'See data, See the future!',
-    signInDesc: 'DataPie, a low-code platform for AI and BI!',
+    signInDesc: 'DataPie, a low-code data platform for AI and BI!',
     policy: 'I agree to the xxx Privacy Policy',
     scanSign: `scanning the code to complete the login`,
 

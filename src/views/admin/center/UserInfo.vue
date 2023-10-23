@@ -80,7 +80,7 @@
   import { BasicForm, FormActionType } from '/@/components/Form/index';
   import { CollapseContainer } from '/@/components/Container';
   import { CropperAvatar } from '/@/components/Cropper';
-  import headerImg from '/@/assets/images/header.jpg';
+  import headerImg from '/@/assets/images/cowboy.png';
   import { BasicTable, useTable } from '/@/components/Table';
   import { baseSchema, contactSchema, securitySchema, featureColumns } from './data';
   import { useUserStore } from '/@/store/modules/user';

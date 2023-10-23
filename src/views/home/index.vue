@@ -741,7 +741,7 @@
 
   .report-page::after {
     content: '';
-    background: url('/@/assets/images/report-page-4.png');
+    background: url('/@/assets/images/report-page.png');
     background-repeat: no-repeat;
     background-position: right center;
     background-size: contain;

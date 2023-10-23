@@ -20,8 +20,8 @@
           <div class="my-auto">
             <img
               :alt="title"
-              src="../../../assets/svg/login-box-bg.svg"
-              class="w-1/2 -mt-16 -enter-x"
+              src="../../../assets/images/background.png"
+              class="w-3/4 -mt-16  -enter-x"
             />
             <div class="mt-10 font-medium text-white -enter-x">
               <span class="inline-block mt-4 text-3xl"> {{ t('auth.login.label.productSlogan') }}</span>

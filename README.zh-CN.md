@@ -6,20 +6,17 @@
 **中文** | [English](./README.md)
 
 ## 简介
-
-DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
-DataExplorer: DataPie前端(Js, Ts, Vue, Antd, G2plot, Leaflet, Cy...)
-DataMagic: Java后端服务器(Springboot, Jwt, Jpa, Druid, Knife4j, Tablesaw, DJL, DL4J...)
-DataWonder: Python后端服务器(FastApi, Sk-learn, Pytorch... )
+- DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
+- DataExplorer: DataPie前端(Js, Ts, Vue, Antd, G2plot, Leaflet, Cy...)
+- DataMagic: Java后端服务器(Springboot, Jwt, Jpa, Druid, Knife4j, Tablesaw, DJL, DL4J...)
+- DataWonder: Python后端服务器(FastApi, Sk-learn, Pytorch... )
 
 ## 特性
-
 - **数据可视化**：很容易的连结数据库，生成视图并构建报表
 - **机器学习**: 快速地开发算法，构建模型并训练模型
 - **人工智能**：快捷地管理预训练模型及生成AI应用
 
 ## 预览
-
 - [DataPie](http://ec2-18-189-195-0.us-east-2.compute.amazonaws.com:3721/) - 原型预览
 
 预览账号: guest/Guest@Pie3
@@ -46,7 +43,6 @@ DataWonder: Python后端服务器(FastApi, Sk-learn, Pytorch... )
 </p>
 
 ## 文档
-
 [文档地址](https://github.com/GavinZha0/DataPie/)
 
 ## 如何构建
@@ -57,11 +53,9 @@ DataMagic: mvn3 -DskipTests=true package (生成分离的 lib, config and jar)
 DataExplorer: yarn dev
 
 ## 如何贡献
-
 非常欢迎你的加入！[提一个 Issue](https://github.com/GavinZha0/DataPie/issues/new/choose) 或者提交一个 Pull Request。
 
 **Pull Request:**
-
 1. Fork 代码!
 2. 创建自己的分支: `git checkout -b feat/xxxx`
 3. 提交你的修改: `git commit -am 'feat(function): add xxxxx'`
@@ -69,7 +63,6 @@ DataExplorer: yarn dev
 5. 提交`pull request`
 
 ## Git 贡献提交规范
-
   - `add:` 增加新功能
   - `update:` 更改功能
   - `fix:` 修复问题/BUG
@@ -80,17 +73,10 @@ DataExplorer: yarn dev
   - `docs:` 文档/注释
 
 ## 维护者
-
 [@GavinZha0](https://github.com/GavinZha0)
 
 ## 捐赠
-
 如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
 
 ## 交流
-
 - [github discussions](https://github.com/GavinZha0/DataPie/discussions)
-
-## License
-
-[MIT © DataPie-2020](./LICENSE)

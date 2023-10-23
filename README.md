@@ -6,7 +6,7 @@
 **English** | [中文](./README.zh-CN.md)
 
 ## Introduction
-- DataPie, a low-code data platform for AI and BI.
+DataPie, a low-code data platform for AI and BI.
 - DataExplorer: Front end of DataPie(Js, Ts, Vue, Antd, G2plot, Leaflet, Cy...)
 - DataMagic: Java server of DataPie(Springboot, Jwt, Jpa, Druid, Knife4j, Tablesaw, DJL, DL4J...)
 - DataWonder: Python server of DataPie(FastApi, Sk-learn, Pytorch... )

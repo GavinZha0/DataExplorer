@@ -24,24 +24,24 @@ DataWonder: Python server of DataPie(FastApi, Sk-learn, Pytorch... )
 Guest account: guest/Guest@Pie3
 
 <p align="center">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/login.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/home.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/dashboard.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-dataset.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-dataview1.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-dataview2.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-dataview3.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/vis-report.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/source-datasource.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/source-import.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-user.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-role.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-menu.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-param.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-org.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/admin-center.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/monitor-druid.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/monitor-knife4j.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/login.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/home.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/dashboard.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-dataset.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-dataview1.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-dataview2.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-dataview3.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-report.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/source-datasource.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/source-import.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/admin-user.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/admin-role.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/admin-menu.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/admin-param.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/admin-org.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/admin-center.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/monitor-druid.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/monitor-knife4j.png">
 </p>
 
 ## Documentation

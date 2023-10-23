@@ -30,9 +30,11 @@
           <a v-else @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
         <template v-else-if="column.key === 'type'">
-          <Tag color="green" style="margin-right: 2px">
-            {{ record.type }}
-          </Tag>
+          <img
+            style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
+            :src="'/resource/img/source-' + record.type + '.png'"
+            @click="() => handleEdit(record)"
+          >
         </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
@@ -122,8 +124,9 @@
     afterFetch: (list: Recordable[]) => {
       let recList = list;
       for (let item of recList) {
-        // decode password
-        item.password = atob(item.password);
+        // no real password in response
+        // ******
+        //item.password = atob(item.password);
       }
       return recList;
     },

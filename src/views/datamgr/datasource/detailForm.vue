@@ -35,9 +35,9 @@
       </template>
     </BasicForm>
     <template #insertFooter>
-      <a-button type="primary" @click="handleUrlTest" style="right: 250px">{{
+      <!--a-button type="primary" @click="handleUrlTest" style="right: 250px">{{
         t('dataviz.datasource.form.test')
-      }}</a-button>
+      }}</a-button-->
     </template>
   </BasicDrawer>
 </template>
@@ -185,6 +185,9 @@
       // validate form data
       // detail form has all data fields which are defined by ApiDsDataType
       let values = await infoFormRef.value.validate();
+      if(values.params == ''){
+        values.params = [];
+      }
       setDrawerProps({ confirmLoading: true });
       if (values.id) {
         values.id = rawData.value.id;

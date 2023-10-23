@@ -73,9 +73,10 @@ export function API_DATASOURCE_CREATE(params: Omit<ApiDsDataType, 'id'>) {
  * params: ApiDsDataType without id
  */
 export function API_DATASOURCE_TEST(params: Omit<ApiDsDataType, 'id'>) {
+  // encode password before transmission
   return defHttp.post<AxiosResponse>({
     url: API.DATASOURCE_TEST,
-    params,
+    params: { ...params, password: btoa(params.password) },
   });
 }
 

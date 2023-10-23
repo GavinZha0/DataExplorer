@@ -5,6 +5,20 @@ import { useI18n } from '/@/hooks/web/useI18n';
 const { t } = useI18n();
 export const indexColumns: BasicColumn[] = [
   {
+    title: t('common.table.title.type'),
+    dataIndex: 'type',
+    width: 80,
+    filters: [
+      { text: 'MySQL', value: 'MySQL' },
+      { text: 'MariaDB', value: 'MariaDB' },
+      { text: 'Vertica', value: 'Vertica' },
+      { text: 'SQLite', value: 'SQLite' },
+      { text: 'PostgreSQL', value: 'PostgreSQL' },
+      { text: 'CSV', value: 'CSV' },
+      { text: 'JSON', value: 'JSON' },
+    ],
+  },
+  {
     title: t('common.table.title.name'),
     dataIndex: 'name',
     width: 180,
@@ -26,17 +40,6 @@ export const indexColumns: BasicColumn[] = [
     align: 'left',
     sorter: true,
     resizable: true,
-  },
-  {
-    title: t('common.table.title.type'),
-    dataIndex: 'type',
-    width: 80,
-    filters: [
-      { text: 'MySQL', value: 'MySQL' },
-      { text: 'Vertica', value: 'Vertica' },
-      { text: 'CSV', value: 'CSV' },
-      { text: 'JSON', value: 'JSON' },
-    ],
   },
   {
     title: t('dataviz.datasource.table.title.url'),
@@ -111,7 +114,10 @@ export const infoFormSchema: FormSchema[] = [
     componentProps: {
       options: [
         { label: 'MySQL', value: 'MySQL' },
-        { label: 'Vertica', value: 'Vertica' },
+        { text: 'MariaDB', value: 'MariaDB' },
+        { text: 'Vertica', value: 'Vertica' },
+        { text: 'SQLite', value: 'SQLite' },
+        { text: 'PostgreSQL', value: 'PostgreSQL' },
         { label: 'CSV', value: 'CSV' },
         { label: 'JSON', value: 'JSON' },
       ],

@@ -7,9 +7,9 @@
 
 ## Introduction
 DataPie, a low-code data platform for AI and BI.
-- DataExplorer: Front end of DataPie(Js, Ts, Vue, Antd, G2plot, Leaflet, Cy...)
-- DataMagic: Java server of DataPie(Springboot, Jwt, Jpa, Druid, Knife4j, Tablesaw, DJL, DL4J...)
-- DataWonder: Python server of DataPie(FastApi, Sk-learn, Pytorch... )
+- DataExplorer: Front end of DataPie (Js, Ts, Vue, Antd, G2plot, Leaflet, Cy...)
+- DataMagic: Java server of DataPie (Springboot, Jwt, Jpa, Druid, Knife4j, Tablesaw, DJL, DL4J...)
+- DataWonder: Python server of DataPie (FastApi, Sk-learn, Pytorch... )
 
 ## Feature
 - **Data visualization**：Connect datasource, build views and publish dashboard easily 
@@ -18,7 +18,6 @@ DataPie, a low-code data platform for AI and BI.
 
 ## Preview
 - [DataPie](http://ec2-18-189-195-0.us-east-2.compute.amazonaws.com:3721/) - Prototype demo
-
 Guest account: guest/Guest@Pie3
 
 <p align="center">

@@ -7,9 +7,9 @@
 
 ## 简介
 DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
-- DataExplorer: DataPie前端(Js, Ts, Vue, Antd, G2plot, Leaflet, Cy...)
-- DataMagic: Java后端服务器(Springboot, Jwt, Jpa, Druid, Knife4j, Tablesaw, DJL, DL4J...)
-- DataWonder: Python后端服务器(FastApi, Sk-learn, Pytorch... )
+- DataExplorer: DataPie前端 (Js, Ts, Vue, Antd, G2plot, Leaflet, Cy...)
+- DataMagic: Java后端服务器 (Springboot, Jwt, Jpa, Druid, Knife4j, Tablesaw, DJL, DL4J...)
+- DataWonder: Python后端服务器 (FastApi, Sk-learn, Pytorch... )
 
 ## 特性
 - **数据可视化**：很容易的连结数据库，生成视图并构建报表
@@ -18,7 +18,6 @@ DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
 
 ## 预览
 - [DataPie](http://ec2-18-189-195-0.us-east-2.compute.amazonaws.com:3721/) - 原型预览
-
 预览账号: guest/Guest@Pie3
 
 <p align="center">

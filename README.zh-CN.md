@@ -43,6 +43,13 @@ DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/monitor-knife4j.png">
 </p>
 
+- AI demo
+
+<video controls>
+  <source src="/public/resource/img/video/AI demo.mp4" type="video/mp4" />
+</video>
+
+
 ## 文档
 [文档地址](https://github.com/GavinZha0/DataPie/)
 

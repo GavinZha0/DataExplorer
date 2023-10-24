@@ -49,8 +49,7 @@ Guest account: guest/Guest@Pie3
 
 
 
-https://github.com/GavinZha0/DataExplorer/assets/88469005/b6b143f6-8735-40f9-92c6-6ff64da2ffc5
-
+https://github.com/GavinZha0/DataMagic/assets/88469005/03938dea-4493-49e2-96ab-3147f35bc31d
 
 
 
@@ -59,6 +58,7 @@ https://github.com/GavinZha0/DataExplorer/assets/88469005/b6b143f6-8735-40f9-92c
 
 ## How to build
 DataExplorer: npm run build
+
 DataMagic: mvn3 -DskipTests=true package (generate separate lib, config and jar)
 
 ## How to execute

@@ -1,4 +1,4 @@
-<div align="center"> <a href="https://github.com/GavinZha0/DataPie"> <img alt="DataPie Logo" width="200" height="200" src="/public/resource/img/solar.png"> </a> <br> <br>
+<div align="center"> <a href="https://github.com/GavinZha0/DataPie"> <img alt="DataPie Logo" width="200" height="200" src="/public/resource/img/ninestar.png"> </a> <br> <br>
 
 <h1>DataPie</h1>
 </div>

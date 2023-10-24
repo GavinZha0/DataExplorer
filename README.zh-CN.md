@@ -1,4 +1,4 @@
-<div align="center"> <a href="https://github.com/GavinZha0/DataPie"> <img alt="DataPie Logo" width="200" height="200" src="/public/resource/img/solar.png"> </a> <br> <br>
+<div align="center"> <a href="https://github.com/GavinZha0/DataPie"> <img alt="DataPie Logo" width="200" height="200" src="/public/resource/img/ninestar.png"> </a> <br> <br>
 
 <h1>DataPie</h1>
 </div>
@@ -45,9 +45,7 @@ DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
 
 - AI demo
 
-<video controls>
-  <source src="/public/resource/img/video/AI demo.mp4" type="video/mp4" />
-</video>
+https://github.com/GavinZha0/DataExplorer/assets/88469005/b6b143f6-8735-40f9-92c6-6ff64da2ffc5
 
 
 ## 文档

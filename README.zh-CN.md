@@ -12,9 +12,9 @@ DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
 - DataWonder: Python后端服务器 (FastApi, Sk-learn, Pytorch... )
 
 ## 特性
-- **数据可视化**：很容易的连结数据库，生成视图并构建报表
-- **机器学习**: 快速地开发算法，构建模型并训练模型
-- **人工智能**：快捷地管理预训练模型及生成AI应用
+- **数据可视化**：很容易的连结数据库，生成视图并构建报表！(原型已就绪)
+- **机器学习**: 快速地开发算法，构建模型并训练模型！(2024年完成)
+- **人工智能**：快捷地管理预训练模型及生成AI应用！(2024年完成)
 
 ## 预览
 - [DataPie](http://ec2-18-189-195-0.us-east-2.compute.amazonaws.com:3721/) - 原型预览
@@ -43,7 +43,7 @@ DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/monitor-knife4j.png">
 </p>
 
-- AI demo
+- AI 演示
 
 https://github.com/GavinZha0/DataExplorer/assets/88469005/b6b143f6-8735-40f9-92c6-6ff64da2ffc5
 

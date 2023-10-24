@@ -9,9 +9,19 @@
     <BasicForm @register="registerForm">
       <template #menu="{ model, field }">
         <BasicTree
+          v-if="lang == 'zh-CN'"
           v-model:value="model[field]"
           :treeData="treeData"
           :fieldNames="{ title: 'title', key: 'id' }"
+          checkable
+          toolbar
+          :title="t('admin.role.table.action.menu')"
+        />
+        <BasicTree
+          v-else
+          v-model:value="model[field]"
+          :treeData="treeData"
+          :fieldNames="{ title: 'name', key: 'id' }"
           checkable
           toolbar
           :title="t('admin.role.table.action.menu')"
@@ -31,11 +41,13 @@ import {computed, ref, unref} from 'vue';
   import { API_MENU_LIST } from '/@/api/admin/menu';
   import { message } from 'ant-design-vue';
   import { API_ROLE_UPDATE } from '/@/api/admin/role';
+  import { useLocale } from '/@/locales/useLocale';
 
   const { t } = useI18n();
   const rawData = ref<any>();
   const treeData = ref<TreeItem[]>([]);
   const emit = defineEmits(['success', 'register']);
+  const lang = ref<string>(useLocale().getLocale.value);
 
   // get drawer title
   const drawerTitle = computed(() => {

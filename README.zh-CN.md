@@ -24,13 +24,15 @@ DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/login.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/home.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/dashboard.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/source-datasource.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/source-import.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-dataset.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-dataview1.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-dataview2.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-dataview3.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-report.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/source-datasource.png">
-    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/source-import.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-dataview4.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-report1.png">
+    <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/vis-report2.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/admin-user.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/admin-role.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/admin-menu.png">

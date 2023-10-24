@@ -47,9 +47,11 @@ Guest account: guest/Guest@Pie3
 
 - AI demo
 
-<video controls>
-  <source src="/public/resource/img/video/AI demo.mp4" type="video/mp4" />
-</video>
+
+
+https://github.com/GavinZha0/DataExplorer/assets/88469005/b6b143f6-8735-40f9-92c6-6ff64da2ffc5
+
+
 
 
 ## Documentation

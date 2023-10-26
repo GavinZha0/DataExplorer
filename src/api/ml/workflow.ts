@@ -105,18 +105,6 @@ export function API_WORKFLOW_EXECUTE(id: number) {
   });
 }
 
-/* execute dataset to query data
- * id: dataset id
- * update: merge config to query result or not
- */
-export function API_WORKFLOW_EXECUTE_SCRIPT(params: ApiWorkflowDataType) {
-  return defHttp.post<AxiosResponse>({
-    url: API.WORKFLOW_EXECUTE_SCRIPT,
-    method: 'POST',
-    data: params,
-  });
-}
-
 /* get all groups
  *
  */

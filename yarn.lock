@@ -100,15 +100,14 @@
     "@antv/util" "~2.0.0"
     tslib "^1.10.0"
 
-"@antv/ava@^3.0.0-alpha.1":
-  version "3.0.0-alpha.1"
-  resolved "https://registry.npmjs.org/@antv/ava/-/ava-3.0.0-alpha.1.tgz"
-  integrity sha512-zS8pJ0sQSkcOtEimagj74W7FgRv0OSTl1sPwXP/FFyss3DeG2UGlRPDAZBMCbnmurTw3h0zVYdljhhZIK+Nt5g==
+"@antv/ava@^3.0.2", "@antv/ava@^3.0.7":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@antv/ava/-/ava-3.1.0.tgz#1c29fdec4dfc8e0a405e9d5e19bc19ca8f3c3828"
+  integrity sha512-8wfYuxDx2qxwDP3NgUjFXWI289kkVoilCQbFoGM31FptzAHMw3GwuE8nwg3Lqv7NsSZIvcLiWHC8m/aljalLbQ==
   dependencies:
     "@antv/antv-spec" "^0.1.0-alpha.18"
+    "@antv/g2" "^5.0.8"
     "@antv/smart-color" "^0.2.1"
-    "@stdlib/stats" "^0.0.12"
-    "@stdlib/stats-lowess" "^0.0.5"
     bayesian-changepoint "^1.0.1"
     heap-js "^2.1.6"
     lodash "^4.17.21"
@@ -145,6 +144,16 @@
     fecha "~4.2.0"
     tslib "^2.0.3"
 
+"@antv/component@^1.0.0-beta.1":
+  version "1.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@antv/component/-/component-1.0.0-beta.1.tgz#d62960013aeeb980b26d7803f6961eabb74e310b"
+  integrity sha512-r66pOCNltbhcX26a030XiB8QD5CrC856ZGTXAOCzr6TstHikaz9Tc4OsbyJID+1PHXH15SEz3tCvIm0gizbe9g==
+  dependencies:
+    "@antv/g" "^5.15.15"
+    "@antv/scale" "^0.4.3"
+    "@antv/util" "^3.3.5"
+    svg-path-parser "^1.1.0"
+
 "@antv/coord@^0.3.0":
   version "0.3.1"
   resolved "https://registry.npmjs.org/@antv/coord/-/coord-0.3.1.tgz"
@@ -153,6 +162,15 @@
     "@antv/matrix-util" "^3.1.0-beta.2"
     "@antv/util" "~2.0.12"
     tslib "^2.1.0"
+
+"@antv/coord@^0.4.1":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@antv/coord/-/coord-0.4.6.tgz#baf8b7dc03163936167cf9d411d45d50090b6ed4"
+  integrity sha512-Zu1dJkyPvJ4McUmESWkpjgIf129MsBrZttxf7Bx0rs/N9txGXuj2YZpq1M77mBCWmclxHrcTJU9v1k/iMuIv0A==
+  dependencies:
+    "@antv/scale" "^0.4.12"
+    "@antv/util" "^2.0.13"
+    gl-matrix "^3.4.3"
 
 "@antv/data-set@^0.11.8":
   version "0.11.8"
@@ -183,9 +201,9 @@
   dependencies:
     tslib "^2.0.3"
 
-"@antv/event-emitter@^0.1.1", "@antv/event-emitter@^0.1.2", "@antv/event-emitter@~0.1.0":
+"@antv/event-emitter@^0.1.1", "@antv/event-emitter@^0.1.2", "@antv/event-emitter@^0.1.3", "@antv/event-emitter@~0.1.0":
   version "0.1.3"
-  resolved "https://registry.npmjs.org/@antv/event-emitter/-/event-emitter-0.1.3.tgz"
+  resolved "https://registry.yarnpkg.com/@antv/event-emitter/-/event-emitter-0.1.3.tgz#3e06323b9dcd55a3241ddc7c5458cfabd2095164"
   integrity sha512-4ddpsiHN9Pd4UIlWuKVK1C4IiZIdbwQvy9i7DUSI3xNJ89FPUFt8lxDYj8GzzfdllV0NkJTRxnG+FvLk0llidg==
 
 "@antv/g-base@^0.5.1", "@antv/g-base@^0.5.11", "@antv/g-base@^0.5.3", "@antv/g-base@^0.5.9", "@antv/g-base@~0.5.6":
@@ -205,6 +223,16 @@
     detect-browser "^5.1.0"
     tslib "^2.0.3"
 
+"@antv/g-camera-api@1.2.15":
+  version "1.2.15"
+  resolved "https://registry.yarnpkg.com/@antv/g-camera-api/-/g-camera-api-1.2.15.tgz#d7d16bed739e4db809ec9dceed5c891e51d11dbf"
+  integrity sha512-Tg190ZAsqqG5+RQMvfcO3a7GAvW2j6xBTd+oV42s6/Qns9SMx03/APIopccxNMKarHfoAcV5aLwTlEgv81hWug==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    "@antv/util" "^3.3.4"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
 "@antv/g-canvas@^0.5.2", "@antv/g-canvas@~0.5.10":
   version "0.5.12"
   resolved "https://registry.npmjs.org/@antv/g-canvas/-/g-canvas-0.5.12.tgz"
@@ -218,6 +246,61 @@
     gl-matrix "^3.0.0"
     tslib "^2.0.3"
 
+"@antv/g-canvas@^1.11.5":
+  version "1.11.20"
+  resolved "https://registry.yarnpkg.com/@antv/g-canvas/-/g-canvas-1.11.20.tgz#554060da2a94adb0e89072b03de71bb70105522b"
+  integrity sha512-qkSdlWz5sQx0iHPcUFW25dn2GtW++8CDoJX+Rc4FnLcWICUe2T4UyuQjfK02UVGlHGpW1DlqmDiPRasAWHXUrA==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    "@antv/g-plugin-canvas-path-generator" "1.3.15"
+    "@antv/g-plugin-canvas-picker" "1.10.17"
+    "@antv/g-plugin-canvas-renderer" "1.9.17"
+    "@antv/g-plugin-dom-interaction" "1.9.15"
+    "@antv/g-plugin-html-renderer" "1.9.18"
+    "@antv/g-plugin-image-loader" "1.3.15"
+    "@antv/util" "^3.3.4"
+    tslib "^2.5.3"
+
+"@antv/g-device-api@^1.3.0":
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/@antv/g-device-api/-/g-device-api-1.3.5.tgz#77ca175bd3a004ca5b1f29da5157fd9c4b599b81"
+  integrity sha512-5Zu6X6J5gPnISpNsR6OEvZ2tqna5YUG54z+eov1ZdAVVf6hJWc6n9+WD5fQIxUrgoq24uihNI7hiCMY3R1/ZEA==
+  dependencies:
+    "@antv/util" "^3.3.4"
+    "@webgpu/types" "^0.1.34"
+    eventemitter3 "^5.0.1"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-dom-mutation-observer-api@1.2.15":
+  version "1.2.15"
+  resolved "https://registry.yarnpkg.com/@antv/g-dom-mutation-observer-api/-/g-dom-mutation-observer-api-1.2.15.tgz#faa7c890599a993ee2f9d4ec4fc847db9898eb15"
+  integrity sha512-SEN/fM765lQvTUbKdrF6RfwOC7giF0AbHMF1TBkzBpD1p1HLuWJbYwrTsi8t0vWXzor8r+IZNQNYYavLq34bKg==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+
+"@antv/g-lite@1.2.15":
+  version "1.2.15"
+  resolved "https://registry.yarnpkg.com/@antv/g-lite/-/g-lite-1.2.15.tgz#3d41a7aa09ed187608a924b6072bf6a7f239ead7"
+  integrity sha512-OsL3FqNTNdogwMg3COmaolNn9fdbYWSL/mZWSh0qOnYjjQrqng1pTbqFDUAYWNghAdbSSUfOsHlSUONcfSglJQ==
+  dependencies:
+    "@antv/g-math" "2.0.2"
+    "@antv/util" "^3.3.4"
+    d3-color "^1.4.0"
+    eventemitter3 "^5.0.1"
+    gl-matrix "^3.4.3"
+    rbush "^3.0.1"
+    tslib "^2.5.3"
+
+"@antv/g-math@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@antv/g-math/-/g-math-2.0.2.tgz#fc37e3e90591a52657553017ddadf55177d18a12"
+  integrity sha512-uqGU1C+70orjeSUoIzD3TuXjL5dRQCIyjZrBrTmm0FWd6VQJMWHyG5ypuZ2lMiI5MrRajVSE1w+3J4hiNBYSJg==
+  dependencies:
+    "@antv/util" "^3.3.4"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
 "@antv/g-math@^0.1.1", "@antv/g-math@^0.1.6", "@antv/g-math@^0.1.9":
   version "0.1.9"
   resolved "https://registry.npmjs.org/@antv/g-math/-/g-math-0.1.9.tgz"
@@ -225,6 +308,113 @@
   dependencies:
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
+
+"@antv/g-plugin-3d@^1.9.14":
+  version "1.9.22"
+  resolved "https://registry.yarnpkg.com/@antv/g-plugin-3d/-/g-plugin-3d-1.9.22.tgz#b9a037da7f98454bde6ee2436f0ef202019f84c0"
+  integrity sha512-RZWS69Xm2S8ApVmygPRZgIO5Wat4409WOMLfW0XOw7RhcIUVrkhs9wEZJzoGcgYhlyMI75k6EFqD9Np3YvHSHw==
+  dependencies:
+    "@antv/g-device-api" "^1.3.0"
+    "@antv/g-lite" "1.2.15"
+    "@antv/g-plugin-device-renderer" "1.9.22"
+    "@antv/g-shader-components" "1.8.5"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-canvas-path-generator@1.3.15":
+  version "1.3.15"
+  resolved "https://registry.yarnpkg.com/@antv/g-plugin-canvas-path-generator/-/g-plugin-canvas-path-generator-1.3.15.tgz#faa2b33873e9432409ed26cd82dc382614c0931e"
+  integrity sha512-dSosvMevvMVhqh9OOsgsKa75Ty7EpY45my5AYF7j2k9vh9bqmhk3QURQHu/D8qMbdWe8x9ZmOXIdP8+Ad7LWsA==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    "@antv/g-math" "2.0.2"
+    "@antv/util" "^3.3.4"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-canvas-picker@1.10.17":
+  version "1.10.17"
+  resolved "https://registry.yarnpkg.com/@antv/g-plugin-canvas-picker/-/g-plugin-canvas-picker-1.10.17.tgz#64ecdab57b195d877124a018aa7b351926a62509"
+  integrity sha512-6C6buAbZ+Qg0JmloasgvRZkPqDH/G54+1CF/XOylbTp2mr2g7ZuK2zJva694HTEv5qm0iFPrg7NdYEuO9z19QQ==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    "@antv/g-math" "2.0.2"
+    "@antv/g-plugin-canvas-path-generator" "1.3.15"
+    "@antv/g-plugin-canvas-renderer" "1.9.17"
+    "@antv/util" "^3.3.4"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-canvas-renderer@1.9.17":
+  version "1.9.17"
+  resolved "https://registry.yarnpkg.com/@antv/g-plugin-canvas-renderer/-/g-plugin-canvas-renderer-1.9.17.tgz#43b1333e2c6c0e55914007af0db3fb0b63e28488"
+  integrity sha512-C1tHGvkxj/gS9+gOW07FsxQxAwu+We5hnJ2F79gZlmzVt/bmkHdTsjwyKDjv2dc+gQp3fMMsW0L3uKELv3SU1A==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    "@antv/g-math" "2.0.2"
+    "@antv/g-plugin-canvas-path-generator" "1.3.15"
+    "@antv/g-plugin-image-loader" "1.3.15"
+    "@antv/util" "^3.3.4"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-device-renderer@1.9.22":
+  version "1.9.22"
+  resolved "https://registry.yarnpkg.com/@antv/g-plugin-device-renderer/-/g-plugin-device-renderer-1.9.22.tgz#5400b5447b015b57bf1332cd50525067e51a933d"
+  integrity sha512-ImN3BuqvmOoGoO6FXRJqVYQnhX1wuK2gUikRhbWCjw52pcIt/mv/VzxVO26KMcDAKWWTiGDKlIqCdURs2mtiJA==
+  dependencies:
+    "@antv/g-device-api" "^1.3.0"
+    "@antv/g-lite" "1.2.15"
+    "@antv/g-math" "2.0.2"
+    "@antv/g-plugin-image-loader" "1.3.15"
+    "@antv/g-shader-components" "1.8.5"
+    "@antv/util" "^3.3.4"
+    "@webgpu/types" "^0.1.6"
+    earcut "^2.2.3"
+    eventemitter3 "^5.0.1"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-dom-interaction@1.9.15":
+  version "1.9.15"
+  resolved "https://registry.yarnpkg.com/@antv/g-plugin-dom-interaction/-/g-plugin-dom-interaction-1.9.15.tgz#4a610f483b1624a86c8bea048811a56f06aa8e27"
+  integrity sha512-uWc5KEQskk69VuakbJ2hMvzzw86Vpt8xOSvZu2JwmWmPsptlVcx4wURSDkwBqgMUu5lMfMiLym0ovAazkFoM7A==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-dragndrop@^1.8.3":
+  version "1.8.15"
+  resolved "https://registry.yarnpkg.com/@antv/g-plugin-dragndrop/-/g-plugin-dragndrop-1.8.15.tgz#d0d563ddccd1dfe1027b5d31472044a750e68689"
+  integrity sha512-p1Tfue3BYN49uos2QXVy+fYyE2bD8/wayivOCMiDYIjQabUdw0rQ5FH3JnKAMRQ2RfNaQn9ArSlCtAhG8NiX0w==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    "@antv/util" "^3.3.4"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-html-renderer@1.9.18":
+  version "1.9.18"
+  resolved "https://registry.yarnpkg.com/@antv/g-plugin-html-renderer/-/g-plugin-html-renderer-1.9.18.tgz#3345387b6e29329779bd7d711e6214358e97926b"
+  integrity sha512-O8QLrMLm3aW2mddUqMp8/gVL0qGuN4JSvrv+l/x4T8iHyyjE0GDCXaLoiHPVeQmREYKanTLYp4Y2F24N2G53jQ==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    "@antv/util" "^3.3.4"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-plugin-image-loader@1.3.15":
+  version "1.3.15"
+  resolved "https://registry.yarnpkg.com/@antv/g-plugin-image-loader/-/g-plugin-image-loader-1.3.15.tgz#c92a5911c03c2f9ad9a5411001101c521d3411e6"
+  integrity sha512-L9WD3fObMc5KsNCpVnVV5tbL2VvVJxctxU7p0IVaix/4DhcwspIZzm0C3iLwDvsIVNJNahJi2ndEd5j998eosA==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    "@antv/util" "^3.3.4"
+    gl-matrix "^3.4.3"
+    tslib "^2.5.3"
+
+"@antv/g-shader-components@1.8.5":
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/@antv/g-shader-components/-/g-shader-components-1.8.5.tgz#ec312960737e4e98c6000859c8b054a575cc6c27"
+  integrity sha512-MkVkTQBfA9mJ5jR75XA8yI96jcq4WC+p3VqxMNiiJ4mP7Oqb+oNqKJzxyX7Hfuu6IQ6PC2AOonE27OhR0z/5zg==
 
 "@antv/g-svg@^0.5.1", "@antv/g-svg@^0.5.2", "@antv/g-svg@~0.5.6":
   version "0.5.6"
@@ -236,6 +426,15 @@
     "@antv/util" "~2.0.0"
     detect-browser "^5.0.0"
     tslib "^2.0.3"
+
+"@antv/g-web-animations-api@1.2.15":
+  version "1.2.15"
+  resolved "https://registry.yarnpkg.com/@antv/g-web-animations-api/-/g-web-animations-api-1.2.15.tgz#addd703c8780a51e25bbae23a7dc529a1304258c"
+  integrity sha512-tGjTKlMWbizb8o/hDIHcw1E1o6uS+N3f8dK8A5vTzdBVYWsX0TUEPENTZuQTPgpCU7Rpm3JdtlQc7WAXuSqa6A==
+  dependencies:
+    "@antv/g-lite" "1.2.15"
+    "@antv/util" "^3.3.4"
+    tslib "^2.5.3"
 
 "@antv/g-webgpu-core@^0.7.2":
   version "0.7.2"
@@ -289,10 +488,40 @@
     "@antv/util" "~2.0.5"
     tslib "^2.0.0"
 
-"@antv/g2plot@^2.4.27":
-  version "2.4.28"
-  resolved "https://registry.npmjs.org/@antv/g2plot/-/g2plot-2.4.28.tgz"
-  integrity sha512-eMG7afQ0Kj8AGsJ7r2/6sqqJ/xuIMeXeZPcDvDOvrlgR3tqksUvL00Q3Ahm5ry4mbEj9smPbZZcqZrmyO+uphA==
+"@antv/g2@^5.0.8":
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/@antv/g2/-/g2-5.1.6.tgz#55d3d2bd3d5c77f6aeb7e75bdef063fe04c33300"
+  integrity sha512-z45zKCW9P58fWPd43TrCWc99UYq+YXPoH7XX6uF3JxZRABz0l3pfT65qFt4jFLyzvWT7mnEa71b8jhnlsymNfw==
+  dependencies:
+    "@antv/ava" "^3.0.7"
+    "@antv/component" "^1.0.0-beta.1"
+    "@antv/coord" "^0.4.1"
+    "@antv/event-emitter" "^0.1.3"
+    "@antv/g" "^5.18.6"
+    "@antv/g-canvas" "^1.11.5"
+    "@antv/g-plugin-3d" "^1.9.14"
+    "@antv/g-plugin-dragndrop" "^1.8.3"
+    "@antv/path-util" "^3.0.1"
+    "@antv/scale" "^0.4.7"
+    "@antv/util" "^3.3.2"
+    d3-array "^3.2.2"
+    d3-dsv "^3.0.1"
+    d3-force "^3.0.0"
+    d3-format "^3.1.0"
+    d3-geo "^3.0.1"
+    d3-hierarchy "^3.1.2"
+    d3-path "^3.1.0"
+    d3-scale-chromatic "^3.0.0"
+    d3-shape "^3.1.0"
+    d3-voronoi "^1.1.4"
+    flru "^1.0.2"
+    fmin "^0.0.2"
+    pdfast "^0.2.0"
+
+"@antv/g2plot@^2.4.31":
+  version "2.4.31"
+  resolved "https://registry.yarnpkg.com/@antv/g2plot/-/g2plot-2.4.31.tgz#b444aee07d06939949eaa8ba8f8e93f948634aa5"
+  integrity sha512-SlWHYVsJgRN7E1Oe5Qk6yWBrSWmctmloknFmklaqe9vEeK+YB9ZLUffZvtAHT10mA2NZ+VjGUhlnMNgR9M1PQg==
   dependencies:
     "@antv/color-util" "^2.0.6"
     "@antv/event-emitter" "^0.1.2"
@@ -309,10 +538,10 @@
     size-sensor "^1.0.1"
     tslib "^2.0.3"
 
-"@antv/g6-core@0.8.8":
-  version "0.8.8"
-  resolved "https://registry.npmjs.org/@antv/g6-core/-/g6-core-0.8.8.tgz"
-  integrity sha512-cWFoxGIyscl0OZSCGmyILBFy6xd527LcVJMmpIKgJ0E3lT37b8NHDHRbar0GLq7sdyBj2cHVOWtCHjA99FyZ6g==
+"@antv/g6-core@0.8.23", "@antv/g6-core@^0.8.23":
+  version "0.8.23"
+  resolved "https://registry.yarnpkg.com/@antv/g6-core/-/g6-core-0.8.23.tgz#af2bdfc3575c5cda40036996539cc0296f81c020"
+  integrity sha512-JWdnba5Bx4/hLhbIQeyvdgh68SDYZisveukuBifxLKODCNJNKTopmWf1w6tU+RxAT2k5ByXkTGWQE1IkIL8O+Q==
   dependencies:
     "@antv/algorithm" "^0.1.8"
     "@antv/dom-util" "^2.0.1"
@@ -325,19 +554,19 @@
     ml-matrix "^6.5.0"
     tslib "^2.1.0"
 
-"@antv/g6-element@0.8.8":
-  version "0.8.8"
-  resolved "https://registry.npmjs.org/@antv/g6-element/-/g6-element-0.8.8.tgz"
-  integrity sha512-0EOr2yJVXOqR4uFeY9K+m2bAuq3eNntnAWRa1GYUbtrjBh7N/wTn3l+Xl3RZC5Ch1dAFgxQMX4n1+PGvcCRcJA==
+"@antv/g6-element@0.8.23":
+  version "0.8.23"
+  resolved "https://registry.yarnpkg.com/@antv/g6-element/-/g6-element-0.8.23.tgz#5aa35668e1a192e92b05237b36c617e70bfbcb97"
+  integrity sha512-KdJOiu4D7UExsYjKOJUcd7YCD/gCfxqHOlS01zkyOqsaindWVLdshBAZWXc2zgzVwHS/fadxwUI+DcllsRkH0g==
   dependencies:
     "@antv/g-base" "^0.5.1"
-    "@antv/g6-core" "0.8.8"
+    "@antv/g6-core" "0.8.23"
     "@antv/util" "~2.0.5"
 
-"@antv/g6-pc@0.8.8":
-  version "0.8.8"
-  resolved "https://registry.npmjs.org/@antv/g6-pc/-/g6-pc-0.8.8.tgz"
-  integrity sha512-hemwe0cyjExdQiAOpzwmUchrp1/qVEHNHru9O9TqtnXlFM0VrRyPKCp3cL+Yv8N25JseOp1fboEmhMuPFeqN3Q==
+"@antv/g6-pc@0.8.23":
+  version "0.8.23"
+  resolved "https://registry.yarnpkg.com/@antv/g6-pc/-/g6-pc-0.8.23.tgz#5dce0f5716d4b8860c713cfad23151d3f7c3e1b0"
+  integrity sha512-8H5n1U8T4pyBcoaEKB8g4TRKycHtONSA+qOeFMq7XIDh1DCn0tUF1uLvwj096Zp+/bUXtAfaRvg+n1KKyCVZ0w==
   dependencies:
     "@ant-design/colors" "^4.0.5"
     "@antv/algorithm" "^0.1.8"
@@ -347,9 +576,9 @@
     "@antv/g-canvas" "^0.5.2"
     "@antv/g-math" "^0.1.1"
     "@antv/g-svg" "^0.5.1"
-    "@antv/g6-core" "0.8.8"
-    "@antv/g6-element" "0.8.8"
-    "@antv/g6-plugin" "^0.8.7"
+    "@antv/g6-core" "^0.8.23"
+    "@antv/g6-element" "0.8.23"
+    "@antv/g6-plugin" "0.8.23"
     "@antv/hierarchy" "^0.6.10"
     "@antv/layout" "^0.3.0"
     "@antv/matrix-util" "^3.1.0-beta.3"
@@ -361,29 +590,39 @@
     insert-css "^2.0.0"
     ml-matrix "^6.5.0"
 
-"@antv/g6-plugin@^0.8.7":
-  version "0.8.8"
-  resolved "https://registry.npmjs.org/@antv/g6-plugin/-/g6-plugin-0.8.8.tgz"
-  integrity sha512-wc2oTAKUaCzpHzhDxYEdkTVeWa6D6tILWAcheW5r6EabEny9gg34yWTzf+wbRp8kbWWLRNNnRTkMV8mV5LSH5g==
+"@antv/g6-plugin@0.8.23":
+  version "0.8.23"
+  resolved "https://registry.yarnpkg.com/@antv/g6-plugin/-/g6-plugin-0.8.23.tgz#222b19b64aa349d9736dc8d944ef1efa4bda6e36"
+  integrity sha512-DwhSuUc0a0foIM4nrhXR/+ooZafkVve0IEErldhsygKWLDSz/c9HRLON66OEdzQX7Ed1uE0SMcBUsIDe+wPQrw==
   dependencies:
     "@antv/dom-util" "^2.0.2"
     "@antv/g-base" "^0.5.1"
     "@antv/g-canvas" "^0.5.2"
     "@antv/g-svg" "^0.5.2"
-    "@antv/g6-core" "0.8.8"
-    "@antv/g6-element" "0.8.8"
+    "@antv/g6-core" "0.8.23"
+    "@antv/g6-element" "0.8.23"
     "@antv/matrix-util" "^3.1.0-beta.3"
     "@antv/path-util" "^2.0.3"
     "@antv/scale" "^0.3.4"
     "@antv/util" "^2.0.9"
     insert-css "^2.0.0"
 
-"@antv/g6@^4.8.8":
-  version "4.8.8"
-  resolved "https://registry.npmjs.org/@antv/g6/-/g6-4.8.8.tgz"
-  integrity sha512-xJEOZX5YkUrHZ4b6zMAfKDEgJZ6DjNaanqMpKmzvbuQ2iUq2H3le4Y1OgrXCebusqYZC+GwZA4V26DCc3ei6zw==
+"@antv/g6@^4.8.17":
+  version "4.8.23"
+  resolved "https://registry.yarnpkg.com/@antv/g6/-/g6-4.8.23.tgz#d84af3add4c1cf2293411c2e7f80757384391d72"
+  integrity sha512-tsnJzlZCiOKvwAULGom6ppARutRmoAgV1wZzkOmDRm8ZdokUkpEYfb3faV6802VMs82DLP0zZ0KavapoK1q8hQ==
   dependencies:
-    "@antv/g6-pc" "0.8.8"
+    "@antv/g6-pc" "0.8.23"
+
+"@antv/g@^5.15.15", "@antv/g@^5.18.6":
+  version "5.18.16"
+  resolved "https://registry.yarnpkg.com/@antv/g/-/g-5.18.16.tgz#1d37647a3d62da6da31cfd1328761b8229a0e25c"
+  integrity sha512-yoiioVJkEMrUIbDFGW5kXnl5iYNNoxyonXrDSfBQpc9PBGkW8uo6tRcA9l+iJErDABKub8Dw8eJHfRRrCsrKsQ==
+  dependencies:
+    "@antv/g-camera-api" "1.2.15"
+    "@antv/g-dom-mutation-observer-api" "1.2.15"
+    "@antv/g-lite" "1.2.15"
+    "@antv/g-web-animations-api" "1.2.15"
 
 "@antv/graphlib@^1.0.0":
   version "1.2.0"
@@ -454,6 +693,15 @@
     fecha "~4.2.0"
     tslib "^2.0.0"
 
+"@antv/scale@^0.4.12", "@antv/scale@^0.4.3", "@antv/scale@^0.4.7":
+  version "0.4.12"
+  resolved "https://registry.yarnpkg.com/@antv/scale/-/scale-0.4.12.tgz#a7d68c3bf8e21a4569a716a06934a605ea1eaedf"
+  integrity sha512-7klJjPXUpCwYc7WADh1XBC11DJYrP5fJoNfv4Ks6z7zPkIM7/PTGr+nU48P69nFL3X04Pe7QjVpevdfCqWvhZQ==
+  dependencies:
+    "@antv/util" "^2.0.13"
+    color-string "^1.5.5"
+    fecha "^4.2.1"
+
 "@antv/smart-color@^0.2.1":
   version "0.2.1"
   resolved "https://registry.npmjs.org/@antv/smart-color/-/smart-color-0.2.1.tgz"
@@ -478,6 +726,16 @@
   dependencies:
     csstype "^3.0.8"
     tslib "^2.0.3"
+
+"@antv/util@^3.3.2", "@antv/util@^3.3.4", "@antv/util@^3.3.5":
+  version "3.3.5"
+  resolved "https://registry.yarnpkg.com/@antv/util/-/util-3.3.5.tgz#502f924833b37b39c3e4ca59c1982f4ed0e3d4c6"
+  integrity sha512-bVv1loamL/MgUEN9dNt7VKAsghO4Wgb+kzr8B9TgkM5tHgKk++xiTwi3pejIdgU8DDkzcyaRsO+VTOXJt8jLng==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    flru "^1.0.2"
+    gl-matrix "^3.3.0"
+    tslib "^2.3.1"
 
 "@apideck/better-ajv-errors@^0.3.1":
   version "0.3.6"
@@ -2832,7 +3090,7 @@
   resolved "https://registry.npmmirror.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.14.tgz"
   integrity sha512-XPSJHWmi394fuUuzDnGz1wiKqWfo1yXecHQMRf2l6hztTO+nPru658AyDngaBe7isIxEkRsPR3FZh+s7iVa4Uw==
 
-"@jridgewell/sourcemap-codec@^1.4.13":
+"@jridgewell/sourcemap-codec@^1.4.13", "@jridgewell/sourcemap-codec@^1.4.15":
   version "1.4.15"
   resolved "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz"
   integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
@@ -3149,1425 +3407,6 @@
   version "0.7.0"
   resolved "https://registry.npmjs.org/@sindresorhus/is/-/is-0.7.0.tgz"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
-
-"@stdlib/array-float32@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/array-float32/-/array-float32-0.0.6.tgz"
-  integrity sha512-QgKT5UaE92Rv7cxfn7wBKZAlwFFHPla8eXsMFsTGt5BiL4yUy36lwinPUh4hzybZ11rw1vifS3VAPuk6JP413Q==
-  dependencies:
-    "@stdlib/assert-has-float32array-support" "^0.0.x"
-
-"@stdlib/array-float64@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/array-float64/-/array-float64-0.0.6.tgz"
-  integrity sha512-oE8y4a84LyBF1goX5//sU1mOjet8gLI0/6wucZcjg+j/yMmNV1xFu84Az9GOGmFSE6Ze6lirGOhfBeEWNNNaJg==
-  dependencies:
-    "@stdlib/assert-has-float64array-support" "^0.0.x"
-
-"@stdlib/array-uint16@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/array-uint16/-/array-uint16-0.0.6.tgz"
-  integrity sha512-/A8Tr0CqJ4XScIDRYQawosko8ha1Uy+50wsTgJhjUtXDpPRp7aUjmxvYkbe7Rm+ImYYbDQVix/uCiPAFQ8ed4Q==
-  dependencies:
-    "@stdlib/assert-has-uint16array-support" "^0.0.x"
-
-"@stdlib/array-uint32@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/array-uint32/-/array-uint32-0.0.6.tgz"
-  integrity sha512-2hFPK1Fg7obYPZWlGDjW9keiIB6lXaM9dKmJubg/ergLQCsJQJZpYsG6mMAfTJi4NT1UF4jTmgvyKD+yf0D9cA==
-  dependencies:
-    "@stdlib/assert-has-uint32array-support" "^0.0.x"
-
-"@stdlib/array-uint8@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/array-uint8/-/array-uint8-0.0.7.tgz"
-  integrity sha512-qYJQQfGKIcky6TzHFIGczZYTuVlut7oO+V8qUBs7BJC9TwikVnnOmb3hY3jToY4xaoi5p9OvgdJKPInhyIhzFg==
-  dependencies:
-    "@stdlib/assert-has-uint8array-support" "^0.0.x"
-
-"@stdlib/array@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/array/-/array-0.0.12.tgz"
-  integrity sha512-nDksiuvRC1dSTHrf5yOGQmlRwAzSKV8MdFQwFSvLbZGGhi5Y4hExqea5HloLgNVouVs8lnAFi2oubSM4Mc7YAg==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/blas" "^0.0.x"
-    "@stdlib/complex" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/symbol" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/assert-has-float32array-support@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-has-float32array-support/-/assert-has-float32array-support-0.0.8.tgz"
-  integrity sha512-Yrg7K6rBqwCzDWZ5bN0VWLS5dNUWcoSfUeU49vTERdUmZID06J069CDc07UUl8vfQWhFgBWGocH3rrpKm1hi9w==
-  dependencies:
-    "@stdlib/assert-is-float32array" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/constants-float64-pinf" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-has-float64array-support@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-has-float64array-support/-/assert-has-float64array-support-0.0.8.tgz"
-  integrity sha512-UVQcoeWqgMw9b8PnAmm/sgzFnuWkZcNhJoi7xyMjbiDV/SP1qLCrvi06mq86cqS3QOCma1fEayJdwgteoXyyuw==
-  dependencies:
-    "@stdlib/assert-is-float64array" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-has-node-buffer-support@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-has-node-buffer-support/-/assert-has-node-buffer-support-0.0.8.tgz"
-  integrity sha512-fgI+hW4Yg4ciiv4xVKH+1rzdV7e5+6UKgMnFbc1XDXHcxLub3vOr8+H6eDECdAIfgYNA7X0Dxa/DgvX9dwDTAQ==
-  dependencies:
-    "@stdlib/assert-is-buffer" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-has-own-property@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-has-own-property/-/assert-has-own-property-0.0.7.tgz"
-  integrity sha512-3YHwSWiUqGlTLSwxAWxrqaD1PkgcJniGyotJeIt5X0tSNmSW0/c9RWroCImTUUB3zBkyBJ79MyU9Nf4Qgm59fQ==
-
-"@stdlib/assert-has-symbol-support@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-has-symbol-support/-/assert-has-symbol-support-0.0.8.tgz"
-  integrity sha512-PoQ9rk8DgDCuBEkOIzGGQmSnjtcdagnUIviaP5YskB45/TJHXseh4NASWME8FV77WFW9v/Wt1MzKFKMzpDFu4Q==
-  dependencies:
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-has-tostringtag-support@^0.0.x":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@stdlib/assert-has-tostringtag-support/-/assert-has-tostringtag-support-0.0.9.tgz"
-  integrity sha512-UTsqdkrnQ7eufuH5BeyWOJL3ska3u5nvDWKqw3onNNZ2mvdgkfoFD7wHutVGzAA2rkTsSJAMBHVwWLsm5SbKgw==
-  dependencies:
-    "@stdlib/assert-has-symbol-support" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-has-uint16array-support@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-has-uint16array-support/-/assert-has-uint16array-support-0.0.8.tgz"
-  integrity sha512-vqFDn30YrtzD+BWnVqFhB130g3cUl2w5AdOxhIkRkXCDYAM5v7YwdNMJEON+D4jI8YB4D5pEYjqKweYaCq4nyg==
-  dependencies:
-    "@stdlib/assert-is-uint16array" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/constants-uint16-max" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-has-uint32array-support@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-has-uint32array-support/-/assert-has-uint32array-support-0.0.8.tgz"
-  integrity sha512-tJtKuiFKwFSQQUfRXEReOVGXtfdo6+xlshSfwwNWXL1WPP2LrceoiUoQk7zMCMT6VdbXgGH92LDjVcPmSbH4Xw==
-  dependencies:
-    "@stdlib/assert-is-uint32array" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/constants-uint32-max" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-has-uint8array-support@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-has-uint8array-support/-/assert-has-uint8array-support-0.0.8.tgz"
-  integrity sha512-ie4vGTbAS/5Py+LLjoSQi0nwtYBp+WKk20cMYCzilT0rCsBI/oez0RqHrkYYpmt4WaJL4eJqC+/vfQ5NsI7F5w==
-  dependencies:
-    "@stdlib/assert-is-uint8array" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/constants-uint8-max" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-is-array-like@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-array-like/-/assert-is-array-like-0.0.8.tgz"
-  integrity sha512-LV1MSacc3cUsDl17rT5kQswzOeACwaWiEU5T3KKWkr2QezST17RTf2ItthWBwXFKeE2YUDn0hI4QC08PeHOQ6w==
-  dependencies:
-    "@stdlib/constants-array-max-array-length" "^0.0.x"
-    "@stdlib/math-base-assert-is-integer" "^0.0.x"
-
-"@stdlib/assert-is-array@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-array/-/assert-is-array-0.0.7.tgz"
-  integrity sha512-/o6KclsGkNcZ5hiROarsD9XUs6xQMb4lTwF6O71UHbKWTtomEF/jD0rxLvlvj0BiCxfKrReddEYd2CnhUyskMA==
-  dependencies:
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-big-endian@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-big-endian/-/assert-is-big-endian-0.0.7.tgz"
-  integrity sha512-BvutsX84F76YxaSIeS5ZQTl536lz+f+P7ew68T1jlFqxBhr4v7JVYFmuf24U040YuK1jwZ2sAq+bPh6T09apwQ==
-  dependencies:
-    "@stdlib/array-uint16" "^0.0.x"
-    "@stdlib/array-uint8" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-is-boolean@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-boolean/-/assert-is-boolean-0.0.8.tgz"
-  integrity sha512-PRCpslMXSYqFMz1Yh4dG2K/WzqxTCtlKbgJQD2cIkAtXux4JbYiXCtepuoV7l4Wv1rm0a1eU8EqNPgnOmWajGw==
-  dependencies:
-    "@stdlib/assert-has-tostringtag-support" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-buffer@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-buffer/-/assert-is-buffer-0.0.8.tgz"
-  integrity sha512-SYmGwOXkzZVidqUyY1IIx6V6QnSL36v3Lcwj8Rvne/fuW0bU2OomsEBzYCFMvcNgtY71vOvgZ9VfH3OppvV6eA==
-  dependencies:
-    "@stdlib/assert-is-object-like" "^0.0.x"
-
-"@stdlib/assert-is-float32array@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-float32array/-/assert-is-float32array-0.0.8.tgz"
-  integrity sha512-Phk0Ze7Vj2/WLv5Wy8Oo7poZIDMSTiTrEnc1t4lBn3Svz2vfBXlvCufi/i5d93vc4IgpkdrOEwfry6nldABjNQ==
-  dependencies:
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-float64array@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-float64array/-/assert-is-float64array-0.0.8.tgz"
-  integrity sha512-UC0Av36EEYIgqBbCIz1lj9g7qXxL5MqU1UrWun+n91lmxgdJ+Z77fHy75efJbJlXBf6HXhcYXECIsc0u3SzyDQ==
-  dependencies:
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-function@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-function/-/assert-is-function-0.0.8.tgz"
-  integrity sha512-M55Dt2njp5tnY8oePdbkKBRIypny+LpCMFZhEjJIxjLE4rA6zSlHs1yRMqD4PmW+Wl9WTeEM1GYO4AQHl1HAjA==
-  dependencies:
-    "@stdlib/utils-type-of" "^0.0.x"
-
-"@stdlib/assert-is-integer@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-integer/-/assert-is-integer-0.0.8.tgz"
-  integrity sha512-gCjuKGglSt0IftXJXIycLFNNRw0C+8235oN0Qnw3VAdMuEWauwkNhoiw0Zsu6Arzvud8MQJY0oBGZtvLUC6QzQ==
-  dependencies:
-    "@stdlib/assert-is-number" "^0.0.x"
-    "@stdlib/constants-float64-ninf" "^0.0.x"
-    "@stdlib/constants-float64-pinf" "^0.0.x"
-    "@stdlib/math-base-assert-is-integer" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/assert-is-little-endian@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-little-endian/-/assert-is-little-endian-0.0.7.tgz"
-  integrity sha512-SPObC73xXfDXY0dOewXR0LDGN3p18HGzm+4K8azTj6wug0vpRV12eB3hbT28ybzRCa6TAKUjwM/xY7Am5QzIlA==
-  dependencies:
-    "@stdlib/array-uint16" "^0.0.x"
-    "@stdlib/array-uint8" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/assert-is-nonnegative-integer@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-nonnegative-integer/-/assert-is-nonnegative-integer-0.0.7.tgz"
-  integrity sha512-+5SrGM3C1QRpzmi+JnyZF9QsH29DCkSONm2558yOTdfCLClYOXDs++ktQo/8baCBFSi9JnFaLXVt1w1sayQeEQ==
-  dependencies:
-    "@stdlib/assert-is-integer" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/assert-is-nonnegative-number@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-nonnegative-number/-/assert-is-nonnegative-number-0.0.7.tgz"
-  integrity sha512-5XvsjOWI2r/q6ErvgJ+XlnGK1XQsxi9c4CFlRMQ1DQa5tbNMqvF1Cj5xRVxIxnplPmt6Svc5hWi44CPF9KYlyg==
-  dependencies:
-    "@stdlib/assert-is-number" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/assert-is-number-array@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-number-array/-/assert-is-number-array-0.0.8.tgz"
-  integrity sha512-HYkUu8uKRa1gwfHEMLA6iGSXSa4ZQRviIJV4A3XIROIUAVSsobIUt7EDaloZ4m9tyUokY5d7J0bLTjBlhOZcUg==
-  dependencies:
-    "@stdlib/assert-is-number" "^0.0.x"
-    "@stdlib/assert-tools-array-like-function" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/assert-is-number@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-number/-/assert-is-number-0.0.7.tgz"
-  integrity sha512-mNV4boY1cUOmoWWfA2CkdEJfXA6YvhcTvwKC0Fzq+HoFFOuTK/scpTd9HanUyN6AGBlWA8IW+cQ1ZwOT3XMqag==
-  dependencies:
-    "@stdlib/assert-has-tostringtag-support" "^0.0.x"
-    "@stdlib/number-ctor" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-object-like@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-object-like/-/assert-is-object-like-0.0.8.tgz"
-  integrity sha512-pe9selDPYAu/lYTFV5Rj4BStepgbzQCr36b/eC8EGSJh6gMgRXgHVv0R+EbdJ69KNkHvKKRjnWj0A/EmCwW+OA==
-  dependencies:
-    "@stdlib/assert-tools-array-function" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/assert-is-object@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-object/-/assert-is-object-0.0.8.tgz"
-  integrity sha512-ooPfXDp9c7w+GSqD2NBaZ/Du1JRJlctv+Abj2vRJDcDPyrnRTb1jmw+AuPgcW7Ca7op39JTbArI+RVHm/FPK+Q==
-  dependencies:
-    "@stdlib/assert-is-array" "^0.0.x"
-
-"@stdlib/assert-is-plain-object@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-plain-object/-/assert-is-plain-object-0.0.7.tgz"
-  integrity sha512-t/CEq2a083ajAgXgSa5tsH8l3kSoEqKRu1qUwniVLFYL4RGv3615CrpJUDQKVtEX5S/OKww5q0Byu3JidJ4C5w==
-  dependencies:
-    "@stdlib/assert-has-own-property" "^0.0.x"
-    "@stdlib/assert-is-function" "^0.0.x"
-    "@stdlib/assert-is-object" "^0.0.x"
-    "@stdlib/utils-get-prototype-of" "^0.0.x"
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-positive-number@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-positive-number/-/assert-is-positive-number-0.0.7.tgz"
-  integrity sha512-XruYBxe1xXEe7ds9NGfKxkrLnuFK3JFlfATE6N/LX6hyrHACj06lODbqhhTngdECPmdeUYB3vde4l9fV0zS/jg==
-  dependencies:
-    "@stdlib/assert-is-number" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/assert-is-regexp-string@^0.0.x":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-regexp-string/-/assert-is-regexp-string-0.0.9.tgz"
-  integrity sha512-FYRJJtH7XwXEf//X6UByUC0Eqd0ZYK5AC8or5g5m5efQrgr2lOaONHyDQ3Scj1A2D6QLIJKZc9XBM4uq5nOPXA==
-  dependencies:
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-    "@stdlib/process-read-stdin" "^0.0.x"
-    "@stdlib/regexp-eol" "^0.0.x"
-    "@stdlib/regexp-regexp" "^0.0.x"
-    "@stdlib/streams-node-stdin" "^0.0.x"
-
-"@stdlib/assert-is-regexp@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-regexp/-/assert-is-regexp-0.0.7.tgz"
-  integrity sha512-ty5qvLiqkDq6AibHlNJe0ZxDJ9Mg896qolmcHb69mzp64vrsORnPPOTzVapAq0bEUZbXoypeijypLPs9sCGBSQ==
-  dependencies:
-    "@stdlib/assert-has-tostringtag-support" "^0.0.x"
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-string@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-string/-/assert-is-string-0.0.8.tgz"
-  integrity sha512-Uk+bR4cglGBbY0q7O7HimEJiW/DWnO1tSzr4iAGMxYgf+VM2PMYgI5e0TLy9jOSOzWon3YS39lc63eR3a9KqeQ==
-  dependencies:
-    "@stdlib/assert-has-tostringtag-support" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-typed-array-like@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-typed-array-like/-/assert-is-typed-array-like-0.0.8.tgz"
-  integrity sha512-uIZ4IuhaU3jwL/Z01NTvkxdlAQWFXFE0VniomTNbWviMztk8aMzoXpGJ73ouZ88bFAtPUSonVWQVonU+ChnNQw==
-  dependencies:
-    "@stdlib/assert-is-nonnegative-integer" "^0.0.x"
-    "@stdlib/constants-array-max-typed-array-length" "^0.0.x"
-
-"@stdlib/assert-is-uint16array@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-uint16array/-/assert-is-uint16array-0.0.8.tgz"
-  integrity sha512-M+qw7au+qglRXcXHjvoUZVLlGt1mPjuKudrVRto6KL4+tDsP2j+A89NDP3Fz8/XIUD+5jhj+65EOKHSMvDYnng==
-  dependencies:
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-uint32array@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-uint32array/-/assert-is-uint32array-0.0.8.tgz"
-  integrity sha512-cnZi2DicYcplMnkJ3dBxBVKsRNFjzoGpmG9A6jXq4KH5rFl52SezGAXSVY9o5ZV7bQGaF5JLyCLp6n9Y74hFGg==
-  dependencies:
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-is-uint8array@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/assert-is-uint8array/-/assert-is-uint8array-0.0.8.tgz"
-  integrity sha512-8cqpDQtjnJAuVtRkNAktn45ixq0JHaGJxVsSiK79k7GRggvMI6QsbzO6OvcLnZ/LimD42FmgbLd13Yc2esDmZw==
-  dependencies:
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/assert-tools-array-function@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-tools-array-function/-/assert-tools-array-function-0.0.7.tgz"
-  integrity sha512-3lqkaCIBMSJ/IBHHk4NcCnk2NYU52tmwTYbbqhAmv7vim8rZPNmGfj3oWkzrCsyCsyTF7ooD+In2x+qTmUbCtQ==
-  dependencies:
-    "@stdlib/assert-is-array" "^0.0.x"
-
-"@stdlib/assert-tools-array-like-function@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/assert-tools-array-like-function/-/assert-tools-array-like-function-0.0.7.tgz"
-  integrity sha512-k2eh70W1Fz96b0s1vRF+MmyBdKdILIQLShT/Z+/+r1PNWlQRsZcIhAVpGJk9Ukv9Yijgcj03WA1sYvE0dnPblQ==
-  dependencies:
-    "@stdlib/assert-is-array-like" "^0.0.x"
-
-"@stdlib/assert@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/assert/-/assert-0.0.12.tgz"
-  integrity sha512-38FxFf+ZoQZbdc+m09UsWtaCmzd/2e7im0JOaaFYE7icmRfm+4KiE9BRvBT4tIn7ioLB2f9PsBicKjIsf+tY1w==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/cli" "^0.0.x"
-    "@stdlib/complex" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/fs" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/ndarray" "^0.0.x"
-    "@stdlib/number" "^0.0.x"
-    "@stdlib/os" "^0.0.x"
-    "@stdlib/process" "^0.0.x"
-    "@stdlib/regexp" "^0.0.x"
-    "@stdlib/streams" "^0.0.x"
-    "@stdlib/string" "^0.0.x"
-    "@stdlib/symbol" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/bigint@^0.0.x":
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/@stdlib/bigint/-/bigint-0.0.11.tgz"
-  integrity sha512-uz0aYDLABAYyqxaCSHYbUt0yPkXYUCR7TrVvHN+UUD3i8FZ02ZKcLO+faKisDyxKEoSFTNtn3Ro8Ir5ebOlVXQ==
-  dependencies:
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/blas@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/blas/-/blas-0.0.12.tgz"
-  integrity sha512-nWY749bWceuoWQ7gz977blCwR7lyQ/rsIXVO4b600h+NFpeA2i/ea7MYC680utIbeu2cnDWHdglBPoK535VAzA==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/number" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/buffer-ctor@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/buffer-ctor/-/buffer-ctor-0.0.7.tgz"
-  integrity sha512-4IyTSGijKUQ8+DYRaKnepf9spvKLZ+nrmZ+JrRcB3FrdTX/l9JDpggcUcC/Fe+A4KIZOnClfxLn6zfIlkCZHNA==
-  dependencies:
-    "@stdlib/assert-has-node-buffer-support" "^0.0.x"
-
-"@stdlib/buffer-from-string@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/buffer-from-string/-/buffer-from-string-0.0.8.tgz"
-  integrity sha512-Dws5ZbK2M9l4Bkn/ODHFm3lNZ8tWko+NYXqGS/UH/RIQv3PGp+1tXFUSvjwjDneM6ppjQVExzVedUH1ftABs9A==
-  dependencies:
-    "@stdlib/assert-is-function" "^0.0.x"
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/buffer-ctor" "^0.0.x"
-    "@stdlib/string-format" "^0.0.x"
-
-"@stdlib/buffer@^0.0.x":
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/@stdlib/buffer/-/buffer-0.0.11.tgz"
-  integrity sha512-Jeie5eDDa1tVuRcuU+cBXI/oOXSmMxUUccZpqXzgYe0IO8QSNtNxv9mUTzJk/m5wH+lmLoDvNxzPpOH9TODjJg==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/process" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/cli-ctor@^0.0.x":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@stdlib/cli-ctor/-/cli-ctor-0.0.3.tgz"
-  integrity sha512-0zCuZnzFyxj66GoF8AyIOhTX5/mgGczFvr6T9h4mXwegMZp8jBC/ZkOGMwmp+ODLBTvlcnnDNpNFkDDyR6/c2g==
-  dependencies:
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-    "@stdlib/utils-noop" "^0.0.x"
-    minimist "^1.2.0"
-
-"@stdlib/cli@^0.0.x":
-  version "0.0.10"
-  resolved "https://registry.npmjs.org/@stdlib/cli/-/cli-0.0.10.tgz"
-  integrity sha512-OITGaxG46kwK799+NuOd/+ccosJ9koVuQBC610DDJv0ZJf8mD7sbjGXrmue9C4EOh8MP7Vm/6HN14BojX8oTCg==
-  dependencies:
-    "@stdlib/utils" "^0.0.x"
-    minimist "^1.2.0"
-
-"@stdlib/complex-float32@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/complex-float32/-/complex-float32-0.0.7.tgz"
-  integrity sha512-POCtQcBZnPm4IrFmTujSaprR1fcOFr/MRw2Mt7INF4oed6b1nzeG647K+2tk1m4mMrMPiuXCdvwJod4kJ0SXxQ==
-  dependencies:
-    "@stdlib/assert-is-number" "^0.0.x"
-    "@stdlib/number-float64-base-to-float32" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-    "@stdlib/utils-define-property" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/complex-float64@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/complex-float64/-/complex-float64-0.0.8.tgz"
-  integrity sha512-lUJwsXtGEziOWAqCcnKnZT4fcVoRsl6t6ECaCJX45Z7lAc70yJLiwUieLWS5UXmyoADHuZyUXkxtI4oClfpnaw==
-  dependencies:
-    "@stdlib/assert-is-number" "^0.0.x"
-    "@stdlib/complex-float32" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-    "@stdlib/utils-define-property" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/complex-reim@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/complex-reim/-/complex-reim-0.0.6.tgz"
-  integrity sha512-28WXfPSIFMtHb0YgdatkGS4yxX5sPYea5MiNgqPv3E78+tFcg8JJG52NQ/MviWP2wsN9aBQAoCPeu8kXxSPdzA==
-  dependencies:
-    "@stdlib/array-float64" "^0.0.x"
-    "@stdlib/complex-float64" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/complex-reimf@^0.0.x":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@stdlib/complex-reimf/-/complex-reimf-0.0.1.tgz"
-  integrity sha512-P9zu05ZW2i68Oppp3oHelP7Tk0D7tGBL0hGl1skJppr2vY9LltuNbeYI3C96tQe/7Enw/5GyAWgxoQI4cWccQA==
-  dependencies:
-    "@stdlib/array-float32" "^0.0.x"
-    "@stdlib/complex-float32" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/complex@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/complex/-/complex-0.0.12.tgz"
-  integrity sha512-UbZBdaUxT2G+lsTIrVlRZwx2IRY6GXnVILggeejsIVxHSuK+oTyapfetcAv0FJFLP+Rrr+ZzrN4b9G3hBw6NHA==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/constants-array-max-array-length@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/constants-array-max-array-length/-/constants-array-max-array-length-0.0.7.tgz"
-  integrity sha512-JkZipiDUgJ1/H8lKjGllbvMREYwlF/S9rVZtPhqRsf1CMySLAFP56fs4szwmFB2Yz2//JxJedN/sS9niULAJHw==
-
-"@stdlib/constants-array-max-typed-array-length@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/constants-array-max-typed-array-length/-/constants-array-max-typed-array-length-0.0.7.tgz"
-  integrity sha512-KoQtZUGxP+ljOjUfc/dpH9dEZmqxXaLs7HV1D0W+Gnwa8GnuPJijTwmYZwglmjtbeWIzlaLksqPAvlQE7rj2jg==
-
-"@stdlib/constants-float64-exponent-bias@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-exponent-bias/-/constants-float64-exponent-bias-0.0.8.tgz"
-  integrity sha512-IzBJQw9hYgWCki7VoC/zJxEA76Nmf8hmY+VkOWnJ8IyfgTXClgY8tfDGS1cc4l/hCOEllxGp9FRvVdn24A5tKQ==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-high-word-abs-mask@^0.0.x":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-high-word-abs-mask/-/constants-float64-high-word-abs-mask-0.0.1.tgz"
-  integrity sha512-1vy8SUyMHFBwqUUVaZFA7r4/E3cMMRKSwsaa/EZ15w7Kmc01W/ZmaaTLevRcIdACcNgK+8i8813c8H7LScXNcQ==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-high-word-exponent-mask@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-high-word-exponent-mask/-/constants-float64-high-word-exponent-mask-0.0.8.tgz"
-  integrity sha512-z28/EQERc0VG7N36bqdvtrRWjFc8600PKkwvl/nqx6TpKAzMXNw55BS1xT4C28Sa9Z7uBWeUj3UbIFedbkoyMw==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-high-word-sign-mask@^0.0.x":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-high-word-sign-mask/-/constants-float64-high-word-sign-mask-0.0.1.tgz"
-  integrity sha512-hmTr5caK1lh1m0eyaQqt2Vt3y+eEdAx57ndbADEbXhxC9qSGd0b4bLSzt/Xp4MYBYdQkHAE/BlkgUiRThswhCg==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-high-word-significand-mask@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-high-word-significand-mask/-/constants-float64-high-word-significand-mask-0.0.8.tgz"
-  integrity sha512-axiB0JMao3ZYTxPtK3K75q+UjTDF1OM2KoCYVukZbs+GWenAR4EkEsCJ4nW5a4ONDXNLsVuRVeL8sgte7prt4g==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-ln-two@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-ln-two/-/constants-float64-ln-two-0.0.8.tgz"
-  integrity sha512-XwhMhGkimMpDa8Dgk7HnZd+Bzs1SerCTJqRfDRODQFzf0lj7y27SAB0vK3XYWfY7YJSLRUNXMIQ9MrALu6Sg4g==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-max-base2-exponent-subnormal@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-max-base2-exponent-subnormal/-/constants-float64-max-base2-exponent-subnormal-0.0.8.tgz"
-  integrity sha512-YGBZykSiXFebznnJfWFDwhho2Q9xhUWOL+X0lZJ4ItfTTo40W6VHAyNYz98tT/gJECFype0seNzzo1nUxCE7jQ==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-max-base2-exponent@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-max-base2-exponent/-/constants-float64-max-base2-exponent-0.0.8.tgz"
-  integrity sha512-xBAOtso1eiy27GnTut2difuSdpsGxI8dJhXupw0UukGgvy/3CSsyNm+a1Suz/dhqK4tPOTe5QboIdNMw5IgXKQ==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-min-base2-exponent-subnormal@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-min-base2-exponent-subnormal/-/constants-float64-min-base2-exponent-subnormal-0.0.8.tgz"
-  integrity sha512-bt81nBus/91aEqGRQBenEFCyWNsf8uaxn4LN1NjgkvY92S1yVxXFlC65fJHsj9FTqvyZ+uj690/gdMKUDV3NjQ==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-ninf@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-ninf/-/constants-float64-ninf-0.0.8.tgz"
-  integrity sha512-bn/uuzCne35OSLsQZJlNrkvU1/40spGTm22g1+ZI1LL19J8XJi/o4iupIHRXuLSTLFDBqMoJlUNphZlWQ4l8zw==
-  dependencies:
-    "@stdlib/number-ctor" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-pinf@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-pinf/-/constants-float64-pinf-0.0.8.tgz"
-  integrity sha512-I3R4rm2cemoMuiDph07eo5oWZ4ucUtpuK73qBJiJPDQKz8fSjSe4wJBAigq2AmWYdd7yJHsl5NJd8AgC6mP5Qw==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-float64-smallest-normal@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/constants-float64-smallest-normal/-/constants-float64-smallest-normal-0.0.8.tgz"
-  integrity sha512-Qwxpn5NA3RXf+mQcffCWRcsHSPTUQkalsz0+JDpblDszuz2XROcXkOdDr5LKgTAUPIXsjOgZzTsuRONENhsSEg==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/constants-uint16-max@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/constants-uint16-max/-/constants-uint16-max-0.0.7.tgz"
-  integrity sha512-7TPoku7SlskA67mAm7mykIAjeEnkQJemw1cnKZur0mT5W4ryvDR6iFfL9xBiByVnWYq/+ei7DHbOv6/2b2jizw==
-
-"@stdlib/constants-uint32-max@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/constants-uint32-max/-/constants-uint32-max-0.0.7.tgz"
-  integrity sha512-8+NK0ewqc1vnEZNqzwFJgFSy3S543Eft7i8WyW/ygkofiqEiLAsujvYMHzPAB8/3D+PYvjTSe37StSwRwvQ6uw==
-
-"@stdlib/constants-uint8-max@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/constants-uint8-max/-/constants-uint8-max-0.0.7.tgz"
-  integrity sha512-fqV+xds4jgwFxwWu08b8xDuIoW6/D4/1dtEjZ1sXVeWR7nf0pjj1cHERq4kdkYxsvOGu+rjoR3MbjzpFc4fvSw==
-
-"@stdlib/constants@^0.0.x":
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/@stdlib/constants/-/constants-0.0.11.tgz"
-  integrity sha512-cWKy0L9hXHUQTvFzdPkTvZnn/5Pjv7H4UwY0WC1rLt+A5CxFDJKjvnIi9ypSzJS3CAiGl1ZaHCdadoqXhNdkUg==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/number" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/fs-exists@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/fs-exists/-/fs-exists-0.0.8.tgz"
-  integrity sha512-mZktcCxiLmycCJefm1+jbMTYkmhK6Jk1ShFmUVqJvs+Ps9/2EEQXfPbdEniLoVz4HeHLlcX90JWobUEghOOnAQ==
-  dependencies:
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-    "@stdlib/process-cwd" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/fs-read-file@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/fs-read-file/-/fs-read-file-0.0.8.tgz"
-  integrity sha512-pIZID/G91+q7ep4x9ECNC45+JT2j0+jdz/ZQVjCHiEwXCwshZPEvxcPQWb9bXo6coOY+zJyX5TwBIpXBxomWFg==
-  dependencies:
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/fs-resolve-parent-path@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/fs-resolve-parent-path/-/fs-resolve-parent-path-0.0.8.tgz"
-  integrity sha512-ok1bTWsAziChibQE3u7EoXwbCQUDkFjjRAHSxh7WWE5JEYVJQg1F0o3bbjRr4D/wfYYPWLAt8AFIKBUDmWghpg==
-  dependencies:
-    "@stdlib/assert-has-own-property" "^0.0.x"
-    "@stdlib/assert-is-function" "^0.0.x"
-    "@stdlib/assert-is-plain-object" "^0.0.x"
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-exists" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-    "@stdlib/process-cwd" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/fs@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/fs/-/fs-0.0.12.tgz"
-  integrity sha512-zcDLbt39EEM3M3wJW6luChS53B8T+TMJkjs2526UpKJ71O0/0adR57cI7PfCpkMd33d05uM7GM+leEj4eks4Cw==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/cli" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/process" "^0.0.x"
-    "@stdlib/string" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-    debug "^2.6.9"
-
-"@stdlib/math-base-assert-is-even@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-assert-is-even/-/math-base-assert-is-even-0.0.7.tgz"
-  integrity sha512-tKHutmKSPsJ41DVZBbdfSW6njZtTjqeAIpS4ZjKom4AJwvqJGRDjOzLOzi8+jeRn3bhjfABRPCd35EAkHUnNog==
-  dependencies:
-    "@stdlib/math-base-assert-is-integer" "^0.0.x"
-
-"@stdlib/math-base-assert-is-infinite@^0.0.x":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-assert-is-infinite/-/math-base-assert-is-infinite-0.0.9.tgz"
-  integrity sha512-JuPDdmxd+AtPWPHu9uaLvTsnEPaZODZk+zpagziNbDKy8DRiU1cy+t+QEjB5WizZt0A5MkuxDTjZ/8/sG5GaYQ==
-  dependencies:
-    "@stdlib/constants-float64-ninf" "^0.0.x"
-    "@stdlib/constants-float64-pinf" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math-base-assert-is-integer@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-assert-is-integer/-/math-base-assert-is-integer-0.0.7.tgz"
-  integrity sha512-swIEKQJZOwzacYDiX5SSt5/nHd6PYJkLlVKZiVx/GCpflstQnseWA0TmudG7XU5HJnxDGV/w6UL02dEyBH7VEw==
-  dependencies:
-    "@stdlib/math-base-special-floor" "^0.0.x"
-
-"@stdlib/math-base-assert-is-nan@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-assert-is-nan/-/math-base-assert-is-nan-0.0.8.tgz"
-  integrity sha512-m+gCVBxLFW8ZdAfdkATetYMvM7sPFoMKboacHjb1pe21jHQqVb+/4bhRSDg6S7HGX7/8/bSzEUm9zuF7vqK5rQ==
-  dependencies:
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math-base-assert-is-negative-zero@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-assert-is-negative-zero/-/math-base-assert-is-negative-zero-0.0.8.tgz"
-  integrity sha512-xajwAxn1SC0HWx9Fw8wQZ/RGTpG7Pf9ZA13rpnKvq/4yblCk8tT8Ws+zEwgbHCt5PQe45SEtUZOQ42k3YpX3DA==
-  dependencies:
-    "@stdlib/constants-float64-ninf" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math-base-assert-is-odd@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-assert-is-odd/-/math-base-assert-is-odd-0.0.7.tgz"
-  integrity sha512-ZjIIu1AX57ZnKDxJW67t/FUyMkDnZLCZgvWiDr7+nkfTfGB1uLckJtwkmnZqz0CGtkpTU3geELbvGQ+e60kLEA==
-  dependencies:
-    "@stdlib/math-base-assert-is-even" "^0.0.x"
-
-"@stdlib/math-base-assert-is-positive-zero@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-assert-is-positive-zero/-/math-base-assert-is-positive-zero-0.0.8.tgz"
-  integrity sha512-/9OtPelOyekHTk5hOvPjJl6LCY8CHQmib6TFKbRjqhqwjnqUGIO4bv80TSCKFddoEj/viIHXQfYHXXuQosMTVg==
-  dependencies:
-    "@stdlib/constants-float64-pinf" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math-base-napi-binary@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-napi-binary/-/math-base-napi-binary-0.0.8.tgz"
-  integrity sha512-B8d0HBPhfXefbdl/h0h5c+lM2sE+/U7Fb7hY/huVeoQtBtEx0Jbx/qKvPSVxMjmWCKfWlbPpbgKpN5GbFgLiAg==
-  dependencies:
-    "@stdlib/complex-float32" "^0.0.x"
-    "@stdlib/complex-float64" "^0.0.x"
-    "@stdlib/complex-reim" "^0.0.x"
-    "@stdlib/complex-reimf" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math-base-napi-unary@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-napi-unary/-/math-base-napi-unary-0.0.8.tgz"
-  integrity sha512-xKbGBxbgrEe7dxCDXJrooXPhXSDUl/QPqsN74Qa0+8Svsc4sbYVdU3yHSN5vDgrcWt3ZkH51j0vCSBIjvLL15g==
-  dependencies:
-    "@stdlib/complex-float32" "^0.0.x"
-    "@stdlib/complex-float64" "^0.0.x"
-    "@stdlib/complex-reim" "^0.0.x"
-    "@stdlib/complex-reimf" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math-base-special-abs@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-special-abs/-/math-base-special-abs-0.0.6.tgz"
-  integrity sha512-FaaMUnYs2qIVN3kI5m/qNlBhDnjszhDOzEhxGEoQWR/k0XnxbCsTyjNesR2DkpiKuoAXAr9ojoDe2qBYdirWoQ==
-  dependencies:
-    "@stdlib/math-base-napi-unary" "^0.0.x"
-    "@stdlib/number-float64-base-to-words" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math-base-special-copysign@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-special-copysign/-/math-base-special-copysign-0.0.7.tgz"
-  integrity sha512-7Br7oeuVJSBKG8BiSk/AIRFTBd2sbvHdV3HaqRj8tTZHX8BQomZ3Vj4Qsiz3kPyO4d6PpBLBTYlGTkSDlGOZJA==
-  dependencies:
-    "@stdlib/constants-float64-high-word-abs-mask" "^0.0.x"
-    "@stdlib/constants-float64-high-word-sign-mask" "^0.0.x"
-    "@stdlib/math-base-napi-binary" "^0.0.x"
-    "@stdlib/number-float64-base-from-words" "^0.0.x"
-    "@stdlib/number-float64-base-get-high-word" "^0.0.x"
-    "@stdlib/number-float64-base-to-words" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math-base-special-floor@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-special-floor/-/math-base-special-floor-0.0.8.tgz"
-  integrity sha512-VwpaiU0QhQKB8p+r9p9mNzhrjU5ZVBnUcLjKNCDADiGNvO5ACI/I+W++8kxBz5XSp5PAQhaFCH4MpRM1tSkd/w==
-  dependencies:
-    "@stdlib/math-base-napi-unary" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math-base-special-ldexp@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-special-ldexp/-/math-base-special-ldexp-0.0.8.tgz"
-  integrity sha512-VTzu2kdgzQT3ebHGtCegKDpTA3RtsUVhb7V3IjAu/dHFLlXPXh5MEuxK/gV4vCpGBW0MKPTO73vwBjo6RT4xUg==
-  dependencies:
-    "@stdlib/constants-float64-exponent-bias" "^0.0.x"
-    "@stdlib/constants-float64-max-base2-exponent" "^0.0.x"
-    "@stdlib/constants-float64-max-base2-exponent-subnormal" "^0.0.x"
-    "@stdlib/constants-float64-min-base2-exponent-subnormal" "^0.0.x"
-    "@stdlib/constants-float64-ninf" "^0.0.x"
-    "@stdlib/constants-float64-pinf" "^0.0.x"
-    "@stdlib/math-base-assert-is-infinite" "^0.0.x"
-    "@stdlib/math-base-assert-is-nan" "^0.0.x"
-    "@stdlib/math-base-special-copysign" "^0.0.x"
-    "@stdlib/number-float64-base-exponent" "^0.0.x"
-    "@stdlib/number-float64-base-from-words" "^0.0.x"
-    "@stdlib/number-float64-base-normalize" "^0.0.x"
-    "@stdlib/number-float64-base-to-words" "^0.0.x"
-
-"@stdlib/math-base-special-max@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-special-max/-/math-base-special-max-0.0.7.tgz"
-  integrity sha512-BCvHfLflabBPBv7Ueoe48AmdDZLsp0eOfwkA84+WHvr/MthXUf6Ptz6GqDkEjKNQNMN+reSluyq3uCB2HLrr3Q==
-  dependencies:
-    "@stdlib/constants-float64-ninf" "^0.0.x"
-    "@stdlib/constants-float64-pinf" "^0.0.x"
-    "@stdlib/math-base-assert-is-nan" "^0.0.x"
-    "@stdlib/math-base-assert-is-positive-zero" "^0.0.x"
-
-"@stdlib/math-base-special-min@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-special-min/-/math-base-special-min-0.0.7.tgz"
-  integrity sha512-xaQeSHElt75MkOhqQ+6TWjbf5I5PmlnGyWY5QZRdrr9YWuWsOVuxW75VPHwNFQ1YmnD5d6TtB6pbCE9FKEBzQA==
-  dependencies:
-    "@stdlib/constants-float64-ninf" "^0.0.x"
-    "@stdlib/constants-float64-pinf" "^0.0.x"
-    "@stdlib/math-base-assert-is-nan" "^0.0.x"
-    "@stdlib/math-base-assert-is-negative-zero" "^0.0.x"
-
-"@stdlib/math-base-special-pow@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-special-pow/-/math-base-special-pow-0.0.7.tgz"
-  integrity sha512-sOew6OWapY6uesIg/i4eOveORzE0MfA7XtFcNgkpdsLJ4A4AkSZTz4zMmDxX2C22vI30aHR47O2ro3UZHFWCzw==
-  dependencies:
-    "@stdlib/constants-float64-exponent-bias" "^0.0.x"
-    "@stdlib/constants-float64-high-word-abs-mask" "^0.0.x"
-    "@stdlib/constants-float64-high-word-significand-mask" "^0.0.x"
-    "@stdlib/constants-float64-ln-two" "^0.0.x"
-    "@stdlib/constants-float64-ninf" "^0.0.x"
-    "@stdlib/constants-float64-pinf" "^0.0.x"
-    "@stdlib/math-base-assert-is-infinite" "^0.0.x"
-    "@stdlib/math-base-assert-is-integer" "^0.0.x"
-    "@stdlib/math-base-assert-is-nan" "^0.0.x"
-    "@stdlib/math-base-assert-is-odd" "^0.0.x"
-    "@stdlib/math-base-special-abs" "^0.0.x"
-    "@stdlib/math-base-special-copysign" "^0.0.x"
-    "@stdlib/math-base-special-ldexp" "^0.0.x"
-    "@stdlib/math-base-special-sqrt" "^0.0.x"
-    "@stdlib/number-float64-base-get-high-word" "^0.0.x"
-    "@stdlib/number-float64-base-set-high-word" "^0.0.x"
-    "@stdlib/number-float64-base-set-low-word" "^0.0.x"
-    "@stdlib/number-float64-base-to-words" "^0.0.x"
-    "@stdlib/number-uint32-base-to-int32" "^0.0.x"
-
-"@stdlib/math-base-special-sqrt@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/math-base-special-sqrt/-/math-base-special-sqrt-0.0.8.tgz"
-  integrity sha512-obYr15u/c76VEeAAXhvyUgVsxJb357CTgerLoFJqMj0diKXdjisLIWSlU+UZHKerYH9gnzZPN24gwwaTLJDmaw==
-  dependencies:
-    "@stdlib/math-base-napi-unary" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/math@^0.0.x":
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/@stdlib/math/-/math-0.0.11.tgz"
-  integrity sha512-qI78sR1QqGjHj8k/aAqkZ51Su2fyBvaR/jMKQqcB/ML8bpYpf+QGlGvTty5Qdru/wpqds4kVFOVbWGcNFIV2+Q==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/ndarray" "^0.0.x"
-    "@stdlib/number" "^0.0.x"
-    "@stdlib/strided" "^0.0.x"
-    "@stdlib/symbol" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-    debug "^2.6.9"
-
-"@stdlib/ndarray@^0.0.x":
-  version "0.0.13"
-  resolved "https://registry.npmjs.org/@stdlib/ndarray/-/ndarray-0.0.13.tgz"
-  integrity sha512-Z+U9KJP4U2HWrLtuAXSPvhNetAdqaNLMcliR6S/fz+VPlFDeymRK7omRFMgVQ+1zcAvIgKZGJxpLC3vjiPUYEw==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/bigint" "^0.0.x"
-    "@stdlib/buffer" "^0.0.x"
-    "@stdlib/complex" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/number" "^0.0.x"
-    "@stdlib/string" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/nlp@^0.0.x":
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/@stdlib/nlp/-/nlp-0.0.11.tgz"
-  integrity sha512-D9avYWANm0Db2W7RpzdSdi5GxRYALGAqUrNnRnnKIO6sMEfr/DvONoAbWruda4QyvSC+0MJNwcEn7+PHhRwYhw==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/random" "^0.0.x"
-    "@stdlib/string" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/number-ctor@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/number-ctor/-/number-ctor-0.0.7.tgz"
-  integrity sha512-kXNwKIfnb10Ro3RTclhAYqbE3DtIXax+qpu0z1/tZpI2vkmTfYDQLno2QJrzJsZZgdeFtXIws+edONN9kM34ow==
-
-"@stdlib/number-float64-base-exponent@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/number-float64-base-exponent/-/number-float64-base-exponent-0.0.6.tgz"
-  integrity sha512-wLXsG+cvynmapoffmj5hVNDH7BuHIGspBcTCdjPaD+tnqPDIm03qV5Z9YBhDh91BdOCuPZQ8Ovu2WBpX+ySeGg==
-  dependencies:
-    "@stdlib/constants-float64-exponent-bias" "^0.0.x"
-    "@stdlib/constants-float64-high-word-exponent-mask" "^0.0.x"
-    "@stdlib/number-float64-base-get-high-word" "^0.0.x"
-
-"@stdlib/number-float64-base-from-words@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/number-float64-base-from-words/-/number-float64-base-from-words-0.0.6.tgz"
-  integrity sha512-r0elnekypCN831aw9Gp8+08br8HHAqvqtc5uXaxEh3QYIgBD/QM5qSb3b7WSAQ0ZxJJKdoykupODWWBkWQTijg==
-  dependencies:
-    "@stdlib/array-float64" "^0.0.x"
-    "@stdlib/array-uint32" "^0.0.x"
-    "@stdlib/assert-is-little-endian" "^0.0.x"
-    "@stdlib/number-float64-base-to-words" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/number-float64-base-get-high-word@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/number-float64-base-get-high-word/-/number-float64-base-get-high-word-0.0.6.tgz"
-  integrity sha512-jSFSYkgiG/IzDurbwrDKtWiaZeSEJK8iJIsNtbPG1vOIdQMRyw+t0bf3Kf3vuJu/+bnSTvYZLqpCO6wzT/ve9g==
-  dependencies:
-    "@stdlib/array-float64" "^0.0.x"
-    "@stdlib/array-uint32" "^0.0.x"
-    "@stdlib/assert-is-little-endian" "^0.0.x"
-    "@stdlib/number-float64-base-to-words" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/number-float64-base-normalize@^0.0.x":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@stdlib/number-float64-base-normalize/-/number-float64-base-normalize-0.0.9.tgz"
-  integrity sha512-+rm7RQJEj8zHkqYFE2a6DgNQSB5oKE/IydHAajgZl40YB91BoYRYf/ozs5/tTwfy2Fc04+tIpSfFtzDr4ZY19Q==
-  dependencies:
-    "@stdlib/constants-float64-smallest-normal" "^0.0.x"
-    "@stdlib/math-base-assert-is-infinite" "^0.0.x"
-    "@stdlib/math-base-assert-is-nan" "^0.0.x"
-    "@stdlib/math-base-special-abs" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/number-float64-base-set-high-word@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/number-float64-base-set-high-word/-/number-float64-base-set-high-word-0.0.6.tgz"
-  integrity sha512-Hqds3oALktHGDV5fNRjjwGBnb1ydOhQFrglRXrsAtJojq8KzIAQVGtYkkFtfmG+xadPNIW+PI95OBK3SgIoQDA==
-  dependencies:
-    "@stdlib/array-float64" "^0.0.x"
-    "@stdlib/array-uint32" "^0.0.x"
-    "@stdlib/assert-is-little-endian" "^0.0.x"
-    "@stdlib/number-float64-base-to-words" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/number-float64-base-set-low-word@^0.0.x":
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/@stdlib/number-float64-base-set-low-word/-/number-float64-base-set-low-word-0.0.6.tgz"
-  integrity sha512-8CMrWsL93rHELNAcKstKQpGH2XVIELm7BSut3ye0Ffa3ATTxuOfn2zXzS7yvlu/Lqi/47h5prpjRNsKQuLpp2Q==
-  dependencies:
-    "@stdlib/array-float64" "^0.0.x"
-    "@stdlib/array-uint32" "^0.0.x"
-    "@stdlib/assert-is-little-endian" "^0.0.x"
-    "@stdlib/number-float64-base-to-words" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/number-float64-base-to-float32@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/number-float64-base-to-float32/-/number-float64-base-to-float32-0.0.7.tgz"
-  integrity sha512-PNUSi6+cqfFiu4vgFljUKMFY2O9PxI6+T+vqtIoh8cflf+PjSGj3v4QIlstK9+6qU40eGR5SHZyLTWdzmNqLTQ==
-  dependencies:
-    "@stdlib/array-float32" "^0.0.x"
-
-"@stdlib/number-float64-base-to-words@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/number-float64-base-to-words/-/number-float64-base-to-words-0.0.7.tgz"
-  integrity sha512-7wsYuq+2MGp9rAkTnQ985rah7EJI9TfgHrYSSd4UIu4qIjoYmWIKEhIDgu7/69PfGrls18C3PxKg1pD/v7DQTg==
-  dependencies:
-    "@stdlib/array-float64" "^0.0.x"
-    "@stdlib/array-uint32" "^0.0.x"
-    "@stdlib/assert-is-little-endian" "^0.0.x"
-    "@stdlib/os-byte-order" "^0.0.x"
-    "@stdlib/os-float-word-order" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/number-uint32-base-to-int32@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/number-uint32-base-to-int32/-/number-uint32-base-to-int32-0.0.7.tgz"
-  integrity sha512-KoDNJFtd/lzQQPR6HB3TPiC9DgQGXkBKHYeiYZVUaCW4uGu2IM5KtVOnnI2wkXPGQYpSuUiU9MGf9EywY+YHcA==
-
-"@stdlib/number@^0.0.x":
-  version "0.0.10"
-  resolved "https://registry.npmjs.org/@stdlib/number/-/number-0.0.10.tgz"
-  integrity sha512-RyfoP9MlnX4kccvg8qv7vYQPbLdzfS1Mnp/prGOoWhvMG3pyBwFAan34kwFb5IS/zHC3W5EmrgXCV2QWyLg/Kg==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/os" "^0.0.x"
-    "@stdlib/string" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/os-byte-order@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/os-byte-order/-/os-byte-order-0.0.7.tgz"
-  integrity sha512-rRJWjFM9lOSBiIX4zcay7BZsqYBLoE32Oz/Qfim8cv1cN1viS5D4d3DskRJcffw7zXDnG3oZAOw5yZS0FnlyUg==
-  dependencies:
-    "@stdlib/assert-is-big-endian" "^0.0.x"
-    "@stdlib/assert-is-little-endian" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/os-float-word-order@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/os-float-word-order/-/os-float-word-order-0.0.7.tgz"
-  integrity sha512-gXIcIZf+ENKP7E41bKflfXmPi+AIfjXW/oU+m8NbP3DQasqHaZa0z5758qvnbO8L1lRJb/MzLOkIY8Bx/0cWEA==
-  dependencies:
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-    "@stdlib/os-byte-order" "^0.0.x"
-    "@stdlib/utils-library-manifest" "^0.0.x"
-
-"@stdlib/os@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/os/-/os-0.0.12.tgz"
-  integrity sha512-O7lklZ/9XEzoCmYvzjPh7jrFWkbpOSHGI71ve3dkSvBy5tyiSL3TtivfKsIC+9ZxuEJZ3d3lIjc9e+yz4HVbqQ==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/cli" "^0.0.x"
-    "@stdlib/fs" "^0.0.x"
-    "@stdlib/process" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/process-cwd@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/process-cwd/-/process-cwd-0.0.8.tgz"
-  integrity sha512-GHINpJgSlKEo9ODDWTHp0/Zc/9C/qL92h5Mc0QlIFBXAoUjy6xT4FB2U16wCNZMG3eVOzt5+SjmCwvGH0Wbg3Q==
-  dependencies:
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-
-"@stdlib/process-read-stdin@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/process-read-stdin/-/process-read-stdin-0.0.7.tgz"
-  integrity sha512-nep9QZ5iDGrRtrZM2+pYAvyCiYG4HfO0/9+19BiLJepjgYq4GKeumPAQo22+1xawYDL7Zu62uWzYszaVZcXuyw==
-  dependencies:
-    "@stdlib/assert-is-function" "^0.0.x"
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/buffer-ctor" "^0.0.x"
-    "@stdlib/buffer-from-string" "^0.0.x"
-    "@stdlib/streams-node-stdin" "^0.0.x"
-    "@stdlib/utils-next-tick" "^0.0.x"
-
-"@stdlib/process@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/process/-/process-0.0.12.tgz"
-  integrity sha512-P0X0TMvkissBE1Wr877Avi2/AxmP7X5Toa6GatHbpJdDg6jQmN4SgPd+NZNp98YtZUyk478c8XSIzMr1krQ20g==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/buffer" "^0.0.x"
-    "@stdlib/cli" "^0.0.x"
-    "@stdlib/fs" "^0.0.x"
-    "@stdlib/streams" "^0.0.x"
-    "@stdlib/string" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/random@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/random/-/random-0.0.12.tgz"
-  integrity sha512-c5yND4Ahnm9Jx0I+jsKhn4Yrz10D53ALSrIe3PG1qIz3kNFcIPnmvCuNGd+3V4ch4Mbrez55Y8z/ZC5RJh4vJQ==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/blas" "^0.0.x"
-    "@stdlib/buffer" "^0.0.x"
-    "@stdlib/cli" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/fs" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/process" "^0.0.x"
-    "@stdlib/stats" "^0.0.x"
-    "@stdlib/streams" "^0.0.x"
-    "@stdlib/symbol" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-    debug "^2.6.9"
-    readable-stream "^2.1.4"
-
-"@stdlib/regexp-eol@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/regexp-eol/-/regexp-eol-0.0.7.tgz"
-  integrity sha512-BTMpRWrmlnf1XCdTxOrb8o6caO2lmu/c80XSyhYCi1DoizVIZnqxOaN5yUJNCr50g28vQ47PpsT3Yo7J3SdlRA==
-  dependencies:
-    "@stdlib/assert-has-own-property" "^0.0.x"
-    "@stdlib/assert-is-boolean" "^0.0.x"
-    "@stdlib/assert-is-plain-object" "^0.0.x"
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/regexp-extended-length-path@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/regexp-extended-length-path/-/regexp-extended-length-path-0.0.7.tgz"
-  integrity sha512-z6uqzMWq3WPDKbl4MIZJoNA5ZsYLQI9G3j2TIvhU8X2hnhlku8p4mvK9F+QmoVvgPxKliwNnx/DAl7ltutSDKw==
-  dependencies:
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/regexp-function-name@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/regexp-function-name/-/regexp-function-name-0.0.7.tgz"
-  integrity sha512-MaiyFUUqkAUpUoz/9F6AMBuMQQfA9ssQfK16PugehLQh4ZtOXV1LhdY8e5Md7SuYl9IrvFVg1gSAVDysrv5ZMg==
-  dependencies:
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/regexp-regexp@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/regexp-regexp/-/regexp-regexp-0.0.8.tgz"
-  integrity sha512-S5PZICPd/XRcn1dncVojxIDzJsHtEleuJHHD7ji3o981uPHR7zI2Iy9a1eV2u7+ABeUswbI1Yuix6fXJfcwV1w==
-  dependencies:
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/regexp@^0.0.x":
-  version "0.0.13"
-  resolved "https://registry.npmjs.org/@stdlib/regexp/-/regexp-0.0.13.tgz"
-  integrity sha512-3JT5ZIoq/1nXY+dY+QtkU8/m7oWDeekyItEEXMx9c/AOf0ph8fmvTUGMDNfUq0RetcznFe3b66kFz6Zt4XHviA==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/stats-base-range@^0.0.x":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@stdlib/stats-base-range/-/stats-base-range-0.0.9.tgz"
-  integrity sha512-amh3n9HGmaz9iL3DAAXMU8mekwjHUgIf8Kdx4JdRjlbVq2lDgxjxELmuOzAWSnkQ8zAcDQfgqqkTotpschWgSw==
-  dependencies:
-    "@stdlib/math-base-assert-is-nan" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
-
-"@stdlib/stats-lowess@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@stdlib/stats-lowess/-/stats-lowess-0.0.5.tgz"
-  integrity sha512-fCo8Xv0PYTn53RN/GDWlJNgkEPDd7FMMr2etQyIqbhDfSLDJCdGOlkdQ5olskLoTybgURWZw7dwzpr+qn3dtRQ==
-  dependencies:
-    "@stdlib/assert-has-own-property" "^0.0.x"
-    "@stdlib/assert-is-boolean" "^0.0.x"
-    "@stdlib/assert-is-nonnegative-integer" "^0.0.x"
-    "@stdlib/assert-is-nonnegative-number" "^0.0.x"
-    "@stdlib/assert-is-number-array" "^0.0.x"
-    "@stdlib/assert-is-plain-object" "^0.0.x"
-    "@stdlib/assert-is-positive-number" "^0.0.x"
-    "@stdlib/assert-is-typed-array-like" "^0.0.x"
-    "@stdlib/math-base-special-abs" "^0.0.x"
-    "@stdlib/math-base-special-floor" "^0.0.x"
-    "@stdlib/math-base-special-max" "^0.0.x"
-    "@stdlib/math-base-special-min" "^0.0.x"
-    "@stdlib/math-base-special-pow" "^0.0.x"
-    "@stdlib/math-base-special-sqrt" "^0.0.x"
-    "@stdlib/stats-base-range" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-
-"@stdlib/stats@^0.0.12", "@stdlib/stats@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/stats/-/stats-0.0.12.tgz"
-  integrity sha512-5JOcHiD+JUEDrPMUu09hayG+cSnpcpuxYbysC1iPsWTaWdB9BymhUGpLy1ybLaa3bAPbafd5+wMIXgYbj58GKA==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/blas" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/ndarray" "^0.0.x"
-    "@stdlib/random" "^0.0.x"
-    "@stdlib/string" "^0.0.x"
-    "@stdlib/symbol" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/streams-node-stdin@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/streams-node-stdin/-/streams-node-stdin-0.0.7.tgz"
-  integrity sha512-gg4lgrjuoG3V/L29wNs32uADMCqepIcmoOFHJCTAhVe0GtHDLybUVnLljaPfdvmpPZmTvmusPQtIcscbyWvAyg==
-
-"@stdlib/streams@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/streams/-/streams-0.0.12.tgz"
-  integrity sha512-YLUlXwjJNknHp92IkJUdvn5jEQjDckpawKhDLLCoxyh3h5V+w/8+61SH7TMTfKx5lBxKJ8vvtchZh90mIJOAjQ==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/buffer" "^0.0.x"
-    "@stdlib/cli" "^0.0.x"
-    "@stdlib/fs" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-    debug "^2.6.9"
-    readable-stream "^2.1.4"
-
-"@stdlib/strided@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/strided/-/strided-0.0.12.tgz"
-  integrity sha512-1NINP+Y7IJht34iri/bYLY7TVxrip51f6Z3qWxGHUCH33kvk5H5QqV+RsmFEGbbyoGtdeHrT2O+xA+7R2e3SNg==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/ndarray" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/string-base-format-interpolate@^0.0.x":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@stdlib/string-base-format-interpolate/-/string-base-format-interpolate-0.0.4.tgz"
-  integrity sha512-8FC8+/ey+P5hf1B50oXpXzRzoAgKI1rikpyKZ98Xmjd5rcbSq3NWYi8TqOF8mUHm9hVZ2CXWoNCtEe2wvMQPMg==
-
-"@stdlib/string-base-format-tokenize@^0.0.x":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@stdlib/string-base-format-tokenize/-/string-base-format-tokenize-0.0.4.tgz"
-  integrity sha512-+vMIkheqAhDeT/iF5hIQo95IMkt5IzC68eR3CxW1fhc48NMkKFE2UfN73ET8fmLuOanLo/5pO2E90c2G7PExow==
-
-"@stdlib/string-format@^0.0.x":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@stdlib/string-format/-/string-format-0.0.3.tgz"
-  integrity sha512-1jiElUQXlI/tTkgRuzJi9jUz/EjrO9kzS8VWHD3g7gdc3ZpxlA5G9JrIiPXGw/qmZTi0H1pXl6KmX+xWQEQJAg==
-  dependencies:
-    "@stdlib/string-base-format-interpolate" "^0.0.x"
-    "@stdlib/string-base-format-tokenize" "^0.0.x"
-
-"@stdlib/string-lowercase@^0.0.x":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@stdlib/string-lowercase/-/string-lowercase-0.0.9.tgz"
-  integrity sha512-tXFFjbhIlDak4jbQyV1DhYiSTO8b1ozS2g/LELnsKUjIXECDKxGFyWYcz10KuyAWmFotHnCJdIm8/blm2CfDIA==
-  dependencies:
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-    "@stdlib/process-read-stdin" "^0.0.x"
-    "@stdlib/streams-node-stdin" "^0.0.x"
-    "@stdlib/string-format" "^0.0.x"
-
-"@stdlib/string-replace@^0.0.x":
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/@stdlib/string-replace/-/string-replace-0.0.11.tgz"
-  integrity sha512-F0MY4f9mRE5MSKpAUfL4HLbJMCbG6iUTtHAWnNeAXIvUX1XYIw/eItkA58R9kNvnr1l5B08bavnjrgTJGIKFFQ==
-  dependencies:
-    "@stdlib/assert-is-function" "^0.0.x"
-    "@stdlib/assert-is-regexp" "^0.0.x"
-    "@stdlib/assert-is-regexp-string" "^0.0.x"
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-    "@stdlib/process-read-stdin" "^0.0.x"
-    "@stdlib/regexp-eol" "^0.0.x"
-    "@stdlib/streams-node-stdin" "^0.0.x"
-    "@stdlib/string-format" "^0.0.x"
-    "@stdlib/utils-escape-regexp-string" "^0.0.x"
-    "@stdlib/utils-regexp-from-string" "^0.0.x"
-
-"@stdlib/string@^0.0.x":
-  version "0.0.14"
-  resolved "https://registry.npmjs.org/@stdlib/string/-/string-0.0.14.tgz"
-  integrity sha512-1ClvUTPysens7GZz3WsrkFYIFs8qDmnXkyAd3zMvTXgRpy7hqrv6nNzLMQj8BHv5cBWaWPOXYd/cZ+JyMnZNQQ==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/cli" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/fs" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/nlp" "^0.0.x"
-    "@stdlib/process" "^0.0.x"
-    "@stdlib/regexp" "^0.0.x"
-    "@stdlib/streams" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/symbol@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/symbol/-/symbol-0.0.12.tgz"
-  integrity sha512-2IDhpzWVGeLHgsvIsX12RXvf78r7xBkc4QLoRUv3k7Cp61BisR1Ym1p0Tq9PbxT8fknlvLToh9n5RpmESi2d4w==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/time@^0.0.x":
-  version "0.0.14"
-  resolved "https://registry.npmjs.org/@stdlib/time/-/time-0.0.14.tgz"
-  integrity sha512-1gMFCQTabMVIgww+k4g8HHHIhyy1tIlvwT8mC0BHW7Q7TzDAgobwL0bvor+lwvCb5LlDAvNQEpaRgVT99QWGeQ==
-  dependencies:
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/cli" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/fs" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/string" "^0.0.x"
-    "@stdlib/utils" "^0.0.x"
-
-"@stdlib/types@^0.0.x":
-  version "0.0.14"
-  resolved "https://registry.npmjs.org/@stdlib/types/-/types-0.0.14.tgz"
-  integrity sha512-AP3EI9/il/xkwUazcoY+SbjtxHRrheXgSbWZdEGD+rWpEgj6n2i63hp6hTOpAB5NipE0tJwinQlDGOuQ1lCaCw==
-
-"@stdlib/utils-constructor-name@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/utils-constructor-name/-/utils-constructor-name-0.0.8.tgz"
-  integrity sha512-GXpyNZwjN8u3tyYjL2GgGfrsxwvfogUC3gg7L7NRZ1i86B6xmgfnJUYHYOUnSfB+R531ET7NUZlK52GxL7P82Q==
-  dependencies:
-    "@stdlib/assert-is-buffer" "^0.0.x"
-    "@stdlib/regexp-function-name" "^0.0.x"
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/utils-convert-path@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/utils-convert-path/-/utils-convert-path-0.0.8.tgz"
-  integrity sha512-GNd8uIswrcJCctljMbmjtE4P4oOjhoUIfMvdkqfSrRLRY+ZqPB2xM+yI0MQFfUq/0Rnk/xtESlGSVLz9ZDtXfA==
-  dependencies:
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-read-file" "^0.0.x"
-    "@stdlib/process-read-stdin" "^0.0.x"
-    "@stdlib/regexp-eol" "^0.0.x"
-    "@stdlib/regexp-extended-length-path" "^0.0.x"
-    "@stdlib/streams-node-stdin" "^0.0.x"
-    "@stdlib/string-lowercase" "^0.0.x"
-    "@stdlib/string-replace" "^0.0.x"
-
-"@stdlib/utils-define-nonenumerable-read-only-property@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/utils-define-nonenumerable-read-only-property/-/utils-define-nonenumerable-read-only-property-0.0.7.tgz"
-  integrity sha512-c7dnHDYuS4Xn3XBRWIQBPcROTtP/4lkcFyq0FrQzjXUjimfMgHF7cuFIIob6qUTnU8SOzY9p0ydRR2QJreWE6g==
-  dependencies:
-    "@stdlib/types" "^0.0.x"
-    "@stdlib/utils-define-property" "^0.0.x"
-
-"@stdlib/utils-define-property@^0.0.x":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@stdlib/utils-define-property/-/utils-define-property-0.0.9.tgz"
-  integrity sha512-pIzVvHJvVfU/Lt45WwUAcodlvSPDDSD4pIPc9WmIYi4vnEBA9U7yHtiNz2aTvfGmBMTaLYTVVFIXwkFp+QotMA==
-  dependencies:
-    "@stdlib/types" "^0.0.x"
-
-"@stdlib/utils-escape-regexp-string@^0.0.x":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@stdlib/utils-escape-regexp-string/-/utils-escape-regexp-string-0.0.9.tgz"
-  integrity sha512-E+9+UDzf2mlMLgb+zYrrPy2FpzbXh189dzBJY6OG+XZqEJAXcjWs7DURO5oGffkG39EG5KXeaQwDXUavcMDCIw==
-  dependencies:
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/string-format" "^0.0.x"
-
-"@stdlib/utils-get-prototype-of@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/utils-get-prototype-of/-/utils-get-prototype-of-0.0.7.tgz"
-  integrity sha512-fCUk9lrBO2ELrq+/OPJws1/hquI4FtwG0SzVRH6UJmJfwb1zoEFnjcwyDAy+HWNVmo3xeRLsrz6XjHrJwer9pg==
-  dependencies:
-    "@stdlib/assert-is-function" "^0.0.x"
-    "@stdlib/utils-native-class" "^0.0.x"
-
-"@stdlib/utils-global@^0.0.x":
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/@stdlib/utils-global/-/utils-global-0.0.7.tgz"
-  integrity sha512-BBNYBdDUz1X8Lhfw9nnnXczMv9GztzGpQ88J/6hnY7PHJ71av5d41YlijWeM9dhvWjnH9I7HNE3LL7R07yw0kA==
-  dependencies:
-    "@stdlib/assert-is-boolean" "^0.0.x"
-
-"@stdlib/utils-library-manifest@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/utils-library-manifest/-/utils-library-manifest-0.0.8.tgz"
-  integrity sha512-IOQSp8skSRQn9wOyMRUX9Hi0j/P5v5TvD8DJWTqtE8Lhr8kVVluMBjHfvheoeKHxfWAbNHSVpkpFY/Bdh/SHgQ==
-  dependencies:
-    "@stdlib/cli-ctor" "^0.0.x"
-    "@stdlib/fs-resolve-parent-path" "^0.0.x"
-    "@stdlib/utils-convert-path" "^0.0.x"
-    debug "^2.6.9"
-    resolve "^1.1.7"
-
-"@stdlib/utils-native-class@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/utils-native-class/-/utils-native-class-0.0.8.tgz"
-  integrity sha512-0Zl9me2V9rSrBw/N8o8/9XjmPUy8zEeoMM0sJmH3N6C9StDsYTjXIAMPGzYhMEWaWHvGeYyNteFK2yDOVGtC3w==
-  dependencies:
-    "@stdlib/assert-has-own-property" "^0.0.x"
-    "@stdlib/assert-has-tostringtag-support" "^0.0.x"
-
-"@stdlib/utils-next-tick@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/utils-next-tick/-/utils-next-tick-0.0.8.tgz"
-  integrity sha512-l+hPl7+CgLPxk/gcWOXRxX/lNyfqcFCqhzzV/ZMvFCYLY/wI9lcWO4xTQNMALY2rp+kiV+qiAiO9zcO+hewwUg==
-
-"@stdlib/utils-noop@^0.0.x":
-  version "0.0.13"
-  resolved "https://registry.npmjs.org/@stdlib/utils-noop/-/utils-noop-0.0.13.tgz"
-  integrity sha512-JRWHGWYWP5QK7SQ2cOYiL8NETw8P33LriZh1p9S2xC4e0rBoaY849h1A2IL2y1+x3s29KNjSaBWMrMUIV5HCSw==
-
-"@stdlib/utils-regexp-from-string@^0.0.x":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@stdlib/utils-regexp-from-string/-/utils-regexp-from-string-0.0.9.tgz"
-  integrity sha512-3rN0Mcyiarl7V6dXRjFAUMacRwe0/sYX7ThKYurf0mZkMW9tjTP+ygak9xmL9AL0QQZtbrFFwWBrDO+38Vnavw==
-  dependencies:
-    "@stdlib/assert-is-string" "^0.0.x"
-    "@stdlib/regexp-regexp" "^0.0.x"
-    "@stdlib/string-format" "^0.0.x"
-
-"@stdlib/utils-type-of@^0.0.x":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@stdlib/utils-type-of/-/utils-type-of-0.0.8.tgz"
-  integrity sha512-b4xqdy3AnnB7NdmBBpoiI67X4vIRxvirjg3a8BfhM5jPr2k0njby1jAbG9dUxJvgAV6o32S4kjUgfIdjEYpTNQ==
-  dependencies:
-    "@stdlib/utils-constructor-name" "^0.0.x"
-    "@stdlib/utils-global" "^0.0.x"
-
-"@stdlib/utils@^0.0.x":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@stdlib/utils/-/utils-0.0.12.tgz"
-  integrity sha512-+JhFpl6l7RSq/xGnbWRQ5dAL90h9ONj8MViqlb7teBZFtePZLMwoRA1wssypFcJ8SFMRWQn7lPmpYVUkGwRSOg==
-  dependencies:
-    "@stdlib/array" "^0.0.x"
-    "@stdlib/assert" "^0.0.x"
-    "@stdlib/blas" "^0.0.x"
-    "@stdlib/buffer" "^0.0.x"
-    "@stdlib/cli" "^0.0.x"
-    "@stdlib/constants" "^0.0.x"
-    "@stdlib/fs" "^0.0.x"
-    "@stdlib/math" "^0.0.x"
-    "@stdlib/os" "^0.0.x"
-    "@stdlib/process" "^0.0.x"
-    "@stdlib/random" "^0.0.x"
-    "@stdlib/regexp" "^0.0.x"
-    "@stdlib/streams" "^0.0.x"
-    "@stdlib/string" "^0.0.x"
-    "@stdlib/symbol" "^0.0.x"
-    "@stdlib/time" "^0.0.x"
-    "@stdlib/types" "^0.0.x"
-    debug "^2.6.9"
 
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
   version "2.2.3"
@@ -5085,6 +3924,16 @@
     estree-walker "^2.0.2"
     source-map-js "^1.0.2"
 
+"@vue/compiler-core@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.3.6.tgz#ffc14517e0a7269983b9a93994df9669e9e03506"
+  integrity sha512-2JNjemwaNwf+MkkatATVZi7oAH1Hx0B04DdPH3ZoZ8vKC1xZVP7nl4HIsk8XYd3r+/52sqqoz9TWzYc3yE9dqA==
+  dependencies:
+    "@babel/parser" "^7.23.0"
+    "@vue/shared" "3.3.6"
+    estree-walker "^2.0.2"
+    source-map-js "^1.0.2"
+
 "@vue/compiler-dom@3.3.4", "@vue/compiler-dom@^3.0.1", "@vue/compiler-dom@^3.2.38":
   version "3.3.4"
   resolved "https://registry.npmjs.org/@vue/compiler-dom/-/compiler-dom-3.3.4.tgz"
@@ -5092,6 +3941,14 @@
   dependencies:
     "@vue/compiler-core" "3.3.4"
     "@vue/shared" "3.3.4"
+
+"@vue/compiler-dom@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.3.6.tgz#683420cc201c3a48cb0841467bf19a433ffbede6"
+  integrity sha512-1MxXcJYMHiTPexjLAJUkNs/Tw2eDf2tY3a0rL+LfuWyiKN2s6jvSwywH3PWD8bKICjfebX3GWx2Os8jkRDq3Ng==
+  dependencies:
+    "@vue/compiler-core" "3.3.6"
+    "@vue/shared" "3.3.6"
 
 "@vue/compiler-sfc@3.3.4", "@vue/compiler-sfc@^3.2.29", "@vue/compiler-sfc@^3.2.33", "@vue/compiler-sfc@^3.2.38":
   version "3.3.4"
@@ -5109,6 +3966,22 @@
     postcss "^8.1.10"
     source-map-js "^1.0.2"
 
+"@vue/compiler-sfc@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.3.6.tgz#00dce2e7aa569101009c5eedec4a69e2f831d8cc"
+  integrity sha512-/Kms6du2h1VrXFreuZmlvQej8B1zenBqIohP0690IUBkJjsFvJxY0crcvVRJ0UhMgSR9dewB+khdR1DfbpArJA==
+  dependencies:
+    "@babel/parser" "^7.23.0"
+    "@vue/compiler-core" "3.3.6"
+    "@vue/compiler-dom" "3.3.6"
+    "@vue/compiler-ssr" "3.3.6"
+    "@vue/reactivity-transform" "3.3.6"
+    "@vue/shared" "3.3.6"
+    estree-walker "^2.0.2"
+    magic-string "^0.30.5"
+    postcss "^8.4.31"
+    source-map-js "^1.0.2"
+
 "@vue/compiler-ssr@3.3.4":
   version "3.3.4"
   resolved "https://registry.npmjs.org/@vue/compiler-ssr/-/compiler-ssr-3.3.4.tgz"
@@ -5116,6 +3989,14 @@
   dependencies:
     "@vue/compiler-dom" "3.3.4"
     "@vue/shared" "3.3.4"
+
+"@vue/compiler-ssr@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-ssr/-/compiler-ssr-3.3.6.tgz#d767602563f2596a03b44b3dea4a32c715f64915"
+  integrity sha512-QTIHAfDCHhjXlYGkUg5KH7YwYtdUM1vcFl/FxFDlD6d0nXAmnjizka3HITp8DGudzHndv2PjKVS44vqqy0vP4w==
+  dependencies:
+    "@vue/compiler-dom" "3.3.6"
+    "@vue/shared" "3.3.6"
 
 "@vue/devtools-api@^6.1.0":
   version "6.2.0"
@@ -5138,6 +4019,17 @@
     estree-walker "^2.0.2"
     magic-string "^0.30.0"
 
+"@vue/reactivity-transform@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/reactivity-transform/-/reactivity-transform-3.3.6.tgz#29d615455992d253b8f21b47d084445b5d3f916d"
+  integrity sha512-RlJl4dHfeO7EuzU1iJOsrlqWyJfHTkJbvYz/IOJWqu8dlCNWtxWX377WI0VsbAgBizjwD+3ZjdnvSyyFW1YVng==
+  dependencies:
+    "@babel/parser" "^7.23.0"
+    "@vue/compiler-core" "3.3.6"
+    "@vue/shared" "3.3.6"
+    estree-walker "^2.0.2"
+    magic-string "^0.30.5"
+
 "@vue/reactivity@3.2.38":
   version "3.2.38"
   resolved "https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.2.38.tgz"
@@ -5152,6 +4044,13 @@
   dependencies:
     "@vue/shared" "3.3.4"
 
+"@vue/reactivity@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/reactivity/-/reactivity-3.3.6.tgz#436bd2997673ae2a7b6f4e1c376163f0445f9a5e"
+  integrity sha512-gtChAumfQz5lSy5jZXfyXbKrIYPf9XEOrIr6rxwVyeWVjFhJwmwPLtV6Yis+M9onzX++I5AVE9j+iPH60U+B8Q==
+  dependencies:
+    "@vue/shared" "3.3.6"
+
 "@vue/runtime-core@3.3.4", "@vue/runtime-core@^3.2.33":
   version "3.3.4"
   resolved "https://registry.npmjs.org/@vue/runtime-core/-/runtime-core-3.3.4.tgz"
@@ -5159,6 +4058,14 @@
   dependencies:
     "@vue/reactivity" "3.3.4"
     "@vue/shared" "3.3.4"
+
+"@vue/runtime-core@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/runtime-core/-/runtime-core-3.3.6.tgz#749ff325c95bb3a690c512da0215339fd241872c"
+  integrity sha512-qp7HTP1iw1UW2ZGJ8L3zpqlngrBKvLsDAcq5lA6JvEXHmpoEmjKju7ahM9W2p/h51h0OT5F2fGlP/gMhHOmbUA==
+  dependencies:
+    "@vue/reactivity" "3.3.6"
+    "@vue/shared" "3.3.6"
 
 "@vue/runtime-dom@3.3.4":
   version "3.3.4"
@@ -5169,6 +4076,15 @@
     "@vue/shared" "3.3.4"
     csstype "^3.1.1"
 
+"@vue/runtime-dom@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/runtime-dom/-/runtime-dom-3.3.6.tgz#30729eac969467c6be6723677d14b873918a467c"
+  integrity sha512-AoX3Cp8NqMXjLbIG9YR6n/pPLWE9TiDdk6wTJHFnl2GpHzDFH1HLBC9wlqqQ7RlnvN3bVLpzPGAAH00SAtOxHg==
+  dependencies:
+    "@vue/runtime-core" "3.3.6"
+    "@vue/shared" "3.3.6"
+    csstype "^3.1.2"
+
 "@vue/server-renderer@3.3.4", "@vue/server-renderer@^3.0.1":
   version "3.3.4"
   resolved "https://registry.npmjs.org/@vue/server-renderer/-/server-renderer-3.3.4.tgz"
@@ -5176,6 +4092,14 @@
   dependencies:
     "@vue/compiler-ssr" "3.3.4"
     "@vue/shared" "3.3.4"
+
+"@vue/server-renderer@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/server-renderer/-/server-renderer-3.3.6.tgz#b8a4d7254b67a5cc663f2b9e16cde019483620c9"
+  integrity sha512-kgLoN43W4ERdZ6dpyy+gnk2ZHtcOaIr5Uc/WUP5DRwutgvluzu2pudsZGoD2b7AEJHByUVMa9k6Sho5lLRCykw==
+  dependencies:
+    "@vue/compiler-ssr" "3.3.6"
+    "@vue/shared" "3.3.6"
 
 "@vue/shared@3.2.38":
   version "3.2.38"
@@ -5186,6 +4110,11 @@
   version "3.3.4"
   resolved "https://registry.npmjs.org/@vue/shared/-/shared-3.3.4.tgz"
   integrity sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==
+
+"@vue/shared@3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.3.6.tgz#bd97c22972c6519250069297d01cbed077054b7e"
+  integrity sha512-Xno5pEqg8SVhomD0kTSmfh30ZEmV/+jZtyh39q6QflrjdJCXah5lrnOLi9KB6a5k5aAHXMXjoMnxlzUkCNfWLQ==
 
 "@vue/test-utils@^2.3.2":
   version "2.3.2"
@@ -5241,6 +4170,11 @@
   dependencies:
     vue-demi "*"
 
+"@webgpu/types@^0.1.34", "@webgpu/types@^0.1.6":
+  version "0.1.38"
+  resolved "https://registry.yarnpkg.com/@webgpu/types/-/types-0.1.38.tgz#6fda4b410edc753d3213c648320ebcf319669020"
+  integrity sha512-7LrhVKz2PRh+DD7+S+PVaFd5HxaWQvoMqBbsV9fNJO1pjUs1P8bM2vQVNfk+3URTqbuTI7gkXi0rfsN0IadoBA==
+
 "@webpack-cli/configtest@^2.1.1":
   version "2.1.1"
   resolved "https://registry.npmjs.org/@webpack-cli/configtest/-/configtest-2.1.1.tgz"
@@ -5277,6 +4211,11 @@
     magic-string "^0.30.0"
     micromatch "^4.0.5"
     windicss "^3.5.6"
+
+"@yr/monotone-cubic-spline@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@yr/monotone-cubic-spline/-/monotone-cubic-spline-1.0.3.tgz#7272d89f8e4f6fb7a1600c28c378cc18d3b577b9"
+  integrity sha512-FQXkOta0XBSUPHndIKON2Y9JeQz5ZeMqLYZVVK93FliNBFm7LNMIZmY6FrMEB9XPcDbE2bekMbZD6kzDkxwYjA==
 
 "@zxcvbn-ts/core@^2.0.1":
   version "2.0.1"
@@ -5474,11 +4413,12 @@ anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apexcharts@^3.36.3:
-  version "3.36.3"
-  resolved "https://registry.npmjs.org/apexcharts/-/apexcharts-3.36.3.tgz"
-  integrity sha512-8/FXEs0ohXMff07Gv28XjhPwEJphIUdq2/wii/pcvi54Tw6z1mjrV8ydN8rlWi/ve8BAPBefJkLmRWv7UOBsLw==
+apexcharts@^3.44.0:
+  version "3.44.0"
+  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-3.44.0.tgz#b52f95b0d0c2a5357b4614fa42faac956b69a4a9"
+  integrity sha512-u7Xzrbcxc2yWznN78Jh5NMCYVAsWDfBjRl5ea++rVzFAqjU2hLz4RgKIFwYOBDRQtW1e/Qz8azJTqIJ1+Vu9Qg==
   dependencies:
+    "@yr/monotone-cubic-spline" "^1.0.3"
     svg.draggable.js "^2.2.2"
     svg.easing.js "^2.0.0"
     svg.filter.js "^2.0.2"
@@ -5660,12 +4600,20 @@ avsdf-base@^1.0.0:
   dependencies:
     layout-base "^1.0.0"
 
-axios@^0.26.0, axios@^0.26.1:
+axios@^0.26.0:
   version "0.26.1"
   resolved "https://registry.npmmirror.com/axios/-/axios-0.26.1.tgz"
   integrity sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==
   dependencies:
     follow-redirects "^1.14.8"
+
+axios@^0.27.2:
+  version "0.27.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
+  integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
+  dependencies:
+    follow-redirects "^1.14.9"
+    form-data "^4.0.0"
 
 axios@^1.2.2:
   version "1.4.0"
@@ -6452,9 +5400,9 @@ color-name@^1.0.0, color-name@~1.1.4:
   resolved "https://registry.npmmirror.com/color-name/-/color-name-1.1.4.tgz"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-color-string@^1.6.0:
+color-string@^1.5.5, color-string@^1.6.0:
   version "1.9.1"
-  resolved "https://registry.npmjs.org/color-string/-/color-string-1.9.1.tgz"
+  resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.9.1.tgz#4467f9146f036f855b764dfb5bf8582bf342c7a4"
   integrity sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==
   dependencies:
     color-name "^1.0.0"
@@ -7030,7 +5978,7 @@ csso@^4.2.0:
   dependencies:
     css-tree "^1.1.2"
 
-csstype@^3.0.8, csstype@^3.1.1:
+csstype@^3.0.8, csstype@^3.1.1, csstype@^3.1.2:
   version "3.1.2"
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.2.tgz"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
@@ -7172,6 +6120,13 @@ d3-array@^2.5.0:
   dependencies:
     internmap "^1.0.0"
 
+d3-array@^3.2.2:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-3.2.4.tgz#15fec33b237f97ac5d7c986dc77da273a8ed0bb5"
+  integrity sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==
+  dependencies:
+    internmap "1 - 2"
+
 d3-collection@1:
   version "1.0.7"
   resolved "https://registry.npmjs.org/d3-collection/-/d3-collection-1.0.7.tgz"
@@ -7181,6 +6136,11 @@ d3-collection@1:
   version "3.1.0"
   resolved "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz"
   integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
+
+d3-color@^1.4.0:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.4.1.tgz#c52002bf8846ada4424d55d97982fef26eb3bc8a"
+  integrity sha512-p2sTHSLCJI2QKunbGb7ocOh7DgTAn8IrLx21QRc/BSnodXM4sv6aLQlnfpvehFMLZEfBc6g9pH9SWQccFYfJ9Q==
 
 d3-composite-projections@^1.2.0:
   version "1.4.0"
@@ -7217,6 +6177,15 @@ d3-dsv@^1.0.5:
     iconv-lite "0.4"
     rw "1"
 
+d3-dsv@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/d3-dsv/-/d3-dsv-3.0.1.tgz#c63af978f4d6a0d084a52a673922be2160789b73"
+  integrity sha512-UG6OvdI5afDIFP9w4G0mNq50dSOsXHJaRE8arAS5o9ApWnIElp8GZw1Dun8vP8OyHOZ/QJUKUJwxiiCCnUwm+Q==
+  dependencies:
+    commander "7"
+    iconv-lite "0.6"
+    rw "1"
+
 "d3-ease@1 - 3", d3-ease@^1.0.5:
   version "1.0.7"
   resolved "https://registry.npmjs.org/d3-ease/-/d3-ease-1.0.7.tgz"
@@ -7248,6 +6217,11 @@ d3-force@^3.0.0:
     d3-dispatch "1 - 3"
     d3-quadtree "1 - 3"
     d3-timer "1 - 3"
+
+d3-format@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-3.1.0.tgz#9260e23a28ea5cb109e93b21a06e24e2ebd55641"
+  integrity sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==
 
 d3-geo-projection@^4.0.0:
   version "4.0.0"
@@ -7305,6 +6279,11 @@ d3-hierarchy@^2.0.0:
   resolved "https://registry.npmjs.org/d3-hierarchy/-/d3-hierarchy-2.0.0.tgz"
   integrity sha512-SwIdqM3HxQX2214EG9GTjgmCc/mbSx4mQBn+DuEETubhOw6/U3fmnji4uCVrmzOydMHSO1nZle5gh6HB/wdOzw==
 
+d3-hierarchy@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/d3-hierarchy/-/d3-hierarchy-3.1.2.tgz#b01cd42c1eed3d46db77a5966cf726f8c09160c6"
+  integrity sha512-FX/9frcub54beBdugHjDCdikxThEqjnR93Qt7PvQTOHxyiNCAlvMrHhclk3cD5VeAaq9fxmfRp+CnWw9rEMBuA==
+
 "d3-interpolate@1 - 3", d3-interpolate@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-3.0.1.tgz"
@@ -7321,6 +6300,11 @@ d3-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/d3-path/-/d3-path-2.0.0.tgz"
   integrity sha512-ZwZQxKhBnv9yHaiWd6ZU4x5BtCQ7pXszEV9CU6kRgwIQVQGLMv1oiL4M+MK/n79sYzsj+gcgpPQSctJUsLN7fA==
+
+d3-path@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-3.1.0.tgz#22df939032fb5a71ae8b1800d61ddb7851c42526"
+  integrity sha512-p3KP5HCf/bvjBSSKuXid6Zqijx7wIfNW+J/maPs+iwR35at5JCbLUT0LzF1cnjbCHWhqzQTIN2Jpe8pRebIEFQ==
 
 d3-quadtree@1:
   version "1.0.7"
@@ -7346,6 +6330,14 @@ d3-sankey@^0.9.1:
     d3-collection "1"
     d3-shape "^1.2.0"
 
+d3-scale-chromatic@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/d3-scale-chromatic/-/d3-scale-chromatic-3.0.0.tgz#15b4ceb8ca2bb0dcb6d1a641ee03d59c3b62376a"
+  integrity sha512-Lx9thtxAKrO2Pq6OO2Ua474opeziKr279P/TKZsMAhYyNDD3EnCffdbgeSYN5O7m2ByQsxtuP2CSDczNUIZ22g==
+  dependencies:
+    d3-color "1 - 3"
+    d3-interpolate "1 - 3"
+
 d3-selection@1:
   version "1.4.2"
   resolved "https://registry.npmjs.org/d3-selection/-/d3-selection-1.4.2.tgz"
@@ -7363,6 +6355,13 @@ d3-shape@^1.2.0, d3-shape@^1.3.5:
   dependencies:
     d3-path "1"
 
+d3-shape@^3.1.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-3.2.0.tgz#a1a839cbd9ba45f28674c69d7f855bcf91dfc6a5"
+  integrity sha512-SaLBuwGm3MOViRq2ABk3eLoxwZELpH6zhl3FbAoJ7Vm1gofKx6El1Ib5z23NUEhF9AsGl7y+dzLe5Cw2AArGTA==
+  dependencies:
+    d3-path "^3.1.0"
+
 d3-timer@1, "d3-timer@1 - 2", "d3-timer@1 - 3", d3-timer@^1.0.5, d3-timer@^1.0.9:
   version "1.0.10"
   resolved "https://registry.npmjs.org/d3-timer/-/d3-timer-1.0.10.tgz"
@@ -7379,9 +6378,9 @@ d3-transition@^3.0.1:
     d3-interpolate "1 - 3"
     d3-timer "1 - 3"
 
-d3-voronoi@^1.1.2:
+d3-voronoi@^1.1.2, d3-voronoi@^1.1.4:
   version "1.1.4"
-  resolved "https://registry.npmjs.org/d3-voronoi/-/d3-voronoi-1.1.4.tgz"
+  resolved "https://registry.yarnpkg.com/d3-voronoi/-/d3-voronoi-1.1.4.tgz#dd3c78d7653d2bb359284ae478645d95944c8297"
   integrity sha512-dArJ32hchFsrQ8uMiTBLq256MpnZjeuBtdHpaDlYuQyjU0CVzCJl/BVW+SkszaAeH95D/8gxqAhgx0ouAWAfRg==
 
 d@1, d@^1.0.1:
@@ -7425,7 +6424,7 @@ dayjs@^1.10.5, dayjs@^1.11.3, dayjs@^1.11.6, dayjs@^1.8.34:
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.6.tgz"
   integrity sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==
 
-debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.9:
+debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
   resolved "https://registry.npmjs.org/debug/-/debug-2.6.9.tgz"
   integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
@@ -7818,6 +6817,11 @@ duplexer3@^0.1.4:
   version "0.1.4"
   resolved "https://registry.npmmirror.com/duplexer3/-/duplexer3-0.1.4.tgz"
   integrity sha512-CEj8FwwNA4cVH2uFCoHUrmojhYh1vmCdOaneKJXwkeY1i9jnlslVo9dx+hQ5Hl9GnH/Bwy/IjxAyOePyPKYnzA==
+
+earcut@^2.2.3:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/earcut/-/earcut-2.2.4.tgz#6d02fd4d68160c114825d06890a92ecaae60343a"
+  integrity sha512-/pjZsA1b4RPHbeWZQn66SWS8nZZWLQQ23oE3Eam7aroEFGEvwKAsJfZ9ytiEMycfzXWpca4FA9QIOehf7PocBQ==
 
 eastasianwidth@^0.2.0:
   version "0.2.0"
@@ -8498,6 +7502,11 @@ eventemitter3@^4.0.0:
   resolved "https://registry.npmjs.org/eventemitter3/-/eventemitter3-4.0.7.tgz"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
 
+eventemitter3@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.1.tgz#53f5ffd0a492ac800721bb42c66b841de96423c4"
+  integrity sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==
+
 exceljs@^4.3.0:
   version "4.3.0"
   resolved "https://registry.npmjs.org/exceljs/-/exceljs-4.3.0.tgz"
@@ -8796,9 +7805,9 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-fecha@~4.2.0:
+fecha@^4.2.1, fecha@~4.2.0:
   version "4.2.3"
-  resolved "https://registry.npmjs.org/fecha/-/fecha-4.2.3.tgz"
+  resolved "https://registry.yarnpkg.com/fecha/-/fecha-4.2.3.tgz#4d9ccdbc61e8629b259fdca67e65891448d569fd"
   integrity sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==
 
 figures@^1.3.5:
@@ -8983,6 +7992,11 @@ flatted@^3.1.0:
   resolved "https://registry.npmmirror.com/flatted/-/flatted-3.2.6.tgz"
   integrity sha512-0sQoMh9s0BYsm+12Huy/rkKxVu4R1+r96YX5cG44rHV0pQ6iC3Q+mkoMFaGWObMFYQxCVT+ssG1ksneA2MI9KQ==
 
+flru@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/flru/-/flru-1.0.2.tgz#1ae514c62b8b035ffff9ca9e4563ddcc817f4845"
+  integrity sha512-kWyh8ADvHBFz6ua5xYOPnUroZTT/bwWfrCeL0Wj1dzG4/YOmOcfJ99W8dOVyyynJN35rZ9aCOtHChqQovV7yog==
+
 fmin@^0.0.2:
   version "0.0.2"
   resolved "https://registry.npmjs.org/fmin/-/fmin-0.0.2.tgz"
@@ -8994,9 +8008,9 @@ fmin@^0.0.2:
     tape "^4.5.1"
     uglify-js "^2.6.2"
 
-follow-redirects@^1.0.0:
+follow-redirects@^1.0.0, follow-redirects@^1.14.9:
   version "1.15.3"
-  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.3.tgz"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.3.tgz#fe2f3ef2690afce7e82ed0b44db08165b207123a"
   integrity sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==
 
 follow-redirects@^1.14.8:
@@ -9744,7 +8758,7 @@ iconv-lite@0.4, iconv-lite@0.4.24, iconv-lite@^0.4.24:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-iconv-lite@^0.6.3:
+iconv-lite@0.6, iconv-lite@^0.6.3:
   version "0.6.3"
   resolved "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz"
   integrity sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==
@@ -11138,6 +10152,13 @@ magic-string@^0.30.0:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.13"
 
+magic-string@^0.30.5:
+  version "0.30.5"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.5.tgz#1994d980bd1c8835dc6e78db7cbd4ae4f24746f9"
+  integrity sha512-7xlpfBaQaP/T6Vh8MO/EqXSW5En6INHEvEXQiuff7Gku0PWjU3uf6w/j9o7O+SpB5fOAkrI5HeoNgwjEO0pFsA==
+  dependencies:
+    "@jridgewell/sourcemap-codec" "^1.4.15"
+
 make-dir@^1.0.0, make-dir@^1.2.0:
   version "1.3.0"
   resolved "https://registry.npmmirror.com/make-dir/-/make-dir-1.3.0.tgz"
@@ -12380,9 +11401,9 @@ postcss@^8.1.10, postcss@^8.3.11, postcss@^8.4.0, postcss@^8.4.12, postcss@^8.4.
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-postcss@^8.4.27:
+postcss@^8.4.27, postcss@^8.4.31:
   version "8.4.31"
-  resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.31.tgz#92b451050a9f914da6755af352bdc0192508656d"
   integrity sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==
   dependencies:
     nanoid "^3.3.6"
@@ -12594,6 +11615,11 @@ quick-lru@^4.0.1:
   resolved "https://registry.npmmirror.com/quick-lru/-/quick-lru-4.0.1.tgz"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
 
+quickselect@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/quickselect/-/quickselect-2.0.0.tgz#f19680a486a5eefb581303e023e98faaf25dd018"
+  integrity sha512-RKJ22hX8mHe3Y6wH/N3wCM6BWtjaxIyyUIkpHOvfFnxdI4yD4tBXEBKSbriGujF6jnSVkJrffuo6vxACiSSxIw==
+
 quote-stream@^1.0.1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/quote-stream/-/quote-stream-1.0.2.tgz"
@@ -12644,6 +11670,13 @@ raw-body@2.5.1:
     http-errors "2.0.0"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+rbush@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/rbush/-/rbush-3.0.1.tgz#5fafa8a79b3b9afdfe5008403a720cc1de882ecf"
+  integrity sha512-XRaVO0YecOpEuIvbhbpTrZgoiI6xBlz6hnlr6EHhd+0x9ase6EmeN+hdwwUaJvLcsFFQ8iWVF1GAK1yB0BWi0w==
+  dependencies:
+    quickselect "^2.0.0"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -12707,7 +11740,7 @@ readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.1.1, readable-stre
     string_decoder "^1.1.1"
     util-deprecate "^1.0.1"
 
-readable-stream@^2.0.0, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.1.4, readable-stream@^2.2.2, readable-stream@^2.3.0, readable-stream@^2.3.5, readable-stream@~2.3.3, readable-stream@~2.3.6:
+readable-stream@^2.0.0, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.2.2, readable-stream@^2.3.0, readable-stream@^2.3.5, readable-stream@~2.3.3, readable-stream@~2.3.6:
   version "2.3.7"
   resolved "https://registry.npmmirror.com/readable-stream/-/readable-stream-2.3.7.tgz"
   integrity sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==
@@ -12978,7 +12011,7 @@ resolve@1.1.7:
   resolved "https://registry.npmjs.org/resolve/-/resolve-1.1.7.tgz"
   integrity sha512-9znBF0vBcaSN3W2j7wKvdERPwqTxSpCq+if5C0WoTCyV9n24rua28jeuQ2pL/HOf+yUe/Mef+H/5p60K0Id3bg==
 
-resolve@^1.1.5, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.14.2, resolve@^1.19.0, resolve@~1.22.1:
+resolve@^1.1.5, resolve@^1.10.0, resolve@^1.14.2, resolve@^1.19.0, resolve@~1.22.1:
   version "1.22.1"
   resolved "https://registry.npmmirror.com/resolve/-/resolve-1.22.1.tgz"
   integrity sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==
@@ -14038,6 +13071,11 @@ svg-baker@1.7.0:
     query-string "^4.3.2"
     traverse "^0.6.6"
 
+svg-path-parser@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/svg-path-parser/-/svg-path-parser-1.1.0.tgz#e16b4b39df0d2b0d39e8347db79fdda1453a6046"
+  integrity sha512-jGCUqcQyXpfe38R7RFfhrMyfXcBmpMNJI/B+4CE9/Unkh98UporAc461GTthv+TVDuZXsBx7/WiwJb1Oh4tt4A==
+
 svg-tags@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/svg-tags/-/svg-tags-1.0.0.tgz"
@@ -14436,6 +13474,11 @@ tslib@^2.0.0, tslib@^2.0.1, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.3
   version "2.4.0"
   resolved "https://registry.npmmirror.com/tslib/-/tslib-2.4.0.tgz"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
+
+tslib@^2.5.3:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
+  integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
 
 tsutils@^3.21.0:
   version "3.21.0"
@@ -15071,7 +14114,7 @@ vue-types@^4.2.1:
   dependencies:
     is-plain-object "5.0.0"
 
-vue@^3.2.33, vue@^3.2.40:
+vue@^3.2.40:
   version "3.3.4"
   resolved "https://registry.npmjs.org/vue/-/vue-3.3.4.tgz"
   integrity sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==
@@ -15081,6 +14124,17 @@ vue@^3.2.33, vue@^3.2.40:
     "@vue/runtime-dom" "3.3.4"
     "@vue/server-renderer" "3.3.4"
     "@vue/shared" "3.3.4"
+
+vue@^3.3.4:
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.6.tgz#bc1b129a73705db16da90aa1edde539d7401ca9d"
+  integrity sha512-jJIDETeWJnoY+gfn4ZtMPMS5KtbP4ax+CT4dcQFhTnWEk8xMupFyQ0JxL28nvT/M4+p4a0ptxaV2WY0LiIxvRg==
+  dependencies:
+    "@vue/compiler-dom" "3.3.6"
+    "@vue/compiler-sfc" "3.3.6"
+    "@vue/runtime-dom" "3.3.6"
+    "@vue/server-renderer" "3.3.6"
+    "@vue/shared" "3.3.6"
 
 vuedraggable@^4.1.0:
   version "4.1.0"

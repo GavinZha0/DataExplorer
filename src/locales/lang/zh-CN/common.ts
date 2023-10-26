@@ -61,6 +61,7 @@ export default {
       public: '共享',
       shared: '共享',
       action: '操作',
+      version: '版本',
       exp_date: '过期日期',
       created_by: '创建人',
       create_time: '创建时间',
@@ -70,6 +71,11 @@ export default {
       no: '否',
       true: '真',
       false: '假',
+      rate: '评价',
+      usage: '被使用',
+      platform: '平台',
+      framework: '框架',
+      area: '领域'
     },
     action: {
       detail: '详情',

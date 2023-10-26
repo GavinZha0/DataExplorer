@@ -63,6 +63,7 @@ export default {
       public: 'Public',
       shared: 'Share',
       action: 'Action',
+      version: 'Version',
       exp_date: 'Expiration',
       created_by: 'Created By',
       create_time: 'Create Time',
@@ -72,6 +73,11 @@ export default {
       no: 'No',
       true: 'True',
       false: 'False',
+      rate: 'Rate',
+      usage: 'Usage',
+      platform: 'Platform',
+      framework: 'Framework',
+      area: 'Area'
     },
     action: {
       detail: 'Detail',

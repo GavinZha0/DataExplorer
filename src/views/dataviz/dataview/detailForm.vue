@@ -64,7 +64,7 @@
             <div v-for="(item, id, index) in chartTypes" :key="item.id">
               <Tooltip v-if="
                     item.active &&
-                    ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
+                    ((thumbnailPage == 0 && index < 22) || (thumbnailPage == 1 && index > 22))
                   ">
                 <template #title>{{ item.name }}</template>
                 <img
@@ -81,7 +81,7 @@
               </Tooltip>
               <Tooltip v-else-if="
                     item.advised &&
-                    ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
+                    ((thumbnailPage == 0 && index < 22) || (thumbnailPage == 1 && index > 22))
                   ">
                 <template #title>{{ item.name }}</template>
                 <img
@@ -92,7 +92,7 @@
                   :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
                 />
               </Tooltip>
-              <Tooltip v-else-if="(thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20)">
+              <Tooltip v-else-if="(thumbnailPage == 0 && index < 22) || (thumbnailPage == 1 && index > 22)">
                 <template #title>{{ item.name }}</template>
                 <img
                   height="40"
@@ -608,9 +608,12 @@
   import {
     formInfoSchema,
     formConfigSchema,
+    tableTypes,
     mapTypes,
     pointsData,
     netTypes,
+    initGridTableCfg,
+    initPivotTableCfg,
     initMarkerMapCfg,
     initBubbleMapCfg,
     initChoroplethMapCfg,
@@ -685,6 +688,7 @@
   import 'vue-json-pretty/lib/styles.css';
   import ApexCharts from 'apexcharts';
   import { g2plotRender, specToG2PlotConfig } from '@antv/antv-spec';
+  import { PivotSheet, TableSheet } from '@antv/s2';
   import * as echarts from 'echarts';
   import * as am4core from '@amcharts/amcharts4/core';
   import * as am4charts from '@amcharts/amcharts4/charts';
@@ -814,7 +818,7 @@
   const leafletRef = ref();
   const cyRef = ref();
   const uploadRef = ref();
-  const chartTypes = ref<any>({ ...Thumbnails, ...mapTypes, ...netTypes });
+  const chartTypes = ref<any>({ ...Thumbnails, ...tableTypes, ...mapTypes, ...netTypes });
   const thumbnailPage = ref<number>(0);
   const advancedInfo = reactive<any>({
     disabled: true,
@@ -1343,6 +1347,19 @@
     }
 
     // detect if it is possible to build map chart
+    const advicedTableCfg: any[] = tableChartDetect(
+      rawData.value.dim,
+      rawData.value.metrics,
+      datasetInfo.dataInfo,
+    );
+    for (const tableAdvice of advicedTableCfg) {
+      const tableType = tableAdvice.chartType.toLowerCase() + '_table';
+      antAvaInfo.advices.push({ type: tableType });
+      antAvaInfo.libCfg.push(tableAdvice);
+      chartTypes.value[tableType].advised = true;
+    }
+
+    // detect if it is possible to build map chart
     const advicedMapCfg: any[] = mapChartDetect(
       rawData.value.dim,
       rawData.value.metrics,
@@ -1389,6 +1406,8 @@
       rawData.value.libName = 'Leaflet';
     } else if (rawData.value.type.endsWith('_net')) {
       rawData.value.libName = 'Cytoscape';
+    } else if (rawData.value.type.endsWith('_table')) {
+      rawData.value.libName = 'S2';
     } else {
       rawData.value.libName = 'G2Plot';
     }
@@ -1399,6 +1418,26 @@
     await nextTick();
     passConfigToAdapter(rawData.value.libCfg, rawData.value.libName, rawData.value.libVer);
   };
+
+
+  
+  /*
+   * detect if map is available based on current selection (Dim and Metrics)
+   * return map config
+   */
+   const tableChartDetect = (dim: any[], metrics: any[], info: any[]) => {
+    let libCfgGrid = initGridTableCfg;
+    let libCfgPivot = initPivotTableCfg;
+    let possibleTable: any[] = [];
+
+    libCfgGrid.config.fields.columns = dim.concat(metrics);
+    possibleTable.push(libCfgGrid);
+
+    libCfgPivot.config.fields.rows = dim;
+    libCfgPivot.config.fields.values = metrics;
+    possibleTable.push(libCfgPivot);
+    return possibleTable;
+   };
 
   /*
    * detect if map is available based on current selection (Dim and Metrics)
@@ -1920,6 +1959,9 @@
     } else if (rawData.value.type?.endsWith('_net')) {
       rawData.value.libName = 'Cytoscape';
       rawData.value.libVer = '3.2';
+    } else if (rawData.value.type?.endsWith('_table')) {
+      rawData.value.libName = 'S2';
+      rawData.value.libVer = '1.51';
     } else {
       rawData.value.libName = 'G2Plot';
     }
@@ -2284,6 +2326,12 @@
         rawData.value.libCfg,
         rawData.value.libVer,
       );
+    } else if (rawData.value.libName === 'S2') {
+      antAvaInfo.inst = renderS2(
+        datasetInfo.viewData,
+        rawData.value.libCfg,
+        rawData.value.libVer,
+      );
     } else if (rawData.value.libName === 'ECharts') {
       antAvaInfo.inst = renderECharts(
         datasetInfo.viewData,
@@ -2367,6 +2415,31 @@
 
     return inst;
   };
+
+/*
+   * render G2plot
+   */
+   const renderS2 = (data: any[], libCfg: any, libVer = '2.4') => {
+    if (!libCfg) {
+      return;
+    }
+
+    const s2Options = {
+      width: 600,
+      height: 600
+    };
+    let clonedCfg = cloneDeep(libCfg);
+    clonedCfg.config.data = JSON.parse(JSON.stringify(data));
+    let inst;
+    if(clonedCfg.chartType == 'Grid'){
+      inst = new TableSheet(chartContainerRef.value, libCfg.config, s2Options);
+    } else {
+      inst = new PivotSheet(chartContainerRef.value, libCfg.config, s2Options);
+    }
+    
+    inst.render();
+    return inst;
+  }
 
   /*
    * render Echarts

@@ -199,6 +199,7 @@
   import { setGlobal } from '@antv/g2plot';
   import ApexCharts from 'apexcharts';
   import { g2plotRender } from '@antv/antv-spec';
+  import { PivotSheet, TableSheet } from '@antv/s2';
   import * as echarts from 'echarts';
   import * as am4core from '@amcharts/amcharts4/core';
   import * as am4charts from '@amcharts/amcharts4/charts';
@@ -502,6 +503,8 @@
     nextTick(() => {
       if (!grid.libName || grid.libName === 'G2Plot') {
         renderG2Plot(grid);
+      } else if (grid.libName === 'S2') {
+        renderS2(grid);
       } else if (grid.libName === 'ECharts') {
         renderECharts(grid);
       } else if (grid.libName === 'AmCharts') {
@@ -529,6 +532,22 @@
     );
   };
 
+
+  /*
+   * render S2 for table
+   */
+   const renderS2 = (grid: any) => {
+    const s2Options = {
+      width: 600,
+      height: 600
+    };
+    if(grid.libCfg.chartType == 'Grid'){
+      grid.instance = new TableSheet(grid.container, grid.libCfg.config, s2Options);
+    } else {
+      grid.instance = new PivotSheet(grid.container, grid.libCfg.config, s2Options);
+    }
+  };
+  
   /*
    * render ECharts
    */

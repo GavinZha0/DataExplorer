@@ -333,6 +333,21 @@ export const calcModalSchemas: FormSchema[] = [
   },
 ];
 
+export const tableTypes = {
+  grid_table: {
+    id: 'grid_table',
+    name: 'Grid',
+    page: 0,
+    svgCode: '<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg fill="#000000" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 209 209" xml:space="preserve"><path d="M201.5,112c4.143,0,7.5-3.357,7.5-7.5s-3.357-7.5-7.5-7.5H184V43.333h17.5c4.143,0,7.5-3.357,7.5-7.5s-3.357-7.5-7.5-7.5 H184V7.5c0-4.143-3.357-7.5-7.5-7.5S169,3.357,169,7.5v20.833h-53.666V7.5c0-4.143-3.357-7.5-7.5-7.5s-7.5,3.357-7.5,7.5v20.833 H46.667V7.5c0-4.143-3.357-7.5-7.5-7.5s-7.5,3.357-7.5,7.5v20.833H7.5c-4.143,0-7.5,3.357-7.5,7.5s3.357,7.5,7.5,7.5h24.167V97H7.5 c-4.143,0-7.5,3.357-7.5,7.5s3.357,7.5,7.5,7.5h24.167v53.666H7.5c-4.143,0-7.5,3.357-7.5,7.5s3.357,7.5,7.5,7.5h24.167V201.5 c0,4.143,3.357,7.5,7.5,7.5s7.5-3.357,7.5-7.5v-20.834h53.667V201.5c0,4.143,3.357,7.5,7.5,7.5s7.5-3.357,7.5-7.5v-20.834H169V201.5 c0,4.143,3.357,7.5,7.5,7.5s7.5-3.357,7.5-7.5v-20.834h17.5c4.143,0,7.5-3.357,7.5-7.5s-3.357-7.5-7.5-7.5H184V112H201.5z M169,43.333V97h-53.666V43.333H169z M46.667,43.333h53.667V97H46.667V43.333z M46.667,165.666V112h53.667v53.666H46.667z M169,165.666h-53.666V112H169V165.666z"/></svg>',
+  },
+  pivot_table: {
+    id: 'pivot_table',
+    name: 'Pivot',
+    page: 0,
+    svgCode: '<?xml version="1.0" encoding="utf-8"?><svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.75 2V7.8H2C2 4.19 4.15 2.02 7.75 2Z" fill="#292D32"/><path d="M22 7.8H16.25V2C19.85 2.02 22 4.19 22 7.8Z" fill="#292D32"/><path d="M22 16.3008C21.96 19.8508 19.82 21.9808 16.25 22.0008V16.3008H22Z" fill="#292D32"/><path d="M7.75 16.3008V22.0008C4.18 21.9808 2.04 19.8508 2 16.3008H7.75Z" fill="#292D32"/><path d="M7.75 9.30078H2V14.8008H7.75V9.30078Z" fill="#292D32"/><path d="M22 9.30078H16.25V14.8008H22V9.30078Z" fill="#292D32"/><path d="M14.75 9.30078H9.25V14.8008H14.75V9.30078Z" fill="#292D32"/><path d="M14.75 2H9.25V7.8H14.75V2Z" fill="#292D32"/><path d="M14.75 16.3008H9.25V22.0008H14.75V16.3008Z" fill="#292D32"/></svg>',
+  },
+}
+
 export const mapTypes = {
   marker_map: {
     id: 'marker_map',
@@ -408,6 +423,30 @@ export const netTypes = {
     name: 'Cloud',
     page: 1,
     svgCode: '<?xml version="1.0" encoding="utf-8"?><svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:#669df6;fill-rule:evenodd;}.cls-2{fill:#4285f4;}.cls-3{fill:#aecbfa;}</style></defs><g data-name="Product Icons"><g><polygon class="cls-1" points="4.94 13.7 11.53 20.22 12.62 19.07 6.3 12.93 4.94 13.7"/><polygon class="cls-1" points="12.57 4.06 11.48 5.22 17.69 11.44 19.47 11.06 12.57 4.06"/><rect class="cls-2" x="11.38" y="5.13" width="1.25" height="5"/><rect class="cls-2" x="11.38" y="14.5" width="1.25" height="5"/><circle id="Oval" class="cls-3" cx="12" cy="4.5" r="1.88"/><circle class="cls-3" cx="12" cy="19.5" r="1.88"/><polygon class="cls-1" points="2.66 11.38 17.73 11.38 21.37 13.25 6.3 13.25 2.66 11.38"/><circle class="cls-3" cx="4.5" cy="12.31" r="2.5"/><circle class="cls-3" cx="19.5" cy="12.31" r="2.5"/></g></g></svg>',
+  },
+};
+
+export const initGridTableCfg = {
+  chartType: 'Grid', // Pivot
+  config: {
+    fields: {
+      columns: []
+    },
+    meta: [],
+    data: []
+  },
+};
+
+export const initPivotTableCfg = {
+  chartType: 'Pivot',
+  config: {
+    fields: {
+      rows: [],
+      columns: [],
+      values: []
+    },
+    meta: [],
+    data: []
   },
 };
 

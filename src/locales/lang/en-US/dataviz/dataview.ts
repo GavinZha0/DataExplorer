@@ -312,8 +312,9 @@ export default {
           dark: 'Dark',
         },
         animation: {
-          title: 'Map',
+          title: 'Animation',
           occasion: 'Occasion',
+          effect: 'Effect',
           duration: 'Duration',
           appear: 'Appear',
           enter: 'Enter',

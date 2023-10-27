@@ -317,6 +317,7 @@ export default {
         animation: {
           title: '动画效果',
           occasion: '动画时机',
+          effect: '动画效果',
           duration: '动画时长',
           appear: '图表加载时',
           enter: '图形更新时',

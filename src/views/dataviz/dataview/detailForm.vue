@@ -64,7 +64,7 @@
             <div v-for="(item, id, index) in chartTypes" :key="item.id">
               <Tooltip v-if="
                     item.active &&
-                    ((thumbnailPage == 0 && index < 22) || (thumbnailPage == 1 && index > 22))
+                    ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
                   ">
                 <template #title>{{ item.name }}</template>
                 <img
@@ -81,7 +81,7 @@
               </Tooltip>
               <Tooltip v-else-if="
                     item.advised &&
-                    ((thumbnailPage == 0 && index < 22) || (thumbnailPage == 1 && index > 22))
+                    ((thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20))
                   ">
                 <template #title>{{ item.name }}</template>
                 <img
@@ -92,7 +92,7 @@
                   :src="'data:image/svg+xml;utf8,' + encodeURIComponent(item.svgCode)"
                 />
               </Tooltip>
-              <Tooltip v-else-if="(thumbnailPage == 0 && index < 22) || (thumbnailPage == 1 && index > 22)">
+              <Tooltip v-else-if="(thumbnailPage == 0 && index < 20) || (thumbnailPage == 1 && index >= 20)">
                 <template #title>{{ item.name }}</template>
                 <img
                   height="40"
@@ -1395,11 +1395,11 @@
 
     // select the first advised chart as default one
     antAvaInfo.current = 0;
-    chartTypes.value[antAvaInfo.advices[0].type].active = true;
-    thumbnailPage.value = chartTypes.value[antAvaInfo.advices[0].type].page ? 1 : 0;
+    chartTypes.value[antAvaInfo.advices[antAvaInfo.current].type].active = true;
+    thumbnailPage.value = chartTypes.value[antAvaInfo.advices[antAvaInfo.current].type].page ? 1 : 0;
     // update chart type name which is the name in chartTypes
-    rawData.value.type = antAvaInfo.advices[0].type;
-    rawData.value.libCfg = antAvaInfo.libCfg[0];
+    rawData.value.type = antAvaInfo.advices[antAvaInfo.current].type;
+    rawData.value.libCfg = antAvaInfo.libCfg[antAvaInfo.current];
     advancedInfo.textCfg = JSON.stringify(rawData.value.libCfg);
 
     if (rawData.value.type.endsWith('_map')) {
@@ -1482,7 +1482,9 @@
       const fieldInfo = info.find((ele) => {
         return ele.name == fieldName;
       });
-      if (['integer', 'float'].includes(fieldInfo.recommendation)) {
+      if (['time', 'date', 'datetime'].includes(fieldInfo.recommendation)) {
+        continue;
+      } else if (['integer', 'float'].includes(fieldInfo.recommendation)) {
         if (fieldInfo.maximum < LAT_MAX && fieldInfo.minimum > LAT_MIN && !locField.lat) {
           // 90 > lat > -90
           locField.lat = fieldName;
@@ -1964,6 +1966,7 @@
       rawData.value.libVer = '1.51';
     } else {
       rawData.value.libName = 'G2Plot';
+      rawData.value.libVer = '2.4';
     }
 
     // render chart

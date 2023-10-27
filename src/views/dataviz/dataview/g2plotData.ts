@@ -71,7 +71,7 @@ export const formCustomCommonStyle: FormSchema[] = [
   {
     field: 'effect',
     component: 'Select',
-    label: t('dataviz.dataview.form.custom.style.animation.title'),
+    label: t('dataviz.dataview.form.custom.style.animation.effect'),
     colProps: { span: 24 },
     componentProps: {
       placeholder: 'Effect',

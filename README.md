@@ -49,7 +49,10 @@ Guest account: guest/Guest@Pie3
 
 
 
-https://github.com/GavinZha0/DataMagic/assets/88469005/03938dea-4493-49e2-96ab-3147f35bc31d
+
+https://github.com/GavinZha0/DataExplorer/assets/88469005/c42550be-ee6f-40fe-b223-1469310957e0
+
+
 
 
 

@@ -15,7 +15,7 @@ export const API = {
   AI_IMAGE_CLONE: 'aiimage/clone',
   AI_IMAGE_DELETE: '/aiimage/delete',
   AI_IMAGE_EXECUTE: '/aiimage/execute',
-  AI_IMAGE_CATEGORY: '/aiimage/category',
+  AI_IMAGE_GROUPS: '/aiimage/groups',
   AI_IMAGE_ONE: '/aiimage/getone',
 }
 
@@ -126,8 +126,8 @@ export function API_AI_IMAGE_EXECUTE(id: number) {
 /* get all groups
  *
  */
-export function API_AI_IMAGE_CATEGORY() {
+export function API_AI_IMAGE_GROUPS() {
   return defHttp.post<AxiosResponse>({
-    url: API.AI_IMAGE_CATEGORY,
+    url: API.AI_IMAGE_GROUPS,
   });
 }

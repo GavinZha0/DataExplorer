@@ -79,9 +79,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           drop_console: VITE_DROP_CONSOLE,
         },
       },
-      // Turning off brotliSize display can slightly reduce packaging time
-      //brotliSize: false,
-      chunkSizeWarningLimit: 2000,
+      // Turning off reportCompressedSize can slightly reduce packaging time
+      reportCompressedSize: false,
+      chunkSizeWarningLimit: 5000,
       rollupOptions: {
         external: ['undefined'],
       },

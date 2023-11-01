@@ -69,7 +69,7 @@
         </template>
       </template>
     </BasicTable>
-    <!--DetailForm @register="detailDrawer" @success="handleSuccess" /-->
+    <DetailForm @register="detailDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
 
@@ -89,7 +89,8 @@
   } from '/@/api/ai/image';
   import { useI18n } from 'vue-i18n';
   import { useDrawer } from '/@/components/Drawer';
-
+  import DetailForm from './detailForm.vue';
+  
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   let searchInfo = reactive<TableSearch>({ fields: ['name', 'group', 'desc'] });

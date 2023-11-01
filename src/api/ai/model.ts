@@ -18,6 +18,7 @@ export const API = {
   AI_MODEL_EXECUTE_SCRIPT: '/aimodel/execute_script',
   AI_MODEL_CATEGORY: '/aimodel/category',
   AI_MODEL_GROUPS: '/aimodel/groups',
+  AI_MODEL_TYPES: '/aimodel/types',
   AI_MODEL_ONE: '/aimodel/getone'
 }
 
@@ -131,5 +132,23 @@ export function API_AI_MODEL_EXECUTE(id: number) {
 export function API_AI_MODEL_CATEGORY() {
   return defHttp.post<AxiosResponse>({
     url: API.AI_MODEL_CATEGORY,
+  });
+}
+
+/* get all groups
+ *
+ */
+export function API_AI_MODEL_GROUPS() {
+  return defHttp.post<AxiosResponse>({
+    url: API.AI_MODEL_GROUPS,
+  });
+}
+
+/* get all types
+ *
+ */
+export function API_AI_MODEL_TYPES() {
+  return defHttp.post<AxiosResponse>({
+    url: API.AI_MODEL_TYPES,
   });
 }

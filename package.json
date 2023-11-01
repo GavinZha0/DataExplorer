@@ -130,6 +130,7 @@
     "splitpanes": "^3.1.5",
     "sql-formatter": "^11.0.2",
     "template_js": "^2.4.0",
+    "tui-image-editor": "^3.15.3",
     "validator": "^13.9.0",
     "vditor": "^3.8.13",
     "vue": "^3.3.4",

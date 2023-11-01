@@ -134,94 +134,24 @@ export const formInfoSchema: FormSchema[] = [
 ];
 
 // source form schema
-export const formConfigSchema: FormSchema[] = [
+export const formModelSchema: FormSchema[] = [
   {
-    field: 'variable',
-    component: 'ApiTree',
-    label: '',
-    slot: 'sourceSelectTree',
-  },
-  {
-    field: 'hidden',
+    field: 'modelTypes',
     component: 'Input',
     label: '',
-    slot: 'fieldTree',
+    colProps: { span: 24 },
+    slot: 'modelTypes',
+  },
+  {
+    field: 'modelList',
+    component: 'Input',
+    label: '',
+    slot: 'modelList',
   },
   {
     field: 'sorter',
     component: 'Input',
     label: '',
     slot: 'fieldTree',
-  },
-];
-
-export const varModalSchemas: FormSchema[] = [
-  {
-    field: 'type',
-    label: t('dataviz.dataset.form.var.type'),
-    required: true,
-    component: 'Select',
-    componentProps: {
-      options: [
-        { label: t('dataviz.dataset.form.var.cat.number'), value: 'number' },
-        { label: t('dataviz.dataset.form.var.cat.string'), value: 'string' },
-        { label: t('dataviz.dataset.form.var.cat.bool'), value: 'bool' },
-        { label: t('dataviz.dataset.form.var.cat.ts'), value: 'timestamp' },
-        { label: t('dataviz.dataset.form.var.cat.arrayN'), value: '[number]' },
-        { label: t('dataviz.dataset.form.var.cat.arrayS'), value: '[string]' },
-      ],
-    },
-    colProps: { span: 24 },
-  },
-  {
-    field: 'name',
-    component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.var.name'),
-    colProps: { span: 24 },
-  },
-  {
-    field: 'value',
-    component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.var.value'),
-    colProps: { span: 24 },
-  },
-];
-
-export const filterModalSchemas: FormSchema[] = [
-  {
-    field: 'key',
-    component: 'Input',
-    required: true,
-    label: '',
-    colProps: { span: 24 },
-    show: false,
-  },
-  {
-    field: 'operator',
-    label: t('dataviz.dataset.form.filter.operator'),
-    required: true,
-    component: 'Select',
-    componentProps: {
-      options: [
-        { label: '>', value: '>' },
-        { label: '>=', value: '>=' },
-        { label: '<', value: '<' },
-        { label: '<=', value: '<=' },
-        { label: '=', value: '=' },
-        { label: '!=', value: '!=' },
-        { label: 'in', value: 'in' },
-        { label: 'like', value: 'like' },
-      ],
-    },
-    colProps: { span: 24 },
-  },
-  {
-    field: 'value',
-    component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.filter.value'),
-    colProps: { span: 24 },
   },
 ];

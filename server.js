@@ -12,7 +12,7 @@ app.get('*', (req, res) => {
 app.use(
   '^/api/',
   createProxyMiddleware({
-    target: 'http://localhost:9527',
+    target: 'http://localhost:9528',
     changeOrigin: true,
     ws: true,
     pathRewrite: {

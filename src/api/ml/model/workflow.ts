@@ -4,7 +4,7 @@ export interface ApiWorkflowDataType {
   name?: string;
   description?: string;
   category?: string;
-  graph?: any;
+  graph?: any[];
   grid?: any;
   graphVer?: string;
   config?: any;

@@ -1,8 +1,7 @@
 export default {
   tab: {
-    manage: 'Manage',
-    editor: 'Editor',
-    view: 'View',
+    flow: '工作流',
+    chart: '图表'
   },
   toolbar: {
     search: 'name, category or description',
@@ -25,11 +24,18 @@ export default {
   },
   form: {
     config: {
-      input: 'Input',
-      limit: 'Limit',
-      type: 'Type',
-      source: 'Source',
-      expect: 'Expectation',
+      grid: {
+        visible: '显示网格',
+        size: '网格大小',
+        color: '网格颜色',
+        thickness: '网格粗细',
+      },
+      background: {
+        color: '背景颜色',
+        image: '背景图片',
+        repeat: '图片重复',
+        opacity: '图片透明度',
+      }
     },
     create: {
       info: 'Info',

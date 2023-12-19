@@ -203,7 +203,6 @@
     GoldOutlined,
     InfoCircleFilled,
   } from '@ant-design/icons-vue';
-  import 'splitpanes/dist/splitpanes.css';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { ApiSelect } from '/@/components/Form';
   import {

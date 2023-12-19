@@ -6,25 +6,26 @@ import { ApiWorkflowDataType } from '/@/api/ml/model/workflow';
 //----------------------------------------------------------------------------------------
 // PATH definition
 export const API = {
-  WORKFLOW_LIST: '/workflow/list',
-  WORKFLOW_TREE: '/workflow/tree',
-  WORKFLOW_CREATE: '/workflow/create',
-  WORKFLOW_UPDATE: '/workflow/update',
-  WORKFLOW_PUBLIC: '/workflow/public',
-  WORKFLOW_CLONE: '/workflow/clone',
-  WORKFLOW_DELETE: '/workflow/delete',
-  WORKFLOW_EXECUTE: '/workflow/execute',
-  WORKFLOW_EXECUTE_SQL: '/workflow/execute_sql',
-  WORKFLOW_CATEGORY: '/workflow/category',
-  WORKFLOW_ONE: '/workflow/getone'
+  ML_WORKFLOW_LIST: '/mlworkflow/list',
+  ML_WORKFLOW_TREE: '/mlworkflow/tree',
+  ML_WORKFLOW_CREATE: '/mlworkflow/create',
+  ML_WORKFLOW_UPDATE: '/mlworkflow/update',
+  ML_WORKFLOW_PUBLIC: '/mlworkflow/public',
+  ML_WORKFLOW_CLONE: '/mlworkflow/clone',
+  ML_WORKFLOW_DELETE: '/mlworkflow/delete',
+  ML_WORKFLOW_EXECUTE: '/mlworkflow/execute',
+  ML_WORKFLOW_EXECUTE_SQL: '/mlworkflow/execute_sql',
+  ML_WORKFLOW_CATEGORY: '/mlworkflow/category',
+  ML_WORKFLOW_GROUPS: '/mlworkflow/groups',
+  ML_WORKFLOW_ONE: '/mlworkflow/getone'
 }
 
 /* get all algo as list
  * params: ApiListReqType
  */
-export function API_WORKFLOW_LIST(params?: ApiListReqType) {
+export function API_ML_WORKFLOW_LIST(params?: ApiListReqType) {
   return defHttp.post<AxiosResponse>({
-    url: API.WORKFLOW_LIST,
+    url: API.ML_WORKFLOW_LIST,
     params,
   });
 }
@@ -32,9 +33,9 @@ export function API_WORKFLOW_LIST(params?: ApiListReqType) {
 /* get specific dataset
  * id: dataset id
  */
-export function API_WORKFLOW_ONE(id: number) {
+export function API_ML_WORKFLOW_ONE(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.WORKFLOW_ONE,
+    url: API.ML_WORKFLOW_ONE,
     data: { id: id },
   });
 }
@@ -42,9 +43,9 @@ export function API_WORKFLOW_ONE(id: number) {
 /* create a new dataset
  * params: ApiDatasetDataType without id
  */
-export function API_WORKFLOW_CREATE(params: Omit<ApiWorkflowDataType, 'id'>) {
+export function API_ML_WORKFLOW_CREATE(params: Omit<ApiWorkflowDataType, 'id'>) {
   return defHttp.post<AxiosResponse>({
-    url: API.WORKFLOW_CREATE,
+    url: API.ML_WORKFLOW_CREATE,
     params,
   });
 }
@@ -52,9 +53,9 @@ export function API_WORKFLOW_CREATE(params: Omit<ApiWorkflowDataType, 'id'>) {
 /* update dataset info
  * params: ApiDatasetDataType
  */
-export function API_WORKFLOW_UPDATE(params: ApiWorkflowDataType) {
+export function API_ML_WORKFLOW_UPDATE(params: ApiWorkflowDataType) {
   return defHttp.post<AxiosResponse>({
-    url: API.WORKFLOW_UPDATE,
+    url: API.ML_WORKFLOW_UPDATE,
     params,
   });
 }
@@ -63,13 +64,13 @@ export function API_WORKFLOW_UPDATE(params: ApiWorkflowDataType) {
  * id: dataset id
  * pub: public flag
  */
-export function API_WORKFLOW_PUBLIC(id: number, pub: boolean) {
+export function API_ML_WORKFLOW_PUBLIC(id: number, pub: boolean) {
   const params: ApiPublicReqType = {
     id: id,
     pub: pub,
   };
   return defHttp.post<AxiosResponse>({
-    url: API.WORKFLOW_PUBLIC,
+    url: API.ML_WORKFLOW_PUBLIC,
     params,
   });
 }
@@ -77,9 +78,9 @@ export function API_WORKFLOW_PUBLIC(id: number, pub: boolean) {
 /* clone a dataset
  * id: dataset id
  */
-export function API_WORKFLOW_CLONE(id: number) {
+export function API_ML_WORKFLOW_CLONE(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.WORKFLOW_CLONE,
+    url: API.ML_WORKFLOW_CLONE,
     data: { id: id },
   });
 }
@@ -87,9 +88,9 @@ export function API_WORKFLOW_CLONE(id: number) {
 /* delete a dataset
  * id: dataset id
  */
-export function API_WORKFLOW_DEL(id: number) {
+export function API_ML_WORKFLOW_DEL(id: number) {
   return defHttp.delete<AxiosResponse>({
-    url: API.WORKFLOW_DELETE,
+    url: API.ML_WORKFLOW_DELETE,
     params: { id: id },
   });
 }
@@ -98,9 +99,9 @@ export function API_WORKFLOW_DEL(id: number) {
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_WORKFLOW_EXECUTE(id: number) {
+export function API_ML_WORKFLOW_EXECUTE(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.WORKFLOW_EXECUTE,
+    url: API.ML_WORKFLOW_EXECUTE,
     params: { id: id },
   });
 }
@@ -108,8 +109,17 @@ export function API_WORKFLOW_EXECUTE(id: number) {
 /* get all groups
  *
  */
-export function API_WORKFLOW_CATEGORY() {
+export function API_ML_WORKFLOW_CATEGORY() {
   return defHttp.post<AxiosResponse>({
-    url: API.WORKFLOW_CATEGORY,
+    url: API.ML_WORKFLOW_CATEGORY,
+  });
+}
+
+/* get all groups
+ *
+ */
+export function API_ML_WORKFLOW_GROUPS() {
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_WORKFLOW_GROUPS,
   });
 }

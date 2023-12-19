@@ -1,41 +1,49 @@
 import { ApiListReqType, ApiPublicReqType } from '/@/api/model/baseModel';
 import { defHttp } from '/@/utils/http/axios';
 import { AxiosResponse } from 'axios';
-import { ApiModelDataType } from '/@/api/ml/model/model';
+import { ApiMlFeatureDataType } from '/@/api/ml/model/feature';
 
 //----------------------------------------------------------------------------------------
 // PATH definition
 export const API = {
-  ML_MODEL_LIST: '/mlmodel/list',
-  ML_MODEL_TREE: '/mlmodel/tree',
-  ML_MODEL_CREATE: '/mlmodel/create',
-  ML_MODEL_UPDATE: '/mlmodel/update',
-  ML_MODEL_PUBLIC: '/mlmodel/public',
-  ML_MODEL_CLONE: 'mlmodel/clone',
-  ML_MODEL_DELETE: '/mlmodel/delete',
-  ML_MODEL_EXECUTE: '/mlmodel/execute',
-  ML_MODEL_EXECUTE_SCRIPT: '/mlmodel/execute_script',
-  ML_MODEL_CATEGORY: '/mlmodel/category',
-  ML_MODEL_GROUPS: '/mlmodel/groups',
-  ML_MODEL_ONE: '/mlmodel/getone'
+  ML_FEATURE_LIST: '/mlfeature/list',
+  ML_FEATURE_TREE: '/mlfeature/tree',
+  ML_FEATURE_CREATE: '/mlfeature/create',
+  ML_FEATURE_UPDATE: '/mlfeature/update',
+  ML_FEATURE_PUBLIC: '/mlfeature/public',
+  ML_FEATURE_CLONE: 'algorithm/clone',
+  ML_FEATURE_DELETE: '/mlfeature/delete',
+  ML_FEATURE_EXECUTE: '/mlfeature/execute',
+  ML_FEATURE_EXECUTE_SCRIPT: '/mlfeature/execute_script',
+  ML_FEATURE_GROUPS: '/mlfeature/groups',
+  ML_FEATURE_ONE: '/mlfeature/getone',
 }
 
 /* get all algo as list
  * params: ApiListReqType
  */
-export function API_ML_MODEL_LIST(params?: ApiListReqType) {
+export function API_ML_FEATURE_LIST(params?: ApiListReqType) {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_LIST,
+    url: API.ML_FEATURE_LIST,
     params,
+  });
+}
+
+/* get group->dataset tree
+ *
+ */
+export function API_ML_FEATURE_TREE() {
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_FEATURE_TREE,
   });
 }
 
 /* get specific dataset
  * id: dataset id
  */
-export function API_ML_MODEL_ONE(id: number) {
+export function API_ML_FEATURE_ONE(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_ONE,
+    url: API.ML_FEATURE_ONE,
     data: { id: id },
   });
 }
@@ -43,9 +51,9 @@ export function API_ML_MODEL_ONE(id: number) {
 /* create a new dataset
  * params: ApiDatasetDataType without id
  */
-export function API_ML_MODEL_CREATE(params: Omit<ApiModelDataType, 'id'>) {
+export function API_ML_FEATURE_CREATE(params: Omit<ApiMlFeatureDataType, 'id'>) {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_CREATE,
+    url: API.ML_FEATURE_CREATE,
     params,
   });
 }
@@ -53,9 +61,9 @@ export function API_ML_MODEL_CREATE(params: Omit<ApiModelDataType, 'id'>) {
 /* update dataset info
  * params: ApiDatasetDataType
  */
-export function API_ML_MODEL_UPDATE(params: ApiModelDataType) {
+export function API_ML_FEATURE_UPDATE(params: ApiMlFeatureDataType) {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_UPDATE,
+    url: API.ML_FEATURE_UPDATE,
     params,
   });
 }
@@ -64,13 +72,13 @@ export function API_ML_MODEL_UPDATE(params: ApiModelDataType) {
  * id: dataset id
  * pub: public flag
  */
-export function API_ML_MODEL_PUBLIC(id: number, pub: boolean) {
+export function API_ML_FEATURE_PUBLIC(id: number, pub: boolean) {
   const params: ApiPublicReqType = {
     id: id,
     pub: pub,
   };
   return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_PUBLIC,
+    url: API.ML_FEATURE_PUBLIC,
     params,
   });
 }
@@ -78,9 +86,9 @@ export function API_ML_MODEL_PUBLIC(id: number, pub: boolean) {
 /* clone a dataset
  * id: dataset id
  */
-export function API_ML_MODEL_CLONE(id: number) {
+export function API_ML_FEATURE_CLONE(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_CLONE,
+    url: API.ML_FEATURE_CLONE,
     data: { id: id },
   });
 }
@@ -88,9 +96,9 @@ export function API_ML_MODEL_CLONE(id: number) {
 /* delete a dataset
  * id: dataset id
  */
-export function API_ML_MODEL_DEL(id: number) {
+export function API_ML_FEATURE_DEL(id: number) {
   return defHttp.delete<AxiosResponse>({
-    url: API.ML_MODEL_DELETE,
+    url: API.ML_FEATURE_DELETE,
     params: { id: id },
   });
 }
@@ -99,9 +107,9 @@ export function API_ML_MODEL_DEL(id: number) {
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_ML_MODEL_EXECUTE(id: number) {
+export function API_ML_FEATURE_EXECUTE(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_EXECUTE,
+    url: API.ML_FEATURE_EXECUTE,
     params: { id: id },
   });
 }
@@ -110,9 +118,9 @@ export function API_ML_MODEL_EXECUTE(id: number) {
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_ML_MODEL_EXECUTE_SCRIPT(params: ApiModelDataType) {
+export function API_ML_FEATURE_EXECUTE_SCRIPT(params: ApiMlFeatureDataType) {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_EXECUTE_SCRIPT,
+    url: API.ML_FEATURE_EXECUTE_SCRIPT,
     method: 'POST',
     data: params,
   });
@@ -121,17 +129,8 @@ export function API_ML_MODEL_EXECUTE_SCRIPT(params: ApiModelDataType) {
 /* get all groups
  *
  */
-export function API_ML_MODEL_CATEGORY() {
+export function API_ML_FEATURE_GROUPS() {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_CATEGORY,
-  });
-}
-
-/* get all groups
- *
- */
-export function API_ML_MODEL_GROUPS() {
-  return defHttp.post<AxiosResponse>({
-    url: API.ML_MODEL_GROUPS,
+    url: API.ML_FEATURE_GROUPS,
   });
 }

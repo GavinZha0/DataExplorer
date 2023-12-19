@@ -5,18 +5,37 @@ export interface ApiDatasetDataType {
   name: string;
   desc?: string;
   group?: string;
-  variable?: VarFieldType[] | null;
-  query: string;
-  fields: ColumnFieldType[];
-  graph?: any;
-  graphVer?: string;
   sourceId: number;
   sourceName?: string;
+  datasetId?: number;
+  datasetName?: string;
+  fields: ColumnFieldType[];
+  stat?: Statistics[];
+  corr?: Correlation[];
+  query: string;
   pubFlag?: boolean;
   createdBy?: string;
   createdAt?: string;
   updatedBy?: string;
   updatedAt?: string;
+}
+
+export interface Statistics {
+  id?: number;
+  chartType?: string;
+  fieldName?: string;
+  fieldType?: string;
+  container?: any;
+  instance?: any;
+}
+
+export interface Correlation {
+  id?: number;
+  chartType?: string;
+  fieldNames?: string[];
+  fieldTypes?: string[];
+  container?: any;
+  instance?: any;
 }
 
 export interface SourceFieldType {

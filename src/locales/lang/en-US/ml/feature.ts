@@ -1,16 +1,36 @@
 export default {
   tab: {
-    flow: 'Flow',
-    chart: 'Chart'
+    statistics: {
+      title: 'Statistics',
+      count: 'Count',
+      distinct: 'Distinct',
+      dataType: 'Data Type',
+      max: 'Max',
+      pct75: 'Q3(75%)',
+      pct25: 'Q1(25%)',
+      min: 'Min',
+      mean: 'Mean',
+      median: 'Median',
+      std: 'StdDev',
+      variance: 'Variance',
+      missing: 'Missing',
+      zeros: 'Zeros',
+    },
+    distribution: 'Distribution',
+    interaction: 'Interaction',
+    correlation: 'Correlation',
+    python: 'Python',
   },
   toolbar: {
     search: 'name, group or description',
   },
   table: {
     title: {
-      last_run: 'Last run',
-      duration: 'Druation',
-      error: 'Error',
+      feature: 'Feature',
+      target: 'Target',
+      source: 'Datasource',
+      dataset: 'Dataset',
+      chart: 'Chart',
       yes: 'Yes',
       no: 'No',
     },
@@ -21,21 +41,21 @@ export default {
       unshare: 'Unshare',
       delete: 'Delete',
     },
+    field: {
+      distribution: 'Distribution'
+    }
   },
   form: {
     config: {
-      grid: {
-        visible: 'Grid Visible',
-        size: 'Grid Size',
-        color: 'Grid Color',
-        thickness: 'Grid Thickness',
-      },
-      background: {
-        color: 'Bg Color',
-        image: 'Bg Image',
-        repeat: 'Image Repeat',
-        opacity: 'Image Opacity',
-      }
+      input: 'Input',
+      limit: 'Limit',
+      type: 'Type',
+      source: 'Source',
+      expect: 'Expectation',
+    },
+    datasource: {
+      source: 'Datasource',
+      dataset: 'Dataset'
     },
     create: {
       info: 'Info',

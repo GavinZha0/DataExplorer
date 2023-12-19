@@ -35,230 +35,224 @@
         <SaveTwoTone class="toolbar-button" @click="handleSubmit" />
       </Tooltip>
     </template>
-    <a-row type="flex" :gutter="4">
-      <a-col :md="24 - configFormSize" :sm="24">
-        <div class="mr-2 overflow-hidden bg-white">
-          <splitpanes class="default-theme" horizontal style="width: 100%; height: 770px">
-            <pane size="70">
-              <splitpanes>
-                <pane size="70">
-                  <div id="codeEditor" style="width: 100%; height: 750px; border: solid 1px">
-                    <CodeEditor
-                      border
-                      class="code-mirror"
-                      placeholder="Input custom sql"
-                      v-model:value="rawData.query"
-                      mode="sql"
-                    />
-                  </div>
-                </pane>
-                <pane size="30">
-                  <div
-                    id="erGraph"
-                    ref="erGraphRef"
-                    style="width: 100%; height: 750px; border: solid 1px"
+    <div style="width: 98%; float: left">
+      <Row type="flex" :gutter="4">
+        <Col :md="24 - rightPanelSize" :sm="24">
+          <div class="mr-2 overflow-hidden bg-white">
+            <splitpanes class="default-theme" horizontal style="width: 100%; height: 770px">
+              <pane size="70">
+                <splitpanes>
+                  <pane size="70">
+                    <div id="codeEditor" style="width: 100%; height: 750px; border: solid 1px">
+                      <CodeEditor
+                        border
+                        class="code-mirror"
+                        placeholder="Input custom sql"
+                        v-model:value="rawData.query"
+                        mode="sql"
+                      />
+                    </div>
+                  </pane>
+                  <pane size="30">
+                    <div
+                      id="erGraph"
+                      ref="erGraphRef"
+                      style="width: 100%; height: 750px; border: solid 1px"
+                    >
+                      <span style="font-weight: bold; margin-left: 10px">Database table fields</span>
+                      <BasicTable
+                        size="small"
+                        :bordered="true"
+                        :show-table-setting="false"
+                        :columns="tableColumns"
+                        :data-source="dbTables[dbTables.selected]"
+                        :show-index-column="false"
+                        :use-search-form="false"
+                        :pagination="false"
+                        :scroll="{ x: 200, y: 600 }"
+                        @resizeColumn="
+                          (w, col) => {
+                            col.width = w;
+                          }
+                        "
+                      />
+                    </div>
+                  </pane>
+                </splitpanes>
+              </pane>
+              <pane size="30">
+                <div id="tableDiv" style="height: 800px; border: solid 1px; margin-top: 5px">
+                  <BasicTable
+                    ref="TableRef"
+                    size="small"
+                    :bordered="true"
+                    :canResize="true"
+                    :show-table-setting="false"
+                    :columns="rawData.fields"
+                    :data-source="datasetInfo.data"
+                    :show-index-column="false"
+                    :use-search-form="false"
+                    :pagination="false"
+                    :scroll="{ x: 600, y: 650 }"
+                    @resizeColumn="
+                      (w, col) => {
+                        col.width = w;
+                      }
+                    "
                   >
-                    <span style="font-weight: bold; margin-left: 10px">Database table fields</span>
-                    <BasicTable
-                      size="small"
-                      :bordered="true"
-                      :show-table-setting="false"
-                      :columns="tableColumns"
-                      :data-source="dbTables[dbTables.selected]"
-                      :show-index-column="false"
-                      :use-search-form="false"
-                      :pagination="false"
-                      :scroll="{ x: 200, y: 600 }"
-                      @resizeColumn="
-                        (w, col) => {
-                          col.width = w;
-                        }
-                      "
-                    />
-                  </div>
-                </pane>
-              </splitpanes>
-            </pane>
-            <pane size="30">
-              <div id="tableDiv" style="height: 800px; border: solid 1px; margin-top: 5px">
-                <BasicTable
-                  ref="TableRef"
-                  size="small"
-                  :bordered="true"
-                  :canResize="true"
-                  :show-table-setting="false"
-                  :columns="rawData.fields"
-                  :data-source="datasetInfo.data"
-                  :show-index-column="false"
-                  :use-search-form="false"
-                  :pagination="false"
-                  :scroll="{ x: 600, y: 650 }"
-                  @resizeColumn="
-                    (w, col) => {
-                      col.width = w;
-                    }
-                  "
-                >
-                  <template #headerCell="{ column }">
-                    <HeaderCell :column="column" />
-                    <br />
-                    <Tooltip>
-                      <template #title>{{
-                        t('dataviz.dataset.detail.table.action.hidden')
-                      }}</template>
-                      <EyeInvisibleOutlined
-                        class="ml-2"
-                        :style="{
-                          fontSize: '16px',
-                          color: 'gray',
-                          cursor: 'pointer',
-                        }"
-                        @click="handleColumnHidden(column.key)"
-                      />
-                    </Tooltip>
-
-                    <Tooltip>
-                      <template #title>
-                        {{ t('dataviz.dataset.detail.table.action.rename') }}
-                      </template>
-                      <Dropdown placement="bottom" :trigger="['click']">
-                        <MehOutlined
+                    <template #headerCell="{ column }">
+                      <HeaderCell :column="column" />
+                      <br />
+                      <Tooltip>
+                        <template #title>{{
+                          t('dataviz.dataset.detail.table.action.hidden')
+                        }}</template>
+                        <EyeInvisibleOutlined
                           class="ml-2"
                           :style="{
                             fontSize: '16px',
+                            color: 'gray',
                             cursor: 'pointer',
-                            color: column.alias ? '#08c' : 'gray',
                           }"
+                          @click="handleColumnHidden(column.key)"
                         />
-                        <template #overlay>
-                          <Menu>
-                            <MenuItem key="default">
-                              <AInput
-                                allowClear
-                                :id="column.key"
-                                :placeholder="column.name"
-                                v-model="rawData.fields[column.key].alias"
-                                @pressEnter="handleColumnRename"
-                              />
-                            </MenuItem>
-                          </Menu>
-                        </template>
-                      </Dropdown>
-                    </Tooltip>
+                      </Tooltip>
 
-                    <Tooltip>
-                      <template #title>{{
-                        t('dataviz.dataset.detail.table.action.metrics')
-                      }}</template>
-                      <FundOutlined
-                        class="ml-2"
-                        :style="{
-                          fontSize: '16px',
-                          color: column.metrics ? '#08c' : 'gray',
-                          cursor: 'pointer',
-                        }"
-                        @click="handleColumnDimMetrics(column.key)"
-                      />
-                    </Tooltip>
-                    <Tooltip>
-                      <template #title>{{
-                        t('dataviz.dataset.detail.table.action.filter')
-                      }}</template>
-                      <Dropdown placement="bottom" :trigger="['click']">
-                        <FilterOutlined
+                      <Tooltip>
+                        <template #title>
+                          {{ t('dataviz.dataset.detail.table.action.rename') }}
+                        </template>
+                        <Dropdown placement="bottom" :trigger="['click']">
+                          <MehOutlined
+                            class="ml-2"
+                            :style="{
+                              fontSize: '16px',
+                              cursor: 'pointer',
+                              color: column.alias ? '#08c' : 'gray',
+                            }"
+                          />
+                          <template #overlay>
+                            <Menu>
+                              <MenuItem key="default">
+                                <AInput
+                                  allowClear
+                                  :id="column.key"
+                                  :placeholder="column.name"
+                                  v-model="rawData.fields[column.key].alias"
+                                  @pressEnter="handleColumnRename"
+                                />
+                              </MenuItem>
+                            </Menu>
+                          </template>
+                        </Dropdown>
+                      </Tooltip>
+
+                      <Tooltip>
+                        <template #title>{{
+                          t('dataviz.dataset.detail.table.action.metrics')
+                        }}</template>
+                        <FundOutlined
                           class="ml-2"
                           :style="{
                             fontSize: '16px',
-                            color: column.filter ? '#08c' : 'gray',
+                            color: column.metrics ? '#08c' : 'gray',
                             cursor: 'pointer',
                           }"
+                          @click="handleColumnDimMetrics(column.key)"
                         />
-                        <template #overlay>
-                          <Menu>
-                            <MenuItem key="default">
-                              <AInput
-                                allowClear
-                                :id="column.key"
-                                :placeholder="column.filter"
-                                v-model:value="rawData.fields[column.key].filter"
-                                @pressEnter="handleColumnFilter"
-                              />
-                            </MenuItem>
-                          </Menu>
-                        </template>
-                      </Dropdown>
-                    </Tooltip>
-                    <!--Tooltip>
-                      <template #title>{{
-                        t('dataviz.dataset.detail.table.action.group')
-                      }}</template>
-                      <MergeCellsOutlined
-                        class="ml-2"
-                        :style="{
-                          fontSize: '16px',
-                          color: column.group == undefined ? 'gray' : '#08c',
-                          cursor: 'pointer',
-                        }"
-                        @click="handleColumnGroup(column.key)"
-                      />
-                    </Tooltip-->
-                    <Tooltip>
-                      <template #title>{{
-                        t('dataviz.dataset.detail.table.action.sorter')
-                      }}</template>
-                      <SortAscendingOutlined
-                        v-if="column.order > 0"
-                        class="ml-2"
-                        :style="{ fontSize: '16px', color: '#08c', cursor: 'pointer' }"
-                        @click="handleColumnSorter(column.key)"
-                      />
-                      <SortDescendingOutlined
-                        v-else-if="column.order < 0"
-                        class="ml-2"
-                        :style="{ fontSize: '16px', color: '#08c', cursor: 'pointer' }"
-                        @click="handleColumnSorter(column.key)"
-                      />
-                      <SortAscendingOutlined
-                        v-else
-                        class="ml-2"
-                        :style="{ fontSize: '16px', color: 'gray', cursor: 'pointer' }"
-                        @click="handleColumnSorter(column.key)"
-                      />
-                    </Tooltip>
-                  </template>
-                </BasicTable>
-              </div>
-            </pane>
-          </splitpanes>
-        </div>
-      </a-col>
-      <div class="layout-area">
-        <div
-          @click="
-            () => {
-              configFormSize = 4 - configFormSize;
-            }
-          "
-        >
-          <span v-if="configFormSize == 0" class="expand"><LeftOutlined /></span>
-          <span v-else class="collapse"><RightOutlined /></span>
-        </div>
-      </div>
-      <a-col :md="configFormSize" :sm="24">
-        <div class="ml-2 overflow-hidden bg-white">
-          <a-tabs default-active-key="datasource" hide-add style="height: 750px">
-            <a-tab-pane
-              key="info"
-              :forceRender="true"
-              :closable="false"
-              :tab="t('dataviz.dataset.form.info.title')"
+                      </Tooltip>
+                      <Tooltip>
+                        <template #title>{{
+                          t('dataviz.dataset.detail.table.action.filter')
+                        }}</template>
+                        <Dropdown placement="bottom" :trigger="['click']">
+                          <FilterOutlined
+                            class="ml-2"
+                            :style="{
+                              fontSize: '16px',
+                              color: column.filter ? '#08c' : 'gray',
+                              cursor: 'pointer',
+                            }"
+                          />
+                          <template #overlay>
+                            <Menu>
+                              <MenuItem key="default">
+                                <AInput
+                                  allowClear
+                                  :id="column.key"
+                                  :placeholder="column.filter"
+                                  v-model:value="rawData.fields[column.key].filter"
+                                  @pressEnter="handleColumnFilter"
+                                />
+                              </MenuItem>
+                            </Menu>
+                          </template>
+                        </Dropdown>
+                      </Tooltip>
+                      <!--Tooltip>
+                        <template #title>{{
+                          t('dataviz.dataset.detail.table.action.group')
+                        }}</template>
+                        <MergeCellsOutlined
+                          class="ml-2"
+                          :style="{
+                            fontSize: '16px',
+                            color: column.group == undefined ? 'gray' : '#08c',
+                            cursor: 'pointer',
+                          }"
+                          @click="handleColumnGroup(column.key)"
+                        />
+                      </Tooltip-->
+                      <Tooltip>
+                        <template #title>{{
+                          t('dataviz.dataset.detail.table.action.sorter')
+                        }}</template>
+                        <SortAscendingOutlined
+                          v-if="column.order > 0"
+                          class="ml-2"
+                          :style="{ fontSize: '16px', color: '#08c', cursor: 'pointer' }"
+                          @click="handleColumnSorter(column.key)"
+                        />
+                        <SortDescendingOutlined
+                          v-else-if="column.order < 0"
+                          class="ml-2"
+                          :style="{ fontSize: '16px', color: '#08c', cursor: 'pointer' }"
+                          @click="handleColumnSorter(column.key)"
+                        />
+                        <SortAscendingOutlined
+                          v-else
+                          class="ml-2"
+                          :style="{ fontSize: '16px', color: 'gray', cursor: 'pointer' }"
+                          @click="handleColumnSorter(column.key)"
+                        />
+                      </Tooltip>
+                    </template>
+                  </BasicTable>
+                </div>
+              </pane>
+            </splitpanes>
+          </div>
+        </Col>
+        <Col :md="rightPanelSize" :sm="24">
+            <div
+                :style="{
+                  borderWidth: '1px',
+                  borderColor: 'black',
+                  height: '100%',
+                  width: '100%',
+                  paddingLeft: '5px',
+                  paddingRight: '5px',
+                  paddingTop: '5px',
+                  paddingBottom: '5px',
+                  display: rightPanelKey == 'info' ? 'block' : 'none',
+                }"
             >
               <BasicForm
                 ref="infoFormRef"
                 :schemas="formInfoSchema"
                 :showActionButtonGroup="false"
                 layout="vertical"
-              >
+                >
                 <template #group="{ model, field }">
                   <ApiSelect
                     :api="API_DATASET_GROUPS"
@@ -269,14 +263,22 @@
                   />
                 </template>
               </BasicForm>
-            </a-tab-pane>
-            <a-tab-pane
-              key="datasource"
-              :closable="false"
-              :forceRender="true"
-              :tab="t('dataviz.dataset.form.datasource.title')"
+            </div>
+            <div
+                :style="{
+                  borderWidth: '1px',
+                  borderColor: 'black',
+                  height: '100%',
+                  width: '100%',
+                  paddingLeft: '5px',
+                  paddingRight: '5px',
+                  paddingTop: '5px',
+                  paddingBottom: '5px',
+                  display: rightPanelKey == 'datasource' ? 'block' : 'none',
+                }"
             >
               <ApiTreeSelect
+                placeholder="Select Datasource"
                 :api="API_DATASOURCE_TREE"
                 :immediate="true"
                 v-model:value="rawData.sourceId"
@@ -318,12 +320,19 @@
                 :fieldNames="{ key: 'id', title: 'name', value: 'id' }"
                 @select="handleTableSelect"
               />
-            </a-tab-pane>
-            <a-tab-pane
-              key="config"
-              :forceRender="true"
-              :closable="false"
-              :tab="t('dataviz.dataset.form.config.title')"
+            </div>
+            <div
+                :style="{
+                  borderWidth: '1px',
+                  borderColor: 'black',
+                  height: '100%',
+                  width: '100%',
+                  paddingLeft: '5px',
+                  paddingRight: '5px',
+                  paddingTop: '5px',
+                  paddingBottom: '5px',
+                  display: rightPanelKey == 'config' ? 'block' : 'none',
+                }"
             >
               <fieldset class="filesets">
                 <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
@@ -346,12 +355,6 @@
                     <span><DeleteOutlined style="float: right" /></span>
                   </template-->
                 </BasicTree>
-                <!--JsonTreeView
-                  :data="JSON.stringify(sqlVarForReplace)"
-                  :maxDepth="1"
-                  rootKey="Variable"
-                  @selected="handleSelectVar"
-                /-->
               </fieldset>
               <fieldset class="filesets">
                 <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
@@ -363,17 +366,17 @@
                   @dblclick="openFilterModal"
                 />
               </fieldset>
-              <!--fieldset class="filesets">
-                <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
-                  {{ t('dataviz.dataset.form.config.group') }}
-                </legend>
-                <BasicTree
-                  :draggable="true"
-                  :treeData="groupFieldList"
-                  :actionList="groupActions"
-                  @drop="handleGroupDrop"
-                />
-              </fieldset-->
+                  <!--fieldset class="filesets">
+                    <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
+                      {{ t('dataviz.dataset.form.config.group') }}
+                    </legend>
+                    <BasicTree
+                      :draggable="true"
+                      :treeData="groupFieldList"
+                      :actionList="groupActions"
+                      @drop="handleGroupDrop"
+                    />
+                  </fieldset-->
               <fieldset class="filesets">
                 <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
                   {{ t('dataviz.dataset.form.config.sorter') }}
@@ -396,11 +399,54 @@
                   :fieldNames="{ title: 'name' }"
                 />
               </fieldset>
-            </a-tab-pane>
-          </a-tabs>
-        </div>
-      </a-col>
-    </a-row>
+            </div>  
+          </Col>
+        </Row>
+    </div>  
+    <Menu
+      mode="inline"
+      theme="light"
+      :multiple="false"
+      :selectable="true"
+      :inlineCollapsed="true"
+      v-model:selectedKeys="selectedPanelKeys"
+      style="float: left; width: 2%"
+      @click="handleMenuSwitch"
+    >
+      <MenuItem key="info">
+        <template #icon>
+          <InfoCircleFilled
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Info</span>
+      </MenuItem>
+      <MenuItem key="datasource">
+        <template #icon>
+          <GiftOutlined
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Datasource</span>
+      </MenuItem>
+      <MenuItem key="config">
+        <template #icon>
+          <SettingFilled
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Config</span>
+      </MenuItem>
+    </Menu>
     <VarModal @register="registerVarModal" @success="handleVarSuccess" />
     <FilterModal @register="registerFilterModal" @success="handleFilterSuccess" />
   </BasicDrawer>
@@ -414,8 +460,6 @@
   import { BasicTable } from '/@/components/Table';
   import HeaderCell from '/@/components/Table/src/components/HeaderCell.vue';
   import {
-    LeftOutlined,
-    RightOutlined,
     PlaySquareTwoTone,
     SaveTwoTone,
     ProfileTwoTone,
@@ -427,7 +471,9 @@
     FilterOutlined,
     PlusSquareTwoTone,
     DeleteOutlined,
-    //MergeCellsOutlined,
+    InfoCircleFilled,
+    GiftOutlined,
+    SettingFilled,
   } from '@ant-design/icons-vue';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
   import { Splitpanes, Pane } from 'splitpanes';
@@ -440,11 +486,10 @@
     message,
     Tooltip,
     Menu,
+    MenuItem,
     Dropdown,
-    Row as ARow,
-    Col as ACol,
-    Tabs as ATabs,
-    TabPane as ATabPane,
+    Row,
+    Col,
     InputNumber as AInputNumber,
     Input as AInput,
   } from 'ant-design-vue';
@@ -488,7 +533,9 @@
   const drawerTitle = ref<string>(t('common.form.new'));
   const emit = defineEmits(['success', 'register']);
   const rawData = ref<ApiDatasetDataType>(initDataset);
-  const configFormSize = ref<number>(4);
+  const rightPanelSize = ref<number>(4);
+  const rightPanelKey = ref<string>('datasource');
+  const selectedPanelKeys = ref<string[]>(['datasource']);
   const infoFormRef = ref<Nullable<FormActionType>>(null);
   const datasourceInfo = ref<any>({
     groupSourceTree: [],
@@ -551,6 +598,19 @@
         infoFormRef.value.setFieldsValue({ group: undefined });
       }
     }
+  };
+
+      /*
+   * switch panel - info/model
+   */
+   const handleMenuSwitch = async (menu: any) => {
+    if (rightPanelKey.value == menu.key && rightPanelSize.value > 0) {
+      rightPanelSize.value = 0;
+      return;
+    }
+
+    rightPanelKey.value = menu.key;
+    rightPanelSize.value = 4;
   };
 
   // initialize datasource tree of source form

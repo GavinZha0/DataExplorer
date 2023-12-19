@@ -1,18 +1,38 @@
 export default {
   tab: {
-    flow: 'Flow',
-    chart: 'Chart'
+    statistics: {
+      title: '统计信息',
+      count: '数据量',
+      distinct: '唯一值',
+      dataType: '数据类型',
+      max: '最大值',
+      pct75: 'Q3(75%)',
+      pct25: 'Q1(25%)',
+      min: '最小值',
+      mean: '均值',
+      median: '中位值',
+      std: '标准差',
+      variance: '方差',
+      missing: '缺失值',
+      zeros: '零值',
+    },
+    distribution: '分布图表',
+    interaction: '关联图表',
+    correlation: '相关性图表',
+    python: 'Python图表',
   },
   toolbar: {
-    search: 'name, group or description',
+    search: 'name, category or description',
   },
   table: {
     title: {
-      last_run: 'Last run',
-      duration: 'Druation',
-      error: 'Error',
-      yes: 'Yes',
-      no: 'No',
+      feature: '特征',
+      target: '目标',
+      source: '数据源',
+      dataset: '数据集',
+      chart: '图表',
+      yes: '是',
+      no: '否',
     },
     action: {
       detail: 'Detail',
@@ -21,21 +41,21 @@ export default {
       unshare: 'Unshare',
       delete: 'Delete',
     },
+    field: {
+      distribution: '分布'
+    }
   },
   form: {
     config: {
-      grid: {
-        visible: 'Grid Visible',
-        size: 'Grid Size',
-        color: 'Grid Color',
-        thickness: 'Grid Thickness',
-      },
-      background: {
-        color: 'Bg Color',
-        image: 'Bg Image',
-        repeat: 'Image Repeat',
-        opacity: 'Image Opacity',
-      }
+      input: 'Input',
+      limit: 'Limit',
+      type: 'Type',
+      source: 'Source',
+      expect: 'Expectation',
+    },
+    datasource: {
+      source: '数据源',
+      dataset: '数据集'
     },
     create: {
       info: 'Info',

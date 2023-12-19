@@ -19,211 +19,233 @@
         <SaveTwoTone class="toolbar-button" @click="saveDatareport" />
       </Tooltip>
     </template>
-    <a-row type="flex" :gutter="4">
-      <a-col :md="24 - rightPanelSize" :sm="24">
-        <div
-          id="reportcontainer"
-          ref="reportContainer"
-          style="
-            height: 100%;
-            width: 100%;
-            text-align: center;
-            border: 1px solid;
-            background-color: white;
-          "
-          :ondragover="(ev) => ev.preventDefault()"
-          :ondrop="(ev) => handleDropEnd(ev)"
-        >
-          <grid-layout
-            v-model:layout="selectedPage.grid"
-            :col-num="24"
-            :maxRows="19"
-            :row-height="30"
-            :is-draggable="true"
-            :is-resizable="true"
-            :autoSize="false"
-            :margin="[10, 10]"
-            :vertical-compact="true"
-            :preventCollision="false"
-            :use-css-transforms="true"
+    <div style="width: 98%; float: left">
+      <Row type="flex" :gutter="4">
+        <Col :md="24 - rightPanelSize" :sm="24">
+          <div
+            id="reportcontainer"
+            ref="reportContainer"
+            style="
+              height: 100%;
+              width: 100%;
+              text-align: center;
+              border: 1px solid;
+              background-color: white;
+            "
+            :ondragover="(ev) => ev.preventDefault()"
+            :ondrop="(ev) => handleDropEnd(ev)"
           >
-            <grid-item
-              v-for="item in selectedPage.grid"
-              :key="item.i"
-              :i="item.i"
-              :x="item.x"
-              :y="item.y"
-              :w="item.w"
-              :h="item.h"
-              drag-allow-from=".dragger"
-              :class="vue - grid - item"
-              :style="{
-                borderWidth: selectedPage.border ? '1px' : '0px',
-                borderStyle: selectedPage.border,
-              }"
+            <grid-layout
+              v-model:layout="selectedPage.grid"
+              :col-num="24"
+              :maxRows="19"
+              :row-height="30"
+              :is-draggable="true"
+              :is-resizable="true"
+              :autoSize="false"
+              :margin="[10, 10]"
+              :vertical-compact="true"
+              :preventCollision="false"
+              :use-css-transforms="true"
             >
-              <div id="header" class="dragger">
-                <span v-if="selectedPage.label" :style="{ float: 'left', marginLeft: '5px' }">
-                  {{ item.name }}
-                </span>
-                <span class="dragger-button" @click="handleRemoveView(item.id)">
-                  <CloseSquareTwoTone :style="{ fontSize: '20px' }" />
-                </span>
-                <span v-if="selectedPage.toolbar" class="dragger-button">
-                  <FullscreenOutlined :style="{ fontSize: '20px', color: 'green' }" />
-                </span>
-                <span v-if="selectedPage.interval > 0" class="dragger-button">
-                  <SyncOutlined :style="{ fontSize: '16px', color: 'green' }" />
-                </span>
-              </div>
-              <div
-                :id="item.type + item.id"
-                :ref="setGridDivRef"
-                style="
-                  width: 98%;
-                  height: 90%;
-                  text-align: center;
-                  vertical-align: middle;
-                  padding: 5px;
-                "
-              ></div>
-            </grid-item>
-          </grid-layout>
-        </div>
-        <div
-          id="gojsContainer"
-          ref="gojsContainerRef"
-          style="height: 1%; width: 100%; display: none"
-        ></div>
-      </a-col>
-      <div class="layout-area">
-        <div
-          @click="
-            () => {
-              rightPanelSize = 5 - rightPanelSize;
-            }
-          "
-        >
-          <span v-if="rightPanelSize == 0" class="expand"><LeftOutlined /></span>
-          <span v-else class="collapse"><RightOutlined /></span>
-        </div>
-      </div>
-      <a-col :md="rightPanelSize" :sm="24">
-        <div class="ml-2 overflow-hidden bg-white">
-          <a-tabs default-active-key="page" hide-add size="middle" centered style="height: 750px">
-            <a-tab-pane
-              key="info"
-              :forceRender="true"
-              :closable="false"
-              :tab="t('dataviz.datareport.form.info.title')"
-            >
-              <BasicForm @register="registerInfoForm">
-                <template #group="{ model, field }">
-                  <ApiSelect
-                    :api="API_DATAREPORT_GROUPS"
-                    mode="tags"
-                    v-model:value="model[field]"
-                    resultField="records"
-                    @change="handleDatareportGroupChange"
-                  />
-                </template>
-              </BasicForm>
-            </a-tab-pane>
-            <a-tab-pane
-              key="page"
-              :forceRender="true"
-              :closable="false"
-              :tab="t('dataviz.datareport.form.pages.title')"
-            >
-              <PlusCircleTwoTone class="new-page-button" @click="handleAddPage" />
-              <draggable
-                item-key="id"
-                :list="rawData.pages"
-                chosen-class="chosen"
-                force-fallback="true"
-                animation="500"
+              <grid-item
+                v-for="item in selectedPage.grid"
+                :key="item.i"
+                :i="item.i"
+                :x="item.x"
+                :y="item.y"
+                :w="item.w"
+                :h="item.h"
+                drag-allow-from=".dragger"
+                :class="vue - grid - item"
+                :style="{
+                  borderWidth: selectedPage.border ? '1px' : '0px',
+                  borderStyle: selectedPage.border,
+                }"
               >
-                <template #item="{ element, index }">
-                  <div style="margin-top: 10px">
-                    <Card hoverable style="width: 100%; margin-top: 10px">
-                      <CardMeta>
-                        <template #title>
-                          <div class="report-page" @click="handlePageSwitch(index)">{{
-                            element.title
-                          }}</div>
-                        </template>
-                      </CardMeta>
-                      <template #actions>
-                        <span>{{ index + 1 }}</span>
-                        <CopyOutlined @click="handleClonePage(index)" />
-                        <DeleteOutlined @click="handleRemovePage(index)" />
+                <div id="header" class="dragger">
+                  <span v-if="selectedPage.label" :style="{ float: 'left', marginLeft: '5px' }">
+                    {{ item.name }}
+                  </span>
+                  <span class="dragger-button" @click="handleRemoveView(item.id)">
+                    <CloseSquareTwoTone :style="{ fontSize: '20px' }" />
+                  </span>
+                  <span v-if="selectedPage.toolbar" class="dragger-button">
+                    <FullscreenOutlined :style="{ fontSize: '20px', color: 'green' }" />
+                  </span>
+                  <span v-if="selectedPage.interval > 0" class="dragger-button">
+                    <SyncOutlined :style="{ fontSize: '16px', color: 'green' }" />
+                  </span>
+                </div>
+                <div
+                  :id="item.type + item.id"
+                  :ref="setGridDivRef"
+                  style="
+                    width: 98%;
+                    height: 90%;
+                    text-align: center;
+                    vertical-align: middle;
+                    padding: 5px;
+                  "
+                ></div>
+              </grid-item>
+            </grid-layout>
+          </div>
+          <div
+            id="gojsContainer"
+            ref="gojsContainerRef"
+            style="height: 1%; width: 100%; display: none"
+          ></div>
+        </Col>
+        <Col :md="rightPanelSize" :sm="24">
+          <div
+              :style="{
+                borderWidth: '1px',
+                borderColor: 'black',
+                height: '100%',
+                width: '100%',
+                paddingLeft: '5px',
+                paddingRight: '5px',
+                paddingTop: '5px',
+                paddingBottom: '5px',
+                display: rightPanelKey == 'info' ? 'block' : 'none',
+              }"
+          >
+            <BasicForm @register="registerInfoForm">
+              <template #group="{ model, field }">
+                <ApiSelect
+                  :api="API_DATAREPORT_GROUPS"
+                  mode="tags"
+                  v-model:value="model[field]"
+                  resultField="records"
+                  @change="handleDatareportGroupChange"
+                />
+              </template>
+            </BasicForm>
+          </div>
+          <div
+              :style="{
+                borderWidth: '1px',
+                borderColor: 'black',
+                height: '750px',
+                width: '100%',
+                paddingLeft: '5px',
+                paddingRight: '5px',
+                paddingTop: '5px',
+                paddingBottom: '5px',
+                display: rightPanelKey == 'page' ? 'block' : 'none',
+              }"
+          >
+            <PlusCircleTwoTone class="new-page-button" @click="handleAddPage" />
+            <draggable
+              item-key="id"
+              :list="rawData.pages"
+              chosen-class="chosen"
+              force-fallback="true"
+              animation="500"
+            >
+              <template #item="{ element, index }">
+                <div style="margin-top: 10px; overflow-y: scroll;">
+                  <Card hoverable style="width: 100%; margin-top: 10px">
+                    <CardMeta>
+                      <template #title>
+                        <div class="report-page" @click="handlePageSwitch(index)">{{
+                          element.title
+                        }}</div>
                       </template>
-                    </Card>
-                  </div>
-                </template>
-              </draggable>
-            </a-tab-pane>
-            <a-tab-pane
-              key="dataview"
-              :forceRender="true"
-              :closable="false"
-              :tab="t('dataviz.datareport.form.dataview.title')"
-            >
-              <ApiSelect
-                :api="API_DATAVIEW_GROUPS"
-                v-model:value="dataviewGroupName"
-                style="width: 100%"
-                :placeholder="t('common.table.title.group')"
-                resultField="records"
-                labelField="value"
-                valueField="value"
-                @change="handleDataviewGroupChange"
-              />
-              <Card>
-                <CardGrid v-for="item in dataviewList" :key="item.id" style="width: 100%">
-                  <div
-                    :id="item.id"
-                    draggable="true"
-                    style="cursor: pointer"
-                    :ondragstart="(ev) => handleDragStart(ev)"
-                    @dblclick.native="handleClickAdd"
-                  >
-                    <span>
-                      <Avatar
-                        :id="item.id"
-                        shape="square"
-                        :size="36"
-                        :src="
-                          'data:image/svg+xml;utf8,' +
-                          encodeURIComponent(chartTypes[item.type].svgCode)
-                        "
-                      />
-                      <span>{{ item.name }}</span>
-                      <div class="text-secondary">{{ item.desc }}</div>
-                    </span>
-                  </div>
-                </CardGrid>
-              </Card>
-            </a-tab-pane>
-            <a-tab-pane
-              key="config"
-              :forceRender="true"
-              :closable="false"
-              :tab="t('dataviz.datareport.form.config.name')"
-            >
-              <BasicForm
-                ref="configFormRef"
-                :schemas="formConfigSchema"
-                :showActionButtonGroup="false"
-                @fieldValueChange="handleConfigChange"
-              />
-            </a-tab-pane>
-            <a-tab-pane
-              key="filter"
-              :forceRender="true"
-              :closable="false"
-              :tab="t('dataviz.datareport.form.filter.title')"
-            >
+                    </CardMeta>
+                    <template #actions>
+                      <span>{{ index + 1 }}</span>
+                      <CopyOutlined @click="handleClonePage(index)" />
+                      <DeleteOutlined @click="handleRemovePage(index)" />
+                    </template>
+                  </Card>
+                </div>
+              </template>
+            </draggable>
+          </div>
+          <div
+              :style="{
+                borderWidth: '1px',
+                borderColor: 'black',
+                height: '750px',
+                width: '100%',
+                paddingLeft: '5px',
+                paddingRight: '5px',
+                paddingTop: '5px',
+                paddingBottom: '5px',
+                display: rightPanelKey == 'dataview' ? 'block' : 'none',
+              }"
+          >
+            <ApiSelect
+              :api="API_DATAVIEW_GROUPS"
+              v-model:value="dataviewGroupName"
+              style="width: 100%"
+              :placeholder="t('common.table.title.group')"
+              resultField="records"
+              labelField="value"
+              valueField="value"
+              @change="handleDataviewGroupChange"
+            />
+            <Card>
+              <CardGrid v-for="item in dataviewList" :key="item.id" style="width: 100%">
+                <div
+                  :id="item.id"
+                  draggable="true"
+                  style="cursor: pointer"
+                  :ondragstart="(ev) => handleDragStart(ev)"
+                  @dblclick.native="handleClickAdd"
+                >
+                  <span>
+                    <Avatar
+                      :id="item.id"
+                      shape="square"
+                      :size="36"
+                      :src="
+                        'data:image/svg+xml;utf8,' +
+                        encodeURIComponent(chartTypes[item.type].svgCode)
+                      "
+                    />
+                    <span>{{ item.name }}</span>
+                    <div class="text-secondary">{{ item.desc }}</div>
+                  </span>
+                </div>
+              </CardGrid>
+            </Card>
+          </div>
+          <div
+              :style="{
+                borderWidth: '1px',
+                borderColor: 'black',
+                height: '750px',
+                width: '100%',
+                paddingLeft: '5px',
+                paddingRight: '5px',
+                paddingTop: '5px',
+                paddingBottom: '5px',
+                display: rightPanelKey == 'config' ? 'block' : 'none',
+              }"
+          >
+            <BasicForm
+              ref="configFormRef"
+              :schemas="formConfigSchema"
+              :showActionButtonGroup="false"
+              @fieldValueChange="handleConfigChange"
+            />
+          </div>
+          <div
+              :style="{
+                borderWidth: '1px',
+                borderColor: 'black',
+                height: '750px',
+                width: '100%',
+                paddingLeft: '5px',
+                paddingRight: '5px',
+                paddingTop: '5px',
+                paddingBottom: '5px',
+                display: rightPanelKey == 'filter' ? 'block' : 'none',
+              }"
+          >
             <Select
               size="small"
               v-model:value="rawData.filter"
@@ -231,12 +253,77 @@
               mode="multiple"
               :options="dimsForFilter.map((item) => ({ label: item, value: item }))"
               :placeholder="t('dataviz.datareport.form.filter.title')"
-              />
-            </a-tab-pane>
-          </a-tabs>
-        </div>
-      </a-col>
-    </a-row>
+            />
+          </div>
+        </Col>
+      </Row>
+  </div>
+    <Menu
+      mode="inline"
+      theme="light"
+      :multiple="false"
+      :selectable="true"
+      :inlineCollapsed="true"
+      v-model:selectedKeys="selectedPanelKeys"
+      style="float: left; width: 2%"
+      @click="handleMenuSwitch"
+    >
+      <MenuItem key="info">
+        <template #icon>
+          <InfoCircleFilled
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Info</span>
+      </MenuItem>
+      <MenuItem key="page">
+        <template #icon>
+          <FilePptOutlined
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Pages</span>
+      </MenuItem>
+      <MenuItem key="dataview">
+        <template #icon>
+          <AreaChartOutlined
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Views</span>
+      </MenuItem>
+      <MenuItem key="config">
+        <template #icon>
+          <SettingFilled
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Config</span>
+      </MenuItem>
+      <MenuItem key="filter">
+        <template #icon>
+          <FilterOutlined
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Filter</span>
+      </MenuItem>
+    </Menu>
   </BasicDrawer>
 </template>
 
@@ -246,8 +333,6 @@
   import { formInfoSchema, formConfigSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import {
-    LeftOutlined,
-    RightOutlined,
     PlaySquareTwoTone,
     SaveTwoTone,
     CopyOutlined,
@@ -256,6 +341,11 @@
     SyncOutlined,
     FullscreenOutlined,
     CloseSquareTwoTone,
+    FilePptOutlined,
+    InfoCircleFilled,
+    AreaChartOutlined,
+    SettingFilled,
+    FilterOutlined
   } from '@ant-design/icons-vue';
   import 'splitpanes/dist/splitpanes.css';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -267,11 +357,11 @@
     Card,
     CardGrid,
     CardMeta,
-    Row as ARow,
-    Col as ACol,
-    Tabs as ATabs,
-    TabPane as ATabPane,
-    Select
+    Row,
+    Col,
+    Select,
+    Menu,
+    MenuItem
   } from 'ant-design-vue';
   import {
     API_DATAVIEW_GROUPS,
@@ -357,7 +447,7 @@
     API_DATAREPORT_GROUPS,
     API_DATAREPORT_UPDATE,
   } from '/@/api/dataviz/datareport';
-  import { mapTypes, netTypes } from '/@/views/dataviz/dataview/data';
+  import { mapTypes, netTypes, tableTypes } from '/@/views/dataviz/dataview/data';
   import { convertGroupToTree, renderCyNet2 } from '/@/views/dataviz/dataview/cyFunc';
   import $ from 'jquery';
 import { getEnvironmentData } from 'worker_threads';
@@ -371,11 +461,13 @@ import template from 'template_js';
   const rawData = ref<ApiDatareportDataType>({ ...initReportData });
   const selectedPage = ref<ReportPageType>({ ...initReportPage });
   const rightPanelSize = ref<number>(5);
+    const rightPanelKey = ref<string>('dataview');
+  const selectedPanelKeys = ref<string[]>(['dataview']);
   const dataviewGroupName = ref<string>();
   const configFormRef = ref<Nullable<FormActionType>>(null);
   let gridRefs: any = {};
   const dimsForFilter = ref<string[]>([]);
-  const chartTypes = ref<any>({ ...Thumbnails, ...mapTypes, ...netTypes });
+  const chartTypes = ref<any>({ ...Thumbnails, ...tableTypes, ...mapTypes, ...netTypes });
   const gojsContainerRef = ref<any>();
 
   // set locale of G2Plot
@@ -437,6 +529,20 @@ import template from 'template_js';
     // query config and data
     execute();
   });
+
+
+    /*
+    * switch panel - info/model
+    */
+    const handleMenuSwitch = async (menu: any) => {
+      if (rightPanelKey.value == menu.key && rightPanelSize.value > 0) {
+        rightPanelSize.value = 0;
+        return;
+      }
+
+      rightPanelKey.value = menu.key;
+      rightPanelSize.value = 4;
+    };
 
   /*
    * add a new page

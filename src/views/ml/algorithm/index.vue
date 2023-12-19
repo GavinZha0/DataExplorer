@@ -89,10 +89,10 @@
   import { indexColumns } from './data';
   import { useUserStore } from '/@/store/modules/user';
   import {
-    API_ALGORITHM_CLONE,
-    API_ALGORITHM_DEL,
-    API_ALGORITHM_LIST,
-    API_ALGORITHM_PUBLIC,
+    API_ML_ALGO_CLONE,
+    API_ML_ALGO_DEL,
+    API_ML_ALGO_LIST,
+    API_ML_ALGO_PUBLIC,
   } from '/@/api/ml/algorithm';
   import { useI18n } from 'vue-i18n';
   import { useDrawer } from '/@/components/Drawer';
@@ -105,7 +105,7 @@
   // table definition
   const [registerTable, { reload, updateTableDataRecord, deleteTableDataRecord }] = useTable({
     rowKey: 'id',
-    api: API_ALGORITHM_LIST,
+    api: API_ML_ALGO_LIST,
     columns: indexColumns,
     useSearchForm: false, // don't use this.
     showTableSetting: true,
@@ -141,7 +141,7 @@
    * delete existing record
    */
   function handleDelete(id: number) {
-    API_ALGORITHM_DEL(id)
+    API_ML_ALGO_DEL(id)
       .then(() => {
         // update table data after a record is deleted
         deleteTableDataRecord(id);
@@ -155,7 +155,7 @@
    * clone existing record
    */
   function handleClone(id: number) {
-    API_ALGORITHM_CLONE(id)
+    API_ML_ALGO_CLONE(id)
       .then(() => {
         // update table data after a record is deleted
         reload();
@@ -178,7 +178,7 @@
    * set source to public or private
    */
   function handlePublic(id: number, pub: boolean) {
-    API_ALGORITHM_PUBLIC(id, pub)
+    API_ML_ALGO_PUBLIC(id, pub)
       .then(() => {
         // update table
         updateTableDataRecord(id, { public: pub });

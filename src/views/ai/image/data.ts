@@ -147,11 +147,5 @@ export const formModelSchema: FormSchema[] = [
     component: 'Input',
     label: '',
     slot: 'modelList',
-  },
-  {
-    field: 'sorter',
-    component: 'Input',
-    label: '',
-    slot: 'fieldTree',
-  },
+  }
 ];

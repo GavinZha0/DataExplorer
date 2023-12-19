@@ -6,25 +6,25 @@ import { ApiAlgorithmDataType } from '/@/api/ml/model/algorithm';
 //----------------------------------------------------------------------------------------
 // PATH definition
 export const API = {
-  ALGORITHM_LIST: '/algorithm/list',
-  ALGORITHM_TREE: 'algorithm/tree',
-  ALGORITHM_CREATE: '/algorithm/create',
-  ALGORITHM_UPDATE: '/algorithm/update',
-  ALGORITHM_PUBLIC: '/algorithm/public',
-  ALGORITHM_CLONE: 'algorithm/clone',
-  ALGORITHM_DELETE: '/algorithm/delete',
-  ALGORITHM_EXECUTE: '/algorithm/execute',
-  ALGORITHM_EXECUTE_SCRIPT: '/algorithm/execute_script',
-  ALGORITHM_CATEGORY: '/algorithm/category',
-  ALGORITHM_ONE: '/algorithm/getone',
+  ML_ALGO_LIST: '/mlalgo/list',
+  ML_ALGO_TREE: '/mlalgo/tree',
+  ML_ALGO_CREATE: '/mlalgo/create',
+  ML_ALGO_UPDATE: '/mlalgo/update',
+  ML_ALGO_PUBLIC: '/mlalgo/public',
+  ML_ALGO_CLONE: 'algorithm/clone',
+  ML_ALGO_DELETE: '/mlalgo/delete',
+  ML_ALGO_EXECUTE: '/mlalgo/execute',
+  ML_ALGO_EXECUTE_SCRIPT: '/mlalgo/execute_script',
+  ML_ALGO_CATEGORY: '/mlalgo/category',
+  ML_ALGO_ONE: '/mlalgo/getone',
 }
 
 /* get all algo as list
  * params: ApiListReqType
  */
-export function API_ALGORITHM_LIST(params?: ApiListReqType) {
+export function API_ML_ALGO_LIST(params?: ApiListReqType) {
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_LIST,
+    url: API.ML_ALGO_LIST,
     params,
   });
 }
@@ -32,18 +32,18 @@ export function API_ALGORITHM_LIST(params?: ApiListReqType) {
 /* get group->dataset tree
  *
  */
-export function API_ALGORITHM_TREE() {
+export function API_ML_ALGO_TREE() {
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_TREE,
+    url: API.ML_ALGO_TREE,
   });
 }
 
 /* get specific dataset
  * id: dataset id
  */
-export function API_ALGORITHM_ONE(id: number) {
+export function API_ML_ALGO_ONE(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_ONE,
+    url: API.ML_ALGO_ONE,
     data: { id: id },
   });
 }
@@ -51,9 +51,9 @@ export function API_ALGORITHM_ONE(id: number) {
 /* create a new dataset
  * params: ApiDatasetDataType without id
  */
-export function API_ALGORITHM_CREATE(params: Omit<ApiAlgorithmDataType, 'id'>) {
+export function API_ML_ALGO_CREATE(params: Omit<ApiAlgorithmDataType, 'id'>) {
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_CREATE,
+    url: API.ML_ALGO_CREATE,
     params,
   });
 }
@@ -61,9 +61,9 @@ export function API_ALGORITHM_CREATE(params: Omit<ApiAlgorithmDataType, 'id'>) {
 /* update dataset info
  * params: ApiDatasetDataType
  */
-export function API_ALGORITHM_UPDATE(params: ApiAlgorithmDataType) {
+export function API_ML_ALGO_UPDATE(params: ApiAlgorithmDataType) {
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_UPDATE,
+    url: API.ML_ALGO_UPDATE,
     params,
   });
 }
@@ -72,13 +72,13 @@ export function API_ALGORITHM_UPDATE(params: ApiAlgorithmDataType) {
  * id: dataset id
  * pub: public flag
  */
-export function API_ALGORITHM_PUBLIC(id: number, pub: boolean) {
+export function API_ML_ALGO_PUBLIC(id: number, pub: boolean) {
   const params: ApiPublicReqType = {
     id: id,
     pub: pub,
   };
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_PUBLIC,
+    url: API.ML_ALGO_PUBLIC,
     params,
   });
 }
@@ -86,9 +86,9 @@ export function API_ALGORITHM_PUBLIC(id: number, pub: boolean) {
 /* clone a dataset
  * id: dataset id
  */
-export function API_ALGORITHM_CLONE(id: number) {
+export function API_ML_ALGO_CLONE(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_CLONE,
+    url: API.ML_ALGO_CLONE,
     data: { id: id },
   });
 }
@@ -96,9 +96,9 @@ export function API_ALGORITHM_CLONE(id: number) {
 /* delete a dataset
  * id: dataset id
  */
-export function API_ALGORITHM_DEL(id: number) {
+export function API_ML_ALGO_DEL(id: number) {
   return defHttp.delete<AxiosResponse>({
-    url: API.ALGORITHM_DELETE,
+    url: API.ML_ALGO_DELETE,
     params: { id: id },
   });
 }
@@ -107,9 +107,9 @@ export function API_ALGORITHM_DEL(id: number) {
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_ALGORITHM_EXECUTE(id: number) {
+export function API_ML_ALGO_EXECUTE(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_EXECUTE,
+    url: API.ML_ALGO_EXECUTE,
     params: { id: id },
   });
 }
@@ -118,9 +118,9 @@ export function API_ALGORITHM_EXECUTE(id: number) {
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_ALGORITHM_EXECUTE_SCRIPT(params: ApiAlgorithmDataType) {
+export function API_ML_ALGO_EXECUTE_SCRIPT(params: ApiAlgorithmDataType) {
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_EXECUTE_SCRIPT,
+    url: API.ML_ALGO_EXECUTE_SCRIPT,
     method: 'POST',
     data: params,
   });
@@ -129,8 +129,8 @@ export function API_ALGORITHM_EXECUTE_SCRIPT(params: ApiAlgorithmDataType) {
 /* get all groups
  *
  */
-export function API_ALGORITHM_CATEGORY() {
+export function API_ML_ALGO_CATEGORY() {
   return defHttp.post<AxiosResponse>({
-    url: API.ALGORITHM_CATEGORY,
+    url: API.ML_ALGO_CATEGORY,
   });
 }

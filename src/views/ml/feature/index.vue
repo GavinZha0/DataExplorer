@@ -23,21 +23,35 @@
         <a-input-search
           v-model:value="searchText"
           allow-clear
-          :placeholder="t('dataviz.dataview.toolbar.search')"
+          :placeholder="t('dataviz.dataset.toolbar.search')"
           style="width: 360px"
           @search="handleSearch"
         />
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
-          <a @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
+          <a v-if="record.createdBy != loginUserName" @click="() => handleEdit(record)" style="margin-left: 5px; color: green">{{ record.name }}</a>
+          <a v-else @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
-        <template v-else-if="column.key === 'type'">
-          <img
-            style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
-            :src="'/resource/img/ml-' + record.type + '.png'"
-            @click="() => handleEdit(record)"
+        <template v-else-if="column.key === 'dim'">
+          <Tag
+            v-for="(ele, index) in record.dim"
+            :key="index"
+            color="blue"
+            style="margin-right: 2px"
           >
+            {{ ele }}
+          </Tag>
+        </template>
+        <template v-else-if="column.key === 'metrics'">
+          <Tag
+            v-for="(ele, index) in record.metrics"
+            :key="index"
+            color="green"
+            style="margin-right: 2px"
+          >
+            {{ ele }}
+          </Tag>
         </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
@@ -76,36 +90,48 @@
         </template>
       </template>
     </BasicTable>
-    <!--DetailForm @register="detailDrawer" @success="handleSuccess" /-->
+    <DetailForm @register="detailDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
 
-<script lang="ts" setup name="Model">
+<script lang="ts" setup name="Feature">
   import { reactive, ref } from 'vue';
-  import { Icon } from '/@/components/Icon';
   import { BasicTable, useTable, TableAction, TableSearch } from '/@/components/Table';
   import { PageWrapper } from '/@/components/Page';
-  import { Switch, Tooltip, message } from 'ant-design-vue';
+  import { Switch, Tag, Tooltip, message } from 'ant-design-vue';
+  import { useI18n } from '/@/hooks/web/useI18n';
   import { indexColumns } from './data';
-  import { useUserStore } from '/@/store/modules/user';
-  import {
-    API_ML_MODEL_CLONE,
-    API_ML_MODEL_DEL,
-    API_ML_MODEL_LIST,
-    API_ML_MODEL_PUBLIC,
-  } from '/@/api/ml/model';
-  import { useI18n } from 'vue-i18n';
+  import { Icon } from '/@/components/Icon';
   import { useDrawer } from '/@/components/Drawer';
+  import DetailForm from './detailForm.vue';
+  import {
+    API_ML_FEATURE_CLONE,
+    API_ML_FEATURE_DEL,
+    API_ML_FEATURE_LIST,
+    API_ML_FEATURE_PUBLIC,
+  } from '/@/api/ml/feature';
+  import { ApiMlFeatureDataType } from '/@/api/ml/model/feature';
+  import { useUserStore } from '/@/store/modules/user';
 
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   let searchInfo = reactive<TableSearch>({ fields: ['name', 'group', 'desc'] });
   let searchText = ref<string>();
-    const loginUserName = ref<string>(useUserStore().getUserInfo.name);
+  const loginUserName = ref<string>(useUserStore().getUserInfo.name);
+
+  // build dim and metrics after fetch data
+  const buildFeatureCount = (records: Recordable[]) => {
+    for (let rec of records) {
+      const features = rec.fields.filter((el)=>el.target==undefined && el.disabled==undefined);
+      rec.features = features.length;
+    }
+    return records;
+  };
+
   // table definition
   const [registerTable, { reload, updateTableDataRecord, deleteTableDataRecord }] = useTable({
     rowKey: 'id',
-    api: API_ML_MODEL_LIST,
+    api: API_ML_FEATURE_LIST,
     columns: indexColumns,
     useSearchForm: false, // don't use this.
     showTableSetting: true,
@@ -114,7 +140,7 @@
     ellipsis: true,
     canResize: true,
     actionColumn: {
-      width: 100,
+      width: 80,
       title: t('common.table.title.action'),
       dataIndex: 'action',
     },
@@ -124,9 +150,10 @@
    * create new record
    */
   function handleCreate() {
-    // open edit drawer with default config
+    // open edit drawer without data
+    // set data to {} in order to trigger useDrawerInner
     // if data is null that initial function will not be triggered
-    openDetailDrawer(true, { libName: 'G2Plot', libVer: '4.2', libCfg: '' });
+    openDetailDrawer(true, {});
   }
 
   /*
@@ -141,7 +168,7 @@
    * delete existing record
    */
   function handleDelete(id: number) {
-    API_ML_MODEL_DEL(id)
+    API_ML_FEATURE_DEL(id)
       .then(() => {
         // update table data after a record is deleted
         deleteTableDataRecord(id);
@@ -155,13 +182,13 @@
    * clone existing record
    */
   function handleClone(id: number) {
-    API_ML_MODEL_CLONE(id)
+    API_ML_FEATURE_CLONE(id)
       .then(() => {
         // update table data after a record is deleted
         reload();
       })
       .catch((err) => {
-        message.warning(t('common.exception.delete'), err);
+        message.warning(t('common.exception.clone'), err);
       });
   }
 
@@ -178,13 +205,13 @@
    * set source to public or private
    */
   function handlePublic(id: number, pub: boolean) {
-    API_ML_MODEL_PUBLIC(id, pub)
+    API_ML_FEATURE_PUBLIC(id, pub)
       .then(() => {
         // update table
         updateTableDataRecord(id, { public: pub });
       })
       .catch((err) => {
-        message.warning(t('common.exception.active'), err);
+        message.warning(t('common.exception.public'), err);
       });
   }
 
@@ -192,32 +219,14 @@
    * update table after edit
    * event is from DetailForm
    */
-  function handleSuccess(values) {
+  function handleSuccess(values: ApiMlFeatureDataType) {
     if (values.id) {
       // update table data after some fields are edited
       // id is number in data
       // updateTableDataRecord() will not work if values.id is string.
       updateTableDataRecord(values.id, values);
-      message.success(t('common.tip.update'));
     } else {
       reload();
-      message.success(t('common.tip.new'));
     }
   }
 </script>
-
-<style lang="less" scoped>
-  .DatasetTab {
-    ::v-deep(.ant-tabs-bar) {
-      margin-bottom: 100px;
-    }
-
-    ::v-deep(.ant-tabs-nav .ant-tabs-tab) {
-      margin-right: 100px;
-    }
-  }
-
-  .ant-card-body {
-    padding: 10px;
-  }
-</style>

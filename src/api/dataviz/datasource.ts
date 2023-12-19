@@ -141,14 +141,12 @@ export function API_DATASOURCE_DEL(id: number) {
 /* params: {id: number(datasource id), locked: bool(include locked tables or not)}
  */
 export function API_DATASOURCE_TABLES(params: object) {
-  if (typeof params !== 'object' || !params.id) {
-    return;
+  if (params && params.id!=undefined && params.id>0) {
+    return defHttp.post<AxiosResponse>({
+      url: API.DATASOURCE_DB_TABLES,
+      data: params,
+    });
   }
-
-  return defHttp.post<AxiosResponse>({
-    url: API.DATASOURCE_DB_TABLES,
-    data: params,
-  });
 }
 
 /* get table fields of a datasource
@@ -164,6 +162,19 @@ export function API_DATASOURCE_FIELDS(id: number, table: string) {
     url: API.DATASOURCE_TABLE_FIELDS,
     params,
   });
+}
+
+/* get table fields of a datasource
+ * id: datasource id
+ * table: table name
+ */
+export function API_DATASOURCE_FIELDSS(params: object) {
+  if (params && params.id!=undefined && params.id > 0 && params.name && params.name.length>0) {
+    return defHttp.post<AxiosResponse>({
+      url: API.DATASOURCE_TABLE_FIELDS,
+      params,
+    });
+  }
 }
 
 /* execute sql query

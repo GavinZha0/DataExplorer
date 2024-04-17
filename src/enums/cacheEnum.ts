@@ -1,5 +1,7 @@
 // token key
-export const TOKEN_KEY = 'auth-token';
+export const AUTH_TOKEN_KEY = 'Authorization';
+
+export const ACCESS_TOKEN_KEY = 'access-token';
 
 export const SHADOW_TOKEN_KEY = 'shadow-token';
 

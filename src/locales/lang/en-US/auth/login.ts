@@ -29,6 +29,7 @@ export default {
     format: 'format is not valid',
     code: 'Please input correct auth code',
     password: 'Please input password',
+    passcode: 'Please input password',
     passwordWeek: '8 chars at least with number, lowercase, uppercase and specific char',
     diffPwd: 'Passwords are inconsistent',
     policy: 'Register after checking',

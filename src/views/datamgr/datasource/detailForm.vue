@@ -56,8 +56,8 @@
     API_DATASOURCE_TEST,
     API_DATASOURCE_UPDATE,
     API_DATASOURCE_GROUPS,
-  } from '/@/api/dataviz/datasource';
-  import { ApiDsDataType, initSource } from '/@/api/dataviz/model/datasource';
+  } from '/@/api/datamgr/datasource';
+  import { ApiDsDataType, initSource } from '/@/api/datamgr/model/datasource';
   import { NameValueType } from '/@/api/model/baseModel';
   import { ApiSelect } from '/@/components/Form';
 

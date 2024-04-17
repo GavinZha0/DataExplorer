@@ -3,6 +3,7 @@
  */
 export enum ResultEnum {
   SUCCESS = 0,
+  HTTP_200_OK = 200,
   ERROR = -1,
   TIMEOUT = 401,
   TOKEN_EXPIRED = 2204,

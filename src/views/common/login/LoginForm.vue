@@ -144,8 +144,8 @@
     try {
       loading.value = true;
       const userInfo = await userStore.login({
-        identity: data.identity,
-        passcode: data.passcode,
+        username: data.identity, // identity
+        password: data.passcode, // passcode
         mode: 'none', //no default error
       });
       if (userInfo) {

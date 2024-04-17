@@ -25,16 +25,20 @@ export function API_AUTH_LOGIN(
 ) {
   // get default time zone for data time display
   const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const formData = new FormData();
+  formData.append("username", params.username);
+  formData.append("password", params.password);
   return defHttp.post<AxiosResponse>(
     {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Zone-Id': localTimeZone, 'Lang-Id': lang },
       url: API.AUTH_LOGIN,
-      params,
-      headers: { 'Zone-Id': localTimeZone, 'Lang-Id': lang },
+      params: formData
     },
     {
       errorMessageMode: mode,
       // token in header
       isReturnNativeResponse: false,
+      isTransformResponse: false
     },
   );
 }

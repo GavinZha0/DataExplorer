@@ -504,13 +504,13 @@
     API_DATASOURCE_TABLES,
     API_DATASOURCE_EXECUTE,
     API_DATASOURCE_FIELDS,
-  } from '/@/api/dataviz/datasource';
+  } from '/@/api/datamgr/datasource';
   import { cloneDeep } from 'lodash-es';
   import { useModal } from '/@/components/Modal';
   import VarModal from './varModal.vue';
   import FilterModal from './filterModal.vue';
   import { ApiSelect } from '/@/components/Form';
-  import { ApiDatasetDataType, initDataset } from '/@/api/dataviz/model/dataset';
+  import { ApiDatasetDataType, initDataset } from '/@/api/datamgr/model/dataset';
   //import { JsonTreeView } from 'json-tree-view-vue3';
 
   /*

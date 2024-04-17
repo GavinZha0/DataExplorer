@@ -11,7 +11,7 @@ export const API = {
   ML_ALGO_CREATE: '/mlalgo/create',
   ML_ALGO_UPDATE: '/mlalgo/update',
   ML_ALGO_PUBLIC: '/mlalgo/public',
-  ML_ALGO_CLONE: 'algorithm/clone',
+  ML_ALGO_CLONE: '/mlalgo/clone',
   ML_ALGO_DELETE: '/mlalgo/delete',
   ML_ALGO_EXECUTE: '/mlalgo/execute',
   ML_ALGO_EXECUTE_SCRIPT: '/mlalgo/execute_script',

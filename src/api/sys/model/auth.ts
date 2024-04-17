@@ -2,8 +2,8 @@
  * @description: Login request parameters
  */
 export interface AuthLoginParams {
-  identity: string;
-  passcode: string;
+  username: string; // identity
+  password: string; // passcode
 }
 
 export interface RoleInfo {

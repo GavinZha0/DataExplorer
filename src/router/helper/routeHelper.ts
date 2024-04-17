@@ -93,7 +93,7 @@ export function transformObjToRoute<T = AppRouteModule>(menuList: MenuItem[], la
   routeList.forEach((route) => {
     if (route.component == '') {
       warn('Incorrect component of menu ' + route.name);
-    } else if (route.component.toUpperCase() === 'BLANKLAYOUT') {
+    } else if (route.component==null || route.component.toUpperCase() === 'BLANKLAYOUT') {
       // get LAYOUT template
       route.component = LayoutMap.get('LAYOUT');
     } else {

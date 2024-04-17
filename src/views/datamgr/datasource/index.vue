@@ -99,9 +99,9 @@
     API_DATASOURCE_DEL,
     API_DATASOURCE_LIST,
     API_DATASOURCE_PUBLIC,
-  } from '/@/api/dataviz/datasource';
+  } from '/@/api/datamgr/datasource';
   import { atob } from 'js-base64';
-  import { ApiDsDataType } from '/@/api/dataviz/model/datasource';
+  import { ApiDsDataType } from '/@/api/datamgr/model/datasource';
   import { useUserStore } from '/@/store/modules/user';
 
   const { t } = useI18n();

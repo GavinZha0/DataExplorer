@@ -421,7 +421,7 @@
     API_DATASOURCE_TABLES,
     API_DATASOURCE_EXECUTE,
     API_DATASOURCE_FIELDS,
-  } from '/@/api/dataviz/datasource';
+  } from '/@/api/datamgr/datasource';
   import { cloneDeep } from 'lodash-es';
   import { ApiSelect } from '/@/components/Form';
   import { ApiMlFeatureDataType, initMlFeature } from '/@/api/ml/model/feature';

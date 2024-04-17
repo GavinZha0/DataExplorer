@@ -29,7 +29,7 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { API_DATASOURCE_LOCK, API_DATASOURCE_TABLES } from '/@/api/dataviz/datasource';
+  import { API_DATASOURCE_LOCK, API_DATASOURCE_TABLES } from '/@/api/datamgr/datasource';
   import {message} from "ant-design-vue";
 
   const { t } = useI18n();

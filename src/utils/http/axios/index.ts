@@ -17,7 +17,7 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 import { AxiosRetry } from '/@/utils/http/axios/axiosRetry';
-import { SHADOW_TOKEN_KEY, TOKEN_KEY } from '/@/enums/cacheEnum';
+import { SHADOW_TOKEN_KEY, ACCESS_TOKEN_KEY, AUTH_TOKEN_KEY } from '/@/enums/cacheEnum';
 import {getWebStorage} from "/@/utils/cache";
 
 const globSetting = useGlobSetting();
@@ -50,7 +50,7 @@ const transform: AxiosTransform = {
 
     //  这里 code，data，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
     const { code, data, msg } = res.data;
-    if (code === ResultEnum.SUCCESS) {
+    if (code === ResultEnum.SUCCESS || code === ResultEnum.HTTP_200_OK) {
       formatDateRsp && data && !isString(data) && formatRequestDate(data.records);
       return data;
     }
@@ -88,6 +88,10 @@ const transform: AxiosTransform = {
 
     if (joinPrefix) {
       config.url = `${urlPrefix}${config.url}`;
+    }
+
+    if (config.url?.startsWith('/py/')) {
+      // do nothing - Gavin
     }
 
     if (apiUrl && isString(apiUrl)) {
@@ -147,8 +151,9 @@ const transform: AxiosTransform = {
       const token = useUserStoreWithOut().getToken;
       const shadowToken = getWebStorage(SHADOW_TOKEN_KEY);
       // put tokens into request header
-      if (options.authenticationScheme == 'Bearer') {
-        (config as Recordable).headers[TOKEN_KEY] = token;
+      if (options.authenticationScheme != undefined && options.authenticationScheme == 'Bearer ') {
+        (config as Recordable).headers[AUTH_TOKEN_KEY] = options.authenticationScheme + token;
+        // shadow token without options.authenticationScheme
         (config as Recordable).headers[SHADOW_TOKEN_KEY] = shadowToken;
       }
     }
@@ -159,7 +164,9 @@ const transform: AxiosTransform = {
    * @description: 响应拦截器处理
    */
   responseInterceptors: (res: AxiosResponse<any>) => {
-    const newToken = res.headers[TOKEN_KEY];
+    // token without options.authenticationScheme
+    let newToken = res.headers[ACCESS_TOKEN_KEY];
+
     // check if there is token in response
     if (newToken != undefined) {
       const newShadowToken = res.headers[SHADOW_TOKEN_KEY];
@@ -229,8 +236,8 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     deepMerge(
       {
         // authentication schemes，e.g: Bearer
-        authenticationScheme: 'Bearer',
-        timeout: 10 * 1000,
+        authenticationScheme: 'Bearer ',
+        timeout: 60 * 1000,
 
         // 基础接口地址
         // baseURL: globSetting.apiUrl,

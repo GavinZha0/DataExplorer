@@ -373,7 +373,7 @@
   } from 'ant-design-vue';
   import { ApiTreeSelect } from '/@/components/Form';
   import Papa from 'papaparse';
-  import { API_DATASOURCE_TREE } from '/@/api/dataviz/datasource';
+  import { API_DATASOURCE_TREE } from '/@/api/datamgr/datasource';
   import { API_IMPORTER_UPLOAD } from '/@/api/collection/importer';
   import ExcelJS from 'exceljs';
   import dayjs from 'dayjs';

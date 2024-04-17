@@ -215,9 +215,9 @@
     Col,
     Menu,
     MenuItem,
-    CheckableTag,
+    Tag,
     Button,
-    UploadDragger
+    Upload
   } from 'ant-design-vue';
   import {
     ApiImageDataType,
@@ -236,6 +236,8 @@
   import aiImage from "/@/assets/images/ai-image.png";
 
   const { t } = useI18n();
+  const UploadDragger = Upload.Dragger;
+  const CheckableTag = Tag.CheckableTag;
   const drawerTitle = ref<string>(t('common.form.new'));
   const emit = defineEmits(['success', 'register']);
   const rawData = ref<ApiImageDataType>();

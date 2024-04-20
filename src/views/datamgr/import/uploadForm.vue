@@ -130,16 +130,10 @@
                   <HeaderCell :column="column" />
                   <br />
                   <Tooltip>
-                    <template #title>{{
-                      t('collection.importer.detail.table.action.ignore')
-                    }}</template>
+                    <template #title>{{t('collection.importer.detail.table.action.ignore')}}</template>
                     <EyeInvisibleOutlined
                       class="ml-2"
-                      :style="{
-                        fontSize: '16px',
-                        color: column.ignore ? '#08c' : 'gray',
-                        cursor: 'pointer',
-                      }"
+                      :style="{fontSize: '16px', color: column.ignore ? '#08c' : 'gray', cursor: 'pointer'}"
                       @click="handleColumnIgnore(column.key)"
                     />
                   </Tooltip>
@@ -214,13 +208,23 @@
                       <template #overlay>
                         <Menu>
                           <MenuItem key="type">
-                            <Select
-                              :id="column.key"
-                              v-model:value="rawData.fields[column.key].type"
-                              :options="fieldTypeOptions"
-                              style="width: 150px"
-                            />
-                          </MenuItem>
+                          <RadioGroup v-model:value="column.type" size="small" button-style="solid" @change="handleColumnType(column.key, column.type)">
+                            <RadioButton value="String" :style="radioStyle">String</RadioButton>
+                            <RadioButton value="Integer" :style="radioStyle">Integer</RadioButton>
+                            <RadioButton value="Long" :style="radioStyle">Long</RadioButton>
+                            <RadioButton value="Float" :style="radioStyle">Float</RadioButton>
+                            <RadioButton value="Double" :style="radioStyle">Double</RadioButton>
+                            <RadioButton value="Boolean" :style="radioStyle">Boolean</RadioButton>
+                            <RadioButton value="Date" :style="radioStyle">Date</RadioButton>
+                            <RadioButton value="Time" :style="radioStyle">Time</RadioButton>
+                            <RadioButton value="Datetime" :style="radioStyle">Datetime</RadioButton>
+                            <RadioButton value="Timestamp" :style="radioStyle">Timestamp</RadioButton>
+                            <RadioButton value="Text" :style="radioStyle">Text</RadioButton>
+                            <RadioButton value="Bit" :style="radioStyle">Bit</RadioButton>
+                            <RadioButton value="Binary" :style="radioStyle">Binary</RadioButton>
+                            <RadioButton value="Blob" :style="radioStyle">Blob</RadioButton>
+                          </RadioGroup>
+                        </MenuItem>
                         </Menu>
                       </template>
                     </Dropdown>
@@ -360,6 +364,10 @@
     message,
     Tooltip,
     Menu,
+    MenuItem,
+    Radio,
+    RadioButton,
+    RadioGroup,
     Dropdown,
     Row as ARow,
     Col as ACol,
@@ -396,6 +404,7 @@
   const filePreview = ref<any>({});
   const fileList = ref<UploadProps['fileList']>([]);
   const selectedFile = ref<string>();
+  const radioStyle = {display: 'flex', height: '30px', lineHeight: '30px'};
   const fieldTypeOptions = ref<SelectProps['options']>([
     { value: 'Varchar', label: 'String' },
     { value: 'Integer', label: 'Integer' },
@@ -570,7 +579,8 @@
           // get column names and add column config
           for (let field of fields) {
             const columnField = {
-              key: fields.indexOf(field),
+              // column key should NOT be number 0 !!! - Gavin
+              key: String(fields.indexOf(field)),
               title: field,
               dataIndex: field,
               type: 'Varchar',
@@ -630,7 +640,11 @@
                 break;
               }
               case 'date': {
-                rawData.value.fields[idx].type = 'Date';
+                if(dataInfo[idx].levelOfMeasurements && dataInfo[idx].levelOfMeasurements?.length>0 && dataInfo[idx].levelOfMeasurements[0]=='Time'){
+                  rawData.value.fields[idx].type = 'Timestamp';
+                } else{
+                  rawData.value.fields[idx].type = 'Date';
+                }
                 break;
               }
               case 'string': {
@@ -873,10 +887,20 @@
   };
 
   /*
-   * file attributes change
+   * Date&Time attributes change
    */
   const handleAttrChange = (key: string, value: any) => {
-    rawData.value.attrs[key] = value;
+    if(key == 'timezone'){
+      rawData.value.attrs[key] = value
+    } else {
+      // Date/Time/TS format
+      // only one option can be selected
+      if(value.length>1){
+        value.shift(); // delete first one
+        attrCsvFormRef.value.setFieldsValue({tsFormat: value});
+      }
+      rawData.value.attrs[key] = value[0];
+    }
   };
 
   /*
@@ -930,10 +954,10 @@
   /*
    * column type
    */
-  const handleColumnType = (event: any) => {
-    let rawField = rawData.value.fields[event.target.id];
-    if (event.target.value) {
-      rawField.type = event.target.value;
+  const handleColumnType = (key: any, type: string) => {
+    let rawField = rawData.value.fields[key];
+    if (type) {
+      rawField.type = type;
     } else {
       delete rawField.type;
     }

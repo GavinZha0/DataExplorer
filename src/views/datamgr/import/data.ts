@@ -97,13 +97,13 @@ export const formTsAttrSchema: FormSchema[] = [
     component: 'Select',
     labelWidth: 80,
     componentProps: {
+      mode: 'tags',
+      maxTagCount: 1,
       options: [
         { label: 'HH:mm:ss', value: 'HH:mm:ss' },
-        { label: 'HH:mm', value: 'HH:mm' },
-        { label: 'HH:mm:ss.SSS', value: 'HH:mm:ss.SSS' }, // 06:30:15.520
-        { label: 'hh:mm:ss a', value: 'hh:mm:ss a' }, // 6:30:15 AM
         { label: 'hh:mm a', value: 'hh:mm a' }, // 6:30 AM
         { label: 'HHmmss', value: 'HHmmss' },
+        { label: 'HH:mm:ss.SSS', value: 'HH:mm:ss.SSS' } // 06:30:15.520
       ],
     },
     colProps: { span: 24 },
@@ -114,12 +114,21 @@ export const formTsAttrSchema: FormSchema[] = [
     component: 'Select',
     labelWidth: 80,
     componentProps: {
+      mode: 'tags',
+      maxTagCount: 1,
       options: [
         { label: 'MM/dd/yyyy', value: 'MM/dd/yyyy' }, // 03/15/2023
-        { label: 'dd-MMM-yyyy', value: 'dd-MMM-yyyy' }, // 15-Mar-2023
+        { label: 'yyyy/MM/dd', value: 'yyyy/MM/dd' }, // 2023/03/15
+
         { label: 'yyyy-MM-dd', value: 'yyyy-MM-dd' }, // 2023-03-15
+        { label: 'MMM-dd-yyyy', value: 'MMM-dd-yyyy' }, // Mar-15-2022
+
         { label: 'yyyy.MM.dd', value: 'yyyy.MM.dd' }, // 2023.03.15
+        { label: 'MM.dd.yyyy', value: 'MM.dd.yyyy' }, // 03.15.2023
+
         { label: 'yyyyMMdd', value: 'yyyyMMdd' }, // 20230315
+        { label: 'MMddyyyy', value: 'MMddyyyy' }, // 03152023
+
         { label: 'EEE, MMM dd yyyy', value: 'EEE, MMM dd yyyy' }, // Tue, Mar 15 2023
       ],
     },
@@ -131,26 +140,32 @@ export const formTsAttrSchema: FormSchema[] = [
     component: 'Select',
     labelWidth: 80,
     componentProps: {
+      mode: 'tags',
+      maxTagCount: 1,
       options: [
-        { label: 'MM/dd/yyyy HH:mm:ss', value: 'MM/dd/yyyy HH:mm:ss' }, // 03/15/2023 06:30:15
-        { label: 'yyyy-MM-dd HH:mm:ss', value: 'yyyy-MM-dd HH:mm:ss' }, // 2023-03-15 06:30:15
-        { label: 'yyyy-MM-dd HH:mm:ssX', value: 'yyyy-MM-dd HH:mm:ssX' }, // 2023-03-15 06:30:15Z;; 2023-03-15 06:30:15+08;; RFC 3339
-        { label: 'yyyy-MM-dd HH:mm:ss.SSS', value: 'yyyy-MM-dd HH:mm:ss.SSS' }, // 2023-03-15 06:30:15.520
+        { label: 'MM/dd/yyyy HH:mm:ss', value: 'MM/dd/yyyy HH:mm:ss' }, // 03/15/2023 06:30:15;
+        { label: 'MM/dd/yyyy HH:mm a', value: 'MM/dd/yyyy HH:mm a' }, // 03/15/2023 06:30 AM
+        { label: 'MM/dd/yyyy HH:mm:ssX', value: 'MM/dd/yyyy HH:mm:ssX' }, // 03/15/2023 06:30:15+08
+
+        { label: 'yyyy-MM-dd HH:mm:ss', value: 'yyyy-MM-dd HH:mm:ss' }, // 2023-03-15 06:30:15;
         { label: 'yyyy-MM-dd HH:mm a', value: 'yyyy-MM-dd HH:mm a' }, // 2023-03-15 06:30 AM
-        { label: 'yyyy-MM-dd HH:mm:ss z', value: 'yyyy-MM-dd HH:mm:ss z' }, // 2015-05-05 10:15:30 PDT;; 2015-05-05 10:15:30 Europe/Paris
-        { label: "yyyy-MM-dd'T'HH:mm:ss", value: "yyyy-MM-dd'T'HH:mm:ss" }, // 2023-03-15T06:30:15, ISO 8601
-        { label: "yyyy-MM-dd'T'HH:mm:ssZ", value: "yyyy-MM-dd'T'HH:mm:ssZ" }, // 2023-03-15T06:30:15Z
-        { label: "yyyy-MM-dd'T'HH:mm:ssX", value: "yyyy-MM-dd'T'HH:mm:ssX" }, // 2023-03-15T06:30:15Z, 2023-03-15T06:30:15+08;; 2023-03-15T06:30:15+0800;; 2023-03-15T06:30:15+08:00
-        { label: "yyyy-MM-dd'T'HH:mm:ss.SSSX", value: "yyyy-MM-dd'T'HH:mm:ss.SSSX" }, // 2023-03-15T06:30:15.520Z
-        { label: 'd MMM yyyy HH:mm:ss z', value: 'd MMM yyyy HH:mm:ss z' }, // 4 Jul 2022 12:30:56 GMT, 4 Jul 2022 12:30:56 GMT+08:00, RFC 822
-        { label: 'EEE, d MMM yyyy HH:mm:ss', value: 'EEE, d MMM yyyy HH:mm:ss' }, // Sat, 4 Mar 2023 15:08:20, RFC 822
-        { label: 'EEE, dd MMM yyyy HH:mm:ss X', value: 'EEE, dd MMM yyyy HH:mm:ss X' }, // Sat, 04 Mar 2023 15:08:20 +0800, RFC 1123Z
+        { label: 'yyyy-MM-dd HH:mm:ssX', value: 'yyyy-MM-dd HH:mm:ssX' }, // 2023-03-15 06:30:15+08; RFC 3339
+        { label: 'yyyy-MM-dd HH:mm:ss z', value: 'yyyy-MM-dd HH:mm:ss z' }, // 2015-05-05 10:15:30 PDT; 2015-05-05 10:15:30 Europe/Paris
         { label: "yyyy-MM-dd HH:mm:ss 'UTC'X", value: "yyyy-MM-dd HH:mm:ss 'UTC'X" }, // 2015-05-05 10:15:30 UTC+08:00
         { label: 'yyyy-MM-dd HH:mm:ss O', value: 'yyyy-MM-dd HH:mm:ss O' }, // 2015-05-05 10:15:30 GMT+8
         { label: "yyyy-MM-dd, HH:mm:ssXXX '['VV']'", value: "yyyy-MM-dd, HH:mm:ssXXX '['VV']'" }, // 2023-03-15, 06:30:15+08:00 [Asia/Shanghai],
+
+        { label: "yyyy-MM-dd'T'HH:mm:ss", value: "yyyy-MM-dd'T'HH:mm:ss" }, // 2023-03-15T06:30:15, ISO 8601
+        { label: "yyyy-MM-dd'T'HH:mm:ssX", value: "yyyy-MM-dd'T'HH:mm:ssX" }, // 2023-03-15T06:30:15+08; 2023-03-15T06:30:15+0800; 2023-03-15T06:30:15+08:00
+
         { label: 'dd.MM.yyyy HH:mm:ss', value: 'dd.MM.yyyy HH:mm:ss' }, // 15.03.2023 06:30:15
-        { label: 'MMM d yyyy HH:mm:ss', value: 'MMM d yyyy HH:mm:ss' }, // Mar 15 2023 06:30:15
         { label: 'yyyyMMddHHmmss', value: 'yyyyMMddHHmmss' },
+
+        { label: 'MMM d yyyy HH:mm:ss', value: 'MMM d yyyy HH:mm:ss' }, // Mar 15 2023 06:30:15
+        { label: 'd MMM yyyy HH:mm:ss z', value: 'd MMM yyyy HH:mm:ss z' }, // 4 Jul 2022 12:30:56 GMT, 4 Jul 2022 12:30:56 GMT+08:00, RFC 822
+
+        { label: 'EEE, d MMM yyyy HH:mm:ss', value: 'EEE, d MMM yyyy HH:mm:ss' }, // Sat, 4 Mar 2023 15:08:20, RFC 822
+        { label: 'EEE, dd MMM yyyy HH:mm:ss X', value: 'EEE, dd MMM yyyy HH:mm:ss X' } // Sat, 04 Mar 2023 15:08:20 +0800, RFC 1123Z
       ],
     },
     colProps: { span: 24 },

@@ -458,13 +458,13 @@
 </template>
 
 <script lang="ts" setup name="DetailForm">
-  import { h, reactive, ref, unref, nextTick } from 'vue';
+  import { h, reactive, ref } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
   import {
-    formInfoSchema, statColumns, histOptionSchema, kdeOptionSchema, boxOptionSchema, violinOptionSchema,
-    ccmOptionSchema, freqOptionSchema, anovaOptionSchema, sampleOptionSchema, pairOptionSchema, scatterMatrixOptionSchema, curveOptionSchema,
+    formInfoSchema, histOptionSchema, kdeOptionSchema, boxOptionSchema, violinOptionSchema,
+    ccmOptionSchema, freqOptionSchema, anovaOptionSchema, pairOptionSchema, scatterMatrixOptionSchema, curveOptionSchema,
     outlierKnnOptionSchema, eda_cfg_default, outlierQtOptionSchema, outlierZsOptionSchema,
-    outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, icaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
+    outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
     featureModelOptionSchema, featureSearchOptionSchema, featureDetectOptionSchema, tsSeriesOptionSchema, tsTrendOptionSchema, tsDiffOptionSchema,
     tsFreqOptionSchema, tsCompareOptionSchema, tsAcfOptionSchema, tsMavgOptionSchema, tsQuantileOptionSchema, tsCycleOptionSchema, tsDecompOptionSchema,
     tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema
@@ -474,9 +474,6 @@
     PlaySquareTwoTone,
     SaveTwoTone,
     InfoCircleFilled,
-    GiftOutlined,
-    ConsoleSqlOutlined,
-    AimOutlined,
     AreaChartOutlined
   } from '@ant-design/icons-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -490,7 +487,6 @@
     SubMenu,
     MenuItem,
     Avatar,
-    InputNumber,
     Button,
     Select
   } from 'ant-design-vue';

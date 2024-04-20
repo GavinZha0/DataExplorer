@@ -16,7 +16,7 @@ export const API = {
   ML_EDA_BUILD: '/ml/eda/build',
   ML_EDA_SELECT: '/ml/eda/select',
   ML_EDA_EXECUTE: '/ml/eda/execute',
-  ML_EDA_EXECUTE_SCRIPT: '/mleda/execute_script',
+  ML_EDA_EXECUTE_SCRIPT: '/ml/eda/execute_script',
   ML_EDA_GROUPS: '/ml/eda/groups',
   ML_EDA_ONE: '/ml/eda/getone',
 }

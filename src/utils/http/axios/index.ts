@@ -84,17 +84,26 @@ const transform: AxiosTransform = {
 
   // handle parameters and data before the request is sent out
   beforeRequestHook: (config, options) => {
-    const { apiUrl, joinPrefix, joinParamsToUrl, formatDateReq, joinTime = true, urlPrefix } = options;
+    const { apiUrl, pyUrl, joinPrefix, joinParamsToUrl, formatDateReq, joinTime = true, urlPrefix } = options;
 
     if (joinPrefix) {
       config.url = `${urlPrefix}${config.url}`;
     }
 
-    if (config.url?.startsWith('/py/')) {
-      // do nothing - Gavin
+    
+    let isPy = false;
+    if(pyUrl && pyUrl.length>0){
+      for (const py of pyUrl){
+        if (config.url?.startsWith(py)) {
+          // forward to python server
+          config.url = `/py${config.url}`;
+          isPy = true;
+          break;
+        }
+      }
     }
-
-    if (apiUrl && isString(apiUrl)) {
+    
+    if (!isPy && apiUrl && isString(apiUrl)) {
       config.url = `${apiUrl}${config.url}`;
     }
     const params = config.params || {};
@@ -264,6 +273,8 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           errorMessageMode: 'message',
           // 接口地址
           apiUrl: globSetting.apiUrl,
+          // python server url
+          pyUrl: globSetting.pyUrl,
           // 接口拼接地址
           urlPrefix: urlPrefix,
           //  是否在请求消息中统一加入时间戳

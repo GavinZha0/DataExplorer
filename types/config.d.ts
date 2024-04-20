@@ -143,8 +143,10 @@ export interface ProjectConfig {
 export interface GlobConfig {
   // Site title
   title: string;
-  // Service interface url
+  // Java Server interface url
   apiUrl: string;
+  // Python server interface url
+  pyUrl: string;
   // Upload url
   uploadUrl?: string;
   //  Service interface url prefix
@@ -155,7 +157,9 @@ export interface GlobConfig {
 export interface GlobEnvConfig {
   // Site title
   VITE_GLOB_APP_TITLE: string;
-  // Service interface url
+  // java server interface url
+  VITE_GLOB_API_URL: string;
+  // python server interface url
   VITE_GLOB_API_URL: string;
   // Service interface url prefix
   VITE_GLOB_API_URL_PREFIX?: string;

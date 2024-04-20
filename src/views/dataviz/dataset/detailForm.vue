@@ -510,7 +510,7 @@
   import VarModal from './varModal.vue';
   import FilterModal from './filterModal.vue';
   import { ApiSelect } from '/@/components/Form';
-  import { ApiDatasetDataType, initDataset } from '/@/api/datamgr/model/dataset';
+  import { ApiDatasetDataType, initDataset } from '/@/api/dataviz/model/dataset';
   //import { JsonTreeView } from 'json-tree-view-vue3';
 
   /*

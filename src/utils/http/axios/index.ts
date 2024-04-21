@@ -274,7 +274,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           // 接口地址
           apiUrl: globSetting.apiUrl,
           // python server url
-          pyUrl: globSetting.pyUrl,
+          pyUrl: JSON.parse(globSetting.pyUrl),
           // 接口拼接地址
           urlPrefix: urlPrefix,
           //  是否在请求消息中统一加入时间戳

@@ -45,7 +45,7 @@
     "@antv/g6": "^4.8.17",
     "@antv/s2": "^2.0.0-next.9",
     "@antv/thumbnails": "^2.0.0",
-    "@antv/x6": "^2.15.3",
+    "@antv/x6": "^2.11.3",
     "@antv/x6-plugin-stencil": "^2.1.4",
     "@antv/x6-vue-shape": "^2.1.1",
     "@bokeh/bokehjs": "^3.3.4",

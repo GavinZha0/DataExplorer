@@ -30,7 +30,7 @@ export const initGridAttr = {
   bgColor: '#FFFFFF',
 
   showImage: false,
-  image: 'http://localhost:8000/img/background-06.a1c49be8.jpeg',
+  image: 'http://localhost:8000/img/doc/login.png',
   repeat: 'no-repeat',
   angle: 30,
   position: 'center',

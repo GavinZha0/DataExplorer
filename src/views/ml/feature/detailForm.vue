@@ -427,7 +427,6 @@
   import { ApiMlFeatureDataType, initMlFeature } from '/@/api/ml/model/feature';
   import * as echarts from 'echarts';
   import 'echarts-gl';
-  //import { ecSimpleTransform } from 'echarts-simple-transform';
   import { aggregate } from "echarts-simple-transform";
   import { DataFrame } from '@antv/ava';
   import { DataView } from '@antv/data-set';

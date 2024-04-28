@@ -4,7 +4,8 @@ export default {
     chart: '图表'
   },
   toolbar: {
-    search: 'name, category or description',
+    search: '名称，分类或描述',
+    layout: '布局'
   },
   table: {
     title: {
@@ -24,17 +25,22 @@ export default {
   },
   form: {
     config: {
+      timeout: '时限',
+    },
+    canvas: {
       grid: {
         visible: '显示网格',
         size: '网格大小',
         color: '网格颜色',
-        thickness: '网格粗细',
+        thick: '网格粗细'
       },
-      background: {
-        color: '背景颜色',
-        image: '背景图片',
-        repeat: '图片重复',
-        opacity: '图片透明度',
+      bg: {
+        color: '背景颜色'
+      },
+      edge: {
+        color: '边颜色',
+        router: '边路由',
+        connector: '边衔接'
       }
     },
     create: {

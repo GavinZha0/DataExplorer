@@ -340,7 +340,7 @@
                     @openChange="handleVisChange">
                 <SubMenu key="stat">
                   <template #icon>
-                    <Avatar src="/resource/img/ml-feature-stats.png" shape="square" style="width: 32px" />
+                    <Avatar src="/resource/img/ml/eda-stats.png" shape="square" style="width: 32px" />
                   </template>
                   <template #title>
                     Statistics
@@ -353,7 +353,7 @@
                 </SubMenu>
                 <SubMenu key="dists">
                   <template #icon>
-                    <Avatar src="/resource/img/ml-feature-dists.png" shape="square" style="width: 32px" />
+                    <Avatar src="/resource/img/ml/eda-dists.png" shape="square" style="width: 32px" />
                   </template>
                   <template #title>
                     Distribution
@@ -365,7 +365,7 @@
                 </SubMenu>
                 <SubMenu key="corr">
                   <template #icon>
-                    <Avatar src="/resource/img/ml-feature-corr.png" shape="square" style="width: 32px" />
+                    <Avatar src="/resource/img/ml/eda-corr.png" shape="square" style="width: 32px" />
                   </template>
                   <template #title>
                     Correlation
@@ -378,7 +378,7 @@
                 </SubMenu>
                 <SubMenu key="selection">
                   <template #icon>
-                    <Avatar src="/resource/img/ml-feature-selection.png" shape="square" style="width: 32px" />
+                    <Avatar src="/resource/img/ml/eda-selection.png" shape="square" style="width: 32px" />
                   </template>
                   <template #title>
                     Feature Selection
@@ -390,7 +390,7 @@
                 </SubMenu>
                 <SubMenu key="reduction">
                   <template #icon>
-                    <Avatar src="/resource/img/ml-feature-reduction.png" shape="square" style="width: 32px" />
+                    <Avatar src="/resource/img/ml/eda-reduction.png" shape="square" style="width: 32px" />
                   </template>
                   <template #title>
                     Dim Reduction
@@ -404,7 +404,7 @@
                 </SubMenu>
                 <SubMenu key="ts">
                   <template #icon>
-                    <Avatar src="/resource/img/ml-feature-trend.png" shape="square" style="width: 32px" />
+                    <Avatar src="/resource/img/ml/eda-ts.png" shape="square" style="width: 32px" />
                   </template>
                   <template #title>
                     Time Series

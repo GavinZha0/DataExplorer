@@ -11,7 +11,7 @@
           <div style="border-right-width: 2px; height: 700px; overflow-y: auto">
             <div v-for="(item, index) in cyLayoutLib" :key="item.alias" class="preview_img">
               <img
-                :src="'/resource/img/layout-' + item.alias.toLowerCase() + '.png'"
+                :src="'/resource/img/vis/layout-' + item.alias.toLowerCase() + '.png'"
                 alt="Not available"
                 @click="handleLayoutSelect(index, item.alias)"
               />

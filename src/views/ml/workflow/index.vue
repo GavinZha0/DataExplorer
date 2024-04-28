@@ -69,7 +69,7 @@
         </template>
       </template>
     </BasicTable>
-    <!--DetailForm @register="detailDrawer" @success="handleSuccess" /-->
+    <DetailForm @register="detailDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
 
@@ -89,6 +89,7 @@
   } from '/@/api/ml/workflow';
   import { useI18n } from 'vue-i18n';
   import { useDrawer } from '/@/components/Drawer';
+  import DetailForm from './detailForm.vue';
 
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
@@ -119,7 +120,7 @@
   function handleCreate() {
     // open edit drawer with default config
     // if data is null that initial function will not be triggered
-    openDetailDrawer(true, { libName: 'G2Plot', libVer: '4.2', libCfg: '' });
+    openDetailDrawer(true, {flowVer: '2.0'});
   }
 
   /*

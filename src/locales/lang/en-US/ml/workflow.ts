@@ -5,6 +5,7 @@ export default {
   },
   toolbar: {
     search: 'name, group or description',
+    layout: 'Layout'
   },
   table: {
     title: {
@@ -24,17 +25,23 @@ export default {
   },
   form: {
     config: {
+      timeout: 'Timeout',
+    },
+    canvas: {
       grid: {
-        visible: 'Grid Visible',
+        type: 'Grid Type',
         size: 'Grid Size',
         color: 'Grid Color',
-        thickness: 'Grid Thickness',
+        thick: 'Grid Thick'
       },
-      background: {
+      bg: {
         color: 'Bg Color',
-        image: 'Bg Image',
-        repeat: 'Image Repeat',
-        opacity: 'Image Opacity',
+        opacity: 'Bg Opacity'
+      },
+      edge: {
+        color: 'Edge Color',
+        router: 'Edge Router',
+        connector: 'Edge Corner'
       }
     },
     create: {

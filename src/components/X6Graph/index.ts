@@ -9,7 +9,7 @@ import { DagreLayout } from '@antv/layout';
 import { register } from '@antv/x6-vue-shape';
 import insertCss from 'insert-css';
 import { defaultCanvasAttrs, nodePortCfg } from "./type";
-import AlgoNode from './algoNode.vue';
+import ExeNode from './exeNode.vue';
 import ChartNode from './chartNode.vue';
 
 export default class X6Graph {
@@ -19,7 +19,6 @@ export default class X6Graph {
   // default values
   private static graphOption: any = {
     container: document.getElementById('x6-container')!,
-    height: defaultCanvasAttrs.height,
     background: defaultCanvasAttrs.bg,
     grid: {
       visible: true,
@@ -70,10 +69,10 @@ export default class X6Graph {
       connectionPoint: 'anchor',
       createEdge() {
         return new Shape.Edge({
-          id: Math.round((new Date().getTime() - 946702800000)/1000),
+          id: String(Math.round((new Date().getTime() - 1704067200000)/1000)),
           attrs: {
             line: {
-              stroke: '#8f8f8f',
+              stroke: '#a9a9a9',
               strokeWidth: 1,
               strokeDasharray: '5 5'
             }
@@ -93,7 +92,7 @@ export default class X6Graph {
   /*
    * initilize graph
    */
-  public static init(canvasAttr: any, container: any) {
+  public static init(canvasAttr: any, container: any, nodeSelEvent: Function) {
     if(container instanceof String){
       this.graphOption.container = document.getElementById(container)!;
     } else {
@@ -136,7 +135,7 @@ export default class X6Graph {
     this.graph.use(new Keyboard({enabled: true, global: true}));
     this.dnd = new Dnd({target: this.graph});
     this.registerComponent();
-    this.initEvent(this.graph, this.graphOption.container);
+    this.initEvent(this.graph, this.graphOption.container, nodeSelEvent);
     return this;
   }
 
@@ -224,14 +223,23 @@ export default class X6Graph {
    * initilize events of graph/mouse
    */
   private static registerComponent() {
-    register({shape: 'AlgoNode', width: 180, height: 60, component: AlgoNode, ports: nodePortCfg});
+    register({shape: 'ExeNode', width: 180, height: 60, component: ExeNode, ports: nodePortCfg});
     register({shape: 'ChartNode', width: 180, height: 120, component: ChartNode, ports: nodePortCfg});
   }
 
   /*
    * initilize events of graph/mouse
    */
-  private static initEvent(graph: any, container: any) {
+  private static initEvent(graph: any, container: any, nodeSelEvent: Function) {
+    // show ports when mouse enter into node
+    graph.on('node:added', ({ node }) => {
+      if(node.id.length > 12){
+        // base date(1704067200000) is 01/01/2024 00:00:00 UTC
+        const tsId: number = Math.round((new Date().getTime() - 1704067200000)/1000);
+        this.graph.updateCellId(node, String(tsId));
+      }
+    });
+
     // show ports when mouse enter into node
     graph.on('node:mouseenter', ({ node }) => {
       const ports = container.querySelectorAll('.x6-port-body') as NodeListOf<SVGAElement>;
@@ -245,9 +253,8 @@ export default class X6Graph {
     });
 
     // get attr of node
-    graph.on('node:click', ({ node }) => {
-      //node.attr('body/stroke', '#178710');
-      //node.attr('body/stroke-width', 10);
+    graph.on('node:selected', ({ node }) => {
+      nodeSelEvent(node);
     });
 
     // highlight edge when it is selected
@@ -266,7 +273,7 @@ export default class X6Graph {
 
     // remove highlighting from edge when it is unselected
     graph.on('edge:unselected', ({ edge }) => {
-      edge.attr('line/stroke', '#8f8f8f');
+      edge.attr('line/stroke', '#a9a9a9');
       edge.attr('line/strokeDasharray', undefined);
       edge.attr('line/style', undefined);
     });

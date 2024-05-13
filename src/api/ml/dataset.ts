@@ -17,6 +17,7 @@ export const API = {
   ML_DATASET_EXECUTE: '/ml/dataset/execute',
   ML_DATASET_STAT: '/ml/dataset/stat',
   ML_DATASET_GROUPS: '/ml/dataset/groups',
+  ML_DATASET_IN_GROUP: '/ml/dataset/subset',
   ML_DATASET_DETAIL: '/ml/dataset/getone',
 };
 
@@ -33,9 +34,14 @@ export function API_ML_DATASET_LIST(params: ApiListReqType) {
 /* get group->dataset tree
  *
  */
-export function API_ML_DATASET_TREE() {
+export function API_ML_DATASET_TREE(pub: boolean) {
+  let params = {pub: false}
+  if(pub){
+    params = {pub: true}
+  } 
   return defHttp.post<AxiosResponse>({
     url: API.ML_DATASET_TREE,
+    params
   });
 }
 
@@ -44,7 +50,18 @@ export function API_ML_DATASET_TREE() {
  */
 export function API_ML_DATASET_GROUPS() {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_DATASET_GROUPS,
+    url: API.ML_DATASET_GROUPS
+  });
+}
+
+/* get all groups
+ *
+ */
+export function API_ML_DATASET_IN_GROUP(params: any) {
+  if(params?.group == ''){return;}
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_DATASET_IN_GROUP,
+    params,
   });
 }
 

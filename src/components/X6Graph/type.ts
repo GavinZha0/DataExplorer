@@ -1,12 +1,6 @@
-import { FormSchema } from '/@/components/Table';
-import { useI18n } from '/@/hooks/web/useI18n';
-const { t } = useI18n();
-
 export const defaultCanvasAttrs = {
-    width: 600,
-    height: 600,
     bg: {
-      color: '#0A0A0A'
+      color: '#212121'
     },
     grid: {
       type: 'dot',
@@ -15,11 +9,10 @@ export const defaultCanvasAttrs = {
       thickness: 1
     },
     edge: {
-      color: '#808080',
+      color: '#a9a9a9',
       router: 'smooth'
     }
 }
-
 
 export const nodePortCfg = {
     groups: {

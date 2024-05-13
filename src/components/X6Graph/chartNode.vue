@@ -25,13 +25,13 @@
     title: String, // SVM, DTree, LinearRegression, KNN...
     progress: Number, // [0, 100]
     status: String | undefined, // "success" | "normal" | "active" | "exception" | undefined
-    info: String | undefined
+    data: any
   }
 
   const emit = defineEmits(['change']);
   const getGraph: Function | undefined = inject<Function>('getGraph');
   const getNode: Function | undefined = inject<Function>('getNode');
-  const nodeData = ref<nodeDataType>({type: 'monitor', title: 'Metrics', info: {x: [], y:[]}});
+  const nodeData = ref<nodeDataType>({type: 'monitor', title: 'Metrics', data: {x: [], y:[]}});
   const lastValue = ref<Number|undefined>();
   let myChart = undefined;
   const myOption = ref<any>({xAxis: {type: 'category', data: []}, yAxis: {type: 'value'}, 
@@ -51,7 +51,7 @@
       // hide chart
       node.prop('size/height', 33);
       myChart.resize({width: nodeSize?.width, height: 1});
-    } else if(nodeData.value.info && nodeData.value.info.y.length>0){
+    } else if(nodeData.value.data && nodeData.value.data.y.length>0){
       // show chart
       node.prop('size/height', 120);
       myChart.resize({width: nodeSize?.width, height: 90});
@@ -66,8 +66,8 @@
       const node: Node = getNode();
       // get initial data
       nodeData.value = node.getData();
-      if(nodeData.value.info.y.length){
-        lastValue.value = nodeData.value.info.y[nodeData.value.info.y.length-1];
+      if(nodeData.value.data.y.length){
+        lastValue.value = nodeData.value.data.y[nodeData.value.data.y.length-1];
       }
 
       if(!myChart){
@@ -77,13 +77,13 @@
           
       if(myChart){
         // build chart
-        myOption.value.xAxis.data = nodeData.value.info.x;
-        myOption.value.series.data = nodeData.value.info.y;
+        myOption.value.xAxis.data = nodeData.value.data.x;
+        myOption.value.series.data = nodeData.value.data.y;
         myChart.setOption(myOption.value);
 
         // show chart when it has data
         const nodeSize = node.getProp('size');
-        if(nodeData.value.info.y.length){
+        if(nodeData.value.data.y.length){
           node.prop('size/height', 120);
           myChart.resize({width: nodeSize?.width, height: 90});
         } else {
@@ -94,18 +94,18 @@
           
       node.on('change:data', ({current}) => {
         // get updated data
-        if(current && current.info){
-          nodeData.value.info.x.push(current.info.x);
-          nodeData.value.info.y.push(current.info.y);
-          lastValue.value = current.info.y;
+        if(current && current.data){
+          nodeData.value.data.x.push(current.data.x);
+          nodeData.value.data.y.push(current.data.y);
+          lastValue.value = current.data.y;
 
           if(!myChart){
             myChart = echarts.init(document.getElementById('echart'));
           } 
           
           if(myChart){
-            myOption.value.xAxis.data = nodeData.value.info.x;
-            myOption.value.series.data = nodeData.value.info.y;
+            myOption.value.xAxis.data = nodeData.value.data.x;
+            myOption.value.series.data = nodeData.value.data.y;
             myChart.setOption(myOption.value);
           }
         }

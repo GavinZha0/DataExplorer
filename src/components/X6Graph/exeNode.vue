@@ -8,35 +8,37 @@
       </span>
     </div>
     <div class="ext">
-      <span class="text">{{nodeData.info}}</span>
+      <span class="text">{{nodeData.text}}</span>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup name="AlgoNode">
+<script lang="ts" setup name="ExtNode">
   import { ref, onMounted, inject } from 'vue';
   import { Avatar, Progress } from 'ant-design-vue';
   import { Graph, Node } from '@antv/x6';
 
   interface nodeDataType {
-    type: String, // source, algo, eval...
-    title: String, // SVM, DTree, LinearRegression, KNN...
+    type: String, // source, proc, ml...
+    kind: String, // dataset, encode, scale, clf, reg...
+    title: String, // kind name, Dataset, Cleaning, Encoding, Feature Extraction...
     progress: Number, // [0, 100]
     status: String | undefined, // "success" | "normal" | "active" | "exception" | undefined
-    info: String | undefined
+    text: String | undefined // ext info of selected function
+    data: any // atrributes and parameters
   }
 
   const emit = defineEmits(['change']);
   const getGraph: Function | undefined = inject<Function>('getGraph');
   const getNode: Function | undefined = inject<Function>('getNode');
-  const nodeData = ref<nodeDataType>({type: 'ml', title: 'Algo', progress: 0, status: undefined, info: undefined});
+  const nodeData = ref<nodeDataType>({type: 'node', title: 'Node', progress: 0, status: undefined, text: undefined, data: undefined});
 
   onMounted((): void => {
     if(getNode != undefined){
       const node: Node = getNode();
       // get initial data of node
       nodeData.value = node.getData();
-      if(nodeData.value.info && nodeData.value.info.length>0){
+      if(nodeData.value.text && nodeData.value.text.length>0){
         node.prop('size/height', 60);
       } else {
         node.prop('size/height', 30);
@@ -46,7 +48,7 @@
         // get updated data
         if(current){
           nodeData.value = {...nodeData.value, ...current};
-          if(nodeData.value.info && nodeData.value.info.length>0){
+          if(nodeData.value.text && nodeData.value.text.length>0){
             const node: Node = getNode();
             node.prop('size/height', 60);
           } else {
@@ -110,7 +112,7 @@
   text-align: left;
   margin-left: 3px;
   color: #666;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 

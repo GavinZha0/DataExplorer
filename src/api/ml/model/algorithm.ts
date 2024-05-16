@@ -1,17 +1,16 @@
 export interface ApiAlgorithmDataType {
   id?: number;
+  pid?: number;
   name?: string;
-  description?: string;
-  category?: string;
+  desc?: string;
+  group?: string;
   type?: string;
-  language?: string;
-  langVer?: string;
+  framework?: string;
+  frameVer?: string;
   content: string;
   config?: ExeConfigType|null;
   version?: string;
   pubFlag?: boolean;
-  sourceId?: number;
-  sourceName?: string;
   status?: number;
   createdBy?: string;
   createTime?: string;
@@ -20,53 +19,32 @@ export interface ApiAlgorithmDataType {
 }
 
 export interface ExeConfigType {
-  type: string; // datasource, dataset or csv/json file
-  id: number; // datasource id, dataset id or file id
-  table: string; // data table when type is datasource
-  fields: string[]; //columns
-  limit: number;
-  assert: string[]; // ['a>10','b<7']
+  datasetId: number; 
+  testRatio: number;
+  initParams: any;
+  timeout: number;
 }
 
-export interface VarFieldType {
-  name: string;
-  type: string;
-  value: string;
-}
-
-export interface SourceFieldType {
-  sources: any[];
-  sourceId: number|null;
-  dbType: string|undefined;
-  tables: any[];
-  selectedTables: string[];
-  expandedTables: string[],
-}
-
-export const initSourceFiled: SourceFieldType = {
-  sources: [],
-  sourceId: null,
-  dbType: undefined,
-  tables: [],
-  selectedTables: [],
-  expandedTables: [],
+const initExeConfig: ExeConfigType = {
+  datasetId: 0,
+  testRatio: 0.3,
+  initParams: {},
+  timeout: 1
 };
 
 //initial value of dataset
 export const initAlgorithm: ApiAlgorithmDataType = {
   id: 0,
   name: '',
-  description: '',
-  category: '',
+  desc: '',
+  group: '',
   type: '',
-  language: 'Python',
-  langVer: '3.7',
+  framework: 'Python',
+  frameVer: '3.11',
   version: '',
   content: '',
-  config: null,
+  config: initExeConfig,
   pubFlag: false,
-  sourceId: 0,
-  sourceName: '',
   createdBy: '',
   createTime: '',
   updatedBy: '',
@@ -74,18 +52,8 @@ export const initAlgorithm: ApiAlgorithmDataType = {
   status: 0,
 };
 
-export const initExeConfig: ExeConfigType = {
-  type: '',
-  id: 0,
-  table: '',
-  fields: [],
-  limit: 100,
-  assert: [],
-};
-
 export const iniAlgOptions = {
   algType: ['Classification', 'Regression', 'Clustering', 'Reduction'],
-  algLanguage: ['Python', 'Java'],
-  algLangVer: { Python: ['3.7', '3.8'], Java: ['2.2.1', '2.5.4'] },
-  algSourceType: ['Datasource', 'Dataset', 'File'],
+  algFramework: ['Python', 'Java'],
+  algFreamVer: { Python: ['3.7', '3.8'], Java: ['2.2.1', '2.5.4'] }
 };

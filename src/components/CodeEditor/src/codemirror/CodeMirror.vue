@@ -18,6 +18,10 @@
   import 'codemirror/mode/css/css';
   import 'codemirror/mode/htmlmixed/htmlmixed';
   import 'codemirror/mode/sql/sql';
+  import 'codemirror/mode/python/python';
+  import 'codemirror/mode/javascript/javascript';
+  import 'codemirror/mode/clike/clike';
+
   // hint
   import 'codemirror/addon/hint/show-hint';
   import 'codemirror/addon/hint/show-hint.css';

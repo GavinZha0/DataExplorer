@@ -35,7 +35,7 @@
         <template v-else-if="column.key === 'type'">
           <img
             style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
-            :src="'/resource/img/ml-' + record.type + '.png'"
+            :src="'/resource/img/ml/ml-' + record.type + '.png'"
             @click="() => handleEdit(record)"
           >
         </template>
@@ -76,7 +76,7 @@
         </template>
       </template>
     </BasicTable>
-    <!--DetailForm @register="detailDrawer" @success="handleSuccess" /-->
+    <DetailForm @register="detailDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
 
@@ -96,6 +96,7 @@
   } from '/@/api/ml/algorithm';
   import { useI18n } from 'vue-i18n';
   import { useDrawer } from '/@/components/Drawer';
+  import DetailForm from './detailForm.vue';
 
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
@@ -126,7 +127,7 @@
   function handleCreate() {
     // open edit drawer with default config
     // if data is null that initial function will not be triggered
-    openDetailDrawer(true, { libName: 'G2Plot', libVer: '4.2', libCfg: '' });
+    openDetailDrawer(true, { framework: 'python', frameVer: '3.11'});
   }
 
   /*
@@ -198,10 +199,8 @@
       // id is number in data
       // updateTableDataRecord() will not work if values.id is string.
       updateTableDataRecord(values.id, values);
-      message.success(t('common.tip.update'));
     } else {
       reload();
-      message.success(t('common.tip.new'));
     }
   }
 </script>

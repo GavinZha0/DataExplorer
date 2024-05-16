@@ -38,14 +38,14 @@ export const indexColumns: BasicColumn[] = [
     align: 'left',
   },
   {
-    title: t('ml.algorithm.table.title.language'),
-    dataIndex: 'language',
+    title: t('ml.algorithm.table.title.framework'),
+    dataIndex: 'framework',
     width: 150,
     sorter: true,
   },
   {
-    title: t('ml.algorithm.table.title.lang_ver'),
-    dataIndex: 'langVer',
+    title: t('ml.algorithm.table.title.frame_ver'),
+    dataIndex: 'frameVer',
     width: 180,
     sorter: true,
   },
@@ -60,7 +60,7 @@ export const indexColumns: BasicColumn[] = [
   },
 ];
 
-// info form schema include all fields but some are hidden
+// info form schema
 export const formInfoSchema: FormSchema[] = [
   {
     field: 'id',
@@ -73,14 +73,14 @@ export const formInfoSchema: FormSchema[] = [
     label: t('common.table.title.name'),
     required: true,
     component: 'Input',
-    labelWidth: 80,
+    labelWidth: 200,
     colProps: { span: 24 },
   },
   {
     field: 'desc',
     label: t('common.table.title.desc'),
     component: 'InputTextArea',
-    labelWidth: 80,
+    labelWidth: 200,
     colProps: { span: 24 },
     componentProps: {
       maxlength: 128,
@@ -92,7 +92,51 @@ export const formInfoSchema: FormSchema[] = [
     label: t('common.table.title.group'),
     component: 'Input',
     slot: 'group',
-    labelWidth: 80,
+    labelWidth: 200,
+    colProps: { span: 24 },
+  },
+  {
+    field: 'type',
+    label: t('common.table.title.type'),
+    required: true,
+    component: 'Select',
+    defaultValue: 'clf',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: t('ml.algorithm.form.info.type.clf'), value: 'clf' },
+        { label: t('ml.algorithm.form.info.type.reg'), value: 'reg' },
+        { label: t('ml.algorithm.form.info.type.cluster'), value: 'cluster' }
+      ],
+    },
+    labelWidth: 200,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'framework',
+    label: t('ml.algorithm.table.title.framework'),
+    required: true,
+    defaultValue: 'python',
+    component: 'Select',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: t('ml.algorithm.form.info.framework.python'), value: 'python' },
+        { label: t('ml.algorithm.form.info.framework.sklearn'), value: 'sklearn' },
+        { label: t('ml.algorithm.form.info.framework.pytorch'), value: 'pytorch' },
+        { label: t('ml.algorithm.form.info.framework.tensorflow'), value: 'tensorflow' },
+        { label: t('ml.algorithm.form.info.framework.java'), value: 'java' },
+        { label: t('ml.algorithm.form.info.framework.js'), value: 'js' }
+      ],
+    },
+    labelWidth: 200,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'frameVer',
+    component: 'Input',
+    label: t('ml.algorithm.table.title.frame_ver'),
+    labelWidth: 200,
     colProps: { span: 24 },
   },
   {
@@ -101,7 +145,7 @@ export const formInfoSchema: FormSchema[] = [
     component: 'Input',
     dynamicDisabled: () => true,
     ifShow: ({ values }) => values.id,
-    labelWidth: 80,
+    labelWidth: 200,
     colProps: { span: 24 },
   },
   {
@@ -110,7 +154,7 @@ export const formInfoSchema: FormSchema[] = [
     component: 'Input',
     dynamicDisabled: () => true,
     ifShow: ({ values }) => values.id,
-    labelWidth: 80,
+    labelWidth: 200,
     colProps: { span: 24 },
   },
   {
@@ -119,7 +163,7 @@ export const formInfoSchema: FormSchema[] = [
     component: 'Input',
     dynamicDisabled: () => true,
     ifShow: ({ values }) => values.id,
-    labelWidth: 80,
+    labelWidth: 200,
     colProps: { span: 24 },
   },
   {
@@ -128,100 +172,127 @@ export const formInfoSchema: FormSchema[] = [
     component: 'Input',
     dynamicDisabled: () => true,
     ifShow: ({ values }) => values.id,
-    labelWidth: 80,
+    labelWidth: 200,
     colProps: { span: 24 },
-  },
+  }
 ];
 
-// source form schema
+// config form schema
 export const formConfigSchema: FormSchema[] = [
   {
-    field: 'variable',
-    component: 'ApiTree',
-    label: '',
-    slot: 'sourceSelectTree',
-  },
-  {
-    field: 'hidden',
+    field: 'trainFunc',
+    label: t('ml.algorithm.form.config.train'),
+    defaultValue: 'fit',
     component: 'Input',
-    label: '',
-    slot: 'fieldTree',
+    labelWidth: 200,
+    colProps: { span: 24 },
   },
   {
-    field: 'sorter',
+    field: 'predictFunc',
+    label: t('ml.algorithm.form.config.predict'),
+    defaultValue: 'predict',
     component: 'Input',
-    label: '',
-    slot: 'fieldTree',
+    labelWidth: 200,
+    colProps: { span: 24 },
   },
-];
-
-export const varModalSchemas: FormSchema[] = [
   {
-    field: 'type',
-    label: t('dataviz.dataset.form.var.type'),
+    field: 'dataset',
+    label: t('ml.algorithm.form.config.dataset'),
     required: true,
+    component: 'Input',
+    slot: 'dataset',
+    labelWidth: 200,
+    colProps: { span: 24 },
+  },
+  {
+    field: 'testRatio',
+    label: t('ml.algorithm.form.config.test_ratio'),
+    component: 'InputNumber',
+    defaultValue: 0.3,
+    componentProps: {
+      min: 0,
+      max: 1,
+      step: 0.1,
+    },
+    labelWidth: 200,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'timeout',
+    label: t('ml.algorithm.form.config.timeout'),
+    defaultValue: 1,
+    component: 'InputNumber',
+    componentProps: {
+      min: 0,
+      max: 60
+    },
+    labelWidth: 200,
+    colProps: { span: 24 },
+  },
+  {
+    field: 'metric',
+    label: t('ml.algorithm.form.config.metric.title'),
     component: 'Select',
+    defaultValue: 'accuracy',
     componentProps: {
       options: [
-        { label: t('dataviz.dataset.form.var.cat.number'), value: 'number' },
-        { label: t('dataviz.dataset.form.var.cat.string'), value: 'string' },
-        { label: t('dataviz.dataset.form.var.cat.bool'), value: 'bool' },
-        { label: t('dataviz.dataset.form.var.cat.ts'), value: 'timestamp' },
-        { label: t('dataviz.dataset.form.var.cat.arrayN'), value: '[number]' },
-        { label: t('dataviz.dataset.form.var.cat.arrayS'), value: '[string]' },
+        { label: t('ml.algorithm.form.config.metric.accuracy'), value: 'accuracy' },
+        { label: t('ml.algorithm.form.config.metric.auc'), value: 'auc' },
+        { label: t('ml.algorithm.form.config.metric.mse'), value: 'mse' }
       ],
     },
-    colProps: { span: 24 },
+    labelWidth: 200,
+    colProps: { span: 24 }
   },
   {
-    field: 'name',
-    component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.var.name'),
-    colProps: { span: 24 },
-  },
-  {
-    field: 'value',
-    component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.var.value'),
-    colProps: { span: 24 },
-  },
+    field: 'initParms',
+    label: t('ml.algorithm.form.config.init'),
+    component: 'InputTextArea',
+    componentProps: {
+      maxlength: 255,
+      autoSize: { minRows: 4, maxRows: 8 },
+    },
+    labelWidth: 200,
+    colProps: { span: 24 }
+  }
 ];
 
-export const filterModalSchemas: FormSchema[] = [
+// chart form schema
+export const formChartSchema: FormSchema[] = [
   {
-    field: 'key',
+    field: 'progress',
+    label: t('ml.algorithm.form.chart.progress'),
     component: 'Input',
-    required: true,
+    slot: 'progress',
+    labelWidth: 200,
+    colProps: { span: 12 }
+  },
+  {
+    field: 'accuracy',
+    label: t('ml.algorithm.form.chart.accuracy'),
+    component: 'Input',
+    slot: 'accuracy',
+    labelWidth: 200,
+    colProps: { span: 12 }
+  }
+];
+
+// chart form schema
+export const formHistorySchema: FormSchema[] = [
+  {
+    field: 'succOnly',
+    label: t('ml.algorithm.form.history.succOnly'),
+    defaultValue: true,
+    component: 'Switch',
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'experment',
     label: '',
-    colProps: { span: 24 },
-    show: false,
-  },
-  {
-    field: 'operator',
-    label: t('dataviz.dataset.form.filter.operator'),
-    required: true,
-    component: 'Select',
-    componentProps: {
-      options: [
-        { label: '>', value: '>' },
-        { label: '>=', value: '>=' },
-        { label: '<', value: '<' },
-        { label: '<=', value: '<=' },
-        { label: '=', value: '=' },
-        { label: '!=', value: '!=' },
-        { label: 'in', value: 'in' },
-        { label: 'like', value: 'like' },
-      ],
-    },
-    colProps: { span: 24 },
-  },
-  {
-    field: 'value',
     component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.filter.value'),
-    colProps: { span: 24 },
-  },
+    slot: 'experment',
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
 ];

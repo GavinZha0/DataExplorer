@@ -1,16 +1,15 @@
 export default {
   tab: {
-    manage: 'Manage',
     editor: 'Editor',
-    view: 'View',
+    history: 'History',
   },
   toolbar: {
     search: 'name, group or description',
   },
   table: {
     title: {
-      language: 'Language',
-      lang_ver: 'Language Version',
+      framework: 'Framework',
+      frame_ver: 'Frame Ver',
       version: 'Version',
       yes: 'Yes',
       no: 'No',
@@ -24,41 +23,42 @@ export default {
     },
   },
   form: {
+    info: {
+      type: {
+        clf: 'Classification',
+        reg: 'Regression',
+        cluster: 'Clustering'
+      },
+      framework: {
+        python: 'Python',
+        sklearn: 'Sk-Learn',
+        pytorch: 'PyTorch',
+        tensorflow: 'Tensorflow',
+        java: 'Java',
+        js: 'Javascript'
+      }
+    },
     config: {
-      input: 'Input',
-      limit: 'Limit',
-      type: 'Type',
-      source: 'Source',
-      expect: 'Expectation',
+      train: 'Train Function',
+      predict: 'Predict Function',
+      dataset: 'Dataset',
+      test_ratio: 'Test Ratio',
+      init: 'Init Params',
+      timeout: 'Timeout(min)',
+      metric: {
+        title: 'Validation Metric',
+        accuracy: 'Accuracy',
+        auc: 'AUC',
+        mse: 'MSE'
+      }
     },
-    create: {
-      info: 'Info',
-      title: 'Create new algo',
-      edit: 'Update algo',
-      toolbar: {
-        format: 'Format',
-        run: 'Run',
-        stop: 'Stop',
-        config: 'Config',
-        save: 'Save',
-        saveas: 'Save As',
-      },
-      config: {
-        dim: 'Dimension',
-        metrics: 'Metrics',
-        variable: 'Variable',
-        filter: 'Filter',
-        hidecol: 'Hidden Column',
-        order: 'Order By',
-        limit: 'Limit',
-      },
+    chart: {
+      progress: 'Progress',
+      accuracy: 'Accuracy'
     },
-    result: {
-      log: 'Log',
-      plot: 'pyPlot',
-      chart: 'Chart',
-      steamlit: 'Steamlit',
-      dl4jui: 'DL4J',
+    history: {
+      succOnly: 'Success Only',
+      experment: 'Experment'
     },
   },
   error: {

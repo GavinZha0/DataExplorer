@@ -22,7 +22,7 @@
     <div style="width: 98%; float: left">
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
-          <Tabs active="flow" centered size="small">
+          <Tabs active="editor" centered size="small">
             <Tabs.TabPane key="flow" :tab="t('ml.workflow.tab.flow')">
               <div style="width: 100%; border: solid 1px gray; height: 700px">
                 <div id="x6-container" ref="x6GraphRef" class="x6-graph"></div>

@@ -120,7 +120,7 @@
   function handleCreate() {
     // open edit drawer with default config
     // if data is null that initial function will not be triggered
-    openDetailDrawer(true, {flowVer: '2.0'});
+    openDetailDrawer(true, {x6Ver: '2.0'});
   }
 
   /*

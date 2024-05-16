@@ -6,17 +6,17 @@ import { ApiAlgorithmDataType } from '/@/api/ml/model/algorithm';
 //----------------------------------------------------------------------------------------
 // PATH definition
 export const API = {
-  ML_ALGO_LIST: '/mlalgo/list',
-  ML_ALGO_TREE: '/mlalgo/tree',
-  ML_ALGO_CREATE: '/mlalgo/create',
-  ML_ALGO_UPDATE: '/mlalgo/update',
-  ML_ALGO_PUBLIC: '/mlalgo/public',
-  ML_ALGO_CLONE: '/mlalgo/clone',
-  ML_ALGO_DELETE: '/mlalgo/delete',
-  ML_ALGO_EXECUTE: '/mlalgo/execute',
-  ML_ALGO_EXECUTE_SCRIPT: '/mlalgo/execute_script',
-  ML_ALGO_CATEGORY: '/mlalgo/category',
-  ML_ALGO_ONE: '/mlalgo/getone',
+  ML_ALGO_LIST: '/ml/algo/list',
+  ML_ALGO_TREE: '/ml/algo/tree',
+  ML_ALGO_CREATE: '/ml/algo/create',
+  ML_ALGO_UPDATE: '/ml/algo/update',
+  ML_ALGO_PUBLIC: '/ml/algo/public',
+  ML_ALGO_CLONE: '/ml/algo/clone',
+  ML_ALGO_DELETE: '/ml/algo/delete',
+  ML_ALGO_EXECUTE: '/ml/algo/execute',
+  ML_ALGO_EXECUTE_SCRIPT: '/ml/algo/execute_script',
+  ML_ALGO_GROUPS: '/ml/algo/groups',
+  ML_ALGO_ONE: '/ml/algo/getone',
 }
 
 /* get all algo as list
@@ -129,8 +129,8 @@ export function API_ML_ALGO_EXECUTE_SCRIPT(params: ApiAlgorithmDataType) {
 /* get all groups
  *
  */
-export function API_ML_ALGO_CATEGORY() {
+export function API_ML_ALGO_GROUPS() {
   return defHttp.post<AxiosResponse>({
-    url: API.ML_ALGO_CATEGORY,
+    url: API.ML_ALGO_GROUPS,
   });
 }

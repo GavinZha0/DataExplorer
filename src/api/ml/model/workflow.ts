@@ -8,7 +8,7 @@ export interface ApiWorkflowDataType {
   category?: string;
   workflow?: any;
   canvas?: any;
-  flowVer?: string;
+  x6Ver?: string;
   config?: any;
   lastRun?: string;
   duration?: number;
@@ -29,7 +29,7 @@ export const initWorkflow: ApiWorkflowDataType = {
   description: '',
   category: '',
   workflow: null,
-  flowVer: '1.31',
+  x6Ver: '1.31',
   canvas: defaultCanvasAttrs,
   config: [],
   lastRun: '',

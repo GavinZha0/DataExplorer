@@ -65,6 +65,7 @@
     "@logicflow/extension": "^1.1.13",
     "@mapbox/togeojson": "^0.16.0",
     "@popperjs/core": "^2.11.7",
+    "@stomp/stompjs": "^7.0.0",
     "@vue/runtime-core": "^3.2.33",
     "@vue/shared": "^3.2.33",
     "@vueuse/core": "^8.3.0",

@@ -47,7 +47,8 @@
       watch(
         () => props.params,
         () => {
-          !unref(isFirstLoaded) && fetch();
+          // !unref(isFirstLoaded) && fetch(); // why isFirstLoaded is here??? only load once??? Gavin
+          fetch();
         },
         { deep: true },
       );

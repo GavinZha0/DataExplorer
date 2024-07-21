@@ -32,10 +32,10 @@
         <template v-if="column.key === 'name'">
           <a @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
-        <template v-else-if="column.key === 'type'">
+        <template v-else-if="column.key === 'category'">
           <img
             style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
-            :src="'/resource/img/ml/ml-' + record.type + '.png'"
+            :src="'/resource/img/ml/ml-' + record.category + '.png'"
             @click="() => handleEdit(record)"
           >
         </template>

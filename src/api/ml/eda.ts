@@ -13,7 +13,7 @@ export const API = {
   ML_EDA_PUBLIC: '/ml/eda/public',
   ML_EDA_CLONE: '/ml/eda/clone',
   ML_EDA_DELETE: '/ml/eda/delete',
-  ML_EDA_BUILD: '/ml/eda/build',
+  ML_EDA_BUILD: '/py/ml/eda/build',
   ML_EDA_SELECT: '/ml/eda/select',
   ML_EDA_EXECUTE: '/ml/eda/execute',
   ML_EDA_EXECUTE_SCRIPT: '/ml/eda/execute_script',

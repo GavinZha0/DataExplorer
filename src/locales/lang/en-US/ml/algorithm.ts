@@ -10,7 +10,8 @@ export default {
     title: {
       framework: 'Framework',
       frame_ver: 'Frame Ver',
-      version: 'Version',
+      algo_name: 'Algo Name',
+      dataset: 'Dataset',
       yes: 'Yes',
       no: 'No',
     },
@@ -23,12 +24,7 @@ export default {
     },
   },
   form: {
-    info: {
-      type: {
-        clf: 'Classification',
-        reg: 'Regression',
-        cluster: 'Clustering'
-      },
+    algo: {
       framework: {
         python: 'Python',
         sklearn: 'Sk-Learn',
@@ -36,20 +32,43 @@ export default {
         tensorflow: 'Tensorflow',
         java: 'Java',
         js: 'Javascript'
-      }
-    },
-    config: {
-      train: 'Train Function',
-      predict: 'Predict Function',
+      },
+      category: {
+        clf: 'Classification',
+        reg: 'Regression',
+        cluster: 'Clustering'
+      },
+      algo_name: 'Algorithm',
+      params: {
+        title: 'Param Space',
+        name: 'Param',
+        value: 'Value'
+      },
       dataset: 'Dataset',
-      test_ratio: 'Test Ratio',
-      init: 'Init Params',
-      timeout: 'Timeout(min)',
-      metric: {
-        title: 'Validation Metric',
-        accuracy: 'Accuracy',
+      test_ratio: 'Test Ratio'
+    },
+    train: {
+      search_algo: 'Search Algo',
+      trials: 'Trials',
+      epochs: 'Epochs',
+      timeout: 'Timeout',
+      early_stop: {
+        title: 'Early stop',
+        name: 'Metric',
+        value: 'Target',
+        acc: 'Accuracy',
+        r2: 'R2',
+        mape: 'MAPE',
         auc: 'AUC',
-        mse: 'MSE'
+        recall: 'Recall',
+        prec: 'Precision',
+        f1: 'F1',
+        kappa: 'Kappa',
+        mcc: 'MCC',
+        mae: 'MAE',
+        mse: 'MSE',
+        rmse: 'RMSE',
+        rmsle: 'RMSLE'
       }
     },
     chart: {

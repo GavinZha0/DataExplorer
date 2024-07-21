@@ -29,7 +29,7 @@
                   border
                   class="code-mirror"
                   placeholder="Input code"
-                  v-model:value="rawData.content"
+                  v-model:value="rawData.srcCode"
                   mode="python"
                 />
               </div>
@@ -57,8 +57,7 @@
                 ref="infoFormRef"
                 :schemas="formInfoSchema"
                 :showActionButtonGroup="false"
-                layout="vertical"
-                >
+                layout="vertical">
                 <template #group="{ model, field }">
                   <ApiSelect
                     :api="API_ML_ALGO_GROUPS"
@@ -80,26 +79,102 @@
                   paddingRight: '5px',
                   paddingTop: '5px',
                   paddingBottom: '5px',
-                  display: rightPanelKey == 'config' ? 'block' : 'none',
+                  display: rightPanelKey == 'algo' ? 'block' : 'none',
                 }"
             >
               <BasicForm
-                ref="configFormRef"
-                :schemas="formConfigSchema"
+                ref="attrFormRef"
+                :schemas="formAttrSchema"
+                :showActionButtonGroup="false"
+                layout="vertical"
+                @fieldValueChange="handleAttrChange"
+                >
+                <template #algoName="{ model, field }">
+                  <ApiTreeSelect
+                    :api="API_ML_ALGO_ALGOS"
+                    :params="algoParams"
+                    :immediate="true"
+                    v-model:value="model[field]"
+                    :fieldNames="{ key: 'name', label: 'name', value: 'name' }"
+                    :afterFetch="cacheAlgoTree"
+                    @select="handleAlgoSelection"
+                  />
+                </template>
+                <template #dataset="{ model, field }">
+                  <ApiTreeSelect style="width: 100%"
+                    v-model:value="model[field]"
+                    :placeholder="t('ml.algorithm.form.algo.dataset')"
+                   :api="API_ML_DATASET_TREE"
+                   :immediate="true"
+                    :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
+                   resultField="records"/>
+                </template>
+                <template #params>
+                  <BasicTable @register="registerParamsTable" @edit-end="handleParamEditEnd">
+                    <template #headerCell="{ column }">
+                      <template v-if="column.key === 'name'">
+                        {{ t('ml.algorithm.form.algo.params.name') }}
+                        <PlusSquareTwoTone
+                          class="ml-2"
+                          :style="{ fontSize: '20px', marginLeft: '8px', cursor: 'pointer' }"
+                          @click="handleParamAdd"
+                        />
+                      </template>
+                      <template v-else>
+                        {{ t('ml.algorithm.form.algo.params.value') }}
+                      </template>
+                    </template>
+                  </BasicTable>
+                </template>
+              </BasicForm>
+            </div>
+            <div
+                :style="{
+                  borderWidth: '1px',
+                  borderColor: 'black',
+                  height: '100%',
+                  width: '100%',
+                  paddingLeft: '5px',
+                  paddingRight: '5px',
+                  paddingTop: '5px',
+                  paddingBottom: '5px',
+                  display: rightPanelKey == 'train' ? 'block' : 'none',
+                }"
+            >
+              <BasicForm
+                ref="trainFormRef"
+                :schemas="formTrainSchema"
                 :showActionButtonGroup="false"
                 layout="vertical"
                 >
                 <template #dataset="{ model, field }">
                   <ApiTreeSelect style="width: 100%"
                     v-model:value="model[field]"
-                    :placeholder="t('ml.algorithm.form.config.dataset')"
+                    :placeholder="t('ml.algorithm.form.train.dataset')"
                    :api="API_ML_DATASET_TREE"
                    :immediate="true"
                     :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
                    resultField="records"/>
                 </template>
+                <template #earlyStop>
+                  <BasicTable @register="registerMetricsTable" @edit-end="handleMetricsEditEnd">
+                    <template #headerCell="{ column }">
+                      <template v-if="column.key === 'name'">
+                        {{ t('ml.algorithm.form.train.early_stop.name') }}
+                        <PlusSquareTwoTone
+                          class="ml-2"
+                          :style="{ fontSize: '20px', marginLeft: '8px', cursor: 'pointer' }"
+                          @click="handleMetricsAdd"
+                        />
+                      </template>
+                      <template v-else>
+                        {{ t('ml.algorithm.form.train.early_stop.value') }}
+                      </template>
+                    </template>
+                  </BasicTable>
+                </template>
               </BasicForm>
-            </div>  
+            </div>    
             <div
                 :style="{
                   borderWidth: '1px',
@@ -149,7 +224,7 @@
                 <template #dataset="{ model, field }">
                   <ApiTreeSelect style="width: 100%"
                     v-model:value="model[field]"
-                    :placeholder="t('ml.algorithm.form.config.dataset')"
+                    :placeholder="t('ml.algorithm.form.train.dataset')"
                    :api="API_ML_DATASET_TREE"
                    :immediate="true"
                     :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
@@ -193,16 +268,27 @@
         </template>
         <span>Info</span>
       </MenuItem>
-      <MenuItem key="config">
+      <MenuItem key="algo">
         <template #icon>
-          <SettingFilled
+          <FunctionOutlined
             :style="{
               fontSize: '24px',
               color: 'green',
             }"
           />
         </template>
-        <span>Config</span>
+        <span>Algo&Data</span>
+      </MenuItem>
+      <MenuItem key="train">
+        <template #icon>
+          <ExperimentOutlined
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Train&Eval</span>
       </MenuItem>
       <MenuItem key="chart">
         <template #icon>
@@ -217,7 +303,7 @@
       </MenuItem>
       <MenuItem key="history">
         <template #icon>
-          <ExperimentOutlined
+          <HistoryOutlined
             :style="{
               fontSize: '24px',
               color: 'green',
@@ -231,9 +317,9 @@
 </template>
 
 <script lang="ts" setup name="DetailForm">
-  import { ref, unref, h } from 'vue';
+  import { ref, unref, h, reactive } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { formInfoSchema, formConfigSchema, formChartSchema, formHistorySchema } from './data';
+  import { formInfoSchema, formAttrSchema, formTrainSchema, formChartSchema, formHistorySchema, algoTplSklearn, metricColumns, paramColumns, skMetricLib } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { ApiTreeSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
@@ -241,10 +327,12 @@
     PlaySquareTwoTone,
     SaveTwoTone,
     InfoCircleFilled,
-    SettingFilled,
     AreaChartOutlined,
     ExperimentOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    PlusSquareTwoTone,
+    FunctionOutlined,
+    HistoryOutlined
   } from '@ant-design/icons-vue';
   import { CodeEditor } from '/@/components/CodeEditor';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -262,28 +350,39 @@
     API_ML_ALGO_CREATE,
     API_ML_ALGO_UPDATE,
     API_ML_ALGO_GROUPS,
+    API_ML_ALGO_ALGOS,
     API_ML_ALGO_EXECUTE
   } from '/@/api/ml/algorithm';
   import { ApiSelect } from '/@/components/Form';
   import { API_ML_DATASET_TREE } from '/@/api/ml/dataset';
   import { ApiAlgorithmDataType, initAlgorithm } from '/@/api/ml/model/algorithm';
   import { API_ML_ALGO_HISTORY_LIST, API_ML_ALGO_HISTORY_DEL } from '/@/api/ml/algoHistory';
+  import { wsClient } from "/@/utils/http/ws/webstomp";
+  import { useUserStore } from '/@/store/modules/user';
+  import { cloneDeep } from 'lodash-es';
+  import { BasicTable, useTable } from '/@/components/Table';
 
   const { t } = useI18n();
   const drawerTitle = ref<string>(t('common.form.new'));
   const emit = defineEmits(['success', 'register']);
   const rawData = ref<ApiAlgorithmDataType>(initAlgorithm);
   const activeTab = ref<string>('editor');
-  const rightPanelSize = ref<number>(4);
-  const rightPanelKey = ref<string>('config');
-  const selectedPanelKeys = ref<string[]>(['config']);
+  const rightPanelSize = ref<number>(5);
+  const rightPanelKey = ref<string>('algo');
+  const selectedPanelKeys = ref<string[]>(['algo']);
   const infoFormRef = ref<Nullable<FormActionType>>(null);
-  const configFormRef = ref<Nullable<FormActionType>>(null);
+  const attrFormRef = ref<Nullable<FormActionType>>(null);
+  const trainFormRef = ref<Nullable<FormActionType>>(null);
   const trainPct = ref<number>(0);
   const metricVal = ref<number>(0);
   const historyParam = ref<any>({algoId: 2, succOnly: true});
   const historyData = ref<any[]>([]);
   const selHisKey = ref<number[]>([0]);
+  const userStore = useUserStore();
+  const algoParams = reactive<any>({framework: '', category: ''});
+  let tplTree = [];
+  const paramList = ref<any[]>([]);
+  const metricList = ref<any[]>([]);
 
   // drawer data initialization
   const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (data) => {
@@ -291,19 +390,44 @@
     if (infoFormRef.value) {
       infoFormRef.value.resetFields();
     }
-    if (configFormRef.value) {
-      configFormRef.value.resetFields();
+    if (trainFormRef.value) {
+      trainFormRef.value.resetFields();
     }
 
     setDrawerProps({ confirmLoading: false });
 
+    // save received data
+    rawData.value = data;
+    algoParams.framework = data.framework;
+    algoParams.category = data.category;
+    
     // pass received data to info form
     if (infoFormRef.value) {
       infoFormRef.value.setFieldsValue(data);
     }
 
-    if (configFormRef.value) {
-      await configFormRef.value.setFieldsValue(data.config);
+    if (attrFormRef.value && data.attr) {
+      attrFormRef.value.setFieldsValue(data.attr);
+      if(data.attr?.params){
+        paramList.value = data.attr.params;
+      }
+    }
+    
+    if(!data.attr){
+      // initialize attr
+      data.attr = {params: paramList.value};
+    }
+
+    if (trainFormRef.value && data.config) {
+      await trainFormRef.value.setFieldsValue(data.config);
+      if(data.config?.metrics){
+        metricList.value = data.config.metrics;
+      }
+    }
+
+    if(!data.config){
+      // initialize config
+      data.config = {metrics: metricList.value};
     }
 
     // get drawer title
@@ -313,15 +437,103 @@
       drawerTitle.value = t('common.form.new');
     }
 
-    // save received data
-    rawData.value = data;
-
     // get history list
     API_ML_ALGO_HISTORY_LIST(historyParam.value).then((response) => {
       historyData.value = response.records;
     });
+    
 
+    // subscribe the message (user x and alg y)
+      // one user can run multiple algorithms at the same time
+      // so one user must have multiple channels to receive separated logs
+      if(data.id){
+        const userId = userStore.getUserInfo?.id;
+        const channel = '/user/' + userId + '/wsReport';
+        wsClient.subscribe(channel, function (stompMsg){
+          const jsonMsg = JSON.parse(stompMsg.body);
+          message.success(stompMsg.body);
+        });
+      }
   });
+
+  // parameter table definition (arguments of train function)
+  const [registerParamsTable, paramTableMethod] = useTable({
+    bordered: true,
+    columns: paramColumns,
+    dataSource: paramList,
+    pagination: false,
+    canResize: false,
+    scroll: { y: 280 },
+    showIndexColumn: false
+  });
+
+
+  // metrics table definition (used for early stop)
+  const [registerMetricsTable, metricTableMethod] = useTable({
+    bordered: true,
+    columns: metricColumns,
+    dataSource: metricList,
+    pagination: false,
+    canResize: false,
+    scroll: { y: 360 },
+    showIndexColumn: false
+  });
+
+  
+  /*
+   * add parameter
+   */
+   function handleParamAdd() {
+    // add an empty parameter to table
+    if (paramList.value) {
+      paramTableMethod.insertTableDataRecord({ name: '', value: '' }, paramList.value.length);
+    } else {
+      paramTableMethod.insertTableDataRecord({ name: '', value: '' }, 0);
+    }
+  }
+
+  /*
+   * update parameter
+   */
+   function handleParamEditEnd({ index, key, value }: Recordable) {
+    if (paramList.value.length <= index) {
+      // add a new one
+      paramList.value.push({ name: '', value: '' });
+    }
+    paramList.value[index][key] = value.trim();
+    if(paramList.value[index]['name'] == '' && paramList.value[index]['value'] == ''){
+      // delete empty parameter
+      paramList.value.splice(index, 1);
+    }
+  }
+
+  /*
+   * add metrics
+   */
+   function handleMetricsAdd() {
+    // add an empty metrics to table
+    if (metricList.value) {
+      metricTableMethod.insertTableDataRecord({ name: '', value: '' }, metricList.value.length);
+    } else {
+      metricTableMethod.insertTableDataRecord({ name: '', value: '' }, 0);
+    }
+  }
+
+
+  /*
+   * update metrics
+   */
+  function handleMetricsEditEnd({ index, key, value }: Recordable) {
+    if (metricList.value.length <= index) {
+      // add a new one
+      metricList.value.push({ name: '', value: '' });
+    }
+    metricList.value[index][key] = value.trim();
+    if(metricList.value[index]['name'] == '' && metricList.value[index]['value'] == ''){
+      // delete empty parameter
+      metricList.value.splice(index, 1);
+    }
+  }
 
   /*
    * only pick up the latest one as selected field when selecting change
@@ -340,32 +552,124 @@
     }
   };
 
-      /*
+
+  /*
+  * Attr option change
+  */
+  const handleAttrChange = (key: string, value: string) => {
+    if(key == 'framework' || key == 'category'){
+      algoParams[key] = value;
+    }
+  };
+
+  /*
+  * cache algo tree
+  */
+  const cacheAlgoTree = (data: any[]) =>{
+    if(data){
+      tplTree = data.records;
+      return data.records;
+    } else {
+      return [];
+    }
+  };
+
+  /*
+  * algo templete change
+  */
+  const handleAlgoSelection = (name: string) => {
+    let modelName = null;
+    if(algoParams.framework == 'sklearn'){
+      let tpl = cloneDeep(algoTplSklearn);
+      for(let node of tplTree){
+        for(let child of node.children){
+          if(child.name == name){
+            modelName = node.name;
+            break;
+          }
+        }
+        if(modelName!=null){
+          break;
+        }
+      }
+      
+      tpl = tpl.replaceAll('{MODULE}', modelName);
+      tpl = tpl.replaceAll('{ALGORITHM}', name);
+
+      // build arguments based on parameters
+      let paramArray: string[] = [];
+      if(rawData.value.attr?.params){
+        for(let item of rawData.value.attr.params){
+          if(item.name!='' && item.value!=''){
+            paramArray.push(`${item.name}=config['${item.name}']`);
+          }
+        }
+      }
+      let paramArgStr = paramArray.join();
+      tpl = tpl.replaceAll('{PARAMS}', paramArgStr);
+
+      // build eval metrics
+      let metricArray: string[] = [];
+      let funcArray: string[] = [];
+      if(rawData.value.config?.metrics){
+        for(let item of rawData.value.config.metrics){
+          if(item.name!=''){
+            let func_name = item.name;
+            if(item.name == 'score'){
+              func_name = `${algoParams.category}_${item.name}`;
+            }
+            if(skMetricLib[func_name]){
+              funcArray.push(`${item.name} = ${skMetricLib[func_name]}`);
+              metricArray.push(`'${item.name}': ${item.name}`);
+            }
+          }
+        }
+      }
+
+      let funcStr = funcArray.join('\n      ');
+      tpl = tpl.replaceAll('{METRIC_GET}', funcStr);
+
+      let metricStr = metricArray.join();
+      if(metricStr!=''){
+        metricStr = `ray.train.report({${metricStr}})`;
+      }      
+      tpl = tpl.replaceAll('{METRICS_RPT}', metricStr);
+
+      rawData.value.srcCode = tpl;
+    }
+  };
+
+
+  /*
    * switch panel - info/model
    */
-   const handleMenuSwitch = async (menu: any) => {
+  const handleMenuSwitch = async (menu: any) => {
     if (rightPanelKey.value == menu.key && rightPanelSize.value > 0) {
       rightPanelSize.value = 0;
       return;
     }
 
     rightPanelKey.value = menu.key;
-    rightPanelSize.value = 4;
+    if(menu.key == 'train'){
+      rightPanelSize.value = 5;
+    } else {
+      rightPanelSize.value = 5;
+    }
   };
 
   /*
    * execute training
    */
-  const execute = async () => {
-    if (!rawData.value.content) {
+  const execute = () => {
+    if (!rawData.value.srcCode) {
       return;
     }
 
     // save first
-    await handleSubmit();
+    //await handleSubmit();
 
     // execute algo training
-    API_ML_ALGO_EXECUTE(rawData.value.id).then((response) => {
+    API_ML_ALGO_EXECUTE(rawData.value.id, rawData.value.framework).then((response) => {
       const aaa = response;
     });
   };
@@ -435,17 +739,44 @@
   async function handleSubmit() {
     try {
       // validate form data
-      const values = await infoFormRef.value.validate();
-      rawData.value.name = values.name;
-      rawData.value.desc = values.desc;
-      rawData.value.group = values.group;
-      rawData.value.type = values.type;
-      rawData.value.framework = values.framework;
-      rawData.value.frameVer = values.frameVer;
+      const info = await infoFormRef.value.validate();
+      const attr = await attrFormRef.value.validate();
+      const cfg = await trainFormRef.value.validate();
+      rawData.value.name = info.name;
+      rawData.value.desc = info.desc;
+      rawData.value.group = info.group;
 
-      const cfg = await configFormRef.value.validate();
+      rawData.value.category = attr.category;
+      rawData.value.algoName = attr.algoName;
+      rawData.value.framework = attr.framework;
+      rawData.value.datasetId = attr.dataset;
+      rawData.value.attr = attr;
+
+      rawData.value.attr['params'] = [];
+      if(paramList.value.length>0){
+        for(var item of paramList.value){
+          if(item.name && item.name.length>0 && item.value && item.value.length>0){
+            rawData.value.attr.params.push(item);
+          }
+        }
+      }
+      if(rawData.value.attr.params == []){
+        delete rawData.value.attr.params;
+      }
+
       rawData.value.config = cfg;
-      
+      rawData.value.config['metrics'] = [];
+      if(metricList.value.length>0){
+        for(var item of metricList.value){
+          if(item.name && item.name.length>0 && item.value && item.value.length>0){
+            rawData.value.config.metrics.push(item);
+          }
+        }
+      }
+      if(rawData.value.config.metrics == []){
+        delete rawData.value.config.metrics;
+      }
+
       setDrawerProps({ confirmLoading: true });
       if (rawData.value.id) {
         API_ML_ALGO_UPDATE(unref(rawData.value)).then(() => {

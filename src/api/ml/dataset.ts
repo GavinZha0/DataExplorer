@@ -15,7 +15,7 @@ export const API = {
   ML_DATASET_CLONE: '/ml/dataset/clone',
   ML_DATASET_DELETE: '/ml/dataset/delete',
   ML_DATASET_EXECUTE: '/ml/dataset/execute',
-  ML_DATASET_STAT: '/ml/dataset/stat',
+  ML_DATASET_STAT: '/py/ml/dataset/stat',
   ML_DATASET_GROUPS: '/ml/dataset/groups',
   ML_DATASET_IN_GROUP: '/ml/dataset/subset',
   ML_DATASET_DETAIL: '/ml/dataset/getone',

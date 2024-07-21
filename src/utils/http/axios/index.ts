@@ -90,7 +90,7 @@ const transform: AxiosTransform = {
       config.url = `${urlPrefix}${config.url}`;
     }
 
-    
+    /*
     let isPy = false;
     if(pyUrl && pyUrl.length>0){
       for (const py of pyUrl){
@@ -102,8 +102,9 @@ const transform: AxiosTransform = {
         }
       }
     }
-    
-    if (!isPy && apiUrl && isString(apiUrl)) {
+    */
+
+    if (!config.url?.startsWith('/py/') && apiUrl && isString(apiUrl)) {
       config.url = `${apiUrl}${config.url}`;
     }
     const params = config.params || {};
@@ -160,7 +161,7 @@ const transform: AxiosTransform = {
       const token = useUserStoreWithOut().getToken;
       const shadowToken = getWebStorage(SHADOW_TOKEN_KEY);
       // put tokens into request header
-      if (options.authenticationScheme != undefined && options.authenticationScheme == 'Bearer ') {
+      if (options.authenticationScheme != undefined) {
         (config as Recordable).headers[AUTH_TOKEN_KEY] = options.authenticationScheme + token;
         // shadow token without options.authenticationScheme
         (config as Recordable).headers[SHADOW_TOKEN_KEY] = shadowToken;

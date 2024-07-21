@@ -17,6 +17,7 @@ export const API = {
   ML_ALGO_EXECUTE_SCRIPT: '/ml/algo/execute_script',
   ML_ALGO_GROUPS: '/ml/algo/groups',
   ML_ALGO_ONE: '/ml/algo/getone',
+  ML_ALGO_ALGOS: '/ml/algo/algos'
 }
 
 /* get all algo as list
@@ -104,12 +105,17 @@ export function API_ML_ALGO_DEL(id: number) {
 }
 
 /* execute dataset to query data
- * id: dataset id
- * update: merge config to query result or not
+ * id: algo id
  */
-export function API_ML_ALGO_EXECUTE(id: number) {
+export function API_ML_ALGO_EXECUTE(id: number, framework: string) {
+  const pyFrames = ['python', 'sklearn', 'pytorch', 'tensorflow'];
+  let url = API.ML_ALGO_EXECUTE;
+  if(pyFrames.includes(framework)){
+    // send to python server
+    url = '/py' + url;
+  }
   return defHttp.post<AxiosResponse>({
-    url: API.ML_ALGO_EXECUTE,
+    url: url,
     params: { id: id },
   });
 }
@@ -133,4 +139,23 @@ export function API_ML_ALGO_GROUPS() {
   return defHttp.post<AxiosResponse>({
     url: API.ML_ALGO_GROUPS,
   });
+}
+
+/* get existing algos
+ *
+ */
+export function API_ML_ALGO_ALGOS(params: any) {
+  if(params.framework && params.category){
+    const pyFrames = ['python', 'sklearn', 'pytorch', 'tensorflow'];
+    let url = API.ML_ALGO_ALGOS;
+    if(pyFrames.includes(params.framework)){
+      // send to python server
+      url = '/py' + url;
+    }
+
+    return defHttp.post<AxiosResponse>({
+      url: url,
+      data: params
+    });
+  }
 }

@@ -1,14 +1,17 @@
 export interface ApiAlgorithmDataType {
   id?: number;
-  pid?: number;
   name?: string;
   desc?: string;
   group?: string;
-  type?: string;
+  category?: string;
+  algoName?: string;
   framework?: string;
   frameVer?: string;
-  content: string;
-  config?: ExeConfigType|null;
+  srcCode?: string;
+  datasetId?: number;
+  datasetName?: string;
+  attr?: TrainAttrType|null,
+  config?: TrainConfigType|null;
   version?: string;
   pubFlag?: boolean;
   status?: number;
@@ -18,18 +21,32 @@ export interface ApiAlgorithmDataType {
   updateTime?: string;
 }
 
-export interface ExeConfigType {
+export interface TrainAttrType {
   datasetId: number; 
   testRatio: number;
-  initParams: any;
-  timeout: number;
+  params: any[];
 }
 
-const initExeConfig: ExeConfigType = {
+export interface TrainConfigType {
+  searchAlgo: string; 
+  trials: number;
+  epochs: number;
+  timeout: number;
+  earlyStop: any[];
+}
+
+const initTrainAttr: TrainAttrType = {
   datasetId: 0,
-  testRatio: 0.3,
-  initParams: {},
-  timeout: 1
+  testRatio: 0.2,
+  params: []
+};
+
+const initExeConfig: TrainConfigType = {
+  searchAlgo: 'BasicVariantGenerator',
+  trials: 1,
+  epochs: 1,
+  timeout: 5,
+  earlyStop: []
 };
 
 //initial value of dataset
@@ -38,22 +55,24 @@ export const initAlgorithm: ApiAlgorithmDataType = {
   name: '',
   desc: '',
   group: '',
-  type: '',
-  framework: 'Python',
-  frameVer: '3.11',
-  version: '',
-  content: '',
+  category: 'clf',
+  algoName: '',
+  framework: 'sklearn',
+  frameVer: '3.10',
+  srcCode: '',
+  datasetId: 0,
+  datasetName: '',
+  attr: initTrainAttr,
   config: initExeConfig,
   pubFlag: false,
   createdBy: '',
   createTime: '',
   updatedBy: '',
-  updateTime: '',
-  status: 0,
+  updateTime: ''
 };
 
 export const iniAlgOptions = {
-  algType: ['Classification', 'Regression', 'Clustering', 'Reduction'],
-  algFramework: ['Python', 'Java'],
-  algFreamVer: { Python: ['3.7', '3.8'], Java: ['2.2.1', '2.5.4'] }
+  algCategory: ['Classification', 'Regression', 'Clustering', 'Reduction'],
+  algFramework: ['Python', 'Java', 'Sklearn', 'PyTorch', 'Tensorflow'],
+  algFreamVer: { Python: ['3.10', '3.11'], Java: ['2.2.1', '2.5.4'] }
 };

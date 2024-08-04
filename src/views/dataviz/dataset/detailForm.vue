@@ -310,7 +310,7 @@
                 </template>
               </ApiTreeSelect>
               <ApiTree
-                :api="API_DATASOURCE_TABLES"
+                :api="API_DATASOURCE_SETS"
                 :params="datasourceInfo.selectedSource"
                 :immediate="false"
                 :height="630"
@@ -501,7 +501,7 @@
   } from '/@/api/dataviz/dataset';
   import {
     API_DATASOURCE_TREE,
-    API_DATASOURCE_TABLES,
+    API_DATASOURCE_SETS,
     API_DATASOURCE_EXECUTE,
     API_DATASOURCE_FIELDS,
   } from '/@/api/datamgr/datasource';
@@ -652,7 +652,7 @@
         if (sub.id == key) {
           // find selected source
           // its type will be used to show an icon
-          // this will trigger API_DATASOURCE_TABLES because of params change
+          // this will trigger API_DATASOURCE_SETS because of params change
           datasourceInfo.value.selectedSource = sub;
           return;
         }

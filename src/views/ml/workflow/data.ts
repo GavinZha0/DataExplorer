@@ -150,7 +150,8 @@ export const formConfigSchema: FormSchema[] = [
       allowClear: false,
       min: 0,
       max: 24*60,
-      step: 10
+      step: 10,
+      addonAfter: 'min'
     }
   }
 ];

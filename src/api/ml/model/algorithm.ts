@@ -8,45 +8,45 @@ export interface ApiAlgorithmDataType {
   framework?: string;
   frameVer?: string;
   srcCode?: string;
-  datasetId?: number;
-  datasetName?: string;
-  attr?: TrainAttrType|null,
-  config?: TrainConfigType|null;
-  version?: string;
+  dataCfg?: DataConfigType|null,
+  trainCfg?: TrainConfigType|null;
   pubFlag?: boolean;
-  status?: number;
   createdBy?: string;
   createTime?: string;
   updatedBy?: string;
   updateTime?: string;
 }
 
-export interface TrainAttrType {
+export interface DataConfigType {
   datasetId: number; 
-  testRatio: number;
-  params: any[];
+  evalRatio: number;
+  shuffle: boolean;
 }
 
 export interface TrainConfigType {
-  searchAlgo: string; 
+  gpu: boolean;
+  strategy: string; 
   trials: number;
   epochs: number;
   timeout: number;
-  earlyStop: any[];
+  params: any[];
+  metrics: any[];
 }
 
-const initTrainAttr: TrainAttrType = {
+export const initDataCfg: DataConfigType = {
   datasetId: 0,
-  testRatio: 0.2,
-  params: []
+  evalRatio: 0.2,
+  shuffle: false
 };
 
-const initExeConfig: TrainConfigType = {
-  searchAlgo: 'BasicVariantGenerator',
+const initTrainCfg: TrainConfigType = {
+  gpu: false,
+  strategy: 'BasicVariantGenerator',
   trials: 1,
   epochs: 1,
   timeout: 5,
-  earlyStop: []
+  params: [],
+  metrics: []
 };
 
 //initial value of dataset
@@ -55,15 +55,13 @@ export const initAlgorithm: ApiAlgorithmDataType = {
   name: '',
   desc: '',
   group: '',
-  category: 'clf',
-  algoName: '',
   framework: 'sklearn',
-  frameVer: '3.10',
+  category: 'clf',
+  frameVer: '3.11',
+  algoName: '',
   srcCode: '',
-  datasetId: 0,
-  datasetName: '',
-  attr: initTrainAttr,
-  config: initExeConfig,
+  dataCfg: initDataCfg,
+  trainCfg: initTrainCfg,
   pubFlag: false,
   createdBy: '',
   createTime: '',

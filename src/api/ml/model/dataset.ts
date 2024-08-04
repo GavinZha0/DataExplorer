@@ -5,7 +5,7 @@ export interface ApiMlDatasetDataType {
   name: string;
   desc?: string;
   group?: string;
-  sourceId: number;
+  sourceId: number | null;
   sourceName?: string;
   datasetId?: number;
   datasetName?: string;
@@ -59,7 +59,7 @@ export const initDataset: ApiMlDatasetDataType = {
   variable: [],
   query: '',
   fields: [],
-  sourceId: 0,
+  sourceId: null,
   sourceName: '',
   pubFlag: false,
   createdBy: '',

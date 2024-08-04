@@ -36,25 +36,30 @@ export default {
       category: {
         clf: 'Classification',
         reg: 'Regression',
-        cluster: 'Clustering'
+        cluster: 'Clustering',
+        vision: 'Vison',
+        audio: 'Audio'
       },
       algo_name: 'Algorithm',
       params: {
-        title: 'Param Space',
-        name: 'Param',
-        value: 'Value'
-      },
+        name: 'Training param',
+        value: 'Values'
+      }
+    },
+    data: {
       dataset: 'Dataset',
-      test_ratio: 'Test Ratio'
+      eval_ratio: 'Eval ratio',
+      shuffle: 'Shuffle'
     },
     train: {
-      search_algo: 'Search Algo',
+      gpu: 'GPU',
+      strategy: 'Strategy',
       trials: 'Trials',
       epochs: 'Epochs',
       timeout: 'Timeout',
       early_stop: {
         title: 'Early stop',
-        name: 'Metric',
+        name: 'Evaluation metric',
         value: 'Target',
         acc: 'Accuracy',
         r2: 'R2',

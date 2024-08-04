@@ -29,7 +29,7 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { BasicTree, TreeItem } from '/@/components/Tree';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { API_DATASOURCE_LOCK, API_DATASOURCE_TABLES } from '/@/api/datamgr/datasource';
+  import { API_DATASOURCE_LOCK, API_DATASOURCE_SETS } from '/@/api/datamgr/datasource';
   import {message} from "ant-design-vue";
 
   const { t } = useI18n();
@@ -47,7 +47,7 @@
 
     if (unref(treeTables).length === 0 || data.id != unref(rawData).id) {
       // get table tree from backend
-      API_DATASOURCE_TABLES({ id: data.id, locked: true }).then((response) => {
+      API_DATASOURCE_SETS({ id: data.id, locked: true }).then((response) => {
         // get and show all tables
         treeTables.value = response.records as any as TreeItem[];
       });

@@ -83,27 +83,82 @@
                 }"
             >
               <BasicForm
-                ref="attrFormRef"
-                :schemas="formAttrSchema"
+                ref="algoFormRef"
+                :schemas="formAlgoSchema"
                 :showActionButtonGroup="false"
-                layout="vertical"
-                @fieldValueChange="handleAttrChange"
+                @fieldValueChange="handleAlgoChange"
                 >
                 <template #algoName="{ model, field }">
-                  <ApiTreeSelect
+                  <ApiTree
                     :api="API_ML_ALGO_ALGOS"
                     :params="algoParams"
                     :immediate="true"
+                    :height="600"
                     v-model:value="model[field]"
-                    :fieldNames="{ key: 'name', label: 'name', value: 'name' }"
-                    :afterFetch="cacheAlgoTree"
+                    v-model:selectedKeys="selectedAlgo"
+                    v-model:expandedKeys="expandedAlgo"
+                    :fieldNames="{ key: 'name', title: 'name', value: 'name' }"
+                    :afterFetch="afterFetchAlgos"
                     @select="handleAlgoSelection"
                   />
                 </template>
+              </BasicForm>
+            </div>
+            <div
+                :style="{
+                  borderWidth: '1px',
+                  borderColor: 'black',
+                  height: '100%',
+                  width: '100%',
+                  paddingLeft: '5px',
+                  paddingRight: '5px',
+                  paddingTop: '5px',
+                  paddingBottom: '5px',
+                  display: rightPanelKey == 'data' ? 'block' : 'none',
+                }"
+            >
+              <BasicForm
+                ref="dataFormRef"
+                :schemas="formDataSchema"
+                :showActionButtonGroup="false"
+                >
+                <template #dataset="{ model, field }">
+                  <ApiTree
+                    :api="API_ML_DATASET_TREE"
+                    :immediate="true"
+                    :height="600"
+                    v-model:value="model[field]"
+                    v-model:selectedKeys="selectedDataset"
+                    v-model:expandedKeys="expandedDataset"
+                    :fieldNames="{ key: 'id', title: 'name', value: 'id' }"
+                    :afterFetch="afterFetchDataset"
+                    @select="handleDatasetSelection"
+                  />
+                </template>
+              </BasicForm>
+            </div>
+            <div
+                :style="{
+                  borderWidth: '1px',
+                  borderColor: 'black',
+                  height: '100%',
+                  width: '100%',
+                  paddingLeft: '5px',
+                  paddingRight: '5px',
+                  paddingTop: '5px',
+                  paddingBottom: '5px',
+                  display: rightPanelKey == 'train' ? 'block' : 'none',
+                }"
+            >
+              <BasicForm
+                ref="trainFormRef"
+                :schemas="formTrainSchema"
+                :showActionButtonGroup="false"
+                >
                 <template #dataset="{ model, field }">
                   <ApiTreeSelect style="width: 100%"
                     v-model:value="model[field]"
-                    :placeholder="t('ml.algorithm.form.algo.dataset')"
+                    :placeholder="t('ml.algorithm.form.train.dataset')"
                    :api="API_ML_DATASET_TREE"
                    :immediate="true"
                     :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
@@ -125,36 +180,6 @@
                       </template>
                     </template>
                   </BasicTable>
-                </template>
-              </BasicForm>
-            </div>
-            <div
-                :style="{
-                  borderWidth: '1px',
-                  borderColor: 'black',
-                  height: '100%',
-                  width: '100%',
-                  paddingLeft: '5px',
-                  paddingRight: '5px',
-                  paddingTop: '5px',
-                  paddingBottom: '5px',
-                  display: rightPanelKey == 'train' ? 'block' : 'none',
-                }"
-            >
-              <BasicForm
-                ref="trainFormRef"
-                :schemas="formTrainSchema"
-                :showActionButtonGroup="false"
-                layout="vertical"
-                >
-                <template #dataset="{ model, field }">
-                  <ApiTreeSelect style="width: 100%"
-                    v-model:value="model[field]"
-                    :placeholder="t('ml.algorithm.form.train.dataset')"
-                   :api="API_ML_DATASET_TREE"
-                   :immediate="true"
-                    :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
-                   resultField="records"/>
                 </template>
                 <template #earlyStop>
                   <BasicTable @register="registerMetricsTable" @edit-end="handleMetricsEditEnd">
@@ -221,15 +246,6 @@
                 :showActionButtonGroup="false"
                 @fieldValueChange="handleHistoryChange"
                 >
-                <template #dataset="{ model, field }">
-                  <ApiTreeSelect style="width: 100%"
-                    v-model:value="model[field]"
-                    :placeholder="t('ml.algorithm.form.train.dataset')"
-                   :api="API_ML_DATASET_TREE"
-                   :immediate="true"
-                    :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
-                   resultField="records"/>
-                </template>
                 <template #experment="{ model, field }">
                   <BasicTree
                     :treeData="historyData"
@@ -277,7 +293,18 @@
             }"
           />
         </template>
-        <span>Algo&Data</span>
+        <span>Algo</span>
+      </MenuItem>
+      <MenuItem key="data">
+        <template #icon>
+          <HddOutlined
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>Data</span>
       </MenuItem>
       <MenuItem key="train">
         <template #icon>
@@ -319,9 +346,9 @@
 <script lang="ts" setup name="DetailForm">
   import { ref, unref, h, reactive } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { formInfoSchema, formAttrSchema, formTrainSchema, formChartSchema, formHistorySchema, algoTplSklearn, metricColumns, paramColumns, skMetricLib } from './data';
+  import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formChartSchema, formHistorySchema, algoTplSklearn, metricColumns, paramColumns, skMetricLib } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { ApiTreeSelect } from '/@/components/Form';
+  import { ApiTree, ApiTreeSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
   import {
     PlaySquareTwoTone,
@@ -332,7 +359,8 @@
     DeleteOutlined,
     PlusSquareTwoTone,
     FunctionOutlined,
-    HistoryOutlined
+    HistoryOutlined,
+    HddOutlined
   } from '@ant-design/icons-vue';
   import { CodeEditor } from '/@/components/CodeEditor';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -371,7 +399,8 @@
   const rightPanelKey = ref<string>('algo');
   const selectedPanelKeys = ref<string[]>(['algo']);
   const infoFormRef = ref<Nullable<FormActionType>>(null);
-  const attrFormRef = ref<Nullable<FormActionType>>(null);
+  const dataFormRef = ref<Nullable<FormActionType>>(null);
+  const algoFormRef = ref<Nullable<FormActionType>>(null);
   const trainFormRef = ref<Nullable<FormActionType>>(null);
   const trainPct = ref<number>(0);
   const metricVal = ref<number>(0);
@@ -379,8 +408,12 @@
   const historyData = ref<any[]>([]);
   const selHisKey = ref<number[]>([0]);
   const userStore = useUserStore();
-  const algoParams = reactive<any>({framework: '', category: ''});
-  let tplTree = [];
+  const algoParams = reactive<any>({framework: 'sklearn', category: 'clf'});
+  const selectedAlgo = ref<string[]>([]);
+  const expandedAlgo = ref<string[]>([]);
+  const selectedDataset = ref<number[]>([]);
+  const expandedDataset = ref<number[]>([]);
+  let algoTree = [];
   const paramList = ref<any[]>([]);
   const metricList = ref<any[]>([]);
 
@@ -390,58 +423,67 @@
     if (infoFormRef.value) {
       infoFormRef.value.resetFields();
     }
+    if (dataFormRef.value) {
+      dataFormRef.value.resetFields();
+    }
+    if (algoFormRef.value) {
+      algoFormRef.value.resetFields();
+    }
     if (trainFormRef.value) {
       trainFormRef.value.resetFields();
     }
 
     setDrawerProps({ confirmLoading: false });
 
-    // save received data
-    rawData.value = data;
-    algoParams.framework = data.framework;
-    algoParams.category = data.category;
-    
-    // pass received data to info form
-    if (infoFormRef.value) {
-      infoFormRef.value.setFieldsValue(data);
-    }
+    if(data.id){
+      // save received data
+      rawData.value = data;
+      algoParams.framework = data.framework;
+      algoParams.category = data.category;
 
-    if (attrFormRef.value && data.attr) {
-      attrFormRef.value.setFieldsValue(data.attr);
-      if(data.attr?.params){
-        paramList.value = data.attr.params;
+      // pass received data to info form
+      if (infoFormRef.value) {
+        infoFormRef.value.setFieldsValue(data);
       }
-    }
-    
-    if(!data.attr){
-      // initialize attr
-      data.attr = {params: paramList.value};
-    }
-
-    if (trainFormRef.value && data.config) {
-      await trainFormRef.value.setFieldsValue(data.config);
-      if(data.config?.metrics){
-        metricList.value = data.config.metrics;
+      if (algoFormRef.value){
+        algoFormRef.value.setFieldsValue(data);
+        if(data.algoName){
+          selectedAlgo.value = [data.algoName];
+        }
       }
-    }
 
-    if(!data.config){
-      // initialize config
-      data.config = {metrics: metricList.value};
-    }
+      if (dataFormRef.value && data.dataCfg) {
+        dataFormRef.value.setFieldsValue(data.dataCfg);
+        if(data.dataCfg.datasetId){
+          selectedDataset.value = [data.dataCfg.datasetId];
+        }
+      }
 
-    // get drawer title
-    if (data && data.id) {
-      drawerTitle.value = '[' + data.name + ']';
-    } else {
+      if (trainFormRef.value && data.trainCfg) {
+        await trainFormRef.value.setFieldsValue(data.trainCfg);
+        if(data.trainCfg?.params){
+          paramList.value = data.trainCfg.params;
+        } else {
+          data.trainCfg.params = paramList.value;
+        }
+        if(data.trainCfg?.metrics){
+          metricList.value = data.trainCfg.metrics;
+        } else {
+          data.trainCfg.metrics = metricList.value;
+        }
+      }
+
+      // get history list
+      API_ML_ALGO_HISTORY_LIST(historyParam.value).then((response) => {
+        historyData.value = response.records;
+      });
+
       drawerTitle.value = t('common.form.new');
+    } else {
+      
+      rawData.value = initAlgorithm;
+      drawerTitle.value = '[' + data.name + ']';
     }
-
-    // get history list
-    API_ML_ALGO_HISTORY_LIST(historyParam.value).then((response) => {
-      historyData.value = response.records;
-    });
-    
 
     // subscribe the message (user x and alg y)
       // one user can run multiple algorithms at the same time
@@ -554,20 +596,28 @@
 
 
   /*
-  * Attr option change
+  * algo config change
   */
-  const handleAttrChange = (key: string, value: string) => {
-    if(key == 'framework' || key == 'category'){
+  const handleAlgoChange = (key: string, value: string) => {
+    // as query parameter to get algo list
+    if(key == 'framework'){
+      // clearn category when frameowrk is changed
+      algoParams[key] = value;
+      algoParams['category'] = null;
+    } else if (key == 'category'){
       algoParams[key] = value;
     }
   };
 
-  /*
-  * cache algo tree
+    /*
+  * find pid after get dataset from backend
   */
-  const cacheAlgoTree = (data: any[]) =>{
-    if(data){
-      tplTree = data.records;
+  const afterFetchDataset = (data: any[]) =>{
+    if(data?.records){
+      if(selectedDataset.value[0]){
+        const setPid = findPidInTree(data.records, 'id', selectedDataset.value[0], null);
+        expandedDataset.value = [setPid];
+      }
       return data.records;
     } else {
       return [];
@@ -575,13 +625,50 @@
   };
 
   /*
-  * algo templete change
+  * cache algo tree after get it from backend
+  */
+  const afterFetchAlgos = (data: any[]) =>{
+    if(data?.records){
+      algoTree = data.records;
+      if(selectedAlgo.value[0]){
+        const setPid = findPidInTree(algoTree, 'name', selectedAlgo.value[0], null);
+        expandedAlgo.value = [setPid];
+      }
+      return data.records;
+    } else {
+      return [];
+    }
+  };
+
+  const findPidInTree = (node, field, value, pid) => {
+    let nodePid = null;
+    if(Array.isArray(node)){
+      for(const nd of node){
+        nodePid = findPidInTree(nd, field, value, nd[field]);
+        if(nodePid){
+          return nodePid;
+        }
+      }
+    } else if (node.children && node.children.length>0){
+      for(const cd of node.children){
+        nodePid = findPidInTree(cd, field, value, node[field]);
+        if(nodePid){
+          return nodePid;
+        }
+      }
+    } else if (node[field] == value){
+      return pid;
+    }
+    return nodePid;
+  };
+  /*
+  * algo name selection
   */
   const handleAlgoSelection = (name: string) => {
     let modelName = null;
     if(algoParams.framework == 'sklearn'){
-      let tpl = cloneDeep(algoTplSklearn);
-      for(let node of tplTree){
+      let tplCode = cloneDeep(algoTplSklearn);
+      for(let node of algoTree){
         for(let child of node.children){
           if(child.name == name){
             modelName = node.name;
@@ -593,26 +680,26 @@
         }
       }
       
-      tpl = tpl.replaceAll('{MODULE}', modelName);
-      tpl = tpl.replaceAll('{ALGORITHM}', name);
+      tplCode = tplCode.replaceAll('{MODULE}', modelName);
+      tplCode = tplCode.replaceAll('{ALGORITHM}', name);
 
       // build arguments based on parameters
       let paramArray: string[] = [];
-      if(rawData.value.attr?.params){
-        for(let item of rawData.value.attr.params){
+      if(rawData.value.trainCfg?.params){
+        for(let item of rawData.value.trainCfg.params){
           if(item.name!='' && item.value!=''){
             paramArray.push(`${item.name}=config['${item.name}']`);
           }
         }
       }
       let paramArgStr = paramArray.join();
-      tpl = tpl.replaceAll('{PARAMS}', paramArgStr);
+      tplCode = tplCode.replaceAll('{PARAMS}', paramArgStr);
 
       // build eval metrics
       let metricArray: string[] = [];
       let funcArray: string[] = [];
-      if(rawData.value.config?.metrics){
-        for(let item of rawData.value.config.metrics){
+      if(rawData.value.trainCfg?.metrics){
+        for(let item of rawData.value.trainCfg.metrics){
           if(item.name!=''){
             let func_name = item.name;
             if(item.name == 'score'){
@@ -627,16 +714,24 @@
       }
 
       let funcStr = funcArray.join('\n      ');
-      tpl = tpl.replaceAll('{METRIC_GET}', funcStr);
+      tplCode = tplCode.replaceAll('{METRIC_GET}', funcStr);
 
       let metricStr = metricArray.join();
       if(metricStr!=''){
         metricStr = `ray.train.report({${metricStr}})`;
       }      
-      tpl = tpl.replaceAll('{METRICS_RPT}', metricStr);
+      tplCode = tplCode.replaceAll('{METRICS_RPT}', metricStr);
 
-      rawData.value.srcCode = tpl;
+      rawData.value.srcCode = tplCode;
     }
+  };
+
+  /*
+  * dataset selection
+  */
+  const handleDatasetSelection = (key: any[], value: any) => {
+    // key is dataset id
+    rawData.value.dataCfg.datasetId = key[0];
   };
 
 
@@ -650,11 +745,7 @@
     }
 
     rightPanelKey.value = menu.key;
-    if(menu.key == 'train'){
-      rightPanelSize.value = 5;
-    } else {
-      rightPanelSize.value = 5;
-    }
+    rightPanelSize.value = 5;
   };
 
   /*
@@ -674,7 +765,7 @@
     });
   };
 
-  
+  // show history status
   function historyIcons(node: any) {
     if (node.status == 0) {
       return 'ant-design:check-circle-outlined';
@@ -740,41 +831,49 @@
     try {
       // validate form data
       const info = await infoFormRef.value.validate();
-      const attr = await attrFormRef.value.validate();
-      const cfg = await trainFormRef.value.validate();
+      const algo = await algoFormRef.value.validate();
+      const data = await dataFormRef.value.validate();
+      const train = await trainFormRef.value.validate();
       rawData.value.name = info.name;
       rawData.value.desc = info.desc;
       rawData.value.group = info.group;
 
-      rawData.value.category = attr.category;
-      rawData.value.algoName = attr.algoName;
-      rawData.value.framework = attr.framework;
-      rawData.value.datasetId = attr.dataset;
-      rawData.value.attr = attr;
+      rawData.value.framework = algo.framework;
+      rawData.value.category = algo.category;
+      rawData.value.algoName = selectedAlgo.value[0];
+    
+      rawData.value.dataCfg.evalRatio = data.evalRatio;
+      rawData.value.dataCfg.shuffle = data.shuffle==undefined?false:data.shuffle;
 
-      rawData.value.attr['params'] = [];
+      rawData.value.trainCfg.gpu = train.gpu==undefined?false:train.gpu;
+      rawData.value.trainCfg.strategy = train.strategy;
+      rawData.value.trainCfg.trials = train.trials;
+      rawData.value.trainCfg.epochs = train.epochs;
+      rawData.value.trainCfg.timeout = train.timeout;
+      delete rawData.value.trainCfg.searchAlgo;
+
+      rawData.value.trainCfg['params'] = [];
       if(paramList.value.length>0){
         for(var item of paramList.value){
           if(item.name && item.name.length>0 && item.value && item.value.length>0){
-            rawData.value.attr.params.push(item);
+            rawData.value.trainCfg.params.push(item);
           }
         }
       }
-      if(rawData.value.attr.params == []){
-        delete rawData.value.attr.params;
+      if(rawData.value.trainCfg.params == []){
+        delete rawData.value.trainCfg.params;
       }
 
-      rawData.value.config = cfg;
-      rawData.value.config['metrics'] = [];
+      rawData.value.trainCfg['metrics'] = [];
       if(metricList.value.length>0){
         for(var item of metricList.value){
           if(item.name && item.name.length>0 && item.value && item.value.length>0){
-            rawData.value.config.metrics.push(item);
+            rawData.value.trainCfg.metrics.push(item);
           }
         }
       }
-      if(rawData.value.config.metrics == []){
-        delete rawData.value.config.metrics;
+      if(rawData.value.trainCfg.metrics == []){
+        delete rawData.value.trainCfg.metrics;
       }
 
       setDrawerProps({ confirmLoading: true });

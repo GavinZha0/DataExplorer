@@ -1,3 +1,4 @@
+import { faL } from '@fortawesome/free-solid-svg-icons';
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { useI18n } from '/@/hooks/web/useI18n';
@@ -146,47 +147,51 @@ export const formInfoSchema: FormSchema[] = [
   }
 ];
 
-// algo & data form schema
-export const formAttrSchema: FormSchema[] = [
-  {
-    field: 'dataset',
-    label: t('ml.algorithm.form.algo.dataset'),
-    component: 'Input',
-    slot: 'dataset',
-    labelWidth: 200,
-    colProps: { span: 24 },
-  },
-  {
-    field: 'testRatio',
-    label: t('ml.algorithm.form.algo.test_ratio'),
-    component: 'InputNumber',
-    defaultValue: 0.2,
-    componentProps: {
-      min: 0,
-      max: 1,
-      step: 0.1,
-    },
-    labelWidth: 200,
-    colProps: { span: 24 }
-  },
+// algo form schema
+export const formAlgoSchema: FormSchema[] = [
   {
     field: 'framework',
     label: t('ml.algorithm.table.title.framework'),
     required: true,
     defaultValue: 'sklearn',
     component: 'Select',
-    componentProps: {
-      allowClear: false,
-      options: [
-        { label: t('ml.algorithm.form.algo.framework.python'), value: 'python' },
-        { label: t('ml.algorithm.form.algo.framework.sklearn'), value: 'sklearn' },
-        { label: t('ml.algorithm.form.algo.framework.pytorch'), value: 'pytorch' },
-        { label: t('ml.algorithm.form.algo.framework.tensorflow'), value: 'tensorflow' },
-        { label: t('ml.algorithm.form.algo.framework.java'), value: 'java' },
-        { label: t('ml.algorithm.form.algo.framework.js'), value: 'js' }
-      ],
+    componentProps: ({ formModel, formActionType }) => {
+      return {
+        allowClear: false,
+        options: [
+          { label: t('ml.algorithm.form.algo.framework.python'), value: 'python' },
+          { label: t('ml.algorithm.form.algo.framework.sklearn'), value: 'sklearn' },
+          { label: t('ml.algorithm.form.algo.framework.pytorch'), value: 'pytorch' },
+          { label: t('ml.algorithm.form.algo.framework.tensorflow'), value: 'tensorflow' },
+          { label: t('ml.algorithm.form.algo.framework.java'), value: 'java' },
+          { label: t('ml.algorithm.form.algo.framework.js'), value: 'js' }
+        ],
+        onChange: (e: any) => {
+          let citiesOptions = [];
+          if (e == 'sklearn') {
+            citiesOptions = [
+              { label: t('ml.algorithm.form.algo.category.clf'), value: 'clf' },
+              { label: t('ml.algorithm.form.algo.category.reg'), value: 'reg' },
+              { label: t('ml.algorithm.form.algo.category.cluster'), value: 'cluster' }
+            ];
+          } else if (e == 'pytorch') {
+            citiesOptions = [
+              { label: t('ml.algorithm.form.algo.category.vision'), value: 'vision' },
+              { label: t('ml.algorithm.form.algo.category.audio'), value: 'audio' },
+            ];
+          }
+          formModel.category = undefined; //  reset city value
+          const { updateSchema } = formActionType;
+          updateSchema({
+            field: 'category',
+            componentProps: {
+              options: citiesOptions,
+            },
+          });
+        }
+    }
     },
-    labelWidth: 200,
+    labelWidth: 80,
     colProps: { span: 24 }
   },
   {
@@ -196,39 +201,95 @@ export const formAttrSchema: FormSchema[] = [
     component: 'Select',
     defaultValue: 'clf',
     componentProps: {
-      allowClear: false,
+      allowClear: true,
       options: [
         { label: t('ml.algorithm.form.algo.category.clf'), value: 'clf' },
         { label: t('ml.algorithm.form.algo.category.reg'), value: 'reg' },
         { label: t('ml.algorithm.form.algo.category.cluster'), value: 'cluster' }
       ],
     },
-    labelWidth: 200,
+    labelWidth: 80,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'div-label',
+    label: t('ml.algorithm.form.algo.algo_name'),
+    component: 'Divider',
+    componentProps: {
+      style: {
+        fontWeight: 'bold',
+        borderColor: '#7cb305',
+      }
+    },
     colProps: { span: 24 }
   },
   {
     field: 'algoName',
-    component: 'Input',
-    label: t('ml.algorithm.form.algo.algo_name'),
-    labelWidth: 200,
-    colProps: { span: 24 },
-    slot: 'algoName'
-  },
-  {
-    field: 'params',
     label: '',
     component: 'Input',
-    labelWidth: 200,
     colProps: { span: 24 },
-    slot: 'params'
+    slot: 'algoName'
+  }
+];
+
+// data form schema
+export const formDataSchema: FormSchema[] = [
+  {
+    field: 'shuffle',
+    label: t('ml.algorithm.form.data.shuffle'),
+    component: 'Switch',
+    defaultValue: false,
+    labelWidth: 70,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'evalRatio',
+    label: t('ml.algorithm.form.data.eval_ratio'),
+    component: 'InputNumber',
+    defaultValue: 0.2,
+    componentProps: {
+      min: 0,
+      max: 0.5,
+      step: 0.1,
+    },
+    labelWidth: 70,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'div-label',
+    label: t('ml.algorithm.form.data.dataset'),
+    component: 'Divider',
+    componentProps: {
+      style: {
+        fontWeight: 'bold',
+        borderColor: '#7cb305',
+      }
+    },
+    colProps: { span: 24 }
+  },
+  {
+    field: 'dataset',
+    label: '',
+    component: 'Input',
+    slot: 'dataset',
+    labelWidth: 70,
+    colProps: { span: 24 },
   }
 ];
 
 // train & eval form schema
 export const formTrainSchema: FormSchema[] = [
   {
-    field: 'searchAlgo',
-    label: t('ml.algorithm.form.train.search_algo'),
+    field: 'gpu',
+    label: t('ml.algorithm.form.train.gpu'),
+    component: 'Switch',
+    defaultValue: false,
+    labelWidth: 70,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'strategy',
+    label: t('ml.algorithm.form.train.strategy'),
     component: 'Select',
     defaultValue: 'BasicVariantGenerator',
     componentProps: {
@@ -244,7 +305,7 @@ export const formTrainSchema: FormSchema[] = [
         { label: 'ZOOptSearch', value: 'ZOOptSearch' }
       ],
     },
-    labelWidth: 200,
+    labelWidth: 80,
     colProps: { span: 24 }
   },
   {
@@ -256,7 +317,7 @@ export const formTrainSchema: FormSchema[] = [
       min: 1,
       max: 20
     },
-    labelWidth: 200,
+    labelWidth: 80,
     colProps: { span: 24 },
   },
   {
@@ -268,7 +329,7 @@ export const formTrainSchema: FormSchema[] = [
       min: 1,
       max: 100
     },
-    labelWidth: 200,
+    labelWidth: 80,
     colProps: { span: 24 },
   },
   {
@@ -278,16 +339,23 @@ export const formTrainSchema: FormSchema[] = [
     component: 'InputNumber',
     componentProps: {
       min: 0,
-      max: 60
+      max: 60,
+      addonAfter: 'min'
     },
-    labelWidth: 200,
+    labelWidth: 80,
     colProps: { span: 24 },
+  },
+  {
+    field: 'params',
+    label: '',
+    component: 'Input',
+    colProps: { span: 24 },
+    slot: 'params'
   },
   {
     field: 'earlyStop',
     label: '',
     component: 'Input',
-    labelWidth: 200,
     colProps: { span: 24 },
     slot: 'earlyStop'
     /*
@@ -412,12 +480,12 @@ class MySklearnModel(PythonModel):
 export const algoTplSklearn = `
 import ray
 import mlflow
+import matplotlib
 from mlflow.utils.mlflow_tags import MLFLOW_RUN_NAME, MLFLOW_USER
 from sklearn.{MODULE} import {ALGORITHM}
 from sklearn import metrics
 
-
-class CustomAlgo:
+class CustomTrain:
   def train(config: dict, data: dict):
     setup_mlflow()
 
@@ -433,6 +501,7 @@ class CustomAlgo:
 export const algoTplSklearn_backup = `
 import mlflow
 import ray
+import matplotlib
 from ray.air.integrations.mlflow import setup_mlflow
 from sklearn.{MODULE} import {ALGORITHM}
 from sklearn.metrics import *

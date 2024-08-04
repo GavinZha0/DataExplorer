@@ -10,6 +10,7 @@ import { defHttp } from '/@/utils/http/axios';
 import { AxiosResponse } from 'axios';
 import { btoa } from 'js-base64';
 import { ApiExeSqlReqType } from '/@/api/datamgr/model/datasource';
+import { API_PARAM_GET } from '../admin/param';
 
 //----------------------------------------------------------------------------------------
 // PATH definition
@@ -25,7 +26,7 @@ export const API = {
   DATASOURCE_CLONE: '/src/datasource/clone',
   DATASOURCE_DELETE: '/src/datasource/delete',
   DATASOURCE_DATABASES: '/src/datasource/databases',
-  DATASOURCE_DB_TABLES: '/src/datasource/tables',
+  DATASOURCE_DB_SETS: '/src/datasource/sets',
   DATASOURCE_TABLE_FIELDS: '/src/datasource/fields',
   DATASOURCE_EXECUTE: '/src/datasource/execute',
 };
@@ -140,10 +141,14 @@ export function API_DATASOURCE_DEL(id: number) {
 // get datasource tables without looked tables
 /* params: {id: number(datasource id), locked: bool(include locked tables or not)}
  */
-export function API_DATASOURCE_TABLES(params: object) {
+export function API_DATASOURCE_SETS(params: object) {
   if (params && params.id!=undefined && params.id>0) {
+    let url = API.DATASOURCE_DB_SETS;
+    if(params.type == 'datahub'){
+      url = '/py' + url;
+    } 
     return defHttp.post<AxiosResponse>({
-      url: API.DATASOURCE_DB_TABLES,
+      url: url,
       data: params,
     });
   }

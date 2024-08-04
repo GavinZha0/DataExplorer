@@ -319,13 +319,19 @@
                     :size="24"
                     style="color: #00bb00; margin-top: -8px"
                   />
+                  <Icon
+                    v-else-if="datasourceInfo.selectedSource.type == 'datahub'"
+                    icon="carbon:cloud-data-ops"
+                    :size="24"
+                    style="color: #00bb00; margin-top: -8px"
+                  />
                 </template>
               </ApiTreeSelect>
               <ApiTree
-                :api="API_DATASOURCE_TABLES"
+                :api="API_DATASOURCE_SETS"
                 :params="datasourceInfo.selectedSource"
                 :immediate="false"
-                :height="630"
+                :height="650"
                 v-model:value="datasourceInfo.selectedTable"
                 resultField="records"
                 :fieldNames="{ key: 'id', title: 'name', value: 'id' }"
@@ -485,7 +491,7 @@
   } from '/@/api/ml/dataset';
   import {
     API_DATASOURCE_TREE,
-    API_DATASOURCE_TABLES,
+    API_DATASOURCE_SETS,
     API_DATASOURCE_EXECUTE
   } from '/@/api/datamgr/datasource';
   import { cloneDeep, findIndex } from 'lodash-es';
@@ -559,12 +565,11 @@
     // get drawer title
     if (data && data.id) {
       drawerTitle.value = '[' + data.name + ']';
+      // save received data
+      rawData.value = JSON.parse(JSON.stringify(data));
     } else {
       drawerTitle.value = t('common.form.new');
     }
-
-    // save received data
-    rawData.value = JSON.parse(JSON.stringify(data));
 
     // initialize table columns
     buildColumns();
@@ -704,7 +709,7 @@ wsClient.publish({
         if (sub.id == key) {
           // find selected source
           // its type will be used to show an icon
-          // this will trigger API_DATASOURCE_TABLES because of params change
+          // this will trigger API_DATASOURCE_SETS because of params change
           datasourceInfo.value.selectedSource = sub;
           return;
         }

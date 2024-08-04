@@ -32,7 +32,7 @@
         <template v-else-if="column.key === 'type'">
           <img
             style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
-            :src="'/resource/img/source-' + record.type + '.png'"
+            :src="'/resource/img/src/' + record.type.toLowerCase() + '.png'"
             @click="() => handleEdit(record)"
           >
         </template>

@@ -1,7 +1,7 @@
 <template>
   <div :class="prefixCls">
     <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
-      <Badge :count="count" dot :numberStyle="numberStyle">
+      <Badge :dot="count" :numberStyle="numberStyle">
         <BellOutlined />
       </Badge>
       <template #content>
@@ -12,9 +12,7 @@
                 {{ item.name }}
                 <span v-if="item.list.length !== 0">({{ item.list.length }})</span>
               </template>
-              <!-- 绑定title-click事件的通知列表中标题是“可点击”的-->
-              <NoticeList :list="item.list" v-if="item.key === '1'" @title-click="onNoticeClick" />
-              <NoticeList :list="item.list" v-else />
+              <NoticeList :list="item.list" @title-click="onNoticeClick" />
             </TabPane>
           </template>
         </Tabs>
@@ -30,6 +28,9 @@
   import NoticeList from './NoticeList.vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { createWebSocket } from "/@/utils/http/ws/webstomp";
+  import { useUserStore } from '/@/store/modules/user';
+  import { MSG_CODE, WsMsg, MlJobException, MlStepReport, MlEpochReport, MlTrialReport, MlExperReport } from '/@/api/ws/model/message';
 
   export default defineComponent({
     components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList },
@@ -37,19 +38,175 @@
       const { prefixCls } = useDesign('header-notify');
       const { createMessage } = useMessage();
       const listData = ref(tabListData);
+      const newMsg = ref<Boolean>(false);
+      const userStore = useUserStore();
+      const userId = userStore.getUserInfo?.id;
+      const dtFormatter = new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit', 
+                                              year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+      /*
+      * handle websocket message
+      */
+      const wsMsgHandler = (msg) => {
+        const wsMsg: WsMsg = JSON.parse(msg.body);
+        switch (wsMsg.code){
+          case MSG_CODE.ML_JOB_EXCEPTION:
+            handleJobException(wsMsg.msg, wsMsg.data);
+            break;
+          case MSG_CODE.ML_STEP_REPORT:
+            handleStepReport(wsMsg.data);
+            break;
+          case MSG_CODE.ML_EPOCH_REPORT:
+            handleEpochReport(wsMsg.data);
+            break;
+          case MSG_CODE.ML_TRIAL_REPORT:
+            handleTrialReport(wsMsg.data);
+            break;
+          case MSG_CODE.ML_EXPERIMENT_REPORT:
+            handleExperReport(wsMsg.data);
+            break;
+          default:
+            createMessage.success('Unknown ws msg: ' + wsMsg.code);
+            break;
+        }
+      };
+
+      if(userId){
+        const channel = '/user/' + userId + '/wsReport';
+        createWebSocket(userId, channel, wsMsgHandler);
+      }
+
+      const handleJobException= (msg: string, report: MlJobException) => {
+        for(const cat of listData.value){
+          if(cat.key == 'notice'){
+            // new job started
+            cat.list.unshift(
+              {
+                id: 'ML_ALGO_'+report.algoId,
+                avatar: '/resource/img/ml/ml-avatar.png',
+                title: 'RandomForestClassifer',
+                description: msg,
+                color: 'red',
+                datetime: dtFormatter.format(new Date())
+              }
+            );
+            createMessage.error('ML ' + report.algoId + ': ' + msg, 5);
+            break;
+          }
+        }
+      };
+
+      // include step progress
+      const handleStepReport = (report: MlStepReport) => {
+        const aa = report;
+      };
+
+      // update trainning progress based on epoch
+      const handleEpochReport = (report: MlEpochReport) => {
+        let found = false;
+        for(const cat of listData.value){
+          if(cat.key == 'notice'){
+            for(const note of cat.list){
+              if(note.id.endsWith('_' + report.algoId)){
+                found = true;
+                note.extra = report.progress*100 + '%';
+                note.datetime = dtFormatter.format(new Date());
+                break;
+              }
+            }
+            if(!found){
+              cat.list.unshift(
+                {
+                  id: 'ML_ALGO_'+report.algoId,
+                  avatar: '/resource/img/ml/ml-avatar.png',
+                  title: 'RandomForestClassifer',
+                  description: '',
+                  extra: report.progress*100 + '%',
+                  color: 'blue',
+                  datetime: dtFormatter.format(new Date())
+                }
+              );
+            }
+            break;
+          }
+        }
+      };
+
+      // include params and eval of a trial
+      const handleTrialReport = (report: MlTrialReport) => {
+        const aa = report;
+      };
+
+      // include all trials eval result
+      const handleExperReport = (report: MlExperReport) => {
+        let found = false;
+        for(const cat of listData.value){
+          if(cat.key == 'notice'){
+            if(report.status == 1){
+              // new job started
+              createMessage.success('ML ' + report.algoId + ' training started!', 5);
+              // add a new one to notice list
+              cat.list.unshift(
+                {
+                  id: 'ML_ALGO_'+report.algoId,
+                  avatar: '/resource/img/ml/ml-avatar.png',
+                  title: 'RandomForestClassifer',
+                  description: '',
+                  extra: '1%',
+                  color: 'blue',
+                  datetime: dtFormatter.format(new Date())
+                }
+              );
+            } else if (report.status == 0) {
+              // job completed
+              createMessage.success('ML ' + report.algoId + ' training completed!', 5);
+              for(const note of cat.list){
+                if(note.id.endsWith('_' + report.algoId)){
+                  found = true;
+                  note.extra = '100%';
+                  note.datetime = dtFormatter.format(new Date());
+                  break;
+                }
+              }
+              if (!found){
+                // add a new one to notice list
+                cat.list.unshift(
+                  {
+                    id: 'ML_ALGO_'+report.algoId,
+                    avatar: '/resource/img/ml/ml-avatar.png',
+                    title: 'RandomForestClassifer',
+                    description: '',
+                    extra: '100%',
+                    color: 'blue',
+                    datetime: dtFormatter.format(new Date())
+                  }
+                );
+              }
+            }
+            break;
+          }
+        }
+      };
+
 
       const count = computed(() => {
         let count = 0;
         for (let i = 0; i < tabListData.length; i++) {
           count += tabListData[i].list.length;
         }
-        return count;
+        return !!count;
       });
 
       function onNoticeClick(record: ListItem) {
-        createMessage.success('你点击了通知，ID=' + record.id);
-        // 可以直接将其标记为已读（为标题添加删除线）,此处演示的代码会切换删除线状态
+        // markde as deleted after click
         record.titleDelete = !record.titleDelete;
+        for(const cat of listData.value){
+          const idx = cat.list.findIndex((ele)=>ele.id == record.id);
+          if(idx>=0){
+            cat.list.splice(idx, 1);
+            break;
+          }
+        }
       }
 
       return {

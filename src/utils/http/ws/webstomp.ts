@@ -6,10 +6,11 @@ const wsPort = 9527;
 const wsUri = "ws://" + window.location.hostname + ":" + wsPort + '/ws';
 
 //initialize websocket
-function initStomp(){
+export function createWebSocket(userId, channel, callback){
+    if(wsClient!=null){
+        return wsClient;
+    }
     // initialize websocket client with user id as token
-    const userStore = useUserStore();
-    const userId = userStore.getUserInfo?.id;
     wsClient = new Client({
         brokerURL: wsUri,
         connectHeaders: {uid: String(userId)},
@@ -17,9 +18,10 @@ function initStomp(){
     });
 
     wsClient.onConnect = function (frame) {
-        // Do something, all subscribes must be done is this callback
         // This is needed because this will be executed after a (re)connect
-        console.info('stomp is connected!');
+        console.info('websocket is connected!');
+        // subscribe a channel when connected
+        wsClient.subscribe(channel, callback);
     };
 
     wsClient.onStompError = function (frame) {
@@ -32,8 +34,5 @@ function initStomp(){
     };
 
     wsClient.activate();
+    return wsClient;
 }
-
-initStomp();
-
-export{ wsClient }

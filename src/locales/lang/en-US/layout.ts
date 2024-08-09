@@ -19,6 +19,11 @@ export default {
     lockScreenBtn: 'Locking',
 
     home: 'Home',
+    notify: {
+      notice: "Notice",
+      message: 'Message',
+      todo: 'ToDo'
+    }
   },
   multipleTab: {
     reload: 'Refresh current',

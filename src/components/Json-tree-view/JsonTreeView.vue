@@ -1,149 +1,136 @@
+<script lang="ts">
+export type ColorScheme = 'light' | 'dark'
+
+export type Props = {
+  data: string
+  rootKey?: string
+  maxDepth?: number
+  colorScheme?: ColorScheme
+  properties?: boolean
+  delIcon?: boolean
+}
+</script>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import JsonTreeViewItem, {
+  type ItemData,
+  ItemType,
+  type PrimitiveTypes,
+  type SelectedData
+} from './JsonTreeViewItem.vue'
+
+defineOptions({
+  name: 'JsonTreeView'
+})
+
+const props = withDefaults(defineProps<Props>(), {
+  rootKey: '/',
+  maxDepth: 1,
+  colorScheme: 'light',
+  properties: false,
+  delIcon: false
+})
+
+const emit = defineEmits<{
+  (e: 'selected', value: SelectedData): void
+}>()
+
+const onSelected = (selectedData: SelectedData): void => emit('selected', selectedData)
+
+const build = (
+  key: string,
+  value: PrimitiveTypes | Object,
+  depth: number,
+  path: string,
+  includeKey: boolean,
+  properties: boolean,
+  delIcon: boolean
+): ItemData => {
+  if (value instanceof Object) {
+    if (value instanceof Array) {
+      const children = value.map((element, index) =>
+        build(
+          index.toString(),
+          element,
+          depth + 1,
+          includeKey ? `${path}${key}[${index}].` : `${path}`,
+          false,
+          properties,
+          (depth==1?true:false)
+        )
+      )
+      return {
+        key,
+        type: ItemType.ARRAY,
+        depth,
+        path,
+        length: children.length,
+        children,
+        properties: false,
+        delIcon: (depth==1?true:false)
+      }
+    }
+
+    const children = Object.entries(value).map(([childKey, childValue]) =>
+      build(childKey, childValue, depth + 1, includeKey ? `${path}${key}.` : `${path}`, true, properties, delIcon)
+    )
+    return {
+      key,
+      type: ItemType.OBJECT,
+      depth,
+      path,
+      length: children.length,
+      children: children,
+      properties: false,
+      delIcon: (depth==1?true:false)
+    }
+  } else {
+    return {
+      key,
+      type: ItemType.VALUE,
+      path: includeKey ? `${path}${key}` : path.slice(0, -1),
+      depth,
+      value,
+      properties: false,
+      delIcon: true
+    }
+  }
+}
+
+const parsed = computed((): ItemData => {
+  let data = props.data;
+  if (data != null && data != undefined) {
+    if (typeof data == "string"){
+        data = JSON.parse(data);
+    }else if (data instanceof Object) {
+      if (data instanceof Array) {
+        return build(props.rootKey, [ ...data ], 0, "", true, props.properties, props.delIcon);
+      } else {
+        return build(props.rootKey, { ...data }, 0, '', true, props.properties, props.delIcon)
+      }
+    }
+  }
+  return {
+    key: props.rootKey,
+    type: ItemType.VALUE,
+    path: '',
+    depth: 0,
+    value: data,
+    properties: false,
+    delIcon: true
+  }
+})
+</script>
+
 <template>
   <JsonTreeViewItem
     :class="[{ 'root-item': true, dark: colorScheme === 'dark' }]"
     :data="parsed"
     :maxDepth="maxDepth"
-    :subKeyField="subKeyField"
-    @selected="itemSelected"
+    @selected="onSelected"
   />
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, type SetupContext } from "vue";
-
-import JsonTreeViewItem, {
-  ItemType,
-  type ValueTypes,
-  type ItemData,
-} from "./JsonTreeViewItem.vue";
-
-type Props = {
-  data?: string;
-  rootKey: string;
-  subKeyField: string;
-  maxDepth: number;
-  colorScheme: string;
-};
-
-export default defineComponent({
-  name: "JsonTreeView",
-  components: { JsonTreeViewItem },
-  props: {
-    data: {
-      type: String,
-      required: false,
-    },
-    rootKey: {
-      type: String,
-      required: false,
-      default: "/",
-    },
-    subKeyField: {
-      type: String,
-      required: false,
-      default: "key",
-    },
-    maxDepth: {
-      type: Number,
-      required: false,
-      default: 1,
-    },
-    colorScheme: {
-      type: String,
-      required: false,
-      default: "light",
-      validator: (value: string) => ["light", "dark"].indexOf(value) !== -1,
-    },
-  },
-  setup(props: Props, context: SetupContext) {
-    function itemSelected(data: unknown): void {
-      context.emit("selected", data);
-    }
-
-    function build(
-      key: string,
-      value: ValueTypes,
-      depth: number,
-      path: string,
-      includeKey: boolean
-    ): ItemData {
-      if (value instanceof Object) {
-        if (value instanceof Array) {
-          const children = value.map((element, index) =>
-            build(
-              index.toString(),
-              element,
-              depth + 1,
-              includeKey ? `${path}${key}[${index}].` : `${path}`,
-              false
-            )
-          );
-          return {
-            key,
-            type: ItemType.ARRAY,
-            depth,
-            path,
-            length: children.length,
-            children,
-          };
-        }
-
-        const children = Object.entries(value).map(([childKey, childValue]) =>
-          build(
-            childKey,
-            childValue,
-            depth + 1,
-            includeKey ? `${path}${key}.` : `${path}`,
-            true
-          )
-        );
-        return {
-          key,
-          type: ItemType.OBJECT,
-          depth,
-          path,
-          length: children.length,
-          children: children,
-        };
-      } else {
-        return {
-          key,
-          type: ItemType.VALUE,
-          path: includeKey ? `${path}${key}` : path.slice(0, -1),
-          depth,
-          value,
-        };
-      }
-    }
-
-    const parsed = computed((): ItemData => {
-      const json = props.data;
-      if (json != null && json != undefined) {
-        const data = JSON.parse(json);
-        if (data instanceof Object) {
-          if (data instanceof Array) {
-            return build(props.rootKey, [ ...data ], 0, "", true);
-          } else {
-            return build(props.rootKey, { ...data }, 0, "", true);
-          }
-
-        }
-      }
-      return {
-        key: props.rootKey,
-        type: ItemType.VALUE,
-        path: "",
-        depth: 0,
-        value: props.data,
-      };
-    });
-    return {
-      itemSelected,
-      parsed,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .root-item {

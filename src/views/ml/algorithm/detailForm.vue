@@ -23,7 +23,7 @@
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
           <Tabs v-model:activeKey="activeTab" centered size="small">
-            <Tabs.TabPane key="editor" :tab="t('ml.algorithm.tab.editor')">
+            <Tabs.TabPane key="development" :tab="t('ml.algorithm.tab.development')">
               <div style="width: 100%; border: solid 1px gray; height: 700px">
                 <CodeEditor
                   border
@@ -34,8 +34,8 @@
                 />
               </div>
             </Tabs.TabPane>
-            <Tabs.TabPane key="history" :tab="t('ml.algorithm.tab.history')">
-              <div style="width: 100%; border: solid 1px gray; height: 700px">{{ historyData[0] }}</div>
+            <Tabs.TabPane key="experiment" :tab="t('ml.algorithm.tab.experiment')">
+              <div style="width: 100%; border: solid 1px gray; height: 700px">{{ experData[0] }}</div>
             </Tabs.TabPane>
           </Tabs> 
         </Col>
@@ -237,26 +237,38 @@
                   paddingRight: '5px',
                   paddingTop: '5px',
                   paddingBottom: '5px',
-                  display: rightPanelKey == 'history' ? 'block' : 'none',
+                  display: rightPanelKey == 'experiment' ? 'block' : 'none',
                 }"
             >
               <BasicForm
-                ref="historyFormRef"
-                :schemas="formHistorySchema"
+                ref="experFormRef"
+                :schemas="formExperSchema"
                 :showActionButtonGroup="false"
-                @fieldValueChange="handleHistoryChange"
+                @fieldValueChange="handleExperChange"
                 >
-                <template #experment="{ model, field }">
-                  <BasicTree
-                    :treeData="historyData"
+                <template #trials="{ model, field }">
+                  <JsonTreeView :data="experData" :maxDepth="1" rootKey="Trials"/>
+                  
+                  <!--ApiTree
+                    :api="API_ML_EXPERIMENT_TRIALS"
+                    :params="experParam"
+                    :immediate="true"
+                    :height="600"
+                    v-model:value="model[field]"
+                    :fieldNames="{ key: 'start_time', title: 'start_time', value: 'run_uuid' }"
+                    :afterFetch="afterFetchTrials"
+                    @select="handleExperSelect"
+                  /-->
+                  <!--BasicTree
+                    :treeData="experData"
                     v-model:value="model[field]"
                     v-model:selectedKeys="selHisKey"
                     :fieldNames="{ title: 'createdAt', key: 'id' }"
                     style="width: 100%, overflowY: 'scroll'"
-                    :actionList="historyActions"
-                    :renderIcon="historyIcons"
-                    @select="handleHistorySelect"
-                  />
+                    :actionList="experActions"
+                    :renderIcon="experIcons"
+                    @select="handleExperSelect"
+                  /-->
                 </template>
               </BasicForm>
             </div>   
@@ -328,7 +340,7 @@
         </template>
         <span>Chart</span>
       </MenuItem>
-      <MenuItem key="history">
+      <MenuItem key="experiment">
         <template #icon>
           <HistoryOutlined
             :style="{
@@ -337,7 +349,7 @@
             }"
           />
         </template>
-        <span>History</span>
+        <span>Experiment</span>
       </MenuItem>
     </Menu>
   </BasicDrawer>
@@ -346,10 +358,11 @@
 <script lang="ts" setup name="DetailForm">
   import { ref, unref, h, reactive } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formChartSchema, formHistorySchema, algoTplSklearn, metricColumns, paramColumns, skMetricLib } from './data';
+  import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formChartSchema, formExperSchema, algoTplSklearn, metricColumns, paramColumns, skMetricLib } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { ApiTree, ApiTreeSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
+  import dayjs from 'dayjs';
   import {
     PlaySquareTwoTone,
     SaveTwoTone,
@@ -384,17 +397,16 @@
   import { ApiSelect } from '/@/components/Form';
   import { API_ML_DATASET_TREE } from '/@/api/ml/dataset';
   import { ApiAlgorithmDataType, initAlgorithm } from '/@/api/ml/model/algorithm';
-  import { API_ML_ALGO_HISTORY_LIST, API_ML_ALGO_HISTORY_DEL } from '/@/api/ml/algoHistory';
-  import { wsClient } from "/@/utils/http/ws/webstomp";
-  import { useUserStore } from '/@/store/modules/user';
+  import { API_ML_EXPERIMENT_TRIALS, API_ML_EXPERIMENT_DEL_TRIAL } from '/@/api/ml/experiment';
   import { cloneDeep } from 'lodash-es';
   import { BasicTable, useTable } from '/@/components/Table';
+  import { JsonTreeView } from '/@/components/Json-tree-view';
 
   const { t } = useI18n();
   const drawerTitle = ref<string>(t('common.form.new'));
   const emit = defineEmits(['success', 'register']);
   const rawData = ref<ApiAlgorithmDataType>(initAlgorithm);
-  const activeTab = ref<string>('editor');
+  const activeTab = ref<string>('development');
   const rightPanelSize = ref<number>(5);
   const rightPanelKey = ref<string>('algo');
   const selectedPanelKeys = ref<string[]>(['algo']);
@@ -404,10 +416,10 @@
   const trainFormRef = ref<Nullable<FormActionType>>(null);
   const trainPct = ref<number>(0);
   const metricVal = ref<number>(0);
-  const historyParam = ref<any>({algoId: 2, succOnly: true});
-  const historyData = ref<any[]>([]);
+  const experParam = ref<any>({algoId: 17, succOnly: true});
+  //const experData = ref<any[]>([]);
+  const experData = ref<any>({});
   const selHisKey = ref<number[]>([0]);
-  const userStore = useUserStore();
   const algoParams = reactive<any>({framework: 'sklearn', category: 'clf'});
   const selectedAlgo = ref<string[]>([]);
   const expandedAlgo = ref<string[]>([]);
@@ -416,6 +428,17 @@
   let algoTree = [];
   const paramList = ref<any[]>([]);
   const metricList = ref<any[]>([]);
+  const DATE_TIME_FORMAT = 'MM/DD/YYYY HH:mm';
+  let experimentBackup = {};
+
+/*
+BasicTree: ok
+ApiTree: no delete icon
+JsonTreeView: must have root key
+use tree to show datetime only and put details into a separate panel
+json tree can show details in tree without a separate panel
+which one is better?
+*/
 
   // drawer data initialization
   const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (data) => {
@@ -473,29 +496,31 @@
         }
       }
 
-      // get history list
-      API_ML_ALGO_HISTORY_LIST(historyParam.value).then((response) => {
-        historyData.value = response.records;
+      // get experiment list
+      API_ML_EXPERIMENT_TRIALS(data.id).then((response) => {
+        experimentBackup = {};
+        let jsonObj = {};
+        for(const key in response){
+          // convert unix time to formatted local time
+          const ts = dayjs(Number(key)).format(DATE_TIME_FORMAT);
+          jsonObj[ts] = response[key]
+          experimentBackup[ts] = cloneDeep(response[key]);
+          delete response[key]['start_time']
+          delete response[key]['run_uuid'];
+      }
+        experData.value = jsonObj;
       });
 
-      drawerTitle.value = t('common.form.new');
-    } else {
-      
-      rawData.value = initAlgorithm;
       drawerTitle.value = '[' + data.name + ']';
+    } else {
+      rawData.value = initAlgorithm;
+      drawerTitle.value = t('common.form.new');
     }
 
     // subscribe the message (user x and alg y)
       // one user can run multiple algorithms at the same time
       // so one user must have multiple channels to receive separated logs
-      if(data.id){
-        const userId = userStore.getUserInfo?.id;
-        const channel = '/user/' + userId + '/wsReport';
-        wsClient.subscribe(channel, function (stompMsg){
-          const jsonMsg = JSON.parse(stompMsg.body);
-          message.success(stompMsg.body);
-        });
-      }
+
   });
 
   // parameter table definition (arguments of train function)
@@ -609,7 +634,7 @@
     }
   };
 
-    /*
+  /*
   * find pid after get dataset from backend
   */
   const afterFetchDataset = (data: any[]) =>{
@@ -617,6 +642,20 @@
       if(selectedDataset.value[0]){
         const setPid = findPidInTree(data.records, 'id', selectedDataset.value[0], null);
         expandedDataset.value = [setPid];
+      }
+      return data.records;
+    } else {
+      return [];
+    }
+  };
+
+  /*
+  * find pid after get dataset from backend
+  */
+  const afterFetchTrials = (data: any[]) =>{
+    if(data?.records){
+      for(const row of data.records){
+        row.start_time = dayjs(Number(row.start_time)).format(DATE_TIME_FORMAT);
       }
       return data.records;
     } else {
@@ -765,8 +804,8 @@
     });
   };
 
-  // show history status
-  function historyIcons(node: any) {
+  // show experiment status
+  function experIcons(node: any) {
     if (node.status == 0) {
       return 'ant-design:check-circle-outlined';
     } else if (node.status == 1) {
@@ -782,21 +821,21 @@
     }
   }
 
-  // show delete icon in history tree
-  const historyActions: TreeActionItem[] = [
+  // show delete icon in experiment tree
+  const experActions: TreeActionItem[] = [
     {
       render: (node) => {
         return h(DeleteOutlined, {
           class: 'ml-2',
           onClick: () => {
-            const idx = historyData.value.findIndex((v) => {
+            const idx = experData.value.findIndex((v) => {
               // find item
               return v.id == node.id;
             });
             // remove item
-            historyData.value.splice(idx, 1);
-            // delete history from db
-            API_ML_ALGO_HISTORY_DEL(idx).then((response) => {
+            experData.value.splice(idx, 1);
+            // delete experiment from db
+            API_ML_EXPERIMENT_DEL_TRIAL(idx).then((response) => {
               const aaa = 666;
             });
           },
@@ -806,21 +845,21 @@
   ];
 
   /*
-   * history option change
+   * experiment option change
    */
-   const handleHistoryChange = (key: string, value: string) => {
-    historyParam.value.succOnly = value;
-    // get history list
-    API_ML_ALGO_HISTORY_LIST(historyParam.value).then((response) => {
-      historyData.value = response.records;
+   const handleExperChange = (key: string, value: string) => {
+    experParam.value.succOnly = value;
+    // get experiment list
+    API_ML_EXPERIMENT_TRIALS(experParam.value).then((response) => {
+      experData.value = response.records;
     });
   };
 
   /*
-   * History selection
+   * Hisexperimenttory selection
    */
-  const handleHistorySelect = (key: any) => {
-    activeTab.value = 'history';
+  const handleExperSelect = (key: any) => {
+    activeTab.value = 'experiment';
   };
 
 

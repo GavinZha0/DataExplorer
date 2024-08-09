@@ -1,5 +1,5 @@
 <template>
-  <a-list :class="prefixCls" bordered :pagination="getPagination">
+  <a-list :class="prefixCls" bordered :pagination="getPagination" style="width: 300px;">
     <template v-for="item in getData" :key="item.id">
       <a-list-item class="list-item">
         <a-list-item-meta>
@@ -49,6 +49,9 @@
             </div>
           </template>
         </a-list-item-meta>
+        <template #actions>
+          <CloseOutlined style="cursor: pointer;" @click="handleTitleClick(item)"/>
+        </template>
       </a-list-item>
     </template>
   </a-list>
@@ -59,6 +62,8 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { List, Avatar, Tag, Typography } from 'ant-design-vue';
   import { isNumber } from '/@/utils/is';
+  import { CloseOutlined } from '@ant-design/icons-vue';
+
   export default defineComponent({
     components: {
       [Avatar.name]: Avatar,
@@ -67,6 +72,7 @@
       AListItemMeta: List.Item.Meta,
       ATypographyParagraph: Typography.Paragraph,
       [Tag.name]: Tag,
+      CloseOutlined
     },
     props: {
       list: {
@@ -137,6 +143,11 @@
   });
 </script>
 <style lang="less" scoped>
+  ::v-deep(.ant-list-item) {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
   @prefix-cls: ~'@{namespace}-header-notify-list';
 
   .@{prefix-cls} {

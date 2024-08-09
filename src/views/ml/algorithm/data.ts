@@ -1,4 +1,3 @@
-import { faL } from '@fortawesome/free-solid-svg-icons';
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { useI18n } from '/@/hooks/web/useI18n';
@@ -401,20 +400,20 @@ export const formChartSchema: FormSchema[] = [
 ];
 
 // chart form schema
-export const formHistorySchema: FormSchema[] = [
+export const formExperSchema: FormSchema[] = [
   {
     field: 'succOnly',
-    label: t('ml.algorithm.form.history.succOnly'),
+    label: t('ml.algorithm.form.experiment.succOnly'),
     defaultValue: true,
     component: 'Switch',
     labelWidth: 100,
     colProps: { span: 24 }
   },
   {
-    field: 'experment',
+    field: 'trials',
     label: '',
     component: 'Input',
-    slot: 'experment',
+    slot: 'trials',
     labelWidth: 100,
     colProps: { span: 24 }
   }

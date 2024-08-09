@@ -1,7 +1,7 @@
 export default {
   tab: {
-    editor: 'Editor',
-    history: 'History',
+    development: 'Development',
+    experiment: 'Experiment',
   },
   toolbar: {
     search: 'name, group or description',
@@ -80,9 +80,9 @@ export default {
       progress: 'Progress',
       accuracy: 'Accuracy'
     },
-    history: {
+    experiment: {
       succOnly: 'Success Only',
-      experment: 'Experment'
+      trials: 'Trials'
     },
   },
   error: {

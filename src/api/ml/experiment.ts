@@ -15,10 +15,17 @@ export const API = {
 /* get all trials as list
  * params: algo id
  */
-export function API_ML_EXPERIMENT_TRIALS(id: number) {
+export function API_ML_EXPERIMENT_TRIALS1(id: number) {
   return defHttp.post<AxiosResponse>({
     url: API.ML_EXPERIMENT_TRIALS,
     data: { id: id }
+  });
+}
+
+export function API_ML_EXPERIMENT_TRIALS(param: any) {
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_EXPERIMENT_TRIALS,
+    data: { id: param.id }
   });
 }
 

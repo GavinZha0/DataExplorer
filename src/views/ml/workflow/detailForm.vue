@@ -23,12 +23,12 @@
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
           <Tabs active="editor" centered size="small">
-            <Tabs.TabPane key="flow" :tab="t('ml.workflow.tab.flow')">
+            <Tabs.TabPane key="workflow" :tab="t('ml.workflow.tab.workflow')">
               <div style="width: 100%; border: solid 1px gray; height: 700px">
                 <div id="x6-container" ref="x6GraphRef" class="x6-graph"></div>
               </div>
             </Tabs.TabPane>
-            <Tabs.TabPane key="chart" :tab="t('ml.workflow.tab.chart')">
+            <Tabs.TabPane key="experiment" :tab="t('ml.workflow.tab.experiment')">
               <div>hello</div>
             </Tabs.TabPane>
           </Tabs> 
@@ -60,7 +60,7 @@
                   mode="tags"
                   v-model:value="model[field]"
                   resultField="records"
-                  @change="handleFlowGroupChange"
+                  @change="handleWorkflowGroupChange"
                 />
               </template>
             </BasicForm>
@@ -525,7 +525,7 @@
    * select component accepts user defined item when it is tags mode
    * so you can select existing group name or create a new group
    */
-  const handleFlowGroupChange = (value: string[]) => {
+  const handleWorkflowGroupChange = (value: string[]) => {
     if (infoFormRef.value) {
       if (value.length > 0) {
         // get the latest one when there are multiple selections

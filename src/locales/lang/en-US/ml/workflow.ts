@@ -1,7 +1,7 @@
 export default {
   tab: {
-    flow: 'Flow',
-    chart: 'Chart'
+    workflow: 'Workflow',
+    experiment: 'Experiment'
   },
   toolbar: {
     search: 'name, group or description',

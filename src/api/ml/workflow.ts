@@ -6,18 +6,18 @@ import { ApiWorkflowDataType } from '/@/api/ml/model/workflow';
 //----------------------------------------------------------------------------------------
 // PATH definition
 export const API = {
-  ML_WORKFLOW_LIST: '/mlworkflow/list',
-  ML_WORKFLOW_TREE: '/mlworkflow/tree',
-  ML_WORKFLOW_CREATE: '/mlworkflow/create',
-  ML_WORKFLOW_UPDATE: '/mlworkflow/update',
-  ML_WORKFLOW_PUBLIC: '/mlworkflow/public',
-  ML_WORKFLOW_CLONE: '/mlworkflow/clone',
-  ML_WORKFLOW_DELETE: '/mlworkflow/delete',
-  ML_WORKFLOW_EXECUTE: '/mlworkflow/execute',
-  ML_WORKFLOW_EXECUTE_SQL: '/mlworkflow/execute_sql',
-  ML_WORKFLOW_CATEGORY: '/mlworkflow/category',
-  ML_WORKFLOW_GROUPS: '/mlworkflow/groups',
-  ML_WORKFLOW_ONE: '/mlworkflow/getone'
+  ML_WORKFLOW_LIST: '/ml/workflow/list',
+  ML_WORKFLOW_TREE: '/ml/workflow/tree',
+  ML_WORKFLOW_CREATE: '/ml/workflow/create',
+  ML_WORKFLOW_UPDATE: '/ml/workflow/update',
+  ML_WORKFLOW_PUBLIC: '/ml/workflow/public',
+  ML_WORKFLOW_CLONE: '/ml/workflow/clone',
+  ML_WORKFLOW_DELETE: '/ml/workflow/delete',
+  ML_WORKFLOW_EXECUTE: '/ml/workflow/execute',
+  ML_WORKFLOW_EXECUTE_SQL: '/ml/workflow/execute_sql',
+  ML_WORKFLOW_CATEGORY: '/ml/workflow/category',
+  ML_WORKFLOW_GROUPS: '/ml/workflow/groups',
+  ML_WORKFLOW_ONE: '/ml/workflow/getone'
 }
 
 /* get all algo as list

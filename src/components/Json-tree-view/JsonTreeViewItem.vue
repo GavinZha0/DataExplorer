@@ -37,7 +37,7 @@ export type Props = {
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
 import { then, when } from 'switch-ts'
-import { DeleteOutlined } from '@ant-design/icons-vue';
+import { GiftOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 
 defineOptions({
   name: 'JsonTreeViewItem'
@@ -120,6 +120,7 @@ const dataValue = computed((): string => JSON.stringify(props.data.value))
         <div :class="classes" />
         {{ data.key }}:
         <span v-if="data.properties" class="properties">{{ lengthString }}</span>
+        <span v-if="data.delIcon" style="position: absolute;right: 35px;"><GiftOutlined style="color: green;"/></span>
         <span v-if="data.delIcon" style="position: absolute;right: 5px;"><DeleteOutlined style="color: orange;"/></span>
       </button>
       <div v-if="state.open">

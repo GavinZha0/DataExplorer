@@ -22,7 +22,7 @@
     <div style="width: 98%; float: left">
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
-          <Tabs v-model:activeKey="activeTab" centered size="small">
+          <Tabs v-model:activeKey="activeTab" centered size="small" :forceRender="true">
             <Tabs.TabPane key="development" :tab="t('ml.algorithm.tab.development')">
               <div style="width: 100%; border: solid 1px gray; height: 700px">
                 <CodeEditor
@@ -34,8 +34,8 @@
                 />
               </div>
             </Tabs.TabPane>
-            <Tabs.TabPane key="experiment" :tab="t('ml.algorithm.tab.experiment')">
-              <div style="width: 100%; border: solid 1px gray; height: 700px">{{ experData[0] }}</div>
+            <Tabs.TabPane key="experiment" :tab="t('ml.algorithm.tab.experiment')" :forceRender="true">
+              <Experiment :data="experiments[selExperId[0]]" :forceRender="true"/>
             </Tabs.TabPane>
           </Tabs> 
         </Col>
@@ -247,28 +247,28 @@
                 @fieldValueChange="handleExperChange"
                 >
                 <template #trials="{ model, field }">
-                  <JsonTreeView :data="experData" :maxDepth="1" rootKey="Trials"/>
+                  <!--JsonTreeView :data="experData" :maxDepth="1" rootKey="Trials"/-->
                   
                   <!--ApiTree
                     :api="API_ML_EXPERIMENT_TRIALS"
                     :params="experParam"
                     :immediate="true"
-                    :height="600"
+                    :height="650"
                     v-model:value="model[field]"
-                    :fieldNames="{ key: 'start_time', title: 'start_time', value: 'run_uuid' }"
-                    :afterFetch="afterFetchTrials"
+                    :fieldNames="{ key: 'run_uuid', value: 'run_uuid' }"
+                    :afterFetch="afterFetchExperiment"
                     @select="handleExperSelect"
                   /-->
-                  <!--BasicTree
+                  <BasicTree
+                    :height="650"
                     :treeData="experData"
                     v-model:value="model[field]"
-                    v-model:selectedKeys="selHisKey"
-                    :fieldNames="{ title: 'createdAt', key: 'id' }"
-                    style="width: 100%, overflowY: 'scroll'"
-                    :actionList="experActions"
-                    :renderIcon="experIcons"
-                    @select="handleExperSelect"
-                  /-->
+                    v-model:selectedKeys="selExperId"
+                    :fieldNames="{ key: 'run_uuid' }"
+                    :actionList="trialActions"
+                    :renderIcon="trialIcons"
+                    @select="handleExperimentSelect"
+                  />
                 </template>
               </BasicForm>
             </div>   
@@ -360,8 +360,9 @@
   import { BasicForm, FormActionType } from '/@/components/Form/index';
   import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formChartSchema, formExperSchema, algoTplSklearn, metricColumns, paramColumns, skMetricLib } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { ApiTree, ApiTreeSelect } from '/@/components/Form';
+  import { ApiTree, ApiSelect, ApiTreeSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
+  import Experiment from './experiment.vue';
   import dayjs from 'dayjs';
   import {
     PlaySquareTwoTone,
@@ -394,7 +395,6 @@
     API_ML_ALGO_ALGOS,
     API_ML_ALGO_EXECUTE
   } from '/@/api/ml/algorithm';
-  import { ApiSelect } from '/@/components/Form';
   import { API_ML_DATASET_TREE } from '/@/api/ml/dataset';
   import { ApiAlgorithmDataType, initAlgorithm } from '/@/api/ml/model/algorithm';
   import { API_ML_EXPERIMENT_TRIALS, API_ML_EXPERIMENT_DEL_TRIAL } from '/@/api/ml/experiment';
@@ -416,10 +416,12 @@
   const trainFormRef = ref<Nullable<FormActionType>>(null);
   const trainPct = ref<number>(0);
   const metricVal = ref<number>(0);
-  const experParam = ref<any>({algoId: 17, succOnly: true});
-  //const experData = ref<any[]>([]);
-  const experData = ref<any>({});
-  const selHisKey = ref<number[]>([0]);
+  const experParam = ref<any>({id: 17});
+  const experData = ref<any[]>([]);
+  const selectedExperiment = ref<[]>([]);
+  const experiments = ref<any>({});
+  //const experData = ref<any>({});
+  const selExperId = ref<number[]>([]);
   const algoParams = reactive<any>({framework: 'sklearn', category: 'clf'});
   const selectedAlgo = ref<string[]>([]);
   const expandedAlgo = ref<string[]>([]);
@@ -496,6 +498,13 @@ which one is better?
         }
       }
 
+      experParam.value.id = data.id;
+      selExperId.value = [];
+      API_ML_EXPERIMENT_TRIALS({id: data.id}).then((response) => {
+        experData.value = afterFetchExperiment(response);
+      });
+
+      /*
       // get experiment list
       API_ML_EXPERIMENT_TRIALS(data.id).then((response) => {
         experimentBackup = {};
@@ -507,9 +516,10 @@ which one is better?
           experimentBackup[ts] = cloneDeep(response[key]);
           delete response[key]['start_time']
           delete response[key]['run_uuid'];
-      }
+        }
         experData.value = jsonObj;
       });
+      */
 
       drawerTitle.value = '[' + data.name + ']';
     } else {
@@ -652,12 +662,46 @@ which one is better?
   /*
   * find pid after get dataset from backend
   */
-  const afterFetchTrials = (data: any[]) =>{
+  const afterFetchExperiment = (data: any[]) =>{
+    let recordTree = [];
+
     if(data?.records){
-      for(const row of data.records){
-        row.start_time = dayjs(Number(row.start_time)).format(DATE_TIME_FORMAT);
+      const groupByExper = Object.groupBy(data.records, item => {
+        return item.exper_id;
+      });
+
+      experiments.value = cloneDeep(groupByExper);
+
+      for(const experId in groupByExper){
+        let experArray = groupByExper[experId]?.sort((a:any,b:any)=>Number(a.ts)-Number(b.ts));
+        let nodeExper = {title:'', run_uuid: experId, children: experArray, selectable: true};
+        let minTs = 2524626000000;
+        for(const [idx, trial] of experArray.entries()){
+          trial.title = 'Trial-' + idx;
+          trial.selectable = false;
+          if(Number(trial.ts) < minTs){
+            // find min ts
+            minTs = Number(trial.ts);
+          }
+          
+          if(trial.metrics){
+            // show metrics as children
+            trial['children'] = [];
+            for(const ele in trial.metrics){
+              // put metrics into cildren
+              trial.children.push({
+                      title: ele + ': ' + trial.metrics[ele], 
+                      run_uuid: 100*idx+trial.children.length, 
+                      selectable: false
+                    });
+            }
+          }
+        }
+        nodeExper.title = dayjs(minTs).format(DATE_TIME_FORMAT);
+        recordTree.push(nodeExper);
       }
-      return data.records;
+      
+      return recordTree.sort((a:any,b:any)=>Number(b.run_uuid)-Number(a.run_uuid));
     } else {
       return [];
     }
@@ -805,41 +849,37 @@ which one is better?
   };
 
   // show experiment status
-  function experIcons(node: any) {
-    if (node.status == 0) {
+  function trialIcons(node: any) {
+    if (node.status == 'FINISHED') {
       return 'ant-design:check-circle-outlined';
     } else if (node.status == 1) {
       return 'ant-design:close-circle-outlined';
     } else if (node.status == 2) {
       return 'ant-design:warning-outlined';
-    } else if (node.status == 3) {
-      return 'ant-design:stop-outlined';
-    } else if (node.status == 4) {
-      return 'ant-design:question-circle-outlined';
-    } else {
-      return 'ant-design:hourglass-outlined';
-    }
+    } 
   }
 
   // show delete icon in experiment tree
-  const experActions: TreeActionItem[] = [
+  const trialActions: TreeActionItem[] = [
     {
       render: (node) => {
-        return h(DeleteOutlined, {
-          class: 'ml-2',
-          onClick: () => {
-            const idx = experData.value.findIndex((v) => {
-              // find item
-              return v.id == node.id;
-            });
-            // remove item
-            experData.value.splice(idx, 1);
-            // delete experiment from db
-            API_ML_EXPERIMENT_DEL_TRIAL(idx).then((response) => {
-              const aaa = 666;
-            });
-          },
-        });
+        if(node?.selectable){
+          return h(DeleteOutlined, {
+            class: 'ml-2',
+            onClick: () => {
+              const idx = experData.value.findIndex((v) => {
+                // find item
+                return v.id == node.id;
+              });
+              // remove item
+              experData.value.splice(idx, 1);
+              // delete experiment from db
+              API_ML_EXPERIMENT_DEL_TRIAL(idx).then((response) => {
+                const aaa = 666;
+              });
+            },
+          });
+        }
       },
     },
   ];
@@ -850,16 +890,20 @@ which one is better?
    const handleExperChange = (key: string, value: string) => {
     experParam.value.succOnly = value;
     // get experiment list
-    API_ML_EXPERIMENT_TRIALS(experParam.value).then((response) => {
-      experData.value = response.records;
-    });
+    //API_ML_EXPERIMENT_TRIALS(experParam.value).then((response) => {
+    //  experData.value = response.records;
+    //});
   };
 
   /*
-   * Hisexperimenttory selection
+   * Experiment selection
    */
-  const handleExperSelect = (key: any) => {
+  const handleExperimentSelect = (key: any) => {
     activeTab.value = 'experiment';
+    // key is run_uuid
+    const selExperiment = experData.value.find((ele)=>ele.run_uuid == key);
+    // trials
+    selectedExperiment.value = selExperiment.children;
   };
 
 

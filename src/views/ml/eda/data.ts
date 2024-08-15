@@ -2,7 +2,6 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { DescItem } from '/@/components/Description/index';
 import { useI18n } from '/@/hooks/web/useI18n';
-import * as echarts from 'echarts';
 
 const { t } = useI18n();
 

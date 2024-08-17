@@ -82,15 +82,15 @@
             // new job started
             cat.list.unshift(
               {
-                id: 'ML_ALGO_'+report.algoId,
+                id: 'ML_ALGO_'+report.algoId+'_'+report.experId,
                 avatar: '/resource/img/ml/ml-avatar.png',
-                title: 'RandomForestClassifer',
+                title: report.name,
                 description: msg,
                 color: 'red',
                 datetime: dtFormatter.format(new Date())
               }
             );
-            createMessage.error('ML ' + report.algoId + ': ' + msg, 5);
+            createMessage.error('ML ' + report.name + ': ' + msg, 5);
             break;
           }
         }
@@ -107,9 +107,9 @@
         for(const cat of listData.value){
           if(cat.key == 'notice'){
             for(const note of cat.list){
-              if(note.id.endsWith('_' + report.algoId)){
+              if(note.id.endsWith('_' + report.experId)){
                 found = true;
-                note.extra = report.progress*100 + '%';
+                note.extra = report.progress + '%';
                 note.datetime = dtFormatter.format(new Date());
                 break;
               }
@@ -117,11 +117,11 @@
             if(!found){
               cat.list.unshift(
                 {
-                  id: 'ML_ALGO_'+report.algoId,
+                  id: 'ML_ALGO_'+report.algoId+'_'+report.experId,
                   avatar: '/resource/img/ml/ml-avatar.png',
-                  title: 'RandomForestClassifer',
+                  title: report.name,
                   description: '',
-                  extra: report.progress*100 + '%',
+                  extra: report.progress + '%',
                   color: 'blue',
                   datetime: dtFormatter.format(new Date())
                 }
@@ -142,26 +142,27 @@
         let found = false;
         for(const cat of listData.value){
           if(cat.key == 'notice'){
-            if(report.status == 1){
+            if(report.progress == 1){
               // new job started
-              createMessage.success('ML ' + report.algoId + ' training started!', 5);
+              createMessage.success('ML ' + report.name + ' training started!', 5);
               // add a new one to notice list
               cat.list.unshift(
                 {
-                  id: 'ML_ALGO_'+report.algoId,
+                  // unique id
+                  id: 'ML_ALGO_'+report.algoId+'_'+report.experId,
                   avatar: '/resource/img/ml/ml-avatar.png',
-                  title: 'RandomForestClassifer',
+                  title: report.name,
                   description: '',
                   extra: '1%',
                   color: 'blue',
                   datetime: dtFormatter.format(new Date())
                 }
               );
-            } else if (report.status == 0) {
+            } else if (report.progress == 100) {
               // job completed
-              createMessage.success('ML ' + report.algoId + ' training completed!', 5);
+              createMessage.success('ML ' + report.name + ' training completed!', 5);
               for(const note of cat.list){
-                if(note.id.endsWith('_' + report.algoId)){
+                if(note.id.endsWith('_' + report.experId)){
                   found = true;
                   note.extra = '100%';
                   note.datetime = dtFormatter.format(new Date());
@@ -172,9 +173,9 @@
                 // add a new one to notice list
                 cat.list.unshift(
                   {
-                    id: 'ML_ALGO_'+report.algoId,
+                    id: 'ML_ALGO_'+report.algoId+'_'+report.experId,
                     avatar: '/resource/img/ml/ml-avatar.png',
-                    title: 'RandomForestClassifer',
+                    title: report.name,
                     description: '',
                     extra: '100%',
                     color: 'blue',

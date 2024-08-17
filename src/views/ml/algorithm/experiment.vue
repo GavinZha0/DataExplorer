@@ -85,12 +85,6 @@
     chartInst[0].setOption(evalCfg);
   };
 
-  const renderMatrix = (data: any[]) =>{
-    // render chart
-    chartInst[1] = echarts.init(chartContainer.value);
-    chartInst[1].setOption(chartCfg);
-  };
-
 
   /*
    * render parallel cooridation

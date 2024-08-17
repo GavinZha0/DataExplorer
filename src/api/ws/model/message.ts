@@ -8,6 +8,7 @@ export enum  MSG_CODE {
 }
 
 export interface WsMsg {
+    uid: number;
     code: number;
     msg: string;
     data: string;
@@ -15,6 +16,7 @@ export interface WsMsg {
 
     // ML_JOB_EXCEPTION
 export interface MlJobException {
+  name: string;
   algoId: number,
   experId: number,
   detail: string
@@ -35,6 +37,7 @@ export interface MlStepReport {
 
 // ML_EPOCH_REPORT
 export interface MlEpochReport {
+  name: string;
   algoId: number,
   experId: number,
   trialId: string,
@@ -58,9 +61,10 @@ export interface MlTrialReport {
 
 // ML_EXPERIMENT_REPORT
 export interface MlExperReport {
+  name: string;
   algoId: number,
   experId: number,
-  status: number,
+  progress: number,
   trials: trailInfo[]
 };
 

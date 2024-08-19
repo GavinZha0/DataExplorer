@@ -40,11 +40,7 @@ export default {
         vision: 'Vison',
         audio: 'Audio'
       },
-      algo_name: 'Algorithm',
-      params: {
-        name: 'Training param',
-        value: 'Values'
-      }
+      algo_name: 'Algorithm'
     },
     data: {
       dataset: 'Dataset',
@@ -57,7 +53,12 @@ export default {
       trials: 'Trials',
       epochs: 'Epochs',
       timeout: 'Timeout',
-      early_stop: {
+      early_stop: 'Early stop',
+      params: {
+        name: 'Param',
+        value: 'Search space'
+      },
+      early_stop2: {
         title: 'Early stop',
         name: 'Evaluation metric',
         value: 'Target',

@@ -86,7 +86,7 @@
                 ref="algoFormRef"
                 :schemas="formAlgoSchema"
                 :showActionButtonGroup="false"
-                @fieldValueChange="handleAlgoChange"
+                @fieldValueChange="handleAlgoFormChange"
                 >
                 <template #algoName="{ model, field }">
                   <ApiTree
@@ -97,7 +97,6 @@
                     v-model:value="model[field]"
                     v-model:selectedKeys="selectedAlgo"
                     v-model:expandedKeys="expandedAlgo"
-                    :fieldNames="{ key: 'name', title: 'name', value: 'name' }"
                     :afterFetch="afterFetchAlgos"
                     @select="handleAlgoSelection"
                   />
@@ -154,46 +153,37 @@
                 ref="trainFormRef"
                 :schemas="formTrainSchema"
                 :showActionButtonGroup="false"
+                @fieldValueChange="handleTrainFormChange"
                 >
-                <template #dataset="{ model, field }">
-                  <ApiTreeSelect style="width: 100%"
+                <template #score="{ model, field }">
+                  <ApiSelect
+                    :api="API_ML_ALGO_SCORES"
+                    :params="algoParams"
+                    :immediate="true"
                     v-model:value="model[field]"
-                    :placeholder="t('ml.algorithm.form.train.dataset')"
-                   :api="API_ML_DATASET_TREE"
-                   :immediate="true"
-                    :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
-                   resultField="records"/>
+                    @select="handleScoreSelection"
+                  />
                 </template>
                 <template #params>
-                  <BasicTable @register="registerParamsTable" @edit-end="handleParamEditEnd">
+                  <BasicTable 
+                    size="small"
+                    :bordered="true"
+                    :show-table-setting="false"
+                    :columns="paramColumns"
+                    :data-source="paramList"
+                    :show-index-column="false"
+                    :use-search-form="false"
+                    :pagination="false"
+                    :scroll="{ x: 100, y: 400 }"
+                    @resizeColumn="(w, col) => {col.width = w;}"
+                    @editEnd="handleParamEditEnd" 
+                  >
                     <template #headerCell="{ column }">
                       <template v-if="column.key === 'name'">
-                        {{ t('ml.algorithm.form.algo.params.name') }}
-                        <PlusSquareTwoTone
-                          class="ml-2"
-                          :style="{ fontSize: '20px', marginLeft: '8px', cursor: 'pointer' }"
-                          @click="handleParamAdd"
-                        />
+                        {{ t('ml.algorithm.form.train.params.name') }}
                       </template>
                       <template v-else>
-                        {{ t('ml.algorithm.form.algo.params.value') }}
-                      </template>
-                    </template>
-                  </BasicTable>
-                </template>
-                <template #earlyStop>
-                  <BasicTable @register="registerMetricsTable" @edit-end="handleMetricsEditEnd">
-                    <template #headerCell="{ column }">
-                      <template v-if="column.key === 'name'">
-                        {{ t('ml.algorithm.form.train.early_stop.name') }}
-                        <PlusSquareTwoTone
-                          class="ml-2"
-                          :style="{ fontSize: '20px', marginLeft: '8px', cursor: 'pointer' }"
-                          @click="handleMetricsAdd"
-                        />
-                      </template>
-                      <template v-else>
-                        {{ t('ml.algorithm.form.train.early_stop.value') }}
+                        {{ t('ml.algorithm.form.train.params.value') }}
                       </template>
                     </template>
                   </BasicTable>
@@ -247,18 +237,6 @@
                 @fieldValueChange="handleExperChange"
                 >
                 <template #trials="{ model, field }">
-                  <!--JsonTreeView :data="experData" :maxDepth="1" rootKey="Trials"/-->
-                  
-                  <!--ApiTree
-                    :api="API_ML_EXPERIMENT_TRIALS"
-                    :params="experParam"
-                    :immediate="true"
-                    :height="650"
-                    v-model:value="model[field]"
-                    :fieldNames="{ key: 'run_uuid', value: 'run_uuid' }"
-                    :afterFetch="afterFetchExperiment"
-                    @select="handleExperSelect"
-                  /-->
                   <BasicTree
                     :height="650"
                     :treeData="experData"
@@ -327,7 +305,7 @@
             }"
           />
         </template>
-        <span>Train&Eval</span>
+        <span>Train</span>
       </MenuItem>
       <MenuItem key="chart">
         <template #icon>
@@ -358,9 +336,9 @@
 <script lang="ts" setup name="DetailForm">
   import { ref, unref, h, reactive } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formChartSchema, formExperSchema, algoTplSklearn, metricColumns, paramColumns, skMetricLib } from './data';
+  import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formChartSchema, formExperSchema, algoTplSklearn, paramColumns } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { ApiTree, ApiSelect, ApiTreeSelect } from '/@/components/Form';
+  import { ApiTree, ApiSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
   import Experiment from './experiment.vue';
   import dayjs from 'dayjs';
@@ -371,7 +349,6 @@
     AreaChartOutlined,
     ExperimentOutlined,
     DeleteOutlined,
-    PlusSquareTwoTone,
     FunctionOutlined,
     HistoryOutlined,
     HddOutlined
@@ -393,14 +370,16 @@
     API_ML_ALGO_UPDATE,
     API_ML_ALGO_GROUPS,
     API_ML_ALGO_ALGOS,
+    API_ML_ALGO_ARGS,
+    API_ML_ALGO_SCORES,
     API_ML_ALGO_EXECUTE
   } from '/@/api/ml/algorithm';
   import { API_ML_DATASET_TREE } from '/@/api/ml/dataset';
   import { ApiAlgorithmDataType, initAlgorithm } from '/@/api/ml/model/algorithm';
   import { API_ML_EXPERIMENT_TRIALS, API_ML_EXPERIMENT_DEL_TRIAL } from '/@/api/ml/experiment';
   import { cloneDeep } from 'lodash-es';
-  import { BasicTable, useTable } from '/@/components/Table';
-  import { JsonTreeView } from '/@/components/Json-tree-view';
+  import { BasicTable } from '/@/components/Table';
+  import { emitter } from '/@/utils/event';
 
   const { t } = useI18n();
   const drawerTitle = ref<string>(t('common.form.new'));
@@ -420,7 +399,6 @@
   const experData = ref<any[]>([]);
   const selectedExperiment = ref<[]>([]);
   const experiments = ref<any>({});
-  //const experData = ref<any>({});
   const selExperId = ref<number[]>([]);
   const algoParams = reactive<any>({framework: 'sklearn', category: 'clf'});
   const selectedAlgo = ref<string[]>([]);
@@ -429,9 +407,7 @@
   const expandedDataset = ref<number[]>([]);
   let algoTree = [];
   const paramList = ref<any[]>([]);
-  const metricList = ref<any[]>([]);
   const DATE_TIME_FORMAT = 'MM/DD/YYYY HH:mm';
-  let experimentBackup = {};
 
 /*
 BasicTree: ok
@@ -486,86 +462,45 @@ which one is better?
 
       if (trainFormRef.value && data.trainCfg) {
         await trainFormRef.value.setFieldsValue(data.trainCfg);
-        if(data.trainCfg?.params){
-          paramList.value = data.trainCfg.params;
-        } else {
-          data.trainCfg.params = paramList.value;
-        }
-        if(data.trainCfg?.metrics){
-          metricList.value = data.trainCfg.metrics;
-        } else {
-          data.trainCfg.metrics = metricList.value;
-        }
       }
 
+      if(data.algoName){
+        // get arguments of the algo
+        const arg_params = {...unref(algoParams), algo: data.algoName}
+        API_ML_ALGO_ARGS(arg_params).then((response) => {
+            paramList.value = response.records;
+            if(data.trainCfg?.params){
+              for(const p in data.trainCfg.params){
+                const pIdx = paramList.value.findIndex((el)=>el.name == p);
+                if(pIdx >= 0){
+                  paramList.value[pIdx]['value'] = data.trainCfg.params[p];
+                }
+              }
+            }
+        });
+      }
+      
+      // get experiment list
       experParam.value.id = data.id;
       selExperId.value = [];
       API_ML_EXPERIMENT_TRIALS({id: data.id}).then((response) => {
         experData.value = afterFetchExperiment(response);
       });
 
-      /*
-      // get experiment list
-      API_ML_EXPERIMENT_TRIALS(data.id).then((response) => {
-        experimentBackup = {};
-        let jsonObj = {};
-        for(const key in response){
-          // convert unix time to formatted local time
-          const ts = dayjs(Number(key)).format(DATE_TIME_FORMAT);
-          jsonObj[ts] = response[key]
-          experimentBackup[ts] = cloneDeep(response[key]);
-          delete response[key]['start_time']
-          delete response[key]['run_uuid'];
-        }
-        experData.value = jsonObj;
-      });
-      */
-
       drawerTitle.value = '[' + data.name + ']';
     } else {
-      rawData.value = initAlgorithm;
+      rawData.value = cloneDeep(initAlgorithm);
       drawerTitle.value = t('common.form.new');
     }
-
-    // subscribe the message (user x and alg y)
-      // one user can run multiple algorithms at the same time
-      // so one user must have multiple channels to receive separated logs
-
   });
 
-  // parameter table definition (arguments of train function)
-  const [registerParamsTable, paramTableMethod] = useTable({
-    bordered: true,
-    columns: paramColumns,
-    dataSource: paramList,
-    pagination: false,
-    canResize: false,
-    scroll: { y: 280 },
-    showIndexColumn: false
-  });
-
-
-  // metrics table definition (used for early stop)
-  const [registerMetricsTable, metricTableMethod] = useTable({
-    bordered: true,
-    columns: metricColumns,
-    dataSource: metricList,
-    pagination: false,
-    canResize: false,
-    scroll: { y: 360 },
-    showIndexColumn: false
-  });
-
-  
   /*
    * add parameter
    */
    function handleParamAdd() {
     // add an empty parameter to table
     if (paramList.value) {
-      paramTableMethod.insertTableDataRecord({ name: '', value: '' }, paramList.value.length);
-    } else {
-      paramTableMethod.insertTableDataRecord({ name: '', value: '' }, 0);
+      paramList.value.push({name: '', value: ''});
     }
   }
 
@@ -573,43 +508,9 @@ which one is better?
    * update parameter
    */
    function handleParamEditEnd({ index, key, value }: Recordable) {
-    if (paramList.value.length <= index) {
-      // add a new one
-      paramList.value.push({ name: '', value: '' });
-    }
-    paramList.value[index][key] = value.trim();
-    if(paramList.value[index]['name'] == '' && paramList.value[index]['value'] == ''){
-      // delete empty parameter
-      paramList.value.splice(index, 1);
-    }
-  }
-
-  /*
-   * add metrics
-   */
-   function handleMetricsAdd() {
-    // add an empty metrics to table
-    if (metricList.value) {
-      metricTableMethod.insertTableDataRecord({ name: '', value: '' }, metricList.value.length);
-    } else {
-      metricTableMethod.insertTableDataRecord({ name: '', value: '' }, 0);
-    }
-  }
-
-
-  /*
-   * update metrics
-   */
-  function handleMetricsEditEnd({ index, key, value }: Recordable) {
-    if (metricList.value.length <= index) {
-      // add a new one
-      metricList.value.push({ name: '', value: '' });
-    }
-    metricList.value[index][key] = value.trim();
-    if(metricList.value[index]['name'] == '' && metricList.value[index]['value'] == ''){
-      // delete empty parameter
-      metricList.value.splice(index, 1);
-    }
+    rawData.value.trainCfg.params[paramList.value[index]['name']] = value.trim();
+    // build source code based on updated parameters
+    buildSrcCode();
   }
 
   /*
@@ -631,9 +532,9 @@ which one is better?
 
 
   /*
-  * algo config change
+  * algo form config change
   */
-  const handleAlgoChange = (key: string, value: string) => {
+  const handleAlgoFormChange = (key: string, value: string) => {
     // as query parameter to get algo list
     if(key == 'framework'){
       // clearn category when frameowrk is changed
@@ -642,6 +543,15 @@ which one is better?
     } else if (key == 'category'){
       algoParams[key] = value;
     }
+  };
+
+    /*
+  * train score change
+  */
+  const handleScoreSelection = (key: string) => {
+    rawData.value.trainCfg.score = key;
+    // build source code based on selected socre
+    buildSrcCode();
   };
 
   /*
@@ -710,17 +620,27 @@ which one is better?
   /*
   * cache algo tree after get it from backend
   */
-  const afterFetchAlgos = (data: any[]) =>{
-    if(data?.records){
-      algoTree = data.records;
-      if(selectedAlgo.value[0]){
-        const setPid = findPidInTree(algoTree, 'name', selectedAlgo.value[0], null);
-        expandedAlgo.value = [setPid];
-      }
-      return data.records;
-    } else {
-      return [];
+  const afterFetchAlgos = (data: any) =>{
+    algoTree = data;
+    const algoTreeList: any[] = [];
+    if(data){
+      // build algo tree
+      for(const pname in data){
+        if(data[pname].length>0){
+          const node: any = {key: pname, title: pname, value: pname, selectable: false, children: []};
+          for(const cname of data[pname]){
+            node.children.push({key: cname, title: cname, value: cname});
+          }
+          algoTreeList.push(node);
+          if(selectedAlgo.value[0]){
+            if(data[pname].indexOf(selectedAlgo.value[0]) >= 0){
+              expandedAlgo.value = [pname];
+            }
+          }
+        }
+      } 
     }
+    return algoTreeList;
   };
 
   const findPidInTree = (node, field, value, pid) => {
@@ -747,68 +667,57 @@ which one is better?
   /*
   * algo name selection
   */
-  const handleAlgoSelection = (name: string) => {
+  const handleAlgoSelection = (names: string[]) => {
+    if(names.length==0){
+      return;
+    }
+    // clean up parameters
+    rawData.value.trainCfg['params'] = {};
+
+    // build source code without parameters
+    buildSrcCode();
+
+    // get arguments of the algo
+    const arg_params = {...unref(algoParams), algo: names[0]}
+    API_ML_ALGO_ARGS(arg_params).then((response) => {
+        paramList.value = response.records;
+    });
+  };
+
+  const buildSrcCode = () =>{
+    const algoName = selectedAlgo.value[0]
     let modelName = null;
     if(algoParams.framework == 'sklearn'){
       let tplCode = cloneDeep(algoTplSklearn);
-      for(let node of algoTree){
-        for(let child of node.children){
-          if(child.name == name){
-            modelName = node.name;
-            break;
-          }
-        }
-        if(modelName!=null){
+      for(let node in algoTree){
+        if(algoTree[node].indexOf(algoName)>=0){
+          modelName = node;
           break;
         }
       }
       
       tplCode = tplCode.replaceAll('{MODULE}', modelName);
-      tplCode = tplCode.replaceAll('{ALGORITHM}', name);
+      tplCode = tplCode.replaceAll('{ALGORITHM}', algoName);
 
       // build arguments based on parameters
       let paramArray: string[] = [];
       if(rawData.value.trainCfg?.params){
-        for(let item of rawData.value.trainCfg.params){
-          if(item.name!='' && item.value!=''){
-            paramArray.push(`${item.name}=config['${item.name}']`);
+        for(let item in rawData.value.trainCfg.params){
+          const pValue = rawData.value.trainCfg.params[item];
+          if(pValue.trim() != ''){
+            paramArray.push(`${item}=config['${item}']`);
           }
         }
       }
       let paramArgStr = paramArray.join();
       tplCode = tplCode.replaceAll('{PARAMS}', paramArgStr);
 
-      // build eval metrics
-      let metricArray: string[] = [];
-      let funcArray: string[] = [];
-      if(rawData.value.trainCfg?.metrics){
-        for(let item of rawData.value.trainCfg.metrics){
-          if(item.name!=''){
-            let func_name = item.name;
-            if(item.name == 'score'){
-              func_name = `${algoParams.category}_${item.name}`;
-            }
-            if(skMetricLib[func_name]){
-              funcArray.push(`${item.name} = ${skMetricLib[func_name]}`);
-              metricArray.push(`'${item.name}': ${item.name}`);
-            }
-          }
-        }
+      if(rawData.value.trainCfg?.score){
+        tplCode = tplCode.replaceAll('{SCORE_NAME}', rawData.value.trainCfg.score);
       }
-
-      let funcStr = funcArray.join('\n      ');
-      tplCode = tplCode.replaceAll('{METRIC_GET}', funcStr);
-
-      let metricStr = metricArray.join();
-      if(metricStr!=''){
-        metricStr = `ray.train.report({${metricStr}})`;
-      }      
-      tplCode = tplCode.replaceAll('{METRICS_RPT}', metricStr);
-
       rawData.value.srcCode = tplCode;
     }
   };
-
   /*
   * dataset selection
   */
@@ -844,7 +753,7 @@ which one is better?
 
     // execute algo training
     API_ML_ALGO_EXECUTE(rawData.value.id, rawData.value.framework).then((response) => {
-      const aaa = response;
+      emitter.emit('INFO', `${rawData.value.algoName}: training is scheduled!`);
     });
   };
 
@@ -889,10 +798,6 @@ which one is better?
    */
    const handleExperChange = (key: string, value: string) => {
     experParam.value.succOnly = value;
-    // get experiment list
-    //API_ML_EXPERIMENT_TRIALS(experParam.value).then((response) => {
-    //  experData.value = response.records;
-    //});
   };
 
   /*
@@ -933,30 +838,31 @@ which one is better?
       rawData.value.trainCfg.trials = train.trials;
       rawData.value.trainCfg.epochs = train.epochs;
       rawData.value.trainCfg.timeout = train.timeout;
-      delete rawData.value.trainCfg.searchAlgo;
+      rawData.value.trainCfg.score = train.score;
+      rawData.value.trainCfg.threshold = train.threshold;
 
-      rawData.value.trainCfg['params'] = [];
-      if(paramList.value.length>0){
-        for(var item of paramList.value){
-          if(item.name && item.name.length>0 && item.value && item.value.length>0){
-            rawData.value.trainCfg.params.push(item);
-          }
-        }
-      }
-      if(rawData.value.trainCfg.params == []){
+      if(rawData.value.trainCfg.params == {}){
         delete rawData.value.trainCfg.params;
-      }
-
-      rawData.value.trainCfg['metrics'] = [];
-      if(metricList.value.length>0){
-        for(var item of metricList.value){
-          if(item.name && item.name.length>0 && item.value && item.value.length>0){
-            rawData.value.trainCfg.metrics.push(item);
+      } else {
+        // check if all parameter are valid array or json
+        const tmp = cloneDeep(unref(rawData.value.trainCfg.params));
+        for(const it in tmp){
+          if(tmp[it].trim()==''){
+            delete rawData.value.trainCfg.params[it];
+          } else if(tmp[it].trim().startsWith('[')){
+            try{
+              // it is valid json or array if it can be parsed
+              const vls = JSON.parse(tmp[it]);
+            } catch (error) {
+              // correct invalid parameter
+              const newIt = tmp[it].replaceAll('[', '').replaceAll(']', '').replaceAll('\'', '').replaceAll('"', '').replaceAll(' ', '');
+              const newList = newIt.split(',');
+              const newStr = JSON.stringify(newList)
+              // update param
+              rawData.value.trainCfg.params[it] = newStr;
+            }
           }
         }
-      }
-      if(rawData.value.trainCfg.metrics == []){
-        delete rawData.value.trainCfg.metrics;
       }
 
       setDrawerProps({ confirmLoading: true });

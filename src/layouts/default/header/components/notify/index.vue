@@ -38,7 +38,6 @@
       const { prefixCls } = useDesign('header-notify');
       const { createMessage } = useMessage();
       const listData = ref(tabListData);
-      const newMsg = ref<Boolean>(false);
       const userStore = useUserStore();
       const userId = userStore.getUserInfo?.id;
       const dtFormatter = new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit', 
@@ -90,7 +89,7 @@
                 datetime: dtFormatter.format(new Date())
               }
             );
-            createMessage.error('ML ' + report.name + ': ' + msg, 5);
+            // createMessage.error('ML ' + report.name + ': ' + msg, 5);
             break;
           }
         }
@@ -144,7 +143,7 @@
           if(cat.key == 'notice'){
             if(report.progress == 1){
               // new job started
-              createMessage.success('ML ' + report.name + ' training started!', 5);
+              //createMessage.success('ML ' + report.name + ' training started!', 5);
               // add a new one to notice list
               cat.list.unshift(
                 {
@@ -160,7 +159,7 @@
               );
             } else if (report.progress == 100) {
               // job completed
-              createMessage.success('ML ' + report.name + ' training completed!', 5);
+              //createMessage.success('ML ' + report.name + ' training completed!', 5);
               for(const note of cat.list){
                 if(note.id.endsWith('_' + report.experId)){
                   found = true;

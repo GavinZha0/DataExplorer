@@ -29,8 +29,9 @@ export interface TrainConfigType {
   trials: number;
   epochs: number;
   timeout: number;
-  params: any[];
-  metrics: any[];
+  params: any;
+  score: string | null;
+  threshold: number | null;
 }
 
 export const initDataCfg: DataConfigType = {
@@ -45,8 +46,9 @@ const initTrainCfg: TrainConfigType = {
   trials: 1,
   epochs: 1,
   timeout: 5,
-  params: [],
-  metrics: []
+  params: {},
+  score: null,
+  threshold: null
 };
 
 //initial value of dataset

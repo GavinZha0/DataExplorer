@@ -8,6 +8,8 @@ const wsUri = "ws://" + window.location.hostname + ":" + wsPort + '/ws';
 //initialize websocket
 export function createWebSocket(userId, channel, callback){
     if(wsClient!=null){
+        // subscribe a channel when connected
+        wsClient.subscribe(channel, callback);
         return wsClient;
     }
     // initialize websocket client with user id as token

@@ -165,30 +165,30 @@ export const formAlgoSchema: FormSchema[] = [
           { label: t('ml.algorithm.form.algo.framework.java'), value: 'java' },
           { label: t('ml.algorithm.form.algo.framework.js'), value: 'js' }
         ],
-        onChange: (e: any) => {
-          let citiesOptions = [];
-          if (e == 'sklearn') {
-            citiesOptions = [
+        onChange: (frame: any) => {
+          let catOptions = [];
+          if (frame == 'sklearn') {
+            catOptions = [
               { label: t('ml.algorithm.form.algo.category.clf'), value: 'clf' },
               { label: t('ml.algorithm.form.algo.category.reg'), value: 'reg' },
               { label: t('ml.algorithm.form.algo.category.cluster'), value: 'cluster' }
             ];
-          } else if (e == 'pytorch') {
-            citiesOptions = [
+          } else if (frame == 'pytorch') {
+            catOptions = [
               { label: t('ml.algorithm.form.algo.category.vision'), value: 'vision' },
               { label: t('ml.algorithm.form.algo.category.audio'), value: 'audio' },
             ];
           }
-          formModel.category = undefined; //  reset city value
+          formModel.category = undefined; //  reset category value
           const { updateSchema } = formActionType;
           updateSchema({
             field: 'category',
             componentProps: {
-              options: citiesOptions,
+              options: catOptions,
             },
           });
         }
-    }
+      }
     },
     labelWidth: 80,
     colProps: { span: 24 }
@@ -204,7 +204,9 @@ export const formAlgoSchema: FormSchema[] = [
       options: [
         { label: t('ml.algorithm.form.algo.category.clf'), value: 'clf' },
         { label: t('ml.algorithm.form.algo.category.reg'), value: 'reg' },
-        { label: t('ml.algorithm.form.algo.category.cluster'), value: 'cluster' }
+        { label: t('ml.algorithm.form.algo.category.cluster'), value: 'cluster' },
+        { label: t('ml.algorithm.form.algo.category.vision'), value: 'vision' },
+        { label: t('ml.algorithm.form.algo.category.audio'), value: 'audio' }
       ],
     },
     labelWidth: 80,
@@ -287,6 +289,74 @@ export const formTrainSchema: FormSchema[] = [
     colProps: { span: 24 }
   },
   {
+    field: 'trials',
+    label: t('ml.algorithm.form.train.trials'),
+    component: 'InputNumber',
+    defaultValue: 1,
+    componentProps: {
+      min: 1,
+      max: 20
+    },
+    labelWidth: 80,
+    colProps: { span: 12 },
+  },
+  {
+    field: 'epochs',
+    label: t('ml.algorithm.form.train.epochs'),
+    component: 'InputNumber',
+    defaultValue: 1,
+    componentProps: {
+      min: 1,
+      max: 100
+    },
+    labelWidth: 80,
+    colProps: { span: 12 },
+  },
+  {
+    field: 'timeout',
+    label: t('ml.algorithm.form.train.timeout'),
+    defaultValue: 5,
+    component: 'InputNumber',
+    componentProps: {
+      min: 0,
+      max: 60,
+      addonAfter: 'min'
+    },
+    labelWidth: 80,
+    colProps: { span: 24 },
+  },
+  {
+    field: 'score',
+    label: t('ml.algorithm.form.train.early_stop'),
+    component: 'Input',
+    slot: 'score',
+    componentProps: {
+      options: [
+        { label: t('ml.algorithm.form.train.metrics.acc'), value: 'acc' },
+        { label: t('ml.algorithm.form.train.metrics.r2'), value: 'r2' },
+        { label: t('ml.algorithm.form.train.metrics.mape'), value: 'mape' },
+        { label: t('ml.algorithm.form.train.metrics.auc'), value: 'auc' },
+        { label: t('ml.algorithm.form.train.metrics.recall'), value: 'recall' },
+        { label: t('ml.algorithm.form.train.metrics.prec'), value: 'prec' },
+        { label: t('ml.algorithm.form.train.metrics.f1'), value: 'f1' },
+        { label: t('ml.algorithm.form.train.metrics.kappa'), value: 'kappa' },
+        { label: t('ml.algorithm.form.train.metrics.mcc'), value: 'mcc' },
+        { label: t('ml.algorithm.form.train.metrics.mae'), value: 'mae' },
+        { label: t('ml.algorithm.form.train.metrics.mse'), value: 'mse' },
+        { label: t('ml.algorithm.form.train.metrics.rmse'), value: 'rmse' },
+        { label: t('ml.algorithm.form.train.metrics.rmsle'), value: 'rmsle' }
+      ],
+    },
+    labelWidth: 80,
+    colProps: { span: 18 }
+  },
+  {
+    field: 'threshold',
+    label: '',
+    component: 'InputNumber',
+    colProps: { span: 6 },
+  },
+  {
     field: 'strategy',
     label: t('ml.algorithm.form.train.strategy'),
     component: 'Select',
@@ -308,74 +378,11 @@ export const formTrainSchema: FormSchema[] = [
     colProps: { span: 24 }
   },
   {
-    field: 'trials',
-    label: t('ml.algorithm.form.train.trials'),
-    component: 'InputNumber',
-    defaultValue: 1,
-    componentProps: {
-      min: 1,
-      max: 20
-    },
-    labelWidth: 80,
-    colProps: { span: 24 },
-  },
-  {
-    field: 'epochs',
-    label: t('ml.algorithm.form.train.epochs'),
-    component: 'InputNumber',
-    defaultValue: 1,
-    componentProps: {
-      min: 1,
-      max: 100
-    },
-    labelWidth: 80,
-    colProps: { span: 24 },
-  },
-  {
-    field: 'timeout',
-    label: t('ml.algorithm.form.train.timeout'),
-    defaultValue: 5,
-    component: 'InputNumber',
-    componentProps: {
-      min: 0,
-      max: 60,
-      addonAfter: 'min'
-    },
-    labelWidth: 80,
-    colProps: { span: 24 },
-  },
-  {
     field: 'params',
     label: '',
     component: 'Input',
     colProps: { span: 24 },
     slot: 'params'
-  },
-  {
-    field: 'earlyStop',
-    label: '',
-    component: 'Input',
-    colProps: { span: 24 },
-    slot: 'earlyStop'
-    /*
-    componentProps: {
-      options: [
-        { label: t('ml.algorithm.form.train.metrics.acc'), value: 'acc' },
-        { label: t('ml.algorithm.form.train.metrics.r2'), value: 'r2' },
-        { label: t('ml.algorithm.form.train.metrics.mape'), value: 'mape' },
-        { label: t('ml.algorithm.form.train.metrics.auc'), value: 'auc' },
-        { label: t('ml.algorithm.form.train.metrics.recall'), value: 'recall' },
-        { label: t('ml.algorithm.form.train.metrics.prec'), value: 'prec' },
-        { label: t('ml.algorithm.form.train.metrics.f1'), value: 'f1' },
-        { label: t('ml.algorithm.form.train.metrics.kappa'), value: 'kappa' },
-        { label: t('ml.algorithm.form.train.metrics.mcc'), value: 'mcc' },
-        { label: t('ml.algorithm.form.train.metrics.mae'), value: 'mae' },
-        { label: t('ml.algorithm.form.train.metrics.mse'), value: 'mse' },
-        { label: t('ml.algorithm.form.train.metrics.rmse'), value: 'rmse' },
-        { label: t('ml.algorithm.form.train.metrics.rmsle'), value: 'rmsle' }
-      ],
-    },
-    */
   }
 ];
 
@@ -419,36 +426,19 @@ export const formExperSchema: FormSchema[] = [
   }
 ];
 
-
-export const metricColumns: BasicColumn[] = [
-  {
-    title: t('ml.algorithm.form.train.metrics.name'),
-    dataIndex: 'name',
-    width: 90,
-    align: 'left',
-    edit: true
-  },
-  {
-    title: t('ml.algorithm.form.train.metrics.value'),
-    dataIndex: 'value',
-    width: 70,
-    align: 'left',
-    edit: true
-  }
-];
-
 export const paramColumns: BasicColumn[] = [
   {
     title: t('ml.algorithm.form.train.params.name'),
     dataIndex: 'name',
-    width: 90,
+    width: 150,
+    resizable: true,
     align: 'left',
-    edit: true
+    edit: false
   },
   {
     title: t('ml.algorithm.form.train.params.value'),
     dataIndex: 'value',
-    width: 70,
+    resizable: true,
     align: 'left',
     edit: true
   }
@@ -491,9 +481,9 @@ class CustomTrain:
     estimator = {ALGORITHM}({PARAMS})
     for epoch in range(config.get("epochs", 1)):
       estimator.fit(data['x'], data['y'])
-      y_predict = estimator.predict(data['x'])
-      {METRIC_GET}
-      {METRICS_RPT}
+      {SCORE_NAME}_fn = metrics.get_scorer('{SCORE_NAME}')
+      {SCORE_NAME} = {SCORE_NAME}_fn(estimator, data['x'], data['y'])
+      ray.train.report({"{SCORE_NAME}": {SCORE_NAME}})
 `;
 
 // algo template (for setup_mlflow())
@@ -531,29 +521,3 @@ class CustomAlgo:
       {METRIC_FUNC}
       ray.train.report({{METRICS}})
 `;
-
-export const skMetricLib = {
-  clf_score: "estimator.score()", 
-  accuracy: "metrics.accuracy_score(data['y'], y_predict)",
-  f1: "metrics.f1_score(data['y'], y_predict, average='weighted')",
-  log_loss: "metrics.log_loss(data['y'], y_predict)",
-  precision: "metrics.precision_score(data['y'], y_predict, average='micro')",
-  recall: "metrics.recall_score(data['y'], y_predict, average='macro')",
-  roc_auc: "metrics.roc_auc_score(data['y'], y_predict, average='macro')",
-
-  reg_score: "estimator.score()",
-  mae: "metrics.mean_absolute_error(data['y'], y_predict)",
-  mse: "metrics.mean_squared_error(data['y'], y_predict)",
-  r2: "metrics.r2_score(data['y'], y_predict)",
-  rmse: "metrics.root_mean_squared_error(data['y'], y_predict)",
-  msle: "metrics.mean_squared_log_error(data['y'], y_predict)",
-  rmsle: "metrics.root_mean_squared_log_error(data['y'], y_predict)",
-  
-  cluster_score: "estimator.score(data['x'])",
-  rand: "metrics.rand_score(data['y'], estimator.labels_)",
-  arand: "metrics.adjusted_rand_score(data['y'], estimator.labels_)",
-  silhouette: "metrics.silhouette_score(data['y'], estimator.labels_)",
-  dbi: "metrics.davies_bouldin_score(data['y'], estimator.labels_)",
-  v_measure: "metrics.v_measure_score(data['y'], estimator.labels_)",
-  mutual_info: "metrics.mutual_info_score(data['y'], y_predict)"
-};

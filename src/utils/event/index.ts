@@ -1,5 +1,5 @@
 import ResizeObserver from 'resize-observer-polyfill';
-
+import mitt from 'mitt';
 const isServer = typeof window === 'undefined';
 
 /* istanbul ignore next */
@@ -40,3 +40,6 @@ export function triggerWindowResize() {
   (event as any).eventType = 'message';
   window.dispatchEvent(event);
 }
+
+
+export const emitter = mitt();

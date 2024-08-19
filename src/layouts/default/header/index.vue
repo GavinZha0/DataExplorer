@@ -30,6 +30,8 @@
       />
     </div>
     <!-- menu-end -->
+     
+     <div><Reminder /></div>
 
     <!-- action  -->
     <div :class="`${prefixCls}-action`">
@@ -64,6 +66,7 @@
   import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';
 
+  import Reminder from './components/Reminder.vue';
   import { AppSearch } from '/@/components/Application';
 
   import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
@@ -93,6 +96,7 @@
       AppLocalePicker,
       FullScreen,
       Notify,
+      Reminder,
       AppSearch,
       ErrorAction,
       SettingDrawer: createAsyncComponent(() => import('/@/layouts/default/setting/index.vue'), {

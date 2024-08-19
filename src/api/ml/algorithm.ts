@@ -17,7 +17,9 @@ export const API = {
   ML_ALGO_EXECUTE_SCRIPT: '/ml/algo/execute_script',
   ML_ALGO_GROUPS: '/ml/algo/groups',
   ML_ALGO_ONE: '/ml/algo/getone',
-  ML_ALGO_ALGOS: '/ml/algo/algos'
+  ML_ALGO_ALGOS: '/ml/algo/algos',
+  ML_ALGO_ARGS: '/ml/algo/args',
+  ML_ALGO_SCORES: '/ml/algo/scores'
 }
 
 /* get all algo as list
@@ -148,6 +150,44 @@ export function API_ML_ALGO_ALGOS(params: any) {
   if(params.framework && params.category){
     const pyFrames = ['python', 'sklearn', 'pytorch', 'tensorflow'];
     let url = API.ML_ALGO_ALGOS;
+    if(pyFrames.includes(params.framework)){
+      // send to python server
+      url = '/py' + url;
+    }
+
+    return defHttp.post<AxiosResponse>({
+      url: url,
+      data: params
+    });
+  }
+}
+
+/* get arguments of algo
+ *
+ */
+export function API_ML_ALGO_ARGS(params: any) {
+  if(params.framework && params.category){
+    const pyFrames = ['python', 'sklearn', 'pytorch', 'tensorflow'];
+    let url = API.ML_ALGO_ARGS;
+    if(pyFrames.includes(params.framework)){
+      // send to python server
+      url = '/py' + url;
+    }
+
+    return defHttp.post<AxiosResponse>({
+      url: url,
+      data: params
+    });
+  }
+}
+
+/* get eval scores of algo
+ *
+ */
+export function API_ML_ALGO_SCORES(params: any) {
+  if(params.framework && params.category){
+    const pyFrames = ['python', 'sklearn', 'pytorch', 'tensorflow'];
+    let url = API.ML_ALGO_SCORES;
     if(pyFrames.includes(params.framework)){
       // send to python server
       url = '/py' + url;

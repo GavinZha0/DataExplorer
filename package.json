@@ -132,6 +132,7 @@
     "leaflet.migration": "^2.3.8",
     "leaflet.timeline": "^1.4.3",
     "lodash-es": "^4.17.21",
+    "mitt": "^3.0.1",
     "ml-pca": "^4.1.1",
     "ml-random-forest": "^2.1.0",
     "mockjs": "^1.1.0",

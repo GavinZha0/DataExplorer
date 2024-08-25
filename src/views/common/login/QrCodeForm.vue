@@ -22,7 +22,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useLoginState, LoginStateEnum } from './useLogin';
 
-  const qrCodeUrl = 'https://github.com/GavinZha0';
+  const qrCodeUrl = 'http://ec2-18-117-145-38.us-east-2.compute.amazonaws.com:3721/#/auth/login';
 
   const { t } = useI18n();
   const { handleBackLogin, getLoginState } = useLoginState();

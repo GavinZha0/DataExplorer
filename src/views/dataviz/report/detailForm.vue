@@ -371,13 +371,8 @@
   import Thumbnails from '@antv/thumbnails';
   import { setGlobal } from '@antv/g2plot';
   import draggable from 'vuedraggable';
-  import ApexCharts from 'apexcharts';
   import { g2plotRender } from '@antv/antv-spec';
-  import { PivotSheet, TableSheet } from '@antv/s2';
   import * as echarts from 'echarts';
-  import * as am4core from '@amcharts/amcharts4/core';
-  import * as am4charts from '@amcharts/amcharts4/charts';
-  import am4themes_animated from '@amcharts/amcharts4/themes/animated';
   import L from 'leaflet';
   import { PanelLayers } from '/@/thirdparty/leaflet/leaflet-panel-layers.src';
   import '/@/thirdparty/leaflet/css/MarkerCluster.Default.css';
@@ -865,6 +860,7 @@ import template from 'template_js';
    * render S2 for table
    */
    const renderS2 = (grid: any) => {
+    /*
     const s2Options = {
       width: 600,
       height: 600
@@ -874,6 +870,7 @@ import template from 'template_js';
     } else {
       grid.instance = new PivotSheet(grid.container, grid.libCfg.config, s2Options);
     }
+      */
   };
 
   /*
@@ -890,6 +887,7 @@ import template from 'template_js';
    * render ApexCharts
    */
   const renderApexCharts = (grid: any) => {
+    /*
     let clonedCfg = cloneDeep(grid.libCfg);
     const catData = grid.data.map(function (value) {
       return value[grid.dim[0]];
@@ -905,6 +903,7 @@ import template from 'template_js';
 
     grid.instance = new ApexCharts(grid.container, clonedCfg);
     grid.instance.render();
+    */
   };
 
   /*
@@ -917,11 +916,11 @@ import template from 'template_js';
     let clonedCfg: any = cloneDeep(grid.libCfg.config);
     clonedCfg.data = grid.data;
 
-    am4core.useTheme(am4themes_animated);
+    // am4core.useTheme(am4themes_animated);
     // render amCharts
-    let inst = am4core.createFromConfig(clonedCfg, grid.container, am4charts.XYChart);
+    //let inst = am4core.createFromConfig(clonedCfg, grid.container, am4charts.XYChart);
 
-    return inst;
+    return null;
   };
 
   /*

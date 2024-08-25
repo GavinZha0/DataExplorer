@@ -16,8 +16,6 @@ import { setupI18n } from '/@/locales/setupI18n';
 import { registerGlobComp } from '/@/components/registerGlobComp';
 import VueGridLayout from 'vue-grid-layout';
 import { isDevMode } from './utils/env';
-import ElementPlus from 'element-plus';
-import 'element-plus/dist/index.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -59,7 +57,6 @@ async function bootstrap() {
   setupErrorHandle(app);
 
   app
-    .use(ElementPlus)
     .use(VueGridLayout)
     .component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app');

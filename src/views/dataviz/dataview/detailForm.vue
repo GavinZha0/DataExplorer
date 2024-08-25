@@ -686,13 +686,8 @@
   } from '/@/api/dataviz/model/dataview';
   import { ApiSelect } from '/@/components/Form';
   import 'vue-json-pretty/lib/styles.css';
-  import ApexCharts from 'apexcharts';
   import { g2plotRender, specToG2PlotConfig } from '@antv/antv-spec';
-  import { PivotSheet, TableSheet } from '@antv/s2';
   import * as echarts from 'echarts';
-  import * as am4core from '@amcharts/amcharts4/core';
-  import * as am4charts from '@amcharts/amcharts4/charts';
-  import am4themes_animated from '@amcharts/amcharts4/themes/animated';
   import L from 'leaflet';
   import { PanelLayers } from '/@/thirdparty/leaflet/leaflet-panel-layers.src';
   import '/@/thirdparty/leaflet/css/MarkerCluster.Default.css';
@@ -2427,6 +2422,7 @@
       return;
     }
 
+    /*
     const s2Options = {
       width: 600,
       height: 600
@@ -2442,6 +2438,7 @@
     
     inst.render();
     return inst;
+    */
   }
 
   /*
@@ -2471,11 +2468,11 @@
     let clonedCfg: any = cloneDeep(libCfg.config);
     clonedCfg.data = data;
 
-    am4core.useTheme(am4themes_animated);
+    // am4core.useTheme(am4themes_animated);
     // render amCharts
-    let inst = am4core.createFromConfig(clonedCfg, chartContainerRef.value, am4charts.XYChart);
+    // let inst = am4core.createFromConfig(clonedCfg, chartContainerRef.value, am4charts.XYChart);
 
-    return inst;
+    return null;
   };
 
   /*
@@ -2483,7 +2480,7 @@
    */
   const renderApexCharts = (data: any[], libCfg: any, libVer = '4.2') => {
     // check version first ......
-
+    /*
     let clonedCfg = cloneDeep(libCfg);
 
     // combine data  into config
@@ -2503,7 +2500,8 @@
 
     let inst = new ApexCharts(chartContainerRef.value, clonedCfg);
     inst.render();
-    return inst;
+    */
+    return null;
   };
 
   /*

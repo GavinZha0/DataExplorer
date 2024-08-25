@@ -209,20 +209,20 @@
                         <Menu>
                           <MenuItem key="type">
                           <RadioGroup v-model:value="column.type" size="small" button-style="solid" @change="handleColumnType(column.key, column.type)">
-                            <RadioButton value="String" :style="radioStyle">String</RadioButton>
-                            <RadioButton value="Integer" :style="radioStyle">Integer</RadioButton>
-                            <RadioButton value="Long" :style="radioStyle">Long</RadioButton>
-                            <RadioButton value="Float" :style="radioStyle">Float</RadioButton>
-                            <RadioButton value="Double" :style="radioStyle">Double</RadioButton>
-                            <RadioButton value="Boolean" :style="radioStyle">Boolean</RadioButton>
-                            <RadioButton value="Date" :style="radioStyle">Date</RadioButton>
-                            <RadioButton value="Time" :style="radioStyle">Time</RadioButton>
-                            <RadioButton value="Datetime" :style="radioStyle">Datetime</RadioButton>
-                            <RadioButton value="Timestamp" :style="radioStyle">Timestamp</RadioButton>
-                            <RadioButton value="Text" :style="radioStyle">Text</RadioButton>
-                            <RadioButton value="Bit" :style="radioStyle">Bit</RadioButton>
-                            <RadioButton value="Binary" :style="radioStyle">Binary</RadioButton>
-                            <RadioButton value="Blob" :style="radioStyle">Blob</RadioButton>
+                            <Radio.RadioButton value="String" :style="radioStyle">String</Radio.RadioButton>
+                            <Radio.RadioButton value="Integer" :style="radioStyle">Integer</Radio.RadioButton>
+                            <Radio.RadioButton value="Long" :style="radioStyle">Long</Radio.RadioButton>
+                            <Radio.RadioButton value="Float" :style="radioStyle">Float</Radio.RadioButton>
+                            <Radio.RadioButton value="Double" :style="radioStyle">Double</Radio.RadioButton>
+                            <Radio.RadioButton value="Boolean" :style="radioStyle">Boolean</Radio.RadioButton>
+                            <Radio.RadioButton value="Date" :style="radioStyle">Date</Radio.RadioButton>
+                            <Radio.RadioButton value="Time" :style="radioStyle">Time</Radio.RadioButton>
+                            <Radio.RadioButton value="Datetime" :style="radioStyle">Datetime</Radio.RadioButton>
+                            <Radio.RadioButton value="Timestamp" :style="radioStyle">Timestamp</Radio.RadioButton>
+                            <Radio.RadioButton value="Text" :style="radioStyle">Text</Radio.RadioButton>
+                            <Radio.RadioButton value="Bit" :style="radioStyle">Bit</Radio.RadioButton>
+                            <Radio.RadioButton value="Binary" :style="radioStyle">Binary</Radio.RadioButton>
+                            <Radio.RadioButton value="Blob" :style="radioStyle">Blob</Radio.RadioButton>
                           </RadioGroup>
                         </MenuItem>
                         </Menu>
@@ -366,7 +366,6 @@
     Menu,
     MenuItem,
     Radio,
-    RadioButton,
     RadioGroup,
     Dropdown,
     Row as ARow,
@@ -374,7 +373,6 @@
     Tabs as ATabs,
     TabPane as ATabPane,
     Input as AInput,
-    Select,
     Upload,
     SelectProps,
     UploadProps,

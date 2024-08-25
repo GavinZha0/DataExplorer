@@ -69,10 +69,10 @@
     <Divider class="enter-x">{{ t('auth.login.label.info') }}</Divider>
     <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
       <GithubFilled @click="openWindow('https://github.com/GavinZha0')" />
-      <WechatFilled />
-      <AlipayCircleFilled />
-      <FacebookOutlined />
-      <TwitterCircleFilled />
+      <!--WechatFilled /-->
+      <!--AlipayCircleFilled /-->
+      <!--FacebookOutlined /-->
+      <!--TwitterCircleFilled /-->
     </div>
   </Form>
 </template>

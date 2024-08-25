@@ -190,7 +190,7 @@ export const initChartModelOption: chartModelOptionType = {
     'shape',
   ],
   regressionLineType: ['linear', 'exp', 'loess', 'log', 'poly', 'pow', 'quad'],
-  chartLib: ['antvG2Plot', 'antvG6', 'antvL7Plot', 'ECharts', 'ApexCharts', 'AmCharts']
+  chartLib: ['antvG2Plot', 'antvG6', 'antvL7Plot', 'ECharts']
 };
 
 export interface FieldValueType {

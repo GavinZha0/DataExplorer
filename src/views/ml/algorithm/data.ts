@@ -10,7 +10,7 @@ export const indexColumns: BasicColumn[] = [
     title: t('common.table.title.category'),
     dataIndex: 'category',
     key: 'category',
-    width: 80,
+    width: 100,
     sorter: true,
   },
   {

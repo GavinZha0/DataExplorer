@@ -120,7 +120,7 @@ export function API_ML_EDA_BUILD(id: number, tier: string, kind: string, config:
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_ML_FEATURE_SELECT(id: number, config: any[]) {
+export function API_ML_EDA_SELECT(id: number, config: any[]) {
   return defHttp.post<AxiosResponse>({
     url: API.ML_EDA_SELECT,
     params: { dataset_id: id, config: config },

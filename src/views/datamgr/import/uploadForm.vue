@@ -64,7 +64,7 @@
                 {{ t('collection.importer.detail.form.attr.fileList') }}
               </legend>
               <div>
-                <UploadDragger
+                <Upload.Dragger
                   v-model:file-list="fileList"
                   :multiple="true"
                   accept=".csv,.json,.xlsx"
@@ -98,7 +98,7 @@
                       <DeleteOutlined @click="actions.remove" style="float: right" />
                     </div>
                   </template>
-                </UploadDragger>
+                </Upload.Dragger>
               </div>
             </fieldset>
           </a-col>
@@ -208,22 +208,22 @@
                       <template #overlay>
                         <Menu>
                           <MenuItem key="type">
-                          <RadioGroup v-model:value="column.type" size="small" button-style="solid" @change="handleColumnType(column.key, column.type)">
-                            <Radio.RadioButton value="String" :style="radioStyle">String</Radio.RadioButton>
-                            <Radio.RadioButton value="Integer" :style="radioStyle">Integer</Radio.RadioButton>
-                            <Radio.RadioButton value="Long" :style="radioStyle">Long</Radio.RadioButton>
-                            <Radio.RadioButton value="Float" :style="radioStyle">Float</Radio.RadioButton>
-                            <Radio.RadioButton value="Double" :style="radioStyle">Double</Radio.RadioButton>
-                            <Radio.RadioButton value="Boolean" :style="radioStyle">Boolean</Radio.RadioButton>
-                            <Radio.RadioButton value="Date" :style="radioStyle">Date</Radio.RadioButton>
-                            <Radio.RadioButton value="Time" :style="radioStyle">Time</Radio.RadioButton>
-                            <Radio.RadioButton value="Datetime" :style="radioStyle">Datetime</Radio.RadioButton>
-                            <Radio.RadioButton value="Timestamp" :style="radioStyle">Timestamp</Radio.RadioButton>
-                            <Radio.RadioButton value="Text" :style="radioStyle">Text</Radio.RadioButton>
-                            <Radio.RadioButton value="Bit" :style="radioStyle">Bit</Radio.RadioButton>
-                            <Radio.RadioButton value="Binary" :style="radioStyle">Binary</Radio.RadioButton>
-                            <Radio.RadioButton value="Blob" :style="radioStyle">Blob</Radio.RadioButton>
-                          </RadioGroup>
+                          <Radio.Group v-model:value="column.type" size="small" button-style="solid" @change="handleColumnType(column.key, column.type)">
+                            <Radio.Button value="String" :style="radioStyle">String</Radio.Button>
+                            <Radio.Button value="Integer" :style="radioStyle">Integer</Radio.Button>
+                            <Radio.Button value="Long" :style="radioStyle">Long</Radio.Button>
+                            <Radio.Button value="Float" :style="radioStyle">Float</Radio.Button>
+                            <Radio.Button value="Double" :style="radioStyle">Double</Radio.Button>
+                            <Radio.Button value="Boolean" :style="radioStyle">Boolean</Radio.Button>
+                            <Radio.Button value="Date" :style="radioStyle">Date</Radio.Button>
+                            <Radio.Button value="Time" :style="radioStyle">Time</Radio.Button>
+                            <Radio.Button value="Datetime" :style="radioStyle">Datetime</Radio.Button>
+                            <Radio.Button value="Timestamp" :style="radioStyle">Timestamp</Radio.Button>
+                            <Radio.Button value="Text" :style="radioStyle">Text</Radio.Button>
+                            <Radio.Button value="Bit" :style="radioStyle">Bit</Radio.Button>
+                            <Radio.Button value="Binary" :style="radioStyle">Binary</Radio.Button>
+                            <Radio.Button value="Blob" :style="radioStyle">Blob</Radio.Button>
+                          </Radio.Group>
                         </MenuItem>
                         </Menu>
                       </template>
@@ -366,7 +366,6 @@
     Menu,
     MenuItem,
     Radio,
-    RadioGroup,
     Dropdown,
     Row as ARow,
     Col as ACol,
@@ -390,7 +389,6 @@
   import { DataFrame } from '@antv/ava';
 
   const { t } = useI18n();
-  const UploadDragger = Upload.Dragger;
   const drawerTitle = ref<string>(t('common.form.new'));
   const emit = defineEmits(['success', 'progress']);
   const rawData = ref<ApiImporterDataType>(initImporter);

@@ -149,13 +149,13 @@
                     <template #overlay>
                       <Menu>
                         <MenuItem key="attr">
-                          <RadioGroup v-model:value="column.attr" size="small" button-style="solid" @change="handleColumnAttr(column.key, column.attr)">
-                            <RadioButton value="conti" :style="radioStyle">Continuous</RadioButton>
-                            <RadioButton value="disc" :style="radioStyle">Discrete</RadioButton>
-                            <RadioButton value="cat" :style="radioStyle">Category</RadioButton>
-                            <RadioButton value="date" :style="radioStyle">Datetime</RadioButton>
-                            <RadioButton value="coord" :style="radioStyle">Coordinate</RadioButton>
-                          </RadioGroup>
+                          <Radio.Group v-model:value="column.attr" size="small" button-style="solid" @change="handleColumnAttr(column.key, column.attr)">
+                            <Radio.Button value="conti" :style="radioStyle">Continuous</Radio.Button>
+                            <Radio.Button value="disc" :style="radioStyle">Discrete</Radio.Button>
+                            <Radio.Button value="cat" :style="radioStyle">Category</Radio.Button>
+                            <Radio.Button value="date" :style="radioStyle">Datetime</Radio.Button>
+                            <Radio.Button value="coord" :style="radioStyle">Coordinate</Radio.Button>
+                          </Radio.Group>
                         </MenuItem>
                       </Menu>
                     </template>
@@ -171,17 +171,17 @@
                     <template #overlay>
                       <Menu>
                         <MenuItem key="miss">
-                          <RadioGroup v-model:value="column.miss" size="small" button-style="solid" @change="handleColumnMiss(column.key, column.miss)">
-                            <RadioButton value="drop" :style="radioStyle">Drop</RadioButton>
-                            <RadioButton value="min" :style="radioStyle">Fill min</RadioButton>
-                            <RadioButton value="max" :style="radioStyle">Fill max</RadioButton>
-                            <RadioButton value="mean" :style="radioStyle">Fill mean</RadioButton>
-                            <RadioButton value="median" :style="radioStyle">Fill median</RadioButton>
-                            <RadioButton value="prev" :style="radioStyle">Fill prev</RadioButton>
-                            <RadioButton value="next" :style="radioStyle">Fill next</RadioButton>
-                            <RadioButton value="zero" :style="radioStyle">fill zero</RadioButton>
-                            <RadioButton value="none" :style="radioStyle">None</RadioButton>
-                          </RadioGroup>
+                          <Radio.Group v-model:value="column.miss" size="small" button-style="solid" @change="handleColumnMiss(column.key, column.miss)">
+                            <Radio.Button value="drop" :style="radioStyle">Drop</Radio.Button>
+                            <Radio.Button value="min" :style="radioStyle">Fill min</Radio.Button>
+                            <Radio.Button value="max" :style="radioStyle">Fill max</Radio.Button>
+                            <Radio.Button value="mean" :style="radioStyle">Fill mean</Radio.Button>
+                            <Radio.Button value="median" :style="radioStyle">Fill median</Radio.Button>
+                            <Radio.Button value="prev" :style="radioStyle">Fill prev</Radio.Button>
+                            <Radio.Button value="next" :style="radioStyle">Fill next</Radio.Button>
+                            <Radio.Button value="zero" :style="radioStyle">fill zero</Radio.Button>
+                            <Radio.Button value="none" :style="radioStyle">None</Radio.Button>
+                          </Radio.Group>
                         </MenuItem>
                       </Menu>
                     </template>
@@ -197,18 +197,18 @@
                     <template #overlay>
                       <Menu>
                         <MenuItem key="encode">
-                          <RadioGroup v-model:value="column.encode" size="small" button-style="solid" @change="handleColumnEncode(column.key, column.encode)">
-                            <RadioButton value="ordinal" :style="radioStyle">Ordinal</RadioButton>
-                            <RadioButton value="onehot" :style="radioStyle">One-Hot</RadioButton>
-                            <RadioButton value="binary" :style="radioStyle">Binary</RadioButton>
-                            <RadioButton value="hash" :style="radioStyle">Hashing</RadioButton>
-                            <RadioButton value="count" :style="radioStyle">Count</RadioButton>
-                            <RadioButton value="mean" :style="radioStyle">Mean</RadioButton>
-                            <RadioButton value="woe" :style="radioStyle">WOE</RadioButton>
-                            <RadioButton value="bins" :style="radioStyle">Binning</RadioButton>
-                            <RadioButton value="loo" :style="radioStyle">Leave One Out</RadioButton>
-                            <RadioButton value="none" :style="radioStyle">None</RadioButton>
-                          </RadioGroup>
+                          <Radio.Group v-model:value="column.encode" size="small" button-style="solid" @change="handleColumnEncode(column.key, column.encode)">
+                            <Radio.Button value="ordinal" :style="radioStyle">Ordinal</Radio.Button>
+                            <Radio.Button value="onehot" :style="radioStyle">One-Hot</Radio.Button>
+                            <Radio.Button value="binary" :style="radioStyle">Binary</Radio.Button>
+                            <Radio.Button value="hash" :style="radioStyle">Hashing</Radio.Button>
+                            <Radio.Button value="count" :style="radioStyle">Count</Radio.Button>
+                            <Radio.Button value="mean" :style="radioStyle">Mean</Radio.Button>
+                            <Radio.Button value="woe" :style="radioStyle">WOE</Radio.Button>
+                            <Radio.Button value="bins" :style="radioStyle">Binning</Radio.Button>
+                            <Radio.Button value="loo" :style="radioStyle">Leave One Out</Radio.Button>
+                            <Radio.Button value="none" :style="radioStyle">None</Radio.Button>
+                          </Radio.Group>
                         </MenuItem>
                       </Menu>
                     </template>
@@ -224,17 +224,17 @@
                     <template #overlay>
                       <Menu>
                         <MenuItem key="scale">
-                          <RadioGroup v-model:value="column.scale" size="small" button-style="solid" @change="handleColumnScale(column.key, column.scale)">
-                            <RadioButton value="minmax" :style="radioStyle">Min-Max</RadioButton>
-                            <RadioButton value="std" :style="radioStyle">Standardization</RadioButton>
-                            <RadioButton value="l1" :style="radioStyle">Normal-L1</RadioButton>
-                            <RadioButton value="l2" :style="radioStyle">Normal-L2</RadioButton>
-                            <RadioButton value="max" :style="radioStyle">Normal-Max</RadioButton>
-                            <RadioButton value="abs" :style="radioStyle">MaxAbs</RadioButton>
-                            <RadioButton value="robust" :style="radioStyle">Robust</RadioButton>
-                            <RadioButton value="log" :style="radioStyle">Logarithm</RadioButton>
-                            <RadioButton value="none" :style="radioStyle">None</RadioButton>
-                          </RadioGroup>
+                          <Radio.Group v-model:value="column.scale" size="small" button-style="solid" @change="handleColumnScale(column.key, column.scale)">
+                            <Radio.Button value="minmax" :style="radioStyle">Min-Max</Radio.Button>
+                            <Radio.Button value="std" :style="radioStyle">Standardization</Radio.Button>
+                            <Radio.Button value="l1" :style="radioStyle">Normal-L1</Radio.Button>
+                            <Radio.Button value="l2" :style="radioStyle">Normal-L2</Radio.Button>
+                            <Radio.Button value="max" :style="radioStyle">Normal-Max</Radio.Button>
+                            <Radio.Button value="abs" :style="radioStyle">MaxAbs</Radio.Button>
+                            <Radio.Button value="robust" :style="radioStyle">Robust</Radio.Button>
+                            <Radio.Button value="log" :style="radioStyle">Logarithm</Radio.Button>
+                            <Radio.Button value="none" :style="radioStyle">None</Radio.Button>
+                          </Radio.Group>
                         </MenuItem>
                       </Menu>
                     </template>
@@ -439,7 +439,7 @@
 <script lang="ts" setup name="DetailForm">
   import { computed, h, reactive, ref, unref } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { tableColumns, statColumns, formInfoSchema } from './data';
+  import { statColumns, formInfoSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { BasicTable } from '/@/components/Table';
   import HeaderCell from '/@/components/Table/src/components/HeaderCell.vue';
@@ -455,7 +455,6 @@
     SettingFilled,
     FieldTimeOutlined,
     FieldBinaryOutlined,
-    NumberOutlined,
     AppleOutlined,
     GoldOutlined,
     AimOutlined,
@@ -491,17 +490,14 @@
   } from '/@/api/ml/dataset';
   import {
     API_DATASOURCE_TREE,
-    API_DATASOURCE_SETS,
-    API_DATASOURCE_EXECUTE
+    API_DATASOURCE_SETS
   } from '/@/api/datamgr/datasource';
-  import { cloneDeep, findIndex } from 'lodash-es';
+  import { cloneDeep } from 'lodash-es';
   import { useModal } from '/@/components/Modal';
-  import { DataFrame } from '@antv/ava';
   import VarModal from './varModal.vue';
   import FilterModal from './filterModal.vue';
   import { ApiSelect } from '/@/components/Form';
   import { ApiMlDatasetDataType, initDataset } from '/@/api/ml/model/dataset';
-  import { wsClient } from "/@/utils/webstomp";
 
   /*
    * CodeMirror 5 is being used here (the hint can not be show now ???)
@@ -520,8 +516,6 @@
    */
 
   const { t } = useI18n();
-  const RadioButton = Radio.Button;
-  const RadioGroup = Radio.Group;
   const drawerTitle = ref<string>(t('common.form.new'));
   const emit = defineEmits(['success', 'register']);
   const rawData = ref<ApiMlDatasetDataType>(initDataset);

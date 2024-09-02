@@ -664,7 +664,7 @@
    * select a table to get fields
    */
   const handleTableSelect = (key, event) => {
-    if (!key) {
+    if (!key || key.length == 0) {
       return;
     }
     const tableName = event.selectedNodes[0].name;

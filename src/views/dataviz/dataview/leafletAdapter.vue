@@ -149,7 +149,7 @@
                 </fieldset>
               </template>
               <template #markerColor="{ model, field }">
-                <el-color-picker v-model="model[field]" />
+                <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
               </template>
             </BasicForm>
           </div>

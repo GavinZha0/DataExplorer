@@ -16,13 +16,13 @@
         <Col :span="14">
           <BasicForm v-if="rawData.chartType == 'Line'" @register="registerStyleLineForm">
             <template #pointColor="{ model, field }">
-              <el-color-picker v-model="model[field]" />
-              <!--color-picker v-model:pureColor="model[field]" disable-history disable-alpha /-->
+              <!--el-color-picker v-model="model[field]" /-->
+              <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
             </template>
           </BasicForm>
           <BasicForm v-if="rawData.chartType == 'Area'" @register="registerStyleAreaForm">
             <template #areaFillColor="{ model, field }">
-              <el-color-picker v-model="model[field]" />
+              <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
             </template>
           </BasicForm>
           <BasicForm
@@ -30,7 +30,7 @@
             @register="registerStyleColumnForm"
           >
             <template #labelColor="{ model, field }">
-              <el-color-picker v-model="model[field]" />
+              <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
             </template>
           </BasicForm>
           <BasicForm
@@ -50,10 +50,10 @@
       </template>
       <BasicForm @register="registerXAxisForm">
         <template #titleColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
         <template #gridColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
       </BasicForm>
     </a-tab-pane>
@@ -66,10 +66,10 @@
       </template>
       <BasicForm @register="registerYAxisForm">
         <template #titleColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
         <template #gridColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
       </BasicForm>
     </a-tab-pane>
@@ -82,10 +82,10 @@
       </template>
       <BasicForm @register="registerTooltipForm">
         <template #hairColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
         <template #hairBgColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
       </BasicForm>
     </a-tab-pane>
@@ -107,22 +107,22 @@
       </template>
       <BasicForm @register="registerAuxForm">
         <template #labelColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
         <template #lineColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
         <template #lineTextColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
         <template #segColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
         <template #regionColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
         <template #pointColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
       </BasicForm>
     </a-tab-pane>
@@ -165,6 +165,8 @@
     AppstoreOutlined,
   } from '@ant-design/icons-vue';
   import { nextTick, reactive, unref } from 'vue';
+  import { ColorPicker } from "vue3-colorpicker";
+  import "vue3-colorpicker/style.css";
   import htmlColors from 'html-colors';
   import { cloneDeep } from 'lodash-es';
 

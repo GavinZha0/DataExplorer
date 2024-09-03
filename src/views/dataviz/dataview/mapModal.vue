@@ -11,7 +11,7 @@
     <div class="pt-3px pr-3px">
       <BasicForm @register="registerForm">
         <template #markerColor="{ model, field }">
-          <el-color-picker v-model="model[field]" />
+          <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
         </template>
       </BasicForm>
     </div>

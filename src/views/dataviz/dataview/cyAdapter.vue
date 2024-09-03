@@ -172,10 +172,10 @@
                 </Select>
               </template>
               <template #iconColor="{ model, field }">
-                <el-color-picker v-model="model[field]" />
+                <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
               </template>
               <template #labelColor="{ model, field }">
-                <el-color-picker v-model="model[field]" />
+                <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
               </template>
             </BasicForm>
           </div>
@@ -272,7 +272,7 @@
               </div>
             </template>
             <template #bodyColor="{ model, field }">
-              <el-color-picker v-model="model[field]" />
+              <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
             </template>
           </BasicForm>
         </Col>
@@ -361,10 +361,10 @@
                 </Select>
               </template>
               <template #edgeColor="{ model, field }">
-                <el-color-picker v-model="model[field]" />
+                <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
               </template>
               <template #labelColor="{ model, field }">
-                <el-color-picker v-model="model[field]" />
+                <color-picker v-model:pureColor="model[field]" format="hex" disable-history disable-alpha shape="circle" />
               </template>
             </BasicForm>
           </div>

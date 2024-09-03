@@ -581,10 +581,12 @@ which one is better?
       });
 
       experiments.value = cloneDeep(groupByExper);
+      // use to build unique id(run_uuid) for tree
+      const prefix = Date.now();
 
       for(const experId in groupByExper){
         let experArray = groupByExper[experId]?.sort((a:any,b:any)=>Number(a.ts)-Number(b.ts));
-        let nodeExper = {title:'', run_uuid: experId, children: experArray, selectable: true};
+        let nodeExper = {title:'', run_uuid: prefix + experId, children: experArray, selectable: true};
         let minTs = 2524626000000;
         for(const [idx, trial] of experArray.entries()){
           trial.title = 'Trial-' + idx;

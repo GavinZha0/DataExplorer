@@ -241,6 +241,11 @@
                   </Dropdown>
                 </Tooltip>
               </template>
+              <template #bodyCell="{ column, record }">
+                <template v-if="column.name === 'image'">
+                  <img :src="'data:image/png;base64,' + record.image" style="padding: 10px 0px 0px 10px" >
+                </template>
+              </template>
             </BasicTable>
           </div>
         </div>
@@ -333,8 +338,10 @@
                 :immediate="false"
                 :height="650"
                 v-model:value="datasourceInfo.selectedTable"
-                resultField="records"
+                v-model:selectedKeys="selectedSourceField.id"
+                v-model:expandedKeys="expandedSourceField.id"
                 :fieldNames="{ key: 'id', title: 'name', value: 'id' }"
+                :afterFetch="afterFetchSourceSet"
                 @dblclick="handleFieldDbClick"
               />
             </div>
@@ -535,6 +542,8 @@
   });
   const datasetInfo = reactive<any>({ limit: 20, total: '', data: [] });
   const dbTables = ref<any>({ selected: undefined });
+  const selectedSourceField = ref<any>({id:[], name:''});
+  const expandedSourceField = ref<any>({id:[], name:''});
 
   // Variable modal definition
   const [registerVarModal, { openModal: openVarModal }] = useModal();
@@ -561,6 +570,12 @@
       drawerTitle.value = '[' + data.name + ']';
       // save received data
       rawData.value = JSON.parse(JSON.stringify(data));
+      if(data.query.indexOf('.datasets.') > 0){
+        const segs = data.query.split('.');
+        expandedSourceField.value.name = segs[0];
+        selectedSourceField.value.name = segs[2];
+      }
+      
     } else {
       drawerTitle.value = t('common.form.new');
     }
@@ -573,22 +588,6 @@
     dbTables.value = { selected: undefined };
 
     execute();
-
-    /*
-wsClient.publish({
-    destination: '/chat/1_alg3',
-    body: 'Hello world',
-    skipContentLengthHeader: true
-});
-
-
-    const userId = 1;
-    const channel = '/user/' + userId + '/wsFeedback';
-    wsClient.subscribe(channel, function (stompMsg) {
-      message.info(stompMsg.body);
-    });
-*/
-
   });
 
 
@@ -711,13 +710,70 @@ wsClient.publish({
     }
   };
 
+  /*
+  * find pid after get dataset from backend
+  */
+  const afterFetchSourceSet = (data: any[]) =>{
+    if(data?.records){
+      if(selectedSourceField.value.name && selectedSourceField.value.name != ''){
+        const setPid = findIdInTree(data.records, 'name', expandedSourceField.value.name, null);
+        expandedSourceField.value.id = [setPid];
+        const setId = findIdInTree(data.records, 'name', selectedSourceField.value.name, null);
+        selectedSourceField.value.id = [setId];
+      }
+      return data.records;
+    } else {
+      return [];
+    }
+  };
+
+
+  const findIdInTree = (node, field, value, id) => {
+    let nodeId = null;
+    if(Array.isArray(node)){
+      for(const nd of node){
+        nodeId = findIdInTree(nd, field, value, nd[field]);
+        if(nodeId){
+          return nodeId;
+        }
+      }
+    } else if (node[field] == value){
+      return node.id;
+    } else if (node.children && node.children.length>0){
+      for(const cd of node.children){
+        nodeId = findIdInTree(cd, field, value, node[field]);
+        if(nodeId){
+          return nodeId;
+        }
+      }
+    } 
+    return nodeId;
+  };
+
 
   /*
  * get source tables when source is changed
  */
   const handleFieldDbClick = (evt: any, target: any) => {
-    // find selected source in tree
-    rawData.value.query = 'select * from ' + target.name;
+    if(target.id > 0){
+      rawData.value.query = 'select * from ' + target.name;
+      rawData.value.type = 'data';
+    } else {
+      if(target.parent?.node?.name){
+        const pName = target.parent?.node?.name;
+        rawData.value.query = pName + '.datasets.' + target.name;
+
+        if(pName.indexOf('sklearn')>=0){
+          rawData.value.type = 'data';
+        } else if(pName.indexOf('torchvision')>=0){
+          rawData.value.type = 'image';
+        } else if(pName.indexOf('torchaudio')>=0){
+          rawData.value.type = 'audio';
+        } else if(pName.indexOf('torchtext')>=0){
+          rawData.value.type = 'text';
+        }
+      }
+    }    
   };
 
   // variable computation filed for list to show
@@ -865,7 +921,7 @@ wsClient.publish({
       });
     }
 
-    API_ML_DATASET_STAT(rawData.value.sourceId, sqlString, rawData.value.variable, datasetInfo.limit)
+    API_ML_DATASET_STAT(rawData.value.sourceId, sqlString, rawData.value.type, rawData.value.variable, datasetInfo.limit)
       .then((response) => {
         datasetInfo.data = response.records;
         datasetInfo.total = response.total;
@@ -888,9 +944,6 @@ wsClient.publish({
           return ele.name.toLowerCase() == item.name.toLowerCase();
         });
       }
-
-
-
 
       if (field == undefined) {
         if (

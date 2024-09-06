@@ -160,6 +160,8 @@ export const formAlgoSchema: FormSchema[] = [
         options: [
           { label: t('ml.algorithm.form.algo.framework.python'), value: 'python' },
           { label: t('ml.algorithm.form.algo.framework.sklearn'), value: 'sklearn' },
+          { label: t('ml.algorithm.form.algo.framework.xgboost'), value: 'xgboost' },
+          { label: t('ml.algorithm.form.algo.framework.lightgbm'), value: 'lightgbm' },
           { label: t('ml.algorithm.form.algo.framework.pytorch'), value: 'pytorch' },
           { label: t('ml.algorithm.form.algo.framework.tensorflow'), value: 'tensorflow' },
           { label: t('ml.algorithm.form.algo.framework.java'), value: 'java' },
@@ -184,7 +186,7 @@ export const formAlgoSchema: FormSchema[] = [
           updateSchema({
             field: 'category',
             componentProps: {
-              options: catOptions,
+              options: catOptions
             },
           });
         }
@@ -327,7 +329,7 @@ export const formTrainSchema: FormSchema[] = [
   },
   {
     field: 'score',
-    label: t('ml.algorithm.form.train.early_stop'),
+    label: t('ml.algorithm.form.train.metrics'),
     component: 'Input',
     slot: 'score',
     componentProps: {
@@ -467,6 +469,7 @@ class MySklearnModel(PythonModel):
 
 // algo template (for MLflowLoggerCallback())
 export const algoTplSklearn = `
+# python version: {PYTHON_VER}, sklearn version: {SKLEARN_VER}
 import ray
 import mlflow
 import matplotlib
@@ -479,11 +482,11 @@ class CustomTrain:
     setup_mlflow()
 
     estimator = {ALGORITHM}({PARAMS})
-    for epoch in range(config.get("epochs", 1)):
+    for epoch in range(config.get("epochs", {EPOCHS})):
       estimator.fit(data['x'], data['y'])
-      {SCORE_NAME}_fn = metrics.get_scorer('{SCORE_NAME}')
-      {SCORE_NAME} = {SCORE_NAME}_fn(estimator, data['x'], data['y'])
-      ray.train.report({"{SCORE_NAME}": {SCORE_NAME}})
+      metrics_fn = metrics.get_scorer('{SCORE_NAME}')
+      metrics_value = metrics_fn(estimator, data['x'], data['y'])
+      ray.train.report({"{SCORE_NAME}": metrics_value})
 `;
 
 // algo template (for setup_mlflow())

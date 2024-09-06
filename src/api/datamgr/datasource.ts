@@ -142,9 +142,9 @@ export function API_DATASOURCE_DEL(id: number) {
 /* params: {id: number(datasource id), locked: bool(include locked tables or not)}
  */
 export function API_DATASOURCE_SETS(params: object) {
-  if (params && params.id!=undefined && params.id>0) {
+  if (params && params.id!=undefined && params.id!=0) {
     let url = API.DATASOURCE_DB_SETS;
-    if(params.type == 'datahub'){
+    if(params.id < 0){
       url = '/py' + url;
     } 
     return defHttp.post<AxiosResponse>({

@@ -7,6 +7,13 @@ const { t } = useI18n();
 // index form columns
 export const indexColumns: BasicColumn[] = [
   {
+    title: t('common.table.title.type'),
+    dataIndex: 'type',
+    key: 'type',
+    width: 100,
+    sorter: true
+  },
+  {
     title: t('common.table.title.name'),
     dataIndex: 'name',
     width: 180,

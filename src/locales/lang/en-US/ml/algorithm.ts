@@ -52,30 +52,12 @@ export default {
       strategy: 'Strategy',
       trials: 'Trials',
       epochs: 'Epochs',
-      timeout: 'Timeout',
-      early_stop: 'Early stop',
+      timeout: 'Trail timeout',
+      metrics: 'Metrics',
       params: {
         name: 'Param',
         value: 'Search space'
       },
-      early_stop2: {
-        title: 'Early stop',
-        name: 'Evaluation metric',
-        value: 'Target',
-        acc: 'Accuracy',
-        r2: 'R2',
-        mape: 'MAPE',
-        auc: 'AUC',
-        recall: 'Recall',
-        prec: 'Precision',
-        f1: 'F1',
-        kappa: 'Kappa',
-        mcc: 'MCC',
-        mae: 'MAE',
-        mse: 'MSE',
-        rmse: 'RMSE',
-        rmsle: 'RMSLE'
-      }
     },
     chart: {
       progress: 'Progress',

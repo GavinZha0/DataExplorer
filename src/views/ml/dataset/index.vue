@@ -29,7 +29,14 @@
         />
       </template>
       <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'name'">
+        <template v-if="column.key === 'type'">
+          <img
+            style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
+            :src="'/resource/img/ml/ml-' + record.type + '.png'"
+            @click="() => handleEdit(record)"
+          >
+        </template>
+        <template v-else-if="column.key === 'name'">
           <a v-if="record.createdBy != loginUserName" @click="() => handleEdit(record)" style="margin-left: 5px; color: green">{{ record.name }}</a>
           <a v-else @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>

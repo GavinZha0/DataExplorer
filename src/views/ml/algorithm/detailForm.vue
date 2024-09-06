@@ -370,6 +370,7 @@
     API_ML_ALGO_UPDATE,
     API_ML_ALGO_GROUPS,
     API_ML_ALGO_ALGOS,
+    API_ML_ALGO_VERS,
     API_ML_ALGO_ARGS,
     API_ML_ALGO_SCORES,
     API_ML_ALGO_EXECUTE
@@ -408,6 +409,7 @@
   let algoTree = [];
   const paramList = ref<any[]>([]);
   const DATE_TIME_FORMAT = 'MM/DD/YYYY HH:mm';
+  let frameVers = {};
 
 /*
 BasicTree: ok
@@ -492,6 +494,12 @@ which one is better?
       rawData.value = cloneDeep(initAlgorithm);
       drawerTitle.value = t('common.form.new');
     }
+
+
+    // get framework versions
+    API_ML_ALGO_VERS().then((response) => {
+        frameVers = response;
+    });
   });
 
   /*
@@ -542,6 +550,20 @@ which one is better?
       algoParams['category'] = null;
     } else if (key == 'category'){
       algoParams[key] = value;
+    }
+  };
+
+
+  
+  /*
+  * train form config change
+  */
+  const handleTrainFormChange = (key: string, value: string) => {
+    // as query parameter to get algo list
+    if(key == 'epochs'){
+      rawData.value.trainCfg[key] = value;
+      // build source code based on selected socre
+      buildSrcCode();
     }
   };
 
@@ -698,6 +720,8 @@ which one is better?
         }
       }
       
+      tplCode = tplCode.replaceAll('{PYTHON_VER}', frameVers['python']);
+      tplCode = tplCode.replaceAll('{SKLEARN_VER}', frameVers['sklearn']);
       tplCode = tplCode.replaceAll('{MODULE}', modelName);
       tplCode = tplCode.replaceAll('{ALGORITHM}', algoName);
 
@@ -714,8 +738,22 @@ which one is better?
       let paramArgStr = paramArray.join();
       tplCode = tplCode.replaceAll('{PARAMS}', paramArgStr);
 
+      if(rawData.value.trainCfg?.epochs){
+        tplCode = tplCode.replaceAll('{EPOCHS}', rawData.value.trainCfg?.epochs);
+      } else {
+        tplCode = tplCode.replaceAll('{EPOCHS}', '1');
+      }
+      
+
       if(rawData.value.trainCfg?.score){
-        tplCode = tplCode.replaceAll('{SCORE_NAME}', rawData.value.trainCfg.score);
+        const mScore = rawData.value.trainCfg?.score;
+        if(mScore == 'silhouette_score' || mScore == 'calinski_harabasz_score'){
+          // the two scores are not available for metrics.get_scorer()
+          // the two scores don't need target values(y)
+          tplCode = tplCode.replaceAll("get_scorer('{SCORE_NAME}')", mScore);
+          tplCode = tplCode.replaceAll("estimator, data['x'], data['y']", "data['x'], estimator.labels_");
+        } 
+        tplCode = tplCode.replaceAll('{SCORE_NAME}', mScore);
       }
       rawData.value.srcCode = tplCode;
     }
@@ -829,6 +867,7 @@ which one is better?
       rawData.value.group = info.group;
 
       rawData.value.framework = algo.framework;
+      rawData.value.frameVer = frameVers[algo.framework];
       rawData.value.category = algo.category;
       rawData.value.algoName = selectedAlgo.value[0];
     

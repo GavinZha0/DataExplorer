@@ -19,6 +19,7 @@ export const API = {
   ML_DATASET_GROUPS: '/ml/dataset/groups',
   ML_DATASET_IN_GROUP: '/ml/dataset/subset',
   ML_DATASET_DETAIL: '/ml/dataset/getone',
+  ML_DATASET_EXTRACT: '/py/ml/dataset/extract',
 };
 
 /* get all datasets as list
@@ -79,6 +80,15 @@ export function API_ML_DATASET_DETAIL(id: number) {
   return defHttp.post<AxiosResponse>({
     url: API.ML_DATASET_DETAIL,
     data: { id: id },
+  });
+}
+
+/* get specific dataset
+ * id: dataset id
+ */
+export function API_ML_DATASET_EXTRACT() {
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_DATASET_EXTRACT,
   });
 }
 
@@ -153,9 +163,9 @@ export function API_ML_DATASET_EXECUTE(id: number, limit = 0) {
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_ML_DATASET_STAT(id: number, sql: string, variable: any, limit = 0) {
+export function API_ML_DATASET_STAT(id: number, sql: string, type: string, variable: any, limit = 0) {
   return defHttp.post<AxiosResponse>({
     url: API.ML_DATASET_STAT,
-    params: { id: id, sql: sql, variable: variable, limit: limit },
+    params: { id: id, sql: sql, type: type, variable: variable, limit: limit },
   });
 }

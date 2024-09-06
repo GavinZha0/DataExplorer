@@ -18,6 +18,7 @@ export const API = {
   ML_ALGO_GROUPS: '/ml/algo/groups',
   ML_ALGO_ONE: '/ml/algo/getone',
   ML_ALGO_ALGOS: '/ml/algo/algos',
+  ML_ALGO_VERS: '/py/ml/algo/vers',
   ML_ALGO_ARGS: '/ml/algo/args',
   ML_ALGO_SCORES: '/ml/algo/scores'
 }
@@ -160,6 +161,15 @@ export function API_ML_ALGO_ALGOS(params: any) {
       data: params
     });
   }
+}
+
+/* get framework versions
+ *
+ */
+export function API_ML_ALGO_VERS() {
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_ALGO_VERS
+  });
 }
 
 /* get arguments of algo

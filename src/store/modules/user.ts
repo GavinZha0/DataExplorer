@@ -98,7 +98,7 @@ export const useUserStore = defineStore({
         // response header has two tokens. they are handled in axios
         // response body has user info
         const response = await API_AUTH_LOGIN(loginParams, locale, mode);
-        const userInfo = response;
+        const userInfo = response.data;
 
         // save user info
         if(userInfo){
@@ -144,9 +144,9 @@ export const useUserStore = defineStore({
       }
 
       // get user info based on token
-      const userInfo = await API_AUTH_INFO();
-      this.setUserInfo(userInfo);
-      return userInfo;
+      const response = await API_AUTH_INFO();
+      this.setUserInfo(response.data);
+      return response.data;
     },
     /**
      * @description: logout

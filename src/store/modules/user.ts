@@ -144,9 +144,9 @@ export const useUserStore = defineStore({
       }
 
       // get user info based on token
-      const response = await API_AUTH_INFO();
-      this.setUserInfo(response.data);
-      return response.data;
+      const userInfo = await API_AUTH_INFO();
+      this.setUserInfo(userInfo);
+      return userInfo;
     },
     /**
      * @description: logout

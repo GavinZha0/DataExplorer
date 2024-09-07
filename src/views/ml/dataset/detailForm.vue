@@ -60,7 +60,7 @@
                               :bordered="true"
                               :canResize="true"
                               :show-table-setting="false"
-                              :columns="statColumns"
+                              :columns="statColumns[rawData.type]"
                               :data-source="statFieldList"
                               :show-index-column="false"
                               :use-search-form="false"
@@ -80,6 +80,16 @@
                       <template v-if="column.key === 'variance'">
                         <div v-if="record.variance==0" style="margin-left: 5px; color: orange">{{ record.variance }}</div>
                         <div v-else style="margin-left: 5px; color: black">{{ record.variance }}</div>
+                      </template>
+                      <template v-else-if="column.key === 'unique'">
+                        <Tag
+                          v-for="(ele, index) in record.unique"
+                          :key="index"
+                          color="green"
+                          style="margin-right: 2px"
+                        >
+                          {{ ele }}
+                        </Tag>
                       </template>
                     </template>
                   </BasicTable>
@@ -243,7 +253,7 @@
               </template>
               <template #bodyCell="{ column, record }">
                 <template v-if="column.name === 'image'">
-                  <img :src="'data:image/png;base64,' + record.image" style="padding: 10px 0px 0px 10px" >
+                  <img :src="'data:image/png;base64,' + record.image" >
                 </template>
               </template>
             </BasicTable>
@@ -446,7 +456,7 @@
 <script lang="ts" setup name="DetailForm">
   import { computed, h, reactive, ref, unref } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { statColumns, formInfoSchema } from './data';
+  import { dataStatColumns, imgStatColumns, formInfoSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { BasicTable } from '/@/components/Table';
   import HeaderCell from '/@/components/Table/src/components/HeaderCell.vue';
@@ -486,7 +496,8 @@
     Row,
     Col,
     InputNumber,
-    Radio
+    Radio,
+    Tag
   } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
   import {
@@ -544,6 +555,7 @@
   const dbTables = ref<any>({ selected: undefined });
   const selectedSourceField = ref<any>({id:[], name:''});
   const expandedSourceField = ref<any>({id:[], name:''});
+  const statColumns = ref<any>({data: dataStatColumns, image: imgStatColumns});
 
   // Variable modal definition
   const [registerVarModal, { openModal: openVarModal }] = useModal();
@@ -575,7 +587,6 @@
         expandedSourceField.value.name = segs[0];
         selectedSourceField.value.name = segs[2];
       }
-      
     } else {
       drawerTitle.value = t('common.form.new');
     }
@@ -984,6 +995,12 @@
         item.miss = field.miss;
         item.encode = field.encode;
         item.scale = field.scale;
+        item.size = field.size;
+      }
+
+      // convert array to string
+      if(item.size && Array.isArray(item.size)){
+        item.size = item.size.toString();
       }
 
       // update data index

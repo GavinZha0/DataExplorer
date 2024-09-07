@@ -40,14 +40,14 @@
           <a v-if="record.createdBy != loginUserName" @click="() => handleEdit(record)" style="margin-left: 5px; color: green">{{ record.name }}</a>
           <a v-else @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
-        <template v-else-if="column.key === 'fields'">
+        <template v-else-if="column.key === 'features'">
           <Tag
-            v-for="(ele, index) in record.fields"
+            v-for="(ele, index) in record.features"
             :key="index"
             color="blue"
             style="margin-right: 2px"
           >
-            {{ ele.name }}
+            {{ ele }}
           </Tag>
         </template>
         <template v-else-if="column.key === 'target'">
@@ -119,31 +119,13 @@
   } from '/@/api/ml/dataset';
   import { ApiMlDatasetDataType } from '/@/api/ml/model/dataset';
   import { useUserStore } from '/@/store/modules/user';
+import { cloneDeep } from 'lodash-es';
 
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   let searchInfo = reactive<TableSearch>({ fields: ['name', 'group', 'desc'] });
   let searchText = ref<string>();
   const loginUserName = ref<string>(useUserStore().getUserInfo.name);
-
-  // build dim and metrics after fetch data
-  const buildFeatureTarget = (records: Recordable[]) => {
-    for (let rec of records) {
-      rec.fList = [];
-      rec.tList = [];
-      for (const field of rec.features) {
-        if (field.hidden) {
-          continue;
-        }
-        rec.fList.push(field.name);
-      }
-
-      if(rec.target!=undefined && rec.target!=null){
-        rec.tList.push(rec.target.name)
-      }
-    }
-    return records;
-  };
 
   // table definition
   const [registerTable, { reload, updateTableDataRecord, deleteTableDataRecord }] = useTable({
@@ -162,9 +144,26 @@
       title: t('common.table.title.action'),
       dataIndex: 'action',
     },
+    afterFetch: afterFetchDatasets
   });
 
  
+  /*
+  *  build features after fetch data for table displaying
+  */
+  async function afterFetchDatasets(records: Recordable[]) {
+    for(let i=0; i<records.length; i++){
+      records[i]['features'] = [];
+      for(const f of records[i].fields){
+        if(f.name != records[i].target[0]){
+          records[i]['features'].push(f.name);
+        }
+      }
+      
+    }
+    return records;
+  };
+
   /*
    * create new record
    */

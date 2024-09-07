@@ -10,7 +10,7 @@ export const indexColumns: BasicColumn[] = [
     title: t('common.table.title.type'),
     dataIndex: 'type',
     key: 'type',
-    width: 100,
+    width: 80,
     sorter: true
   },
   {
@@ -38,7 +38,7 @@ export const indexColumns: BasicColumn[] = [
   },
   {
     title: t('ml.dataset.table.title.features'),
-    dataIndex: 'fields',
+    dataIndex: 'features',
     align: 'left',
     resizable: true,
   },
@@ -69,7 +69,7 @@ export const indexColumns: BasicColumn[] = [
 
 
 // stat form columns
-export const statColumns: BasicColumn[] = [
+export const dataStatColumns: BasicColumn[] = [
   {
     title: t('common.table.title.name'),
     dataIndex: 'name',
@@ -173,6 +173,45 @@ export const statColumns: BasicColumn[] = [
       }
     },
     resizable: true
+  },
+];
+
+// image stat form columns
+export const imgStatColumns: BasicColumn[] = [
+  {
+    title: t('common.table.title.name'),
+    dataIndex: 'name',
+    width: 60,
+    align: 'left'
+  },
+  {
+    title: t('ml.dataset.tab.stats.dataType'),
+    dataIndex: 'type',
+    width: 80,
+    align: 'left'
+  },
+  {
+    title: t('ml.dataset.tab.stats.mode'),
+    dataIndex: 'mode',
+    width: 60,
+    align: 'left'
+  },
+  {
+    title: t('ml.dataset.tab.stats.channel'),
+    dataIndex: 'channel',
+    width: 70,
+    align: 'left'
+  },
+  {
+    title: t('ml.dataset.tab.stats.size'),
+    dataIndex: 'size',
+    width: 70,
+    align: 'left'
+  },
+  {
+    title: t('ml.dataset.tab.stats.unique'),
+    dataIndex: 'unique',
+    align: 'left'
   },
 ];
 

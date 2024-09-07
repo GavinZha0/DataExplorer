@@ -28,6 +28,9 @@ export default {
       variance: 'Variance',
       missing: 'Missing',
       zeros: 'Zeros',
+      mode: 'Mode',
+      channel: 'Channel',
+      size: 'Size'
     },
   },
   form: {

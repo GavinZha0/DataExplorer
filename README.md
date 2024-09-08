@@ -60,7 +60,7 @@ https://github.com/GavinZha0/DataExplorer/assets/88469005/c42550be-ee6f-40fe-b22
 [Document](https://github.com/GavinZha0/DataPie/)
 
 ## How to build
-DataExplorer: npm run build
+DataExplorer: set NODE_OPTIONS=--max-old-space-size=8192; npm run build
 
 DataMagic: mvn3 -DskipTests=true package (generate separate lib, config and jar)
 

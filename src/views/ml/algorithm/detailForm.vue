@@ -842,12 +842,14 @@ which one is better?
   /*
    * Experiment selection
    */
-  const handleExperimentSelect = (key: any) => {
-    activeTab.value = 'experiment';
-    // key is run_uuid
-    const selExper = experData.value.find((ele)=>ele.run_uuid == key);
-    // trials
-    selExperItem.value = selExper.children;
+   const handleExperimentSelect = (key: any) => {
+    if(Array.isArray(key) && key.length>0){
+      activeTab.value = 'experiment';
+      // key is run_uuid
+      const selExper = experData.value.find((ele)=>ele.run_uuid == key);
+      // trials
+      selExperItem.value = selExper.children;
+    }
   };
 
 

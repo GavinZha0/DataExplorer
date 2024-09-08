@@ -39,6 +39,14 @@
             @click="() => handleEdit(record)"
           >
         </template>
+        <template v-else-if="column.key === 'framework'">
+          <Tag
+            color='green'
+            style="margin-right: 2px"
+          >
+            {{ record.framework }}
+          </Tag>
+        </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
             v-if="record.createdBy != loginUserName"
@@ -85,7 +93,7 @@
   import { Icon } from '/@/components/Icon';
   import { BasicTable, useTable, TableAction, TableSearch } from '/@/components/Table';
   import { PageWrapper } from '/@/components/Page';
-  import { Switch, Tooltip, message } from 'ant-design-vue';
+  import { Switch, Tooltip, message, Tag } from 'ant-design-vue';
   import { indexColumns } from './data';
   import { useUserStore } from '/@/store/modules/user';
   import {

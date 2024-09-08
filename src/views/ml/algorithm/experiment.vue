@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%;" :forceRender="true">
+  <div style="height: 100%;">
     <Row>
       <Col :span="24">
         <div ref="parallelContainer" style="border: 1px solid; height: 350px;">  
@@ -23,7 +23,7 @@
     Row,
     Col,
   } from 'ant-design-vue';
-  import { ref, onMounted, watch } from 'vue';
+  import { ref, onMounted, watch, nextTick } from 'vue';
   import * as echarts from 'echarts';
   import Plotly from 'plotly.js-dist';
 
@@ -46,7 +46,6 @@
     // reset all charts first
     chartInst.forEach((item)=>{if(item && item.dispose instanceof Function){item.dispose();}});
 
-    
     renderEvals(data);
     renderParallel(data);
 
@@ -81,8 +80,17 @@
     }
 
     // render chart
-    chartInst[0] = echarts.init(evalsContainer.value);
-    chartInst[0].setOption(evalCfg);
+    if(chartInst[0] == null){
+      nextTick(() => {
+        // use nextTick for the first randering to resolve zero width issue
+        // without this the chart can't be randered when tab is switching at the first itme 
+        chartInst[0] = echarts.init(evalsContainer.value);
+        chartInst[0].setOption(evalCfg);
+      });
+    } else {
+      chartInst[0] = echarts.init(evalsContainer.value);
+      chartInst[0].setOption(evalCfg);
+    }
   };
 
 
@@ -156,18 +164,35 @@
     parallelCfg.dataset.source.unshift(dimKeys);
 
     // render chart
-    chartInst[2] = echarts.init(parallelContainer.value);
-    chartInst[2].setOption(parallelCfg);
-    chartInst[2].on('legendselectchanged', function(params) {
+    if(chartInst[0] == null){
+      nextTick(() => {
+        // use nextTick for the first randering to resolve zero width issue
+        // without this the chart can't be randered when tab is switching at the first itme 
+        setParallelOption(parallelCfg);
+      });
+    } else {
+      setParallelOption(parallelCfg);
+    }
+  };
+
+  /*
+   * set parallel option and add legend event
+   */
+  const setParallelOption = (parallelCfg: any) => {
+    chartInst[1] = echarts.init(parallelContainer.value);
+    chartInst[1].setOption(parallelCfg);
+
+    chartInst[1].on('legendselectchanged', function(params) {
       // get current option and update it
-      let parrelOpt = chartInst[2].getOption();
+      let parrelOpt = chartInst[1].getOption();
       //opt.legend[0].selected[params.name] = true;
       let header: [] = parrelOpt.dataset[0].source[0];
       let dimIdx = header.findIndex((ele)=>ele == params.name);
       // update last dim to use select column
       parrelOpt.parallelAxis[parrelOpt.parallelAxis.length-1].dim = dimIdx;
       parrelOpt.parallelAxis[parrelOpt.parallelAxis.length-1].name = params.name;
-      chartInst[2].setOption(parrelOpt);
+      chartInst[1].setOption(parrelOpt);
+      chartInst[0].resize();
 
       /*
       // trigger other panels
@@ -179,7 +204,7 @@
       chartInst[0].setOption(evalOpt);
       */
 
-      return chartInst[2];
+      return chartInst[1];
     });
   };
 
@@ -273,7 +298,7 @@
 
   // watch props change
   watch(props, (newVal) => {
-    if(newVal.data){
+    if(Array.isArray(newVal.data) && newVal.data.length>0){
       renderCharts(newVal.data);
     }
   },{immediate:true}) 

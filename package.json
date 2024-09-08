@@ -138,7 +138,7 @@
     "tui-image-editor": "^3.15.3",
     "validator": "^13.9.0",
     "vditor": "^3.8.13",
-    "vue": "^3.3.4",
+    "vue": "^3.4.38",
     "vue-grid-layout": "^3.0.0-beta1",
     "vue-i18n": "^9.2.2",
     "vue-json-pretty": "^2.2.4",

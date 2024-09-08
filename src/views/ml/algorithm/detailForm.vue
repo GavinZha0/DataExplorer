@@ -22,8 +22,8 @@
     <div style="width: 98%; float: left">
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
-          <Tabs v-model:activeKey="activeTab" centered size="small" :forceRender="true">
-            <Tabs.TabPane key="development" :tab="t('ml.algorithm.tab.development')">
+          <Tabs v-model:activeKey="activeTab" centered size="small">
+            <Tabs.TabPane key="development" :tab="t('ml.algorithm.tab.development')" :forceRender="true">
               <div style="width: 100%; border: solid 1px gray; height: 700px">
                 <CodeEditor
                   border
@@ -35,7 +35,8 @@
               </div>
             </Tabs.TabPane>
             <Tabs.TabPane key="experiment" :tab="t('ml.algorithm.tab.experiment')" :forceRender="true">
-              <Experiment :data="experiments[selExperId[0]]" :forceRender="true"/>
+              <keep-alive></keep-alive>
+              <Experiment :data="selExperItem"/>
             </Tabs.TabPane>
           </Tabs> 
         </Col>
@@ -398,8 +399,7 @@
   const metricVal = ref<number>(0);
   const experParam = ref<any>({id: 17});
   const experData = ref<any[]>([]);
-  const selectedExperiment = ref<[]>([]);
-  const experiments = ref<any>({});
+  const selExperItem = ref<[]>([]);
   const selExperId = ref<number[]>([]);
   const algoParams = reactive<any>({framework: 'sklearn', category: 'clf'});
   const selectedAlgo = ref<string[]>([]);
@@ -602,7 +602,6 @@ which one is better?
         return item.exper_id;
       });
 
-      experiments.value = cloneDeep(groupByExper);
       // use to build unique id(run_uuid) for tree
       const prefix = Date.now();
 
@@ -846,9 +845,9 @@ which one is better?
   const handleExperimentSelect = (key: any) => {
     activeTab.value = 'experiment';
     // key is run_uuid
-    const selExperiment = experData.value.find((ele)=>ele.run_uuid == key);
+    const selExper = experData.value.find((ele)=>ele.run_uuid == key);
     // trials
-    selectedExperiment.value = selExperiment.children;
+    selExperItem.value = selExper.children;
   };
 
 

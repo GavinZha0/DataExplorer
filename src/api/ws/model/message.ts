@@ -50,6 +50,7 @@ export interface MlEpochReport {
  
 // ML_TRIAL_REPORT
 export interface MlTrialReport {
+  name: string;
   algoId: number,
   experId: number,
   trialId: string,

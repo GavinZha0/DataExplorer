@@ -48,6 +48,8 @@
         break;
       case MSG_CODE.ML_TRIAL_REPORT:
         let reportT: MlTrialReport = wsMsg.data;
+        data.value.type = 'info';
+        data.value.msg = reportT.name + ': progress ' + reportT.progress + '%';
         break;
       case MSG_CODE.ML_EXPERIMENT_REPORT:
         let reportM: MlExperReport = wsMsg.data;

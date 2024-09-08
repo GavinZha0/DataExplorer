@@ -271,6 +271,7 @@
   import 'flag-icons/css/flag-icons.min.css';
   import dayjs from 'dayjs';
   import timezone from 'dayjs/plugin/timezone';
+  import { GridLayout, GridItem } from 'grid-layout-plus';
 
   const { t } = useI18n();
   // rawData is dataview record which is from backend
@@ -494,8 +495,8 @@
       // clean it up before render
       grid.container.innerHTML = '';
     }
-    // render charts when DOM is ready
-    nextTick(() => {
+
+    if(grid.container){
       if (!grid.libName || grid.libName === 'G2Plot') {
         renderG2Plot(grid);
       } else if (grid.libName === 'S2') {
@@ -511,7 +512,26 @@
       } else if (grid.libName === 'Cytoscape') {
         renderCyNet(grid);
       }
-    });
+    } else {
+      // render charts when DOM is ready
+      nextTick(() => {
+        if (!grid.libName || grid.libName === 'G2Plot') {
+          renderG2Plot(grid);
+        } else if (grid.libName === 'S2') {
+          renderS2(grid);
+        } else if (grid.libName === 'ECharts') {
+          renderECharts(grid);
+        } else if (grid.libName === 'AmCharts') {
+          renderAmCharts(grid);
+        } else if (grid.libName === 'ApexCharts') {
+          renderApexCharts(grid);
+        } else if (grid.libName === 'Leaflet') {
+          renderLeafletMap(grid);
+        } else if (grid.libName === 'Cytoscape') {
+          renderCyNet(grid);
+        }
+      });
+    }
   };
 
   /*

@@ -7,7 +7,6 @@ export const useGlobSetting = (): Readonly<GlobConfig> => {
   const {
     VITE_GLOB_APP_TITLE,
     VITE_GLOB_API_URL,
-    VITE_GLOB_API_PY,
     VITE_GLOB_APP_SHORT_NAME,
     VITE_GLOB_API_URL_PREFIX,
     VITE_GLOB_UPLOAD_URL,
@@ -23,7 +22,6 @@ export const useGlobSetting = (): Readonly<GlobConfig> => {
   const glob: Readonly<GlobConfig> = {
     title: VITE_GLOB_APP_TITLE,
     apiUrl: VITE_GLOB_API_URL,
-    pyUrl: VITE_GLOB_API_PY,
     shortName: VITE_GLOB_APP_SHORT_NAME,
     urlPrefix: VITE_GLOB_API_URL_PREFIX,
     uploadUrl: VITE_GLOB_UPLOAD_URL,

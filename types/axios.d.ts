@@ -16,8 +16,6 @@ export interface RequestOptions {
   joinPrefix?: boolean;
   // Interface address, use the default apiUrl if you leave it blank
   apiUrl?: string;
-  // python server api
-  pyUrl?: string;
   // 请求拼接路径
   urlPrefix?: string;
   // Error message prompt type

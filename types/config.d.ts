@@ -145,8 +145,6 @@ export interface GlobConfig {
   title: string;
   // Java Server interface url
   apiUrl: string;
-  // Python server interface url
-  pyUrl: string;
   // Upload url
   uploadUrl?: string;
   //  Service interface url prefix

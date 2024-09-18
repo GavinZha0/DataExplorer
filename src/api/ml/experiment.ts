@@ -1,3 +1,4 @@
+import { algo } from 'crypto-js';
 import { defHttp } from '/@/utils/http/axios';
 import { AxiosResponse } from 'axios';
 
@@ -8,7 +9,10 @@ export const API = {
   ML_EXPERIMENT_TRIALS: '/ml/experiment/trials',
   ML_EXPERIMENT_TRIAL: '/ml/experiment/trial',
   ML_EXPERIMENT_DELETE: '/ml/experiment/delete',
+  ML_EXPERIMENT_DEL_EXPER: '/ml/experiment/del',
   ML_EXPERIMENT_DEL_TRIAL: '/ml/experiment/del/trial',
+  ML_EXPERIMENT_REG_TRIAL: '/py/ml/experiment/reg',
+  ML_EXPERIMENT_UNREG_TRIAL: '/py/ml/experiment/unreg',
 }
 
 
@@ -41,6 +45,16 @@ export function API_ML_EXPERIMENT_TRIAL(id: number) {
 }
 
 
+/* delete a experiment
+ * id: experiment id
+ */
+export function API_ML_EXPERIMENT_DEL_EXPER(id: number) {
+  return defHttp.delete<AxiosResponse>({
+    url: API.ML_EXPERIMENT_DEL_EXPER,
+    params: { id: id }
+  });
+}
+
 /* delete a trial
  * id: trial id
  */
@@ -48,5 +62,25 @@ export function API_ML_EXPERIMENT_DEL_TRIAL(id: number) {
   return defHttp.delete<AxiosResponse>({
     url: API.ML_EXPERIMENT_DEL_TRIAL,
     params: { id: id }
+  });
+}
+
+/* register a trial
+ * id: trial id (run_uuid)
+ */
+export function API_ML_EXPERIMENT_REG_TRIAL(trialId: string, algoName: string, algoId: number) {
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_EXPERIMENT_REG_TRIAL,
+    params: { trialId: trialId, algoName: algoName, algoId: algoId }
+  });
+}
+
+/* un-register a trial
+ * id: trial id (run_uuid)
+ */
+export function API_ML_EXPERIMENT_UNREG_TRIAL(algoId: number, version: any) {
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_EXPERIMENT_UNREG_TRIAL,
+    params: { algoId: algoId, version: Number(version) }
   });
 }

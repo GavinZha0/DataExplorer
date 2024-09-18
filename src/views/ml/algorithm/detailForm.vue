@@ -352,7 +352,8 @@
     DeleteOutlined,
     FunctionOutlined,
     HistoryOutlined,
-    HddOutlined
+    HddOutlined,
+    StarOutlined
   } from '@ant-design/icons-vue';
   import { CodeEditor } from '/@/components/CodeEditor';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -378,7 +379,7 @@
   } from '/@/api/ml/algorithm';
   import { API_ML_DATASET_TREE } from '/@/api/ml/dataset';
   import { ApiAlgorithmDataType, initAlgorithm } from '/@/api/ml/model/algorithm';
-  import { API_ML_EXPERIMENT_TRIALS, API_ML_EXPERIMENT_DEL_TRIAL } from '/@/api/ml/experiment';
+  import { API_ML_EXPERIMENT_TRIALS, API_ML_EXPERIMENT_DEL_EXPER, API_ML_EXPERIMENT_REG_TRIAL, API_ML_EXPERIMENT_UNREG_TRIAL } from '/@/api/ml/experiment';
   import { cloneDeep } from 'lodash-es';
   import { BasicTable } from '/@/components/Table';
   import { emitter } from '/@/utils/event';
@@ -602,20 +603,17 @@ which one is better?
         return item.exper_id;
       });
 
-      // use to build unique id(run_uuid) for tree
-      const prefix = Date.now();
-
       for(const experId in groupByExper){
+        // sort trials from old to new
         let experArray = groupByExper[experId]?.sort((a:any,b:any)=>Number(a.ts)-Number(b.ts));
-        let nodeExper = {title:'', run_uuid: prefix + experId, children: experArray, selectable: true};
-        let minTs = 2524626000000;
+        const minTs = Number(experArray[0].ts);
+        // set minimal ts as experiment title
+        let nodeExper = {title: dayjs(minTs).format(DATE_TIME_FORMAT), run_uuid: 'Exper-' + experId, ts: minTs, experId: experId, children: experArray, selectable: true};
+
+        // build trials as tree nodes
         for(const [idx, trial] of experArray.entries()){
           trial.title = 'Trial-' + idx;
           trial.selectable = false;
-          if(Number(trial.ts) < minTs){
-            // find min ts
-            minTs = Number(trial.ts);
-          }
           
           if(trial.metrics){
             // show metrics as children
@@ -630,11 +628,11 @@ which one is better?
             }
           }
         }
-        nodeExper.title = dayjs(minTs).format(DATE_TIME_FORMAT);
         recordTree.push(nodeExper);
       }
       
-      return recordTree.sort((a:any,b:any)=>Number(b.run_uuid)-Number(a.run_uuid));
+      // sort experiment from new to old
+      return recordTree.sort((a:any,b:any)=>Number(b.ts)-Number(a.ts));
     } else {
       return [];
     }
@@ -799,12 +797,16 @@ which one is better?
   // show experiment status
   function trialIcons(node: any) {
     if (node.status == 'FINISHED') {
-      return 'ant-design:check-circle-outlined';
-    } else if (node.status == 1) {
+      if(node.version>0){
+        return 'ant-design:star-filled';
+      }
+    } else if (node.status == 'FAILED') {
       return 'ant-design:close-circle-outlined';
-    } else if (node.status == 2) {
+    } else if (node.status == 'RUNNING') {
       return 'ant-design:warning-outlined';
-    } 
+    } else {
+      return null;
+    }
   }
 
   // show delete icon in experiment tree
@@ -813,18 +815,48 @@ which one is better?
       render: (node) => {
         if(node?.selectable){
           return h(DeleteOutlined, {
-            class: 'ml-2',
+            class: ['node-del'],
             onClick: () => {
               const idx = experData.value.findIndex((v) => {
                 // find item
-                return v.id == node.id;
+                return v.experId == node.exper_id;
               });
-              // remove item
-              experData.value.splice(idx, 1);
               // delete experiment from db
-              API_ML_EXPERIMENT_DEL_TRIAL(idx).then((response) => {
-                const aaa = 666;
+              API_ML_EXPERIMENT_DEL_EXPER(node.exper_id).then((response) => {
+                // remove item
+              experData.value.splice(idx, 1);
               });
+            },
+          });
+        } else if(node?.status == 'FINISHED'){
+          return h(StarOutlined, {
+            style: {color: 'orange'},
+            onClick: () => {
+              // experiment idx
+              const eIdx = experData.value.findIndex((v) => {
+                // find experiment
+                return v.experId == node.exper_id;
+              });
+
+              // trial idx
+              const tIdx = experData.value[eIdx].children.findIndex((v) => {
+                // find trial
+                return v.run_uuid == node.run_uuid;
+              });
+
+              let regTrial = experData.value[eIdx].children[tIdx];
+
+              if(node.version==null || Number(node.version) == 0){
+                // register trial
+                API_ML_EXPERIMENT_REG_TRIAL(node.run_uuid, rawData.value.algoName, rawData.value.id).then((response) => {
+                  regTrial['version'] = response.version;
+                });
+              } else {
+                // un-register trial
+                API_ML_EXPERIMENT_UNREG_TRIAL(rawData.value.id, node.version).then((response) => {
+                  regTrial['version'] = 0;
+                });
+              }
             },
           });
         }
@@ -1008,4 +1040,14 @@ which one is better?
     cursor: pointer;
     z-index: 999;
   }
+
+
+  .node-del {
+    color: red;
+  }
+
+  .node-reg {
+    color: red;
+  }
+
 </style>

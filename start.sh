@@ -2,7 +2,7 @@
 
 # start java server
 rm magic.log
-nohup java -jar ./datamagic-0.5.0.jar > magic.log 2>&1 &
+nohup java -jar ./datamagic.jar > magic.log 2>&1 &
 
 # start node server
 pm2 start ./dataexplorer/server.js --log explorer.log
@@ -17,6 +17,7 @@ pm2 start ./dataexplorer/server.js --log explorer.log
 
 #sudo dnf install java-17-amazon-corretto-devel
 #java -version
+
 #sudo yum install -y nodejs
 #node -v
 #npm -v
@@ -25,10 +26,21 @@ pm2 start ./dataexplorer/server.js --log explorer.log
 #sudo n lts
 #hash -r
 #node -v
+
 #sudo npm install -g yarn
 #yarn -v
+
 #sudo npm install pm2@latest -g
 #pm2 -v
+
+#sudo dnf update
+#sudo dnf install redis6
+#sudo systemctl enable redis6
+#sudo systemctl start redis6
+#sudo systemctl status redis6
+#redis6-cli
+#ping (get pong)
+
 
 
 #nvm is used to manage/upgrade node js on wondows

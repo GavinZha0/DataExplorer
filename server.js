@@ -12,11 +12,23 @@ app.get('*', (req, res) => {
 app.use(
   '^/api/',
   createProxyMiddleware({
-    target: 'http://localhost:9528',
+    target: 'http://localhost:9527',
     changeOrigin: true,
     ws: true,
     pathRewrite: {
       '^/api/': '',
+    },
+  }),
+);
+
+app.use(
+  '^/py/',
+  createProxyMiddleware({
+    target: 'http://18.234.188.222:9138',
+    changeOrigin: true,
+    ws: false,
+    pathRewrite: {
+      '^/py/': '',
     },
   }),
 );

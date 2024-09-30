@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# start java server(9527)
-nohup java -jar ./magic/datamagic.jar > magic.log 2>&1 &
-
 
 # start python server (9138)
 source ~/seer/env/bin/activate
-nohup python ./seer/main.py run > seer.log 2>&1 &
+nohup python3 ./seer/main.py run > seer.log 2>&1 &
+
+
+# start java server(9527)
+nohup java -jar ./magic/datamagic.jar > magic.log 2>&1 &
 
 
 # start node server (3721)
@@ -104,6 +105,11 @@ free -h
 #yarn -v
 #sudo npm install pm2 -g
 #pm2 -v
+
+#sudo apt install python3-pip -y
+
+
+
 
 
 

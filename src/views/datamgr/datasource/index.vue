@@ -19,7 +19,7 @@
         <a-input-search
           v-model:value="searchText"
           allow-clear
-          :placeholder="t('dataviz.datasource.toolbar.search')"
+          :placeholder="t('datamgr.datasource.toolbar.search')"
           style="width: 360px"
           @search="handleSearch"
         />
@@ -32,7 +32,7 @@
         <template v-else-if="column.key === 'type'">
           <img
             style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
-            :src="'/resource/img/src/' + record.type.toLowerCase() + '.png'"
+            :src="'/resource/img/src/' + record.type + '.png'"
             @click="() => handleEdit(record)"
           >
         </template>
@@ -60,7 +60,7 @@
               },
               {
                 icon: 'ant-design:lock-outlined',
-                tooltip: t('dataviz.datasource.table.action.lock'),
+                tooltip: t('datamgr.datasource.table.action.lock'),
                 onClick: handleLock.bind(null, record),
               },
               {

@@ -11,9 +11,8 @@ export interface ApiMlDatasetDataType {
   datasetId?: number;
   datasetName?: string;
   fields: ColumnFieldType[];
-  stat?: Statistics[];
-  corr?: Correlation[];
-  query: string;
+  variable?: any[];
+  content: string;
   pubFlag?: boolean;
   createdBy?: string;
   createdAt?: string;
@@ -59,7 +58,7 @@ export const initDataset: ApiMlDatasetDataType = {
   group: '',
   type: 'data',
   variable: [],
-  query: '',
+  content: '',
   fields: [],
   sourceId: null,
   sourceName: '',

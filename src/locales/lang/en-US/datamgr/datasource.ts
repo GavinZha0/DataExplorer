@@ -9,7 +9,7 @@ export default {
       url: 'URL',
       username: 'Username',
       password: 'Password',
-      version: 'DB version',
+      version: 'Version',
       usage: 'Usage',
       params: 'Params',
       param: 'URL Param',

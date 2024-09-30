@@ -10,9 +10,8 @@ export interface ApiDatasetDataType {
   datasetId?: number;
   datasetName?: string;
   fields: ColumnFieldType[];
-  stat?: Statistics[];
-  corr?: Correlation[];
-  query: string;
+  variable?: any[];
+  content: string;
   pubFlag?: boolean;
   createdBy?: string;
   createdAt?: string;
@@ -57,7 +56,7 @@ export const initDataset: ApiDatasetDataType = {
   desc: '',
   group: '',
   variable: [],
-  query: '',
+  content: '',
   fields: [],
   sourceId: 0,
   sourceName: '',

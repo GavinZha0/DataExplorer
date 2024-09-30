@@ -46,7 +46,7 @@
                   <CodeEditor border
                               class="code-mirror"
                               placeholder="Input custom sql"
-                              v-model:value="rawData.query"
+                              v-model:value="rawData.content"
                               mode="sql" />
                 </div>
               </pane>
@@ -317,19 +317,19 @@
               >
                 <template #suffixIcon>
                   <Icon
-                    v-if="datasourceInfo.selectedSource.type == 'MySQL'"
+                    v-if="datasourceInfo.selectedSource.type == 'mysql'"
                     icon="carbon:sql"
                     :size="24"
                     style="color: #00bb00; margin-top: -8px"
                   />
                   <Icon
-                    v-else-if="datasourceInfo.selectedSource.type == 'CSV'"
+                    v-else-if="datasourceInfo.selectedSource.type == 's3bucket'"
                     icon="carbon:csv"
                     :size="24"
                     style="color: #00bb00; margin-top: -8px"
                   />
                   <Icon
-                    v-else-if="datasourceInfo.selectedSource.type == 'JSON'"
+                    v-else-if="datasourceInfo.selectedSource.type == 'http'"
                     icon="carbon:json"
                     :size="24"
                     style="color: #00bb00; margin-top: -8px"
@@ -582,8 +582,8 @@
       drawerTitle.value = '[' + data.name + ']';
       // save received data
       rawData.value = JSON.parse(JSON.stringify(data));
-      if(data.query.indexOf('.datasets.') > 0){
-        const segs = data.query.split('.');
+      if(data.content.indexOf('.datasets.') > 0){
+        const segs = data.content.split('.');
         expandedSourceField.value.name = segs[0];
         selectedSourceField.value.name = segs[2];
       }
@@ -767,12 +767,12 @@
  */
   const handleFieldDbClick = (evt: any, target: any) => {
     if(target.id > 0){
-      rawData.value.query = 'select * from ' + target.name;
+      rawData.value.content = 'select * from ' + target.name;
       rawData.value.type = 'data';
     } else {
       if(target.parent?.node?.name){
         const pName = target.parent?.node?.name;
-        rawData.value.query = pName + '.datasets.' + target.name;
+        rawData.value.content = pName + '.datasets.' + target.name;
 
         if(pName.indexOf('sklearn')>=0){
           rawData.value.type = 'data';
@@ -900,7 +900,7 @@
    */
   function formatQuery() {
     const sqlLanguage = datasourceInfo.value.selectedSource.type.toLowerCase();
-    rawData.value.query = format(rawData.value.query, {
+    rawData.value.content = format(rawData.value.content, {
       language: sqlLanguage,
       tabWidth: 2,
       keywordCase: 'upper',
@@ -911,7 +911,7 @@
    * run sql query and show result in table
    */
   const execute = () => {
-    if (!rawData.value.query) {
+    if (!rawData.value.content) {
       return;
     }
 
@@ -921,7 +921,7 @@
     // sqlite - ?, ?1, :name, @name, $name
     // only @, $ and ${} are available for DataPie
     // string/date variable must have "''"
-    let sqlString = rawData.value.query;
+    let sqlString = rawData.value.content;
     if (sqlString.indexOf('${') < 0) {
       // ${variable} is not supported by this function
       // but backend supports
@@ -971,7 +971,7 @@
           item.omit = true;
         }
 
-        // detect category
+        // detect data type
         if (item.type == 'boolean') {
           item.attr = 'disc';
         } else if (item.type == 'string' || item.type == 'object') {

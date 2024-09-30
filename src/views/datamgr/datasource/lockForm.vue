@@ -7,7 +7,7 @@
     @ok="handleSubmit"
   >
     <BasicForm @register="registerForm">
-      <template #lockedTable="{ model, field }">
+      <template #locked="{ model, field }">
         <BasicTree
           ref="tableTreeRef"
           v-model:value="model[field]"
@@ -107,19 +107,19 @@
       // so convert it to number
       values.id = Number(values.id);
       // get locked table names based on keys
-      for (const key of values.lockedTable) {
+      for (const key of values.locked) {
         const table = unref(treeTables).find((ele) => {
           return ele.id == key;
         });
-        if (!rawData.value.lockedTable) {
-          rawData.value.lockedTable = [];
+        if (!rawData.value.locked) {
+          rawData.value.locked = [];
         }
-        rawData.value.lockedTable.push(table.name);
+        rawData.value.locked.push(table.name);
       }
 
       setDrawerProps({ confirmLoading: true });
       // update locked tables
-      API_DATASOURCE_LOCK(values.id, unref(rawData).lockedTable).then(() => {
+      API_DATASOURCE_LOCK(values.id, unref(rawData).locked).then(() => {
         closeDrawer();
         emit('success', { ...values });
         message.success(t('common.tip.lock'));

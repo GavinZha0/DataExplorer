@@ -9,7 +9,7 @@ export default {
       url: '路径',
       username: '用户名',
       password: '密码',
-      version: 'DB版本',
+      version: '版本',
       usage: '引用量',
       params: '附加参数',
       param: 'URL参数',

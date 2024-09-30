@@ -31,7 +31,7 @@
     </div>
     <!-- menu-end -->
      
-     <div><Reminder /></div>
+     <div style="width: 60%;"><Reminder /></div>
 
     <!-- action  -->
     <div :class="`${prefixCls}-action`">

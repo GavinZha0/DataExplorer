@@ -48,7 +48,7 @@
                         border
                         class="code-mirror"
                         placeholder="Input custom sql"
-                        v-model:value="rawData.query"
+                        v-model:value="rawData.content"
                         mode="sql"
                       />
                     </div>
@@ -991,7 +991,7 @@
    */
   function formatQuery() {
     const sqlLanguage = datasourceInfo.value.selectedSource.type.toLowerCase();
-    rawData.value.query = format(rawData.value.query, {
+    rawData.value.content = format(rawData.value.content, {
       language: sqlLanguage,
       tabWidth: 2,
       keywordCase: 'upper',
@@ -1002,7 +1002,7 @@
    * run sql query and show result in table
    */
   const execute = () => {
-    if (!rawData.value.query) {
+    if (!rawData.value.content) {
       return;
     }
 
@@ -1012,7 +1012,7 @@
     // sqlite - ?, ?1, :name, @name, $name
     // only @, $ and ${} are available for DataPie
     // string/date variable must have "''"
-    let sqlString = rawData.value.query;
+    let sqlString = rawData.value.content;
     if (sqlString.indexOf('${') < 0) {
       // ${variable} is not supported by this function
       // but backend supports

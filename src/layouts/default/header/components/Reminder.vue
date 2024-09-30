@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%;" :forceRender="true">
+  <div style="height: 100%; width: 100%;" :forceRender="true">
     <Alert v-if="data.msg && data.avatar" :message="data.msg" :type="data.type" show-icon closable style="font-size: medium;">
       <template #icon>
         <Avatar v-if="data.avatar" :src="data.avatar" size="small"/>

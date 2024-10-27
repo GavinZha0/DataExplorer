@@ -14,7 +14,7 @@ export const API = {
   ML_DATASET_PUBLIC: '/ml/dataset/public',
   ML_DATASET_CLONE: '/ml/dataset/clone',
   ML_DATASET_DELETE: '/ml/dataset/delete',
-  ML_DATASET_EXECUTE: '/ml/dataset/execute',
+  ML_DATASET_EXECUTE: '/py/ml/dataset/execute',
   ML_DATASET_STAT: '/py/ml/dataset/stat',
   ML_DATASET_GROUPS: '/ml/dataset/groups',
   ML_DATASET_IN_GROUP: '/ml/dataset/subset',
@@ -154,7 +154,7 @@ export function API_ML_DATASET_DEL(id: number) {
 export function API_ML_DATASET_EXECUTE(id: number, limit = 0) {
   return defHttp.post<AxiosResponse>({
     url: API.ML_DATASET_EXECUTE,
-    params: { id: id, limit: limit },
+    data: { id: id, limit: limit },
   });
 }
 
@@ -163,9 +163,9 @@ export function API_ML_DATASET_EXECUTE(id: number, limit = 0) {
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_ML_DATASET_STAT(id: number, sql: string, type: string, variable: any, limit = 0) {
+export function API_ML_DATASET_STAT(id: number, content: string, type: string, variable: any, limit = 0) {
   return defHttp.post<AxiosResponse>({
     url: API.ML_DATASET_STAT,
-    params: { id: id, sql: sql, type: type, variable: variable, limit: limit },
+    params: { id: id, content: content, type: type, variable: variable, limit: limit },
   });
 }

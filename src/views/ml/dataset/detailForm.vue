@@ -504,7 +504,8 @@
     API_ML_DATASET_CREATE,
     API_ML_DATASET_UPDATE,
     API_ML_DATASET_GROUPS,
-    API_ML_DATASET_STAT
+    API_ML_DATASET_STAT,
+    API_ML_DATASET_EXECUTE
   } from '/@/api/ml/dataset';
   import {
     API_DATASOURCE_TREE,
@@ -901,10 +902,13 @@
   function formatQuery() {
     const sqlLanguage = datasourceInfo.value.selectedSource.type.toLowerCase();
     rawData.value.content = format(rawData.value.content, {
-      language: sqlLanguage,
+      language: 'sqlite',
       tabWidth: 2,
       keywordCase: 'upper',
     });
+
+    // for file path with '/'
+    rawData.value.content = rawData.value.content.replaceAll(' / ', '/');
   }
 
   /*
@@ -921,24 +925,40 @@
     // sqlite - ?, ?1, :name, @name, $name
     // only @, $ and ${} are available for DataPie
     // string/date variable must have "''"
-    let sqlString = rawData.value.content;
-    if (sqlString.indexOf('${') < 0) {
+    let content = rawData.value.content;
+    if (content.indexOf('${') < 0) {
       // ${variable} is not supported by this function
       // but backend supports
-      sqlString = format(sqlString, {
+      content = format(content, {
         language: 'sqlite',
         params: unref(sqlVarForReplace),
         paramTypes: { named: ['@', '$'] },
       });
+
+      // for file path with '/'
+      content = content.replaceAll(' / ', '/');
     }
 
-    API_ML_DATASET_STAT(rawData.value.sourceId, sqlString, rawData.value.type, rawData.value.variable, datasetInfo.limit)
+    /*
+    API_ML_DATASET_EXECUTE(rawData.value.id)
       .then((response) => {
         datasetInfo.data = response.records;
         datasetInfo.total = response.total;
         rawData.value.fields = mergeConfig(response.stat, rawData.value.fields);
         buildColumns();
       });
+      */
+
+
+      API_ML_DATASET_STAT(rawData.value.sourceId, content, rawData.value.type, rawData.value.variable, datasetInfo.limit)
+      .then((response) => {
+        datasetInfo.data = response.records;
+        datasetInfo.total = response.total;
+        rawData.value.fields = mergeConfig(response.stat, rawData.value.fields);
+        buildColumns();
+      });
+
+
   };
 
   /*

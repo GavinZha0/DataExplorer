@@ -894,7 +894,7 @@
     // backend also can handle variable replacement
     API_ML_DATASET_EXECUTE(
       rawData.value.datasetId,
-      datasetInfo.limit,
+      0,
     ).then((response) => {
       datasetInfo.total = response.total; // total records
       datasetInfo.dataArray = response.records; // data array

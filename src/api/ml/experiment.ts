@@ -13,6 +13,8 @@ export const API = {
   ML_EXPERIMENT_DEL_TRIAL: '/ml/experiment/del/trial',
   ML_EXPERIMENT_REG_TRIAL: '/py/ml/experiment/reg',
   ML_EXPERIMENT_UNREG_TRIAL: '/py/ml/experiment/unreg',
+  ML_EXPERIMENT_PUBLISH_TRIAL: '/py/ml/experiment/publish',
+  ML_EXPERIMENT_UNPUBLISH_TRIAL: '/py/ml/experiment/unpublish'
 }
 
 
@@ -81,6 +83,26 @@ export function API_ML_EXPERIMENT_REG_TRIAL(trialId: string, algoName: string, a
 export function API_ML_EXPERIMENT_UNREG_TRIAL(algoId: number, version: any) {
   return defHttp.post<AxiosResponse>({
     url: API.ML_EXPERIMENT_UNREG_TRIAL,
+    params: { algoId: algoId, version: Number(version) }
+  });
+}
+
+/* register a trial
+ * id: trial id (run_uuid)
+ */
+export function API_ML_EXPERIMENT_PUBLISH_TRIAL(trialId: string, algoName: string, algoId: number) {
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_EXPERIMENT_PUBLISH_TRIAL,
+    params: { trialId: trialId, algoName: algoName, algoId: algoId }
+  });
+}
+
+/* un-register a trial
+ * id: trial id (run_uuid)
+ */
+export function API_ML_EXPERIMENT_UNPUBLISH_TRIAL(algoId: number, version: any) {
+  return defHttp.post<AxiosResponse>({
+    url: API.ML_EXPERIMENT_UNPUBLISH_TRIAL,
     params: { algoId: algoId, version: Number(version) }
   });
 }

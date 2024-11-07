@@ -91,7 +91,7 @@
   </PageWrapper>
 </template>
 
-<script lang="ts" setup name="AIModel">
+<script lang="ts" setup name="AiStore">
   import { reactive, ref } from 'vue';
   import { Icon } from '/@/components/Icon';
   import { BasicTable, useTable, TableAction, TableSearch } from '/@/components/Table';

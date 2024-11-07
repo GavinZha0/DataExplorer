@@ -201,33 +201,6 @@
                   paddingRight: '5px',
                   paddingTop: '5px',
                   paddingBottom: '5px',
-                  display: rightPanelKey == 'chart' ? 'block' : 'none',
-                }"
-            >
-              <BasicForm
-                ref="chartFormRef"
-                :schemas="formChartSchema"
-                :showActionButtonGroup="false"
-                layout="vertical"
-                >
-                  <template #progress="{ model, field }">
-                    <Progress type="circle" :percent="trainPct" />
-                  </template>
-                  <template #accuracy="{ model, field }">
-                    <Progress type="circle" :percent="metricVal" />
-                  </template>
-              </BasicForm>
-            </div>
-            <div
-                :style="{
-                  borderWidth: '1px',
-                  borderColor: 'black',
-                  height: '100%',
-                  width: '100%',
-                  paddingLeft: '5px',
-                  paddingRight: '5px',
-                  paddingTop: '5px',
-                  paddingBottom: '5px',
                   display: rightPanelKey == 'experiment' ? 'block' : 'none',
                 }"
             >
@@ -308,17 +281,6 @@
         </template>
         <span>Train</span>
       </MenuItem>
-      <MenuItem key="chart">
-        <template #icon>
-          <AreaChartOutlined
-            :style="{
-              fontSize: '24px',
-              color: 'green',
-            }"
-          />
-        </template>
-        <span>Chart</span>
-      </MenuItem>
       <MenuItem key="experiment">
         <template #icon>
           <HistoryOutlined
@@ -347,13 +309,13 @@
     PlaySquareTwoTone,
     SaveTwoTone,
     InfoCircleFilled,
-    AreaChartOutlined,
     ExperimentOutlined,
     DeleteOutlined,
     FunctionOutlined,
     HistoryOutlined,
     HddOutlined,
-    StarOutlined
+    StarOutlined,
+    PlayCircleOutlined
   } from '@ant-design/icons-vue';
   import { CodeEditor } from '/@/components/CodeEditor';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -364,7 +326,6 @@
     MenuItem,
     Row,
     Col,
-    Progress,
     Tabs
   } from 'ant-design-vue';
   import {
@@ -379,7 +340,7 @@
   } from '/@/api/ml/algorithm';
   import { API_ML_DATASET_TREE } from '/@/api/ml/dataset';
   import { ApiAlgorithmDataType, initAlgorithm } from '/@/api/ml/model/algorithm';
-  import { API_ML_EXPERIMENT_TRIALS, API_ML_EXPERIMENT_DEL_EXPER, API_ML_EXPERIMENT_REG_TRIAL, API_ML_EXPERIMENT_UNREG_TRIAL } from '/@/api/ml/experiment';
+  import { API_ML_EXPERIMENT_TRIALS, API_ML_EXPERIMENT_DEL_EXPER, API_ML_EXPERIMENT_REG_TRIAL, API_ML_EXPERIMENT_UNREG_TRIAL, API_ML_EXPERIMENT_PUBLISH_TRIAL, API_ML_EXPERIMENT_UNPUBLISH_TRIAL } from '/@/api/ml/experiment';
   import { cloneDeep } from 'lodash-es';
   import { BasicTable } from '/@/components/Table';
   import { emitter } from '/@/utils/event';
@@ -396,8 +357,6 @@
   const dataFormRef = ref<Nullable<FormActionType>>(null);
   const algoFormRef = ref<Nullable<FormActionType>>(null);
   const trainFormRef = ref<Nullable<FormActionType>>(null);
-  const trainPct = ref<number>(0);
-  const metricVal = ref<number>(0);
   const experParam = ref<any>({id: 17});
   const experData = ref<any[]>([]);
   const selExperItem = ref<[]>([]);
@@ -796,8 +755,10 @@ which one is better?
 
   // show experiment status
   function trialIcons(node: any) {
-    if (node.status == 'FINISHED') {
-      if(node.version>0){
+    if (node.status == 'FINISHED' && node.version>0) {
+      if(node.published){
+        return 'ant-design:play-circle-filled';
+      } else {
         return 'ant-design:star-filled';
       }
     } else if (node.status == 'FAILED') {
@@ -815,54 +776,109 @@ which one is better?
       render: (node) => {
         if(node?.selectable){
           return h(DeleteOutlined, {
-            class: ['node-del'],
-            onClick: () => {
-              const idx = experData.value.findIndex((v) => {
-                // find item
-                return v.experId == node.exper_id;
-              });
-              // delete experiment from db
-              API_ML_EXPERIMENT_DEL_EXPER(node.exper_id).then((response) => {
-                // remove item
-              experData.value.splice(idx, 1);
-              });
-            },
+            style: {padding: '3px'}, 
+            onClick: () => { handleExperDelete(node); },
           });
         } else if(node?.status == 'FINISHED'){
-          return h(StarOutlined, {
-            style: {color: 'orange'},
-            onClick: () => {
-              // experiment idx
-              const eIdx = experData.value.findIndex((v) => {
-                // find experiment
-                return v.experId == node.exper_id;
-              });
-
-              // trial idx
-              const tIdx = experData.value[eIdx].children.findIndex((v) => {
-                // find trial
-                return v.run_uuid == node.run_uuid;
-              });
-
-              let regTrial = experData.value[eIdx].children[tIdx];
-
-              if(node.version==null || Number(node.version) == 0){
-                // register trial
-                API_ML_EXPERIMENT_REG_TRIAL(node.run_uuid, rawData.value.algoName, rawData.value.id).then((response) => {
-                  regTrial['version'] = response.version;
-                });
-              } else {
-                // un-register trial
-                API_ML_EXPERIMENT_UNREG_TRIAL(rawData.value.id, node.version).then((response) => {
-                  regTrial['version'] = 0;
-                });
-              }
-            },
-          });
+          return h('span', null, 
+          [
+            h(StarOutlined, {
+              style: {color: 'orange', padding: '3px'},
+              onClick: () => { handleModelRegister(node); }
+            }), 
+            h(PlayCircleOutlined, { 
+              style: {color: 'green', padding: '3px'}, 
+              onClick: () => { handleModelPublish(node); }
+            })
+          ]);
         }
       },
     },
   ];
+
+
+  /*
+   * delete a experiment
+   */
+  const handleExperDelete = (node) => {
+    const idx = experData.value.findIndex((v) => {
+      // find item
+      return v.experId == node.exper_id;
+    });
+
+    // delete experiment from db
+    API_ML_EXPERIMENT_DEL_EXPER(node.exper_id).then((response) => {
+      // remove item
+      experData.value.splice(idx, 1);
+    });
+  };
+
+
+  /*
+   * register model
+   */
+  const handleModelRegister = (node) => {
+    // experiment idx
+    const eIdx = experData.value.findIndex((v) => {
+      // find experiment
+      return v.experId == node.exper_id;
+    });
+
+    // trial idx
+    const tIdx = experData.value[eIdx].children.findIndex((v) => {
+      // find trial
+      return v.run_uuid == node.run_uuid;
+    });
+
+    let regTrial = experData.value[eIdx].children[tIdx];
+
+    if(node.version==null || Number(node.version) == 0){
+      // register trial
+      API_ML_EXPERIMENT_REG_TRIAL(node.run_uuid, rawData.value.algoName, rawData.value.id).then((response) => {
+        regTrial['version'] = response.version;
+      });
+    } else {
+      // un-register trial
+      API_ML_EXPERIMENT_UNREG_TRIAL(rawData.value.id, node.version).then((response) => {
+        regTrial['version'] = 0;
+      });
+    }
+  };
+
+
+  /*
+   * publish model to AI Model Store
+   */
+   const handleModelPublish = (node) => {
+    // experiment idx
+    const eIdx = experData.value.findIndex((v) => {
+      // find experiment
+      return v.experId == node.exper_id;
+    });
+
+    // trial idx
+    const tIdx = experData.value[eIdx].children.findIndex((v) => {
+      // find trial
+      return v.run_uuid == node.run_uuid;
+    });
+
+    let selectedTrial = experData.value[eIdx].children[tIdx];
+
+    if(node.published){
+      // un-publish trial
+      API_ML_EXPERIMENT_UNPUBLISH_TRIAL(rawData.value.id, node.version).then((response) => {
+        selectedTrial['published'] = false;
+      });
+    } else {
+      // publish trial
+      API_ML_EXPERIMENT_PUBLISH_TRIAL(node.run_uuid, rawData.value.algoName, rawData.value.id).then((response) => {
+        selectedTrial['version'] = response.version;
+        selectedTrial['published'] = response.published;
+      });
+    }
+  };
+
+
 
   /*
    * experiment option change

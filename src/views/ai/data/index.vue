@@ -23,7 +23,7 @@
         <a-input-search
           v-model:value="searchText"
           allow-clear
-          :placeholder="t('dataviz.dataview.toolbar.search')"
+          :placeholder="t('ai.data.toolbar.search')"
           style="width: 360px"
           @search="handleSearch"
         />
@@ -50,11 +50,6 @@
           <TableAction
             :actions="[
               {
-                icon: 'ant-design:copy-outlined',
-                tooltip: t('common.table.action.clone'),
-                onClick: handleClone.bind(null, record.id),
-              },
-              {
                 icon: 'ant-design:delete-outlined',
                 color: 'error',
                 tooltip: t('common.table.action.delete'),
@@ -69,7 +64,7 @@
         </template>
       </template>
     </BasicTable>
-    <!--DetailForm @register="detailDrawer" @success="handleSuccess" /-->
+    <DetailForm @register="detailDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
 
@@ -82,13 +77,13 @@
   import { indexColumns } from './data';
   import { useUserStore } from '/@/store/modules/user';
   import {
-    API_AI_DATA_CLONE,
     API_AI_DATA_DEL,
     API_AI_DATA_LIST,
     API_AI_DATA_PUBLIC,
   } from '/@/api/ai/data';
   import { useI18n } from 'vue-i18n';
   import { useDrawer } from '/@/components/Drawer';
+  import DetailForm from './detailForm.vue';
 
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
@@ -119,7 +114,7 @@
   function handleCreate() {
     // open edit drawer with default config
     // if data is null that initial function will not be triggered
-    openDetailDrawer(true, { libName: 'G2Plot', libVer: '4.2', libCfg: '' });
+    openDetailDrawer(true, { name: '' });
   }
 
   /*
@@ -138,20 +133,6 @@
       .then(() => {
         // update table data after a record is deleted
         deleteTableDataRecord(id);
-      })
-      .catch((err) => {
-        message.warning(t('common.exception.delete'), err);
-      });
-  }
-
-  /*
-   * clone existing record
-   */
-  function handleClone(id: number) {
-    API_AI_DATA_CLONE(id)
-      .then(() => {
-        // update table data after a record is deleted
-        reload();
       })
       .catch((err) => {
         message.warning(t('common.exception.delete'), err);

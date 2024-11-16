@@ -12,6 +12,7 @@ export default {
       graph: 'Graph',
       source: 'Datasource',
       graph_ver: 'Graph Version',
+      usage: 'Usage'
     },
   },
   form: {

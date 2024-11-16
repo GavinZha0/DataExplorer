@@ -20,7 +20,7 @@
         <BasicTable @register="registerParamTable" @edit-end="handleParamEditEnd">
           <template #headerCell="{ column }">
             <template v-if="column.key === 'name'">
-              {{ t('dataviz.datasource.table.title.param') }}
+              {{ t('datamgr.datasource.table.title.param') }}
               <PlusSquareTwoTone
                 class="ml-2"
                 :style="{ fontSize: '20px', marginLeft: '8px', cursor: 'pointer' }"
@@ -28,7 +28,7 @@
               />
             </template>
             <template v-else>
-              {{ t('dataviz.datasource.table.title.value') }}
+              {{ t('datamgr.datasource.table.title.value') }}
             </template>
           </template>
         </BasicTable>

@@ -14,6 +14,7 @@ export default {
       lib_cfg: '库配置',
       interval: '间隔',
       dataset: '数据集',
+      usage: '引用量'
     },
     action: {
       filter: '过滤',

@@ -6,17 +6,17 @@ import { ApiImageDataType } from '/@/api/ai/model/image';
 //----------------------------------------------------------------------------------------
 // PATH definition
 export const API = {
-  AI_DATA_LIST: '/aidata/list',
-  AI_DATA_TREE: 'aidata/tree',
-  AI_DATA_CREATE: '/aidata/create',
-  AI_DATA_UPDATE: '/aidata/update',
-  AI_DATA_UPLOAD: '/aidata/upload',
-  AI_DATA_PUBLIC: '/aidata/public',
-  AI_DATA_CLONE: 'aidata/clone',
-  AI_DATA_DELETE: '/aidata/delete',
-  AI_DATA_EXECUTE: '/aidata/execute',
-  AI_DATA_CATEGORY: '/aidata/category',
-  AI_DATA_ONE: '/aidata/getone',
+  AI_DATA_LIST: '/ai/data/list',
+  AI_DATA_TREE: 'ai/data/tree',
+  AI_DATA_CREATE: '/ai/data/create',
+  AI_DATA_UPDATE: '/ai/data/update',
+  AI_DATA_UPLOAD: '/ai/data/upload',
+  AI_DATA_PUBLIC: '/ai/data/public',
+  AI_DATA_CLONE: 'ai/data/clone',
+  AI_DATA_DELETE: '/ai/data/delete',
+  AI_DATA_EXECUTE: '/ai/data/execute',
+  AI_DATA_GROUPS: '/ai/data/groups',
+  AI_DATA_ONE: '/ai/data/getone',
 }
 
 /* get all algo as list
@@ -126,8 +126,8 @@ export function API_AI_DATA_EXECUTE(id: number) {
 /* get all groups
  *
  */
-export function API_AI_DATA_CATEGORY() {
+export function API_AI_DATA_GROUPS() {
   return defHttp.post<AxiosResponse>({
-    url: API.AI_DATA_CATEGORY,
+    url: API.AI_DATA_GROUPS,
   });
 }

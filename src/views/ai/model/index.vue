@@ -42,15 +42,11 @@
                 {{ tag }}
               </Tag>
             </template>
-            <template v-else-if="column.key === 'evaluation'">
-              <Tag
-                v-for="(evaluate, index) in record.evaluation"
-                :key="index"
-                color="blue"
-                style="margin-right: 2px"
-              >
-                {{ evaluate.name }}: {{ evaluate.value }}
-              </Tag>
+            <template v-else-if="column.key === 'endpoint'">
+              <span v-if="record.status == 1" style="background-color: greenyellow;">{{ record.endpoint }}</span>
+              <span v-else-if="record.status == 2" style="background-color: orangered;">{{ record.endpoint }}</span>
+              <span v-else-if="record.status == 3" style="background-color: darkkhaki;">{{ record.endpoint }}</span>
+              <span v-else>{{ record.endpoint }}</span>
             </template>
             <template v-else-if="column.key === 'rate'">
               <Rate v-model:value="record.rate" disabled />
@@ -73,13 +69,18 @@
               <TableAction
                 :actions="[
                   {
+                    icon: 'ant-design:play-circle-outlined',
+                    tooltip: t('ai.model.table.action.deploy'),
+                    onClick: handleDeploy.bind(null, record),
+                  },
+                  {
                     icon: 'ant-design:delete-outlined',
                     color: 'error',
                     tooltip: t('common.table.action.delete'),
                     popConfirm: {
                       title: t('common.table.action.confirm'),
                       placement: 'left',
-                      confirm: handleDelete.bind(null, record.id),
+                      confirm: handleDelete.bind(null, record),
                     },
                   },
                 ]"
@@ -91,7 +92,7 @@
   </PageWrapper>
 </template>
 
-<script lang="ts" setup name="AiStore">
+<script lang="ts" setup name="AiModel">
   import { reactive, ref } from 'vue';
   import { Icon } from '/@/components/Icon';
   import { BasicTable, useTable, TableAction, TableSearch } from '/@/components/Table';
@@ -100,11 +101,11 @@
   import { indexColumns } from './data';
   import { useUserStore } from '/@/store/modules/user';
   import {
-    API_AI_MODEL_CLONE,
+    API_AI_MODEL_DEPLOY,
     API_AI_MODEL_DEL,
     API_AI_MODEL_LIST,
     API_AI_MODEL_PUBLIC,
-  } from '/@/api/ai/model';
+  } from '../../../api/ai/model';
   import { useI18n } from 'vue-i18n';
   import { useDrawer } from '/@/components/Drawer';
   import DetailForm from './detailForm.vue';
@@ -138,7 +139,7 @@
   function handleCreate() {
     // open edit drawer with default config
     // if data is null that initial function will not be triggered
-    openDetailDrawer(true, { libName: 'G2Plot', libVer: '4.2', libCfg: '' });
+    openDetailDrawer(true, { area: 'data' });
   }
 
   /*
@@ -149,33 +150,47 @@
     openDetailDrawer(true, { ...record });
   }
 
+  
+  /*
+   * deploy model to selected target and start serving
+   */
+   function handleDeploy(record: Recordable) {
+    if(record.deployTo){
+      API_AI_MODEL_DEPLOY(record.id).then((response) => {
+        if(record.status == 0){
+          // idle to serving
+          message.success(t('common.tip.deploy'));
+        } else{
+          // serving to idle
+          message.success(t('common.tip.terminate'));
+        }
+        updateTableDataRecord(record.id, response);
+          
+      });
+    } else {
+      message.warning(t('common.error.support.deploy'));
+    }
+  }
+
   /*
    * delete existing record
    */
-  function handleDelete(id: number) {
-    API_AI_MODEL_DEL(id)
+  function handleDelete(record: Recordable) {
+    if(record.serving){
+      message.warning(t('common.warn.serving'));
+      return;
+    }
+
+    API_AI_MODEL_DEL(record.id)
       .then(() => {
         // update table data after a record is deleted
-        deleteTableDataRecord(id);
+        deleteTableDataRecord(record.id);
       })
       .catch((err) => {
         message.warning(t('common.exception.delete'), err);
       });
   }
 
-  /*
-   * clone existing record
-   */
-  function handleClone(id: number) {
-    API_AI_MODEL_CLONE(id)
-      .then(() => {
-        // update table data after a record is deleted
-        reload();
-      })
-      .catch((err) => {
-        message.warning(t('common.exception.delete'), err);
-      });
-  }
 
   /*
    * fuzzy search

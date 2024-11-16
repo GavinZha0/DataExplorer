@@ -52,7 +52,7 @@ export const indexColumns: BasicColumn[] = [
     width: 90,
   },
   {
-    title: t('dataviz.datasource.table.title.usage'),
+    title: t('dataviz.dataview.table.title.usage'),
     dataIndex: 'usage',
     width: 90,
     sorter: true,

@@ -30,6 +30,7 @@ export default {
     edit: 'Edit',
     import: 'Import',
     export: 'Export',
+    open: 'Open',
     upload: 'Upload',
     download: 'Download',
     refresh: 'Refresh',
@@ -115,6 +116,8 @@ export default {
     delete: 'Deleted successfully！',
     public: 'Public successfully!',
     publish: 'Publish successfully!',
+    deploy: 'Deploy successfully!',
+    terminate: 'Terminate successfully!',
     lock: 'Locked successfully!',
     execute: 'Executed successfully！',
     load: 'Data loaded successfully！',
@@ -132,9 +135,14 @@ export default {
     public: 'Exception when public!',
     lock: 'Exception when lock!',
     execute: 'Exception when execute！',
+    publish: 'Exception when publish!',
+    deploy: 'Exception when deploy',
     load: 'Exception when load data！',
     validation: 'Config is not complete！',
     test: 'Exception when test!',
+  },
+  warn: {
+    serving: 'Target model is serving. Please stop it first.',
   },
   error: {
     unsupport: {
@@ -144,6 +152,7 @@ export default {
     },
     support: {
       upgrade: 'Suggest to upgrade it to latest version',
+      deploy: 'Please select a server platform before deploy'
     },
   },
   success: {

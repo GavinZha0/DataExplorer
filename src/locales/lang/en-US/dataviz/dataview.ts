@@ -13,6 +13,7 @@ export default {
       lib_cfg: 'Lib Config',
       interval: 'Interval',
       dataset: 'Dataset',
+      usage: 'Usage'
     },
     action: {
       filter: 'Filter',

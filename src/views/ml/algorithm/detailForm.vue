@@ -338,6 +338,10 @@
     API_ML_ALGO_SCORES,
     API_ML_ALGO_EXECUTE
   } from '/@/api/ml/algorithm';
+  import {
+    API_AI_MODEL_CREATE,
+    API_AI_MODEL_DEL
+  } from '../../../api/ai/model';
   import { API_ML_DATASET_TREE } from '/@/api/ml/dataset';
   import { ApiAlgorithmDataType, initAlgorithm } from '/@/api/ml/model/algorithm';
   import { API_ML_EXPERIMENT_TRIALS, API_ML_EXPERIMENT_DEL_EXPER, API_ML_EXPERIMENT_REG_TRIAL, API_ML_EXPERIMENT_UNREG_TRIAL, API_ML_EXPERIMENT_PUBLISH_TRIAL, API_ML_EXPERIMENT_UNPUBLISH_TRIAL } from '/@/api/ml/experiment';
@@ -770,11 +774,12 @@ which one is better?
     }
   }
 
-  // show delete icon in experiment tree
+  // show action icon in experiment tree(delete, register)
   const trialActions: TreeActionItem[] = [
     {
       render: (node) => {
         if(node?.selectable){
+          // delete an experiment
           return h(DeleteOutlined, {
             style: {padding: '3px'}, 
             onClick: () => { handleExperDelete(node); },
@@ -782,10 +787,12 @@ which one is better?
         } else if(node?.status == 'FINISHED'){
           return h('span', null, 
           [
+            // register/unregister a trial
             h(StarOutlined, {
               style: {color: 'orange', padding: '3px'},
               onClick: () => { handleModelRegister(node); }
             }), 
+            // publish/unpublish a trial
             h(PlayCircleOutlined, { 
               style: {color: 'green', padding: '3px'}, 
               onClick: () => { handleModelPublish(node); }
@@ -833,14 +840,22 @@ which one is better?
     let regTrial = experData.value[eIdx].children[tIdx];
 
     if(node.version==null || Number(node.version) == 0){
-      // register trial
+      // register trial in mlflow
       API_ML_EXPERIMENT_REG_TRIAL(node.run_uuid, rawData.value.algoName, rawData.value.id).then((response) => {
         regTrial['version'] = response.version;
+        // create a record for AI store, so you can see it in AI store
+        const mdInfo = {name:rawData.value.name, algoId: rawData.value.id, area: 'data', runId: node.run_uuid, version: response.version};
+        API_AI_MODEL_CREATE(mdInfo).then((rsp) => {
+          // do nothing when create successfully        
+        });
       });
     } else {
       // un-register trial
       API_ML_EXPERIMENT_UNREG_TRIAL(rawData.value.id, node.version).then((response) => {
         regTrial['version'] = 0;
+        API_AI_MODEL_DEL(1).then((rsp) => {
+          // do nothing        
+        });
       });
     }
   };

@@ -1,25 +1,24 @@
 
-export interface ApiModelDataType {
+export interface ApiAiModelDataType {
   id?: number;
   name?: string;
-  description?: string;
-  category?: string;
-  type?: string;
+  desc?: string;
+  area?: string;
   tags?: string[];
-  framework?: string;
-  frameVer?: string;
-  files: string[];
-  input?: mapType[];
-  output?: mapType[];
-  evaluation?: mapType[];
-  score?: number;
-  network?: string;
+  rate?: number;
+  price?: string;
   pubFlag?: boolean;
-  weblink?: string;
+  status?: number;
+  algoId?: number;
+  deployTo?: string;
+  endpoint?: string;
+  eval?: string;
+  trainedBy?: string;
+  trainedAt?: string;
   createdBy?: string;
-  createTime?: string;
-  updatedBy?: string;
-  updateTime?: string;
+  createdAt?: string;
+  deployedBy?: string;
+  deployedAt?: string;
 }
 
 export interface mapType {
@@ -28,27 +27,25 @@ export interface mapType {
 }
 
 //initial value of dataset
-export const initModelData: ApiModelDataType = {
+export const initStoreData: ApiAiModelDataType = {
   id: 0,
   name: '',
-  description: '',
-  category: 'Image',
-  type: 'Classification',
-  framework: 'Pytorch',
-  frameVer: '2.0',
-  network: '',
-  files: [],
+  desc: '',
+  area: 'data',
   tags: [],
-  input: [],
-  output: [],
-  evaluation: [],
-  score: 5,
-  weblink: '',
+  rate: 0,
+  algoId: 0,
+  deployTo: '',
+  endpoint: '',
   pubFlag: false,
+  status: 0,
+  eval: '',
+  trainedBy: '',
+  trainedAt: '',
   createdBy: '',
-  createTime: '',
-  updatedBy: '',
-  updateTime: ''
+  createdAt: '',
+  deployedBy: '',
+  deployedAt: ''
 };
 
 

@@ -42,7 +42,7 @@ export const indexColumns: BasicColumn[] = [
     resizable: true,
   },
   {
-    title: t('dataviz.datasource.table.title.usage'),
+    title: t('dataviz.dataset.table.title.usage'),
     dataIndex: 'usage',
     width: 80,
   },

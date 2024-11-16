@@ -133,95 +133,34 @@ export const formInfoSchema: FormSchema[] = [
   },
 ];
 
-// source form schema
-export const formConfigSchema: FormSchema[] = [
+
+// model form schema
+export const formModelSchema: FormSchema[] = [
   {
-    field: 'variable',
-    component: 'ApiTree',
+    field: 'search',
+    component: 'Input',
+    componentProps: {
+      placeholder: t('ai.data.form.model.search'),
+    },
     label: '',
-    slot: 'sourceSelectTree',
+    colProps: { span: 24 }
   },
   {
-    field: 'hidden',
+    field: 'models',
     component: 'Input',
     label: '',
-    slot: 'fieldTree',
-  },
-  {
-    field: 'sorter',
-    component: 'Input',
-    label: '',
-    slot: 'fieldTree',
-  },
+    slot: 'modelList',
+  }
 ];
 
-export const varModalSchemas: FormSchema[] = [
+// chart form schema
+export const formHistorySchema: FormSchema[] = [
   {
-    field: 'type',
-    label: t('dataviz.dataset.form.var.type'),
-    required: true,
-    component: 'Select',
-    componentProps: {
-      options: [
-        { label: t('dataviz.dataset.form.var.cat.number'), value: 'number' },
-        { label: t('dataviz.dataset.form.var.cat.string'), value: 'string' },
-        { label: t('dataviz.dataset.form.var.cat.bool'), value: 'bool' },
-        { label: t('dataviz.dataset.form.var.cat.ts'), value: 'timestamp' },
-        { label: t('dataviz.dataset.form.var.cat.arrayN'), value: '[number]' },
-        { label: t('dataviz.dataset.form.var.cat.arrayS'), value: '[string]' },
-      ],
-    },
-    colProps: { span: 24 },
-  },
-  {
-    field: 'name',
-    component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.var.name'),
-    colProps: { span: 24 },
-  },
-  {
-    field: 'value',
-    component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.var.value'),
-    colProps: { span: 24 },
-  },
-];
-
-export const filterModalSchemas: FormSchema[] = [
-  {
-    field: 'key',
-    component: 'Input',
-    required: true,
+    field: 'trials',
     label: '',
-    colProps: { span: 24 },
-    show: false,
-  },
-  {
-    field: 'operator',
-    label: t('dataviz.dataset.form.filter.operator'),
-    required: true,
-    component: 'Select',
-    componentProps: {
-      options: [
-        { label: '>', value: '>' },
-        { label: '>=', value: '>=' },
-        { label: '<', value: '<' },
-        { label: '<=', value: '<=' },
-        { label: '=', value: '=' },
-        { label: '!=', value: '!=' },
-        { label: 'in', value: 'in' },
-        { label: 'like', value: 'like' },
-      ],
-    },
-    colProps: { span: 24 },
-  },
-  {
-    field: 'value',
     component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.filter.value'),
-    colProps: { span: 24 },
-  },
+    slot: 'trials',
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
 ];

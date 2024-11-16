@@ -228,7 +228,7 @@
     API_DATAVIEW_CREATE,
     API_DATAVIEW_UPDATE,
   } from '/@/api/dataviz/dataview';
-  import { API_AI_MODEL_TYPES, API_AI_MODEL_LIST } from '/@/api/ai/model';
+  import { API_AI_MODEL_TYPES, API_AI_MODEL_LIST } from '../../../api/ai/model';
   import { API_AI_IMAGE_GROUPS, API_AI_IMAGE_UPLOAD, API_AI_IMAGE_EXECUTE } from '/@/api/ai/image';
   import "tui-image-editor/dist/tui-image-editor.css";
   import "tui-color-picker/dist/tui-color-picker.css";

@@ -21,15 +21,13 @@ export default {
       share: 'Share',
       unshare: 'Unshare',
       delete: 'Delete',
+      ignore: 'Ignore',
+      feature: 'Feature'
     },
   },
   form: {
-    config: {
-      input: 'Input',
-      limit: 'Limit',
-      type: 'Type',
-      source: 'Source',
-      expect: 'Expectation',
+    model: {
+      search: 'Search name or tag'
     },
     create: {
       info: 'Info',

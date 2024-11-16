@@ -1,25 +1,24 @@
 import { ApiListReqType, ApiPublicReqType } from '/@/api/model/baseModel';
 import { defHttp } from '/@/utils/http/axios';
 import { AxiosResponse } from 'axios';
-import { ApiImageDataType } from '/@/api/ai/model/image';
+import { ApiAiModelDataType } from '/@/api/ai/model/model';
 
 //----------------------------------------------------------------------------------------
 // PATH definition
 export const API = {
-  AI_MODEL_LIST: '/aimodel/list',
-  AI_MODEL_TREE: '/aimodel/tree',
-  AI_MODEL_CREATE: '/aimodel/create',
-  AI_MODEL_UPDATE: '/aimodel/update',
-  AI_MODEL_UPLOAD: '/aimodel/upload',
-  AI_MODEL_PUBLIC: '/aimodel/public',
-  AI_MODEL_CLONE: 'model/clone',
-  AI_MODEL_DELETE: '/aimodel/delete',
-  AI_MODEL_EXECUTE: '/aimodel/execute',
-  AI_MODEL_EXECUTE_SCRIPT: '/aimodel/execute_script',
-  AI_MODEL_CATEGORY: '/aimodel/category',
-  AI_MODEL_GROUPS: '/aimodel/groups',
-  AI_MODEL_TYPES: '/aimodel/types',
-  AI_MODEL_ONE: '/aimodel/getone'
+  AI_MODEL_LIST: '/ai/model/list',
+  AI_MODEL_TREE: '/ai/model/tree',
+  AI_MODEL_CREATE: '/ai/model/create',
+  AI_MODEL_UPDATE: '/ai/model/update',
+  AI_MODEL_UPLOAD: '/ai/model/upload',
+  AI_MODEL_PUBLIC: '/ai/model/public',
+  AI_MODEL_CLONE: '/ai/model/clone',
+  AI_MODEL_DELETE: '/ai/model/delete',
+  AI_MODEL_DEPLOY: '/py/ai/model/deploy',
+  AI_MODEL_CATEGORY: '/ai/model/category',
+  AI_MODEL_GROUPS: '/ai/model/groups',
+  AI_MODEL_TYPES: '/ai/model/types',
+  AI_MODEL_ONE: '/ai/model/getone'
 }
 
 /* get all algo as list
@@ -54,7 +53,18 @@ export function API_AI_MODEL_ONE(id: number) {
 /* create a new dataset
  * params: ApiDatasetDataType without id
  */
-export function API_AI_MODEL_CREATE(params: Omit<ApiImageDataType, 'id'>) {
+export function API_AI_MODEL_CREATE(params: Omit<ApiAiModelDataType, 'id'>) {
+  // default values
+  if(!params.deployTo){
+    params.deployTo = 'MlFlow';
+  }
+  if(!params.endpoint){
+    params.endpoint = 'http://127.0.0.1:7788/invocations';
+  }
+  if(!params.price){
+    params.price = '0';
+  }
+
   return defHttp.post<AxiosResponse>({
     url: API.AI_MODEL_CREATE,
     params,
@@ -64,7 +74,7 @@ export function API_AI_MODEL_CREATE(params: Omit<ApiImageDataType, 'id'>) {
 /* update dataset info
  * params: ApiDatasetDataType
  */
-export function API_AI_MODEL_UPDATE(params: ApiImageDataType) {
+export function API_AI_MODEL_UPDATE(params: ApiAiModelDataType) {
   return defHttp.post<AxiosResponse>({
     url: API.AI_MODEL_UPDATE,
     params,
@@ -115,13 +125,12 @@ export function API_AI_MODEL_DEL(id: number) {
   });
 }
 
-/* execute dataset to query data
- * id: dataset id
- * update: merge config to query result or not
+/* deploy model to a platform
+ * id: store id
  */
-export function API_AI_MODEL_EXECUTE(id: number) {
+export function API_AI_MODEL_DEPLOY(id: number) {
   return defHttp.post<AxiosResponse>({
-    url: API.AI_MODEL_EXECUTE,
+    url: API.AI_MODEL_DEPLOY,
     params: { id: id },
   });
 }

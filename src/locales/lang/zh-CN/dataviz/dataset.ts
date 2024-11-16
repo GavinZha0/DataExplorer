@@ -12,6 +12,7 @@ export default {
       graph: '图形',
       source: '数据源',
       graph_ver: '图形版本',
+      usage: '引用量'
     },
   },
   form: {

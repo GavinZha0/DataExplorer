@@ -664,7 +664,7 @@
    */
   const jsonToDataFrame = (data: any[], model: any) =>{
     const columns = [];
-    const mappedColumns = {};
+    let mappedColumns = {};
     const arrayData = [];
 
     if(rawData.value.fields && rawData.value.fields.length > 0){

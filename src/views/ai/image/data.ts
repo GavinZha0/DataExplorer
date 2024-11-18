@@ -133,19 +133,34 @@ export const formInfoSchema: FormSchema[] = [
   },
 ];
 
-// source form schema
+
+// model form schema
 export const formModelSchema: FormSchema[] = [
   {
-    field: 'modelTypes',
+    field: 'search',
     component: 'Input',
+    componentProps: {
+      placeholder: t('ai.data.form.model.search'),
+    },
     label: '',
-    colProps: { span: 24 },
-    slot: 'modelTypes',
+    colProps: { span: 24 }
   },
   {
-    field: 'modelList',
+    field: 'models',
     component: 'Input',
     label: '',
     slot: 'modelList',
+  }
+];
+
+// chart form schema
+export const formHistorySchema: FormSchema[] = [
+  {
+    field: 'trials',
+    label: '',
+    component: 'Input',
+    slot: 'trials',
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];

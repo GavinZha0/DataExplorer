@@ -5,9 +5,8 @@ export interface ApiDataDataType {
   desc?: string;
   group?: string;
   modelId: number;
-  dataset?: any[];
-  fields?: any[];
-  result?: any[];
+  modelName: string;
+  fields?: any;
   orgId?: number;
   pubFlag?: boolean;
   createdBy?: string;
@@ -23,9 +22,8 @@ export const initDataData: ApiDataDataType = {
   desc: '',
   group: '',
   modelId: 0,
-  dataset: [],
-  fields: [],
-  result: [],
+  fields: {},
+  modelName: '',
   orgId: 0,
   pubFlag: false,
   createdBy: '',

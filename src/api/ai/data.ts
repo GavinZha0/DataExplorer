@@ -1,7 +1,7 @@
 import { ApiListReqType, ApiPublicReqType } from '/@/api/model/baseModel';
 import { defHttp } from '/@/utils/http/axios';
 import { AxiosResponse } from 'axios';
-import { ApiImageDataType } from '/@/api/ai/model/image';
+import { ApiDataDataType } from '/@/api/ai/model/data';
 
 //----------------------------------------------------------------------------------------
 // PATH definition
@@ -14,7 +14,7 @@ export const API = {
   AI_DATA_PUBLIC: '/ai/data/public',
   AI_DATA_CLONE: 'ai/data/clone',
   AI_DATA_DELETE: '/ai/data/delete',
-  AI_DATA_EXECUTE: '/ai/data/execute',
+  AI_DATA_EXECUTE: '/py/ai/data/execute',
   AI_DATA_GROUPS: '/ai/data/groups',
   AI_DATA_ONE: '/ai/data/getone',
 }
@@ -51,7 +51,7 @@ export function API_AI_DATA_ONE(id: number) {
 /* create a new dataset
  * params: ApiDatasetDataType without id
  */
-export function API_AI_DATA_CREATE(params: Omit<ApiImageDataType, 'id'>) {
+export function API_AI_DATA_CREATE(params: Omit<ApiDataDataType, 'id'>) {
   return defHttp.post<AxiosResponse>({
     url: API.AI_DATA_CREATE,
     params,
@@ -61,7 +61,7 @@ export function API_AI_DATA_CREATE(params: Omit<ApiImageDataType, 'id'>) {
 /* update dataset info
  * params: ApiDatasetDataType
  */
-export function API_AI_DATA_UPDATE(params: ApiImageDataType) {
+export function API_AI_DATA_UPDATE(params: ApiDataDataType) {
   return defHttp.post<AxiosResponse>({
     url: API.AI_DATA_UPDATE,
     params,
@@ -116,10 +116,10 @@ export function API_AI_DATA_DEL(id: number) {
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_AI_DATA_EXECUTE(id: number) {
+export function API_AI_DATA_EXECUTE(endpoint: string, data: any) {
   return defHttp.post<AxiosResponse>({
     url: API.AI_DATA_EXECUTE,
-    params: { id: id },
+    data: { endpoint: endpoint, data: data },
   });
 }
 

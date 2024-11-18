@@ -32,6 +32,10 @@
         <template v-if="column.key === 'name'">
           <a @click="() => handleEdit(record)" style="margin-left: 5px">{{ record.name }}</a>
         </template>
+        <template v-else-if="column.key === 'status'">
+          <Tag v-if="record.status==1" color="success">Serving</Tag>
+          <Tag v-else color="error">Unavailable</Tag>
+        </template>
         <template v-else-if="column.key === 'pubFlag'">
           <Switch
             v-if="record.createdBy != loginUserName"
@@ -73,7 +77,7 @@
   import { Icon } from '/@/components/Icon';
   import { BasicTable, useTable, TableAction, TableSearch } from '/@/components/Table';
   import { PageWrapper } from '/@/components/Page';
-  import { Switch, Tooltip, message } from 'ant-design-vue';
+  import { Switch, Tooltip, message, Tag } from 'ant-design-vue';
   import { indexColumns } from './data';
   import { useUserStore } from '/@/store/modules/user';
   import {

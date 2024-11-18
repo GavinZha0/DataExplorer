@@ -9,10 +9,14 @@
     :keyboard="false"
     @close="handleFormClose"
   >
-    <template #titleToolbar>
+  <template #titleToolbar>
       <Tooltip>
         <template #title>{{ t('common.toolbar.save') }}</template>
-        <SaveTwoTone class="toolbar-button" @click="saveDataview" />
+        <SaveTwoTone class="toolbar-button" @click="saveImageApp" />
+      </Tooltip>
+      <Tooltip>
+        <template #title>{{ t('common.toolbar.execute') }}</template>
+        <PlaySquareTwoTone class="toolbar-button" @click="execute" />
       </Tooltip>
     </template>
     <div style="width: 98%; float: left">
@@ -91,38 +95,27 @@
               display: rightPanelKey == 'model' ? 'block' : 'none'
             }"
           >
-            <BasicForm
+          <BasicForm
               ref="modelFormRef"
               layout="vertical"
               :forceRender="true"
               :schemas="formModelSchema"
               :showActionButtonGroup="false"
-              @fieldValueChange="handleModelChange"
+              :autoSubmitOnEnter="true"
+              :submitFunc="handleModelSearch"
             >
-              <template #modelTypes="{ model, field }">
-                <ApiSelect
-                  placeholder="Select model type"
-                  :api="API_AI_MODEL_TYPES"
-                  v-model:value="model[field]"
-                  :immediate="true"
-                  resultField="records"
-                  :fieldNames="{ key: 'id', label: 'name', value: 'name' }"
-                  @change="handleCategoryChange"
-                />
-              </template>
               <template #modelList="{ model, field }">
-                <List item-layout="vertical" size="small" :data-source="modelList" :pagination="pagination">
+                <List item-layout="vertical" size="small" :data-source="modelList" :pagination="pagination" style="width: 350px;">
                   <template #renderItem="{ item }">
                     <ListItem key="item.id">
-                      <ListItemMeta :description="item.description">
+                      <ListItemMeta :description="item.desc">
                         <template #title>
                           <Button
-                            type="link"
                             size="small"
-                            :loading="item.loading"
-                            style="font-size: 16px; font-weight: bold;"
-                            @click="execute(item.id)">
-                            <CheckOutlined v-if="selectedFile!=undefined && item.id==selectedFile.model" />
+                            :loading="item.id==rawData.modelId? executing: false"
+                            style="font-size: 16px;"
+                            :type="item.id==rawData.modelId? 'primary': 'link'"
+                            @click="handleModelSelection(item.id)">
                             {{ item.name }}
                           </Button>
                         </template>
@@ -136,10 +129,6 @@
                             <DollarOutlined />
                             {{ item.price }}
                           </span>
-                          <span>
-                            <GoldOutlined />
-                            {{ item.framework }}
-                          </span>
                       </template>
                     </ListItem>
                   </template>
@@ -147,6 +136,34 @@
               </template>
             </BasicForm>
           </div>
+          <div
+                :style="{
+                  borderWidth: '1px',
+                  borderColor: 'black',
+                  height: '100%',
+                  width: '100%',
+                  paddingLeft: '5px',
+                  paddingRight: '5px',
+                  paddingTop: '5px',
+                  paddingBottom: '5px',
+                  display: rightPanelKey == 'history' ? 'block' : 'none',
+                }"
+            >
+              <BasicForm
+                ref="historyFormRef"
+                :schemas="formHistorySchema"
+                :showActionButtonGroup="false"
+                >
+                <template #trials="{ model, field }">
+                  <BasicTree
+                    :height="650"
+                    :treeData="historyData"
+                    v-model:value="model[field]"
+                    :fieldNames="{ key: 'run_uuid' }"
+                  />
+                </template>
+              </BasicForm>
+            </div>
         </Col>
       </Row>
     </div>
@@ -182,6 +199,17 @@
         </template>
         <span>Model</span>
       </MenuItem>
+      <MenuItem key="history">
+        <template #icon>
+          <HistoryOutlined
+            :style="{
+              fontSize: '24px',
+              color: 'green',
+            }"
+          />
+        </template>
+        <span>History</span>
+      </MenuItem>
     </Menu>
   </BasicDrawer>
 </template>
@@ -200,8 +228,9 @@
     ExperimentOutlined,
     StarOutlined,
     DollarOutlined,
-    GoldOutlined,
+    PlaySquareTwoTone,
     InfoCircleFilled,
+    HistoryOutlined
   } from '@ant-design/icons-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { ApiSelect } from '/@/components/Form';
@@ -217,7 +246,8 @@
     MenuItem,
     Tag,
     Button,
-    Upload
+    Upload,
+    Dropdown
   } from 'ant-design-vue';
   import {
     ApiImageDataType,
@@ -228,12 +258,13 @@
     API_DATAVIEW_CREATE,
     API_DATAVIEW_UPDATE,
   } from '/@/api/dataviz/dataview';
-  import { API_AI_MODEL_TYPES, API_AI_MODEL_LIST } from '../../../api/ai/model';
+  import { API_AI_MODEL_LIST } from '../../../api/ai/model';
   import { API_AI_IMAGE_GROUPS, API_AI_IMAGE_UPLOAD, API_AI_IMAGE_EXECUTE } from '/@/api/ai/image';
   import "tui-image-editor/dist/tui-image-editor.css";
   import "tui-color-picker/dist/tui-color-picker.css";
   import ImageEditor from "tui-image-editor";
   import aiImage from "/@/assets/images/ai-image.png";
+  import type { UploadProps } from 'ant-design-vue';
 
   const { t } = useI18n();
   const UploadDragger = Upload.Dragger;
@@ -253,6 +284,7 @@
   const selectedFile = ref<any>();
   const imageOptions = ref({...iniImageOptions});
   const uploading = ref<boolean>(false);
+    let modelList = ref<any>([]);
 
       // reference input/fields of table menu
       const exeRspInfo = reactive<any>({
@@ -267,7 +299,7 @@
     },
     pageSize: 5
   };
-  let modelList = reactive<any>([]);
+
 
   // drawer data initialization
   const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
@@ -336,6 +368,8 @@
         console.log(props);
       });
     }
+
+    handleModelSearch();
   });
 
   /*
@@ -440,7 +474,7 @@
    * select component accepts user defined item when it is tags mode
    * so you can select existing group name or create a new group
    */
-  const handleImageGroupChange = (value: string[]) => {
+   const handleGroupChange = (value: string[]) => {
     if (infoFormRef.value && value.length > 1) {
       // get the latest one when there are multiple selections
       infoFormRef.value.setFieldsValue({ group: value[value.length - 1] });
@@ -448,15 +482,17 @@
   };
 
   /*
-   * load indicated dataset when it is changed
+   * model search
    */
-  const handleCategoryChange = (key: any) => {
-    if(key==null || key==0){return;}
-      API_AI_MODEL_LIST({page: {current: 1, pageSize: 5}, sorter: null, filter: null, search: {fields: ["type"], value: key}}).then(response => {
-        modelList.length = 0;
+   async function handleModelSearch() {
+    const formData = await modelFormRef.value?.validate();
+    // filter by area(data) and status(1:serving)
+    // search by name or tag
+    API_AI_MODEL_LIST({page: {current: 1, pageSize: 5}, sorter: null, filter: {fields: ["area", "status"], values: [["image"], ["1"]]}, search: {fields: ["name", "tags"], value: formData?.search}}).then(response => {
+        modelList.value.length = 0;
         for(let rec of response.records){
           rec.loading = false;
-          modelList.push(rec);
+          modelList.value.push(rec);
         }
       }).catch((err) => {
         message.error(t('common.tip.load.data.exception'));
@@ -464,12 +500,52 @@
   };
 
   /*
-   * model change
-   */
-  const handleModelChange = (key: string, operation: string) => {
+  * select a model
+  */
+  const handleModelSelection = (modelId: number) => {
+    rawData.value.modelId = modelId;
+    // find model and schema
+    const selModel = modelList.value.find((it)=>it.id==modelId);
+    inputFields.value = selModel.schema;
 
+    for(let field of columnFields.value){
+      // update column alias if column name matches with one of schema
+      const matchField = inputFields.value.find((it)=>it.name==field.title);
+      if(matchField){
+        field.alias = field.title;
+      } else {
+        field.alias = '???';
+      }
+    }
+
+    // add default name and desc for new app
+    if(rawData.value.id == 0 && rawData.value.name == ''){
+      rawData.value.name = selModel.name;
+      rawData.value.desc = selModel.desc;
+      if(infoFormRef){
+        infoFormRef.value.setFieldsValue({name: selModel.name, desc: selModel.desc});
+      }
+    }
   };
 
+
+    /*
+   * load and preview file before upload
+   */
+   const handleBeforeUpload: UploadProps['beforeUpload'] = (file: any, fileList: any[]) => {
+    if (file.type == 'text/csv') {
+      loadCsvFiles(file);
+    } else if (file.type == 'application/json') {
+      loadJsonFiles(file);
+    } else {
+      // unsupported file type
+      let invalidFile = fileList.find((it) => {
+        return it.name == file.name;
+      });
+      invalidFile.status = 'error';
+    }
+    return false;
+  };
 
   /*
    * run model
@@ -521,7 +597,7 @@
   /*
    * submit after data is updated
    */
-  async function saveDataview() {
+  async function saveImageApp() {
     try {
       let values;
       if (infoFormRef.value) {

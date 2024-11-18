@@ -143,6 +143,7 @@ export default {
   },
   warn: {
     serving: 'Target model is serving. Please stop it first.',
+    data: ''
   },
   error: {
     unsupport: {
@@ -154,6 +155,12 @@ export default {
       upgrade: 'Suggest to upgrade it to latest version',
       deploy: 'Please select a server platform before deploy'
     },
+    data: {
+      incorrect: 'Data is not correct!'
+    },
+    service: {
+      unavailable: 'Service is not available!'
+    }
   },
   success: {
     test: 'Test',

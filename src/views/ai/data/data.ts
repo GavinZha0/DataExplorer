@@ -31,23 +31,13 @@ export const indexColumns: BasicColumn[] = [
     align: 'left',
   },
   {
-    title: t('common.table.title.type'),
-    dataIndex: 'type',
-    key: 'type',
-    width: 150,
-    sorter: true,
-  },
-  {
-    title: t('common.table.title.platform'),
-    dataIndex: 'platform',
-    width: 150,
-    sorter: true,
-  },
-  {
-    title: t('common.table.title.area'),
-    dataIndex: 'area',
+    title: t('common.table.title.status'),
+    dataIndex: 'status',
     width: 180,
-    sorter: true,
+    filters: [
+      { text: 'Serving', value: '1' },
+      { text: 'Unavailable', value: '0' },
+    ],
   },
   {
     title: t('common.table.title.public'),

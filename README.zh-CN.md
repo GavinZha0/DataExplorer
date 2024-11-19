@@ -17,7 +17,7 @@ DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
 - **人工智能**：快捷地管理预训练模型及生成AI应用！(2024年完成)
 
 ## 预览
-- [DataPie](http://ec2-18-117-145-38.us-east-2.compute.amazonaws.com:3721/) - 原型预览
+- [DataPie](http://18.234.188.222:3721/) - 原型预览
 预览账号: guest/Guest@Pie3
 
 <p align="center">
@@ -42,10 +42,6 @@ DataPie是一个低代码数据平台，为快速构建AI和BI应用而生。
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/monitor-druid.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/monitor-knife4j.png">
 </p>
-
-- AI 演示
-
-https://github.com/GavinZha0/DataExplorer/assets/88469005/b6b143f6-8735-40f9-92c6-6ff64da2ffc5
 
 
 ## 文档

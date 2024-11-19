@@ -17,7 +17,7 @@ DataPie, a low-code data platform for AI and BI.
 - **AI application building**: Manage model and make application rapidly! (to be done in 2024)
 
 ## Preview
-- [DataPie](http://ec2-18-117-145-38.us-east-2.compute.amazonaws.com:3721/) - Vis prototype
+- [DataPie](http://18.234.188.222:3721/) - Vis prototype
 
 Guest account: guest/Guest@Pie3
 
@@ -44,14 +44,6 @@ Guest account: guest/Guest@Pie3
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/monitor-druid.png">
     <img alt="DataPie Logo" width="30%" src="/public/resource/img/doc/monitor-knife4j.png">
 </p>
-
-- AI demo
-
-
-
-
-https://github.com/GavinZha0/DataExplorer/assets/88469005/c42550be-ee6f-40fe-b223-1469310957e0
-
 
 
 

@@ -340,7 +340,7 @@
   } from '/@/api/ml/algorithm';
   import {
     API_AI_MODEL_CREATE,
-    API_AI_MODEL_DEL
+    API_AI_MODEL_REMOVE
   } from '../../../api/ai/model';
   import { API_ML_DATASET_TREE } from '/@/api/ml/dataset';
   import { ApiAlgorithmDataType, initAlgorithm } from '/@/api/ml/model/algorithm';
@@ -792,11 +792,12 @@ which one is better?
               style: {color: 'orange', padding: '3px'},
               onClick: () => { handleModelRegister(node); }
             }), 
-            // publish/unpublish a trial
-            h(PlayCircleOutlined, { 
-              style: {color: 'green', padding: '3px'}, 
-              onClick: () => { handleModelPublish(node); }
-            })
+            // disable this for now
+            // deploy/undeploy a trial
+            //h(PlayCircleOutlined, { 
+            //  style: {color: 'green', padding: '3px'}, 
+            //  onClick: () => { handleModelPublish(node); }
+            //})
           ]);
         }
       },
@@ -851,12 +852,11 @@ which one is better?
       });
     } else {
       // un-register trial
-      API_ML_EXPERIMENT_UNREG_TRIAL(rawData.value.id, node.version).then((response) => {
-        regTrial['version'] = 0;
-        API_AI_MODEL_DEL(1).then((rsp) => {
-          // do nothing        
-        });
-      });
+      API_AI_MODEL_REMOVE(rawData.value.id, node.version).then((rsp) => {
+        API_ML_EXPERIMENT_UNREG_TRIAL(rawData.value.id, node.version).then((response) => { 
+          regTrial['version'] = 0;
+        }); 
+      });  
     }
   };
 

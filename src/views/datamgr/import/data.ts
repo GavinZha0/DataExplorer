@@ -144,11 +144,11 @@ export const formTsAttrSchema: FormSchema[] = [
       maxTagCount: 1,
       options: [
         { label: 'MM/dd/yyyy HH:mm:ss', value: 'MM/dd/yyyy HH:mm:ss' }, // 03/15/2023 06:30:15;
-        { label: 'MM/dd/yyyy HH:mm a', value: 'MM/dd/yyyy HH:mm a' }, // 03/15/2023 06:30 AM
+        { label: 'MM/dd/yyyy hh:mm a', value: 'MM/dd/yyyy hh:mm a' }, // 03/15/2023 06:30 AM
         { label: 'MM/dd/yyyy HH:mm:ssX', value: 'MM/dd/yyyy HH:mm:ssX' }, // 03/15/2023 06:30:15+08
 
         { label: 'yyyy-MM-dd HH:mm:ss', value: 'yyyy-MM-dd HH:mm:ss' }, // 2023-03-15 06:30:15;
-        { label: 'yyyy-MM-dd HH:mm a', value: 'yyyy-MM-dd HH:mm a' }, // 2023-03-15 06:30 AM
+        { label: 'yyyy-MM-dd hh:mm a', value: 'yyyy-MM-dd hh:mm a' }, // 2023-03-15 06:30 AM
         { label: 'yyyy-MM-dd HH:mm:ssX', value: 'yyyy-MM-dd HH:mm:ssX' }, // 2023-03-15 06:30:15+08; RFC 3339
         { label: 'yyyy-MM-dd HH:mm:ss z', value: 'yyyy-MM-dd HH:mm:ss z' }, // 2015-05-05 10:15:30 PDT; 2015-05-05 10:15:30 Europe/Paris
         { label: "yyyy-MM-dd HH:mm:ss 'UTC'X", value: "yyyy-MM-dd HH:mm:ss 'UTC'X" }, // 2015-05-05 10:15:30 UTC+08:00

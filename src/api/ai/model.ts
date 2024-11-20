@@ -14,6 +14,7 @@ export const API = {
   AI_MODEL_PUBLIC: '/ai/model/public',
   AI_MODEL_CLONE: '/ai/model/clone',
   AI_MODEL_DELETE: '/ai/model/delete',
+  AI_MODEL_REMOVE: '/ai/model/remove',
   AI_MODEL_DEPLOY: '/py/ai/model/deploy',
   AI_MODEL_CATEGORY: '/ai/model/category',
   AI_MODEL_GROUPS: '/ai/model/groups',
@@ -115,13 +116,24 @@ export function API_AI_MODEL_CLONE(id: number) {
   });
 }
 
-/* delete a dataset
- * id: dataset id
+/* delete a AI model
+ * id: model id
  */
 export function API_AI_MODEL_DEL(id: number) {
   return defHttp.delete<AxiosResponse>({
     url: API.AI_MODEL_DELETE,
     params: { id: id },
+  });
+}
+
+/* delete a AI model
+ * id: algo id
+* version: registered version
+ */
+export function API_AI_MODEL_REMOVE(algoId: number, version: number) {
+  return defHttp.post<AxiosResponse>({
+    url: API.AI_MODEL_REMOVE,
+    data: { algoId: algoId, version: version },
   });
 }
 

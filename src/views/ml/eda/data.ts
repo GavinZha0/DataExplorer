@@ -337,11 +337,6 @@ export const outlierKnnOptionSchema: FormSchema[] = [
     }
   },
   {
-    field: 'umap',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.umap')
-  },
-  {
     field: 'd3',
     component: 'Switch',
     label: t('ml.eda.form.vis.outlier.d3')

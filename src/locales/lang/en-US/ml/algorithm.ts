@@ -29,6 +29,8 @@ export default {
         python: 'Python',
         sklearn: 'Sk-Learn',
         pytorch: 'PyTorch',
+        xgboost: 'XGBoost',
+        lightgbm: 'LightGBM',
         tensorflow: 'Tensorflow',
         java: 'Java',
         js: 'Javascript'

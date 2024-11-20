@@ -822,7 +822,7 @@
       setDrawerProps({ confirmLoading: true });
       API_ML_EDA_BUILD(rawData.value.datasetId, config.pid, kind, config).then((response) => {
         let respObj = response;
-        if (response.zip) {
+        if (response.zip && response.data) {
           // decode base64
           const binData = atob(response.data);
           const u8array = Uint8Array.from(binData, (m) => m.charCodeAt(0));
@@ -843,9 +843,9 @@
             break;
           }
           case 'plotly': {
-            let pData = respObj.data['data'];
-            let pLayout = respObj.data['layout'];
-            let pConfig = respObj.data['config'];
+            let pData = respObj.data?respObj.data['data']:[];
+            let pLayout = respObj.data?respObj.data['layout']:{};
+            let pConfig = respObj.data?respObj.data['config']:{};
 
             /*
             // layout 

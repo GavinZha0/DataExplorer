@@ -578,6 +578,14 @@
       await infoFormRef.value.setFieldsValue(data);
     }
 
+    datasourceInfo.value.groupSourceTree = [];
+    datasourceInfo.value.selectedSource.id = -1;
+    datasourceInfo.value.selectedTable = '';
+    selectedSourceField.value.id = [];
+    selectedSourceField.value.name = '';
+    expandedSourceField.value.id = [];
+    expandedSourceField.value.name = '';
+    
     // get drawer title
     if (data && data.id) {
       drawerTitle.value = '[' + data.name + ']';

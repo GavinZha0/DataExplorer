@@ -181,7 +181,7 @@
                   >
                     <template #headerCell="{ column }">
                       <template v-if="column.key === 'name'">
-                        {{ t('ml.algorithm.form.train.params.name') }}
+                        <a  @click="showAlgoDoc">{{ t('ml.algorithm.form.train.params.name') }} (?)</a>
                       </template>
                       <template v-else>
                         {{ t('ml.algorithm.form.train.params.value') }}
@@ -299,7 +299,7 @@
 <script lang="ts" setup name="DetailForm">
   import { ref, unref, h, reactive } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formChartSchema, formExperSchema, algoTplSklearn, paramColumns } from './data';
+  import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formExperSchema, algoTplSklearn, paramColumns } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { ApiTree, ApiSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
@@ -315,7 +315,7 @@
     HistoryOutlined,
     HddOutlined,
     StarOutlined,
-    PlayCircleOutlined
+    SmileOutlined
   } from '@ant-design/icons-vue';
   import { CodeEditor } from '/@/components/CodeEditor';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -326,7 +326,9 @@
     MenuItem,
     Row,
     Col,
-    Tabs
+    Tabs,
+    notification,
+    Button
   } from 'ant-design-vue';
   import {
     API_ML_ALGO_CREATE,
@@ -348,6 +350,7 @@
   import { cloneDeep } from 'lodash-es';
   import { BasicTable } from '/@/components/Table';
   import { emitter } from '/@/utils/event';
+
 
   const { t } = useI18n();
   const drawerTitle = ref<string>(t('common.form.new'));
@@ -374,6 +377,7 @@
   const paramList = ref<any[]>([]);
   const DATE_TIME_FORMAT = 'MM/DD/YYYY HH:mm';
   let frameVers = {};
+  let algoArgDocCache = ref<any>({});
 
 /*
 BasicTree: ok
@@ -431,19 +435,39 @@ which one is better?
       }
 
       if(data.algoName){
-        // get arguments of the algo
-        const arg_params = {...unref(algoParams), algo: data.algoName}
-        API_ML_ALGO_ARGS(arg_params).then((response) => {
-            paramList.value = response.records;
-            if(data.trainCfg?.params){
-              for(const p in data.trainCfg.params){
-                const pIdx = paramList.value.findIndex((el)=>el.name == p);
-                if(pIdx >= 0){
-                  paramList.value[pIdx]['value'] = data.trainCfg.params[p];
-                }
+        if(algoArgDocCache.value[data.algoName]){
+          paramList.value = algoArgDocCache.value[data.algoName].args;
+          if(data.trainCfg?.params){
+            // set value to new parameters if parameter have configed value
+            for(const p in data.trainCfg.params){
+              // find parameter with same name
+              const pIdx = paramList.value.findIndex((el)=>el.name == p);
+              if(pIdx >= 0){
+                // migrate parameter value
+                paramList.value[pIdx]['value'] = data.trainCfg.params[p];
               }
             }
-        });
+          }
+        } else {
+          // get arguments of the algo
+          const arg_params = {...unref(algoParams), algo: data.algoName}
+          API_ML_ALGO_ARGS(arg_params).then((response) => {
+            // cache algo, parameter and doc
+            algoArgDocCache.value[response.records.algo] = {args: response.records.args, doc: response.records.doc};
+
+              paramList.value = response.records.args;
+              if(data.trainCfg?.params){
+                // set value to parameters if parameters have configed value
+                for(const p in data.trainCfg.params){
+                  // find parameter with same name
+                  const pIdx = paramList.value.findIndex((el)=>el.name == p);
+                  if(pIdx >= 0){
+                    paramList.value[pIdx]['value'] = data.trainCfg.params[p];
+                  }
+                }
+              }
+          });
+        }
       }
       
       // get experiment list
@@ -648,6 +672,7 @@ which one is better?
     }
     return nodePid;
   };
+
   /*
   * algo name selection
   */
@@ -657,15 +682,54 @@ which one is better?
     }
     // clean up parameters
     rawData.value.trainCfg['params'] = {};
+    rawData.value.algoName = names[0];
 
     // build source code without parameters
     buildSrcCode();
 
-    // get arguments of the algo
-    const arg_params = {...unref(algoParams), algo: names[0]}
-    API_ML_ALGO_ARGS(arg_params).then((response) => {
-        paramList.value = response.records;
-    });
+    if(algoArgDocCache.value[names[0]]){
+      paramList.value = algoArgDocCache.value[names[0]].args;
+    } else {
+      // get arguments of the algo
+      const arg_params = {...unref(algoParams), algo: names[0]}
+      API_ML_ALGO_ARGS(arg_params).then((response) => {
+        algoArgDocCache.value[response.records.algo] = {args: response.records.args, doc: response.records.doc};
+        paramList.value = response.records.args;
+      });
+    }
+  };
+
+
+  /*
+  * show algo doc for help
+  */
+  const showAlgoDoc = () => {
+    if(rawData.value.algoName){
+      if(algoArgDocCache.value[rawData.value.algoName]){
+        notification.open({
+          key: 'algo-help',
+          //icon: () => h(SmileOutlined, { style: 'color: #108ee9' }),
+          message: '[Help] - ' + rawData.value.algoName,
+          description: algoArgDocCache.value[rawData.value.algoName].doc,
+          placement: 'bottomLeft',
+          duration: 45,
+          style: {
+            width: '640px',
+            height: '800px',
+            whiteSpace: 'pre',
+            overflowY: 'auto'
+          },
+          btn: () => h(
+            Button,
+            {
+              size: 'small',
+              onClick: () => notification.close('algo-help')
+            },
+            { default: () => 'Close' }
+          ),
+        });
+      }
+    }
   };
 
   const buildSrcCode = () =>{

@@ -25,7 +25,7 @@ export const indexColumns: BasicColumn[] = [
     title: t('ai.model.table.title.area'),
     dataIndex: 'area',
     key: 'area',
-    width: 80,
+    width: 70,
     sorter: true,
     align: 'left',
   },
@@ -40,35 +40,29 @@ export const indexColumns: BasicColumn[] = [
     title: t('ai.model.table.title.algo'),
     dataIndex: 'algoName',
     key: 'algo',
-    width: 200,
+    width: 180,
     sorter: true,
+    align: 'left'
   },
   {
     title: t('common.table.title.version'),
     dataIndex: 'version',
     key: 'version',
-    width: 100
+    width: 80
   },
   {
     title: t('ai.model.table.title.eval'),
     dataIndex: 'eval',
     key: 'eval',
     align: 'left',
-    width: 150,
-  },
-  {
-    title: t('ai.model.table.title.rate'),
-    dataIndex: 'rate',
-    key: 'rate',
-    width: 150,
-    sorter: true,
+    width: 110,
   },
   {
     title: t('ai.model.table.title.deployTo'),
     dataIndex: 'deployTo',
     key: 'deployTo',
     align: 'left',
-    width: 100,
+    width: 90,
   },
   {
     title: t('ai.model.table.title.endpoint'),
@@ -147,7 +141,7 @@ export const formInfoSchema: FormSchema[] = [
     colProps: { span: 24 },
     componentProps: {
       options: [
-        { label: 'MlFlow', value: 'MlFlow' },
+        { label: 'MLflow', value: 'MLflow' },
         { label: 'Ray', value: 'Ray' },
         { label: 'Docker', value: 'Docker' },
         { label: 'K8s', value: 'K8s' },

@@ -1379,7 +1379,7 @@ export const tsQuantileOptionSchema: FormSchema[] = [
         { label: 'Year', value: 'Y' },
         { label: 'Quarater', value: 'Q' },
         { label: 'Month', value: 'M' },
-        { label: 'Week', value: 'us' },
+        { label: 'Week', value: 'W' },
         { label: 'Day', value: 'D' },
         { label: 'Hour', value: 'H' },
         { label: 'Minute', value: 'min' },

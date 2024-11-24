@@ -27,7 +27,7 @@ free -h
 # kill 12345
 
 # stop node server
-#pm2 delete all
+# pm2 delete all
 
 
 # -----------------------------------------------------------------------

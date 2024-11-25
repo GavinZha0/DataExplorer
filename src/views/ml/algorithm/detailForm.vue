@@ -817,7 +817,7 @@ which one is better?
 
     // execute algo training
     API_ML_ALGO_EXECUTE(rawData.value.id, rawData.value.framework).then((response) => {
-      emitter.emit('INFO', `${rawData.value.algoName}: training is scheduled!`);
+      emitter.emit('INFO', `${rawData.value.name}: Job is scheduled!`);
     });
   };
 

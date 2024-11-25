@@ -30,7 +30,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { createWebSocket } from "/@/utils/http/ws/webstomp";
   import { useUserStore } from '/@/store/modules/user';
-  import { MSG_CODE, WsMsg, MlJobException, MlStepReport, MlEpochReport, MlTrialReport, MlExperReport } from '/@/api/ws/model/message';
+  import { MSG_CODE, WsMsg, MlJobReport, MlStepReport, MlEpochReport, MlTrialReport, MlExperReport } from '/@/api/ws/model/message';
 
   export default defineComponent({
     components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList },
@@ -49,8 +49,8 @@
       const wsMsgHandler = (msg) => {
         const wsMsg: WsMsg = JSON.parse(msg.body);
         switch (wsMsg.code){
-          case MSG_CODE.ML_JOB_EXCEPTION:
-            handleJobException(wsMsg.msg, wsMsg.data);
+          case MSG_CODE.ML_JOB_REPORT:
+            handleJobReport(wsMsg.msg, wsMsg.data);
             break;
           case MSG_CODE.ML_STEP_REPORT:
             handleStepReport(wsMsg.data);
@@ -75,7 +75,7 @@
         createWebSocket(userId, channel, wsMsgHandler);
       }
 
-      const handleJobException= (msg: string, report: MlJobException) => {
+      const handleJobReport= (msg: string, report: MlJobReport) => {
         for(const cat of listData.value){
           if(cat.key == 'notice'){
             // new job started

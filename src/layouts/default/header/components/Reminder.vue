@@ -16,7 +16,7 @@
   import { emitter } from '/@/utils/event';
   import { useUserStore } from '/@/store/modules/user';
   import { createWebSocket } from "/@/utils/http/ws/webstomp";
-  import { MSG_CODE, WsMsg, MlJobException, MlStepReport, MlEpochReport, MlTrialReport, MlExperReport } from '/@/api/ws/model/message';
+  import { MSG_CODE, WsMsg, MlJobReport, MlStepReport, MlEpochReport, MlTrialReport, MlExperReport } from '/@/api/ws/model/message';
 
   const userStore = useUserStore();
   const userId = userStore.getUserInfo?.id;
@@ -33,10 +33,20 @@
       data.value.avatar = null;
     }
     switch (wsMsg.code){
-      case MSG_CODE.ML_JOB_EXCEPTION:
-        let reportE: MlJobException = wsMsg.data;
-        data.value.type = 'error';
-        data.value.msg = reportE.name + ': error!';
+      case MSG_CODE.ML_JOB_REPORT:
+        let reportJ: MlJobReport = wsMsg.data;
+        if(reportJ.detail){
+          data.value.type = 'error';
+          data.value.msg = reportJ.name + ': error!';
+        } else {
+          if(reportJ.progress && reportJ.progress==1){
+            data.value.type = 'success';
+            data.value.msg = reportJ.name + ': job started!';
+          } else if(reportJ.progress && reportJ.progress==100){
+            // data.value.type = 'success';
+            // data.value.msg = reportJ.name + ': job completed!';
+          }
+        }
         break;
       case MSG_CODE.ML_STEP_REPORT:
         let reportS: MlStepReport = wsMsg.data;
@@ -53,13 +63,20 @@
         break;
       case MSG_CODE.ML_EXPERIMENT_REPORT:
         let reportM: MlExperReport = wsMsg.data;
-        data.value.type = 'success';
+        
         if(reportM.progress == 1){
           // new job started
+          data.value.type = 'success';
           data.value.msg = reportM.name + ': training started!';
         } else if (reportM.progress == 100) {
-          // job completed
-          data.value.msg = reportM.name + ': training completed!';
+          if(reportM.rate == 100){
+            // job completed
+            data.value.type = 'success';
+          } else {
+            // job completed with failure
+            data.value.type = 'error';
+          }
+          data.value.msg = reportM.name + ': training completed! Success rate ' + reportM.rate + '%';
         }
         break;
       default:

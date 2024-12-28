@@ -133,7 +133,7 @@
                     {{ t('ml.dataset.detail.table.action.target') }}
                   </template>
                   <AimOutlined class="ml-2"
-                               :style="{ fontSize: '16px', color: column.target ? '#08c' : 'gray', cursor: 'pointer' }"
+                               :style="{ fontSize: '16px', color: column.target ? 'red' : 'gray', cursor: 'pointer' }"
                                @click="handleColumnTarget(column.key)" />
                 </Tooltip>
                 <Tooltip>
@@ -449,7 +449,6 @@
       </MenuItem>
     </Menu>
     <VarModal @register="registerVarModal" @success="handleVarSuccess" />
-    <FilterModal @register="registerFilterModal" @success="handleFilterSuccess" />
   </BasicDrawer>
 </template>
 
@@ -560,9 +559,6 @@
 
   // Variable modal definition
   const [registerVarModal, { openModal: openVarModal }] = useModal();
-
-  // filter modal definition
-  const [registerFilterModal, { openModal: openFilterModal }] = useModal();
 
   // drawer data initialization
   const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (data) => {

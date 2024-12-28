@@ -328,6 +328,38 @@ export const formConfigSchema: FormSchema[] = [
   },
 ];
 
+// transform form schema for image
+export const formTransformSchema: FormSchema[] = [
+  {
+    field: 'operation',
+    component: 'Select',
+    label: t('dataviz.dataset.form.transform.operation'),
+    componentProps: {
+      options: [
+        { label: t('dataviz.dataset.form.transform.operation.crop'), value: 'crop' }, // 剪裁
+        { label: t('dataviz.dataset.form.transform.operation.resize'), value: 'resize' }, // 缩放
+        { label: t('dataviz.dataset.form.transform.operation.pad'), value: 'pad' }, // 对图像边框进行填充
+        { label: t('dataviz.dataset.form.transform.operation.brightness'), value: 'brightness' }, // 亮度
+        { label: t('dataviz.dataset.form.transform.operation.contrast'), value: 'contrast' }, // 对比度
+        { label: t('dataviz.dataset.form.transform.operation.saturation'), value: 'saturation' }, // 饱和度
+        { label: t('dataviz.dataset.form.transform.operation.sharpness'), value: 'sharpness' }, // 锐度
+        { label: t('dataviz.dataset.form.transform.operation.hue'), value: 'hue' }, // 色调
+        { label: t('dataviz.dataset.form.transform.operation.rotate'), value: 'rotate' }, // 旋转角度
+        { label: t('dataviz.dataset.form.transform.operation.blur'), value: 'blur' }, // 高斯模糊
+        { label: t('dataviz.dataset.form.transform.operation.grayscale'), value: 'grayscale' }, // 将图像转换为灰度图像
+        { label: t('dataviz.dataset.form.transform.operation.hflip'), value: 'hflip' }, // 水平翻转
+        { label: t('dataviz.dataset.form.transform.operation.vflip'), value: 'vflip' }, // 垂直翻转
+      ],
+    },
+    colProps: { span: 24 }
+  },
+  {
+    field: 'param',
+    component: 'Input',
+    label: t('dataviz.dataset.form.transform.param')
+  }
+];
+
 export const varModalSchemas: FormSchema[] = [
   {
     field: 'type',
@@ -362,39 +394,4 @@ export const varModalSchemas: FormSchema[] = [
   },
 ];
 
-export const filterModalSchemas: FormSchema[] = [
-  {
-    field: 'key',
-    component: 'Input',
-    required: true,
-    label: '',
-    colProps: { span: 24 },
-    show: false,
-  },
-  {
-    field: 'operator',
-    label: t('dataviz.dataset.form.filter.operator'),
-    required: true,
-    component: 'Select',
-    componentProps: {
-      options: [
-        { label: '>', value: '>' },
-        { label: '>=', value: '>=' },
-        { label: '<', value: '<' },
-        { label: '<=', value: '<=' },
-        { label: '=', value: '=' },
-        { label: '!=', value: '!=' },
-        { label: 'in', value: 'in' },
-        { label: 'like', value: 'like' },
-      ],
-    },
-    colProps: { span: 24 },
-  },
-  {
-    field: 'value',
-    component: 'Input',
-    required: true,
-    label: t('dataviz.dataset.form.filter.value'),
-    colProps: { span: 24 },
-  },
-];
+

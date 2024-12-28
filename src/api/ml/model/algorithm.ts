@@ -5,8 +5,7 @@ export interface ApiAlgorithmDataType {
   group?: string;
   category?: string;
   algoName?: string;
-  framework?: string;
-  frameVer?: string;
+  tags?: any|null;
   srcCode?: string;
   dataCfg?: DataConfigType|null,
   trainCfg?: TrainConfigType|null;
@@ -57,9 +56,8 @@ export const initAlgorithm: ApiAlgorithmDataType = {
   name: '',
   desc: '',
   group: '',
-  framework: 'sklearn',
+  tags: [],
   category: 'clf',
-  frameVer: '3.11',
   algoName: '',
   srcCode: '',
   dataCfg: initDataCfg,

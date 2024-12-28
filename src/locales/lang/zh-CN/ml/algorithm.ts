@@ -9,9 +9,9 @@ export default {
   },
   table: {
     title: {
-      language: '语言',
-      lang_ver: '语言版本',
-      version: '版本',
+      tags: '标签',
+      algo_name: '参考算法',
+      dataset: 'Dataset',
       yes: '是',
       no: '否',
     },
@@ -25,22 +25,17 @@ export default {
   },
   form: {
     algo: {
-      framework: {
-        python: 'Python',
-        sklearn: 'Sk-Learn',
-        pytorch: 'PyTorch',
-        xgboost: 'XGBoost',
-        lightgbm: 'LightGBM',
-        tensorflow: 'Tensorflow',
-        java: 'Java',
-        js: 'Javascript'
-      },
       category: {
-        clf: '分类',
-        reg: '回归',
-        cluster: '聚类',
-        vision: '影像',
-        audio: '语音'
+        sklearn: 'Scikit-Learn',
+        classic: '经典算法',
+        pytorch: 'PyTorch',
+        classifier: '分类算法',
+        regressor: '回归算法',
+        cluster: '聚类算法',
+        transformer: 'Transformer',
+        vision: '影像算法',
+        audio: '语音算法',
+        custom: '自定义算法'
       },
       algo_name: '算法'
     },

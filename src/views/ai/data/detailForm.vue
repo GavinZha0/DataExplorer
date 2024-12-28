@@ -405,15 +405,28 @@
     rawData.value.modelId = modelId;
     // find model and schema
     const selModel = modelList.value.find((it)=>it.id==modelId);
-    inputFields.value = selModel.schema;
 
-    for(let field of columnFields.value){
-      // update column alias if column name matches with one of schema
-      const matchField = inputFields.value.find((it)=>it.name==field.title);
-      if(matchField){
-        field.alias = field.title;
-      } else {
-        field.alias = '???';
+    // schema like [{name: 'a', required: true, type: 'double'}]
+    if(selModel.schema) {
+      inputFields.value = selModel.schema;
+    } else if (rawData.value.fields){
+      inputFields.value = [];
+      for(let field in rawData.value.fields){
+        inputFields.value.push({name: field, required: true});
+      }
+    } else {
+      inputFields.value = [];
+    }
+    
+    if(inputFields.value){
+      for(let field of columnFields.value){
+        // update column alias if column name matches with one of schema
+        const matchField = inputFields.value.find((it)=>it.name==field.title);
+        if(matchField){
+          field.alias = field.title;
+        } else {
+          field.alias = '???';
+        }
       }
     }
 
@@ -632,7 +645,21 @@
             const backData = cloneDeep(dataPreview.data);
             dataPreview.data = [];
             for(let i=0; i<response.predictions.length; i++){
-              backData[i]['predictions'] = response.predictions[i];
+              let pred = response.predictions[i]; 
+              if(pred instanceof Object){
+                // like {0: 7, 1: 3, 2: -2}
+                let labelIdx = 0;
+                let labelProb = 0;
+                for(const key in pred){
+                  if(pred[key] > labelProb){
+                    labelProb = pred[key];
+                    labelIdx = key;
+                  }
+                }
+                backData[i]['predictions'] = labelIdx + ' (' + labelProb.toFixed(2) + ')';
+              } else {
+                backData[i]['predictions'] = pred;
+              }
             }
             // table will be udpated due to data change
             dataPreview.data = backData;
@@ -667,8 +694,12 @@
     let mappedColumns = {};
     const arrayData = [];
 
-    if(rawData.value.fields && rawData.value.fields.length > 0){
+    // fields is a map like {a: 'aaa', b: 'bbb'}
+    if(rawData.value.fields){
       mappedColumns = rawData.value.fields;
+      for(const name in mappedColumns){
+        columns.push(name);
+      }
     } else {
       for(const sch of model.schema){
         columns.push(sch.name);
@@ -681,7 +712,7 @@
       rawData.value.fields = mappedColumns;
     }
 
-    if(Object.keys(mappedColumns).length == columns.length){
+    if(Object.keys(mappedColumns).length > 0){
       for(const dt of data){
         const record = [];
         for(const name in mappedColumns){

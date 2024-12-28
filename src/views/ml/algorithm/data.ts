@@ -23,19 +23,24 @@ export const indexColumns: BasicColumn[] = [
     align: 'left',
   },
   {
+    title: t('common.table.title.desc'),
+    dataIndex: 'desc',
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: t('common.table.title.group'),
     dataIndex: 'group',
     key: 'group',
-    width: 100,
+    width: 150,
     sorter: true,
     resizable: true,
     align: 'left',
   },
   {
-    title: t('common.table.title.desc'),
-    dataIndex: 'desc',
-    resizable: true,
-    align: 'left',
+    title: t('ml.algorithm.table.title.tags'),
+    dataIndex: 'tags',
+    align: 'left'
   },
   {
     title: t('ml.algorithm.table.title.algo_name'),
@@ -43,18 +48,6 @@ export const indexColumns: BasicColumn[] = [
     width: 200,
     sorter: true,
     align: 'left'
-  },
-  {
-    title: t('ml.algorithm.table.title.framework'),
-    dataIndex: 'framework',
-    width: 120,
-    sorter: true
-  },
-  {
-    title: t('ml.algorithm.table.title.frame_ver'),
-    dataIndex: 'frameVer',
-    width: 120,
-    sorter: true,
   },
   {
     title: t('ml.algorithm.table.title.dataset'),
@@ -109,6 +102,16 @@ export const formInfoSchema: FormSchema[] = [
     colProps: { span: 24 },
   },
   {
+    field: 'tags',
+    label: t('ml.algorithm.table.title.tags'),
+    component: 'Select',
+    labelWidth: 200,
+    colProps: { span: 24 },
+    componentProps: {
+      mode: "tags"
+    }
+  },
+  {
     field: 'createdBy',
     label: t('common.table.title.created_by'),
     component: 'Input',
@@ -149,70 +152,64 @@ export const formInfoSchema: FormSchema[] = [
 // algo form schema
 export const formAlgoSchema: FormSchema[] = [
   {
-    field: 'framework',
-    label: t('ml.algorithm.table.title.framework'),
-    required: true,
-    defaultValue: 'sklearn',
-    component: 'Select',
-    componentProps: ({ formModel, formActionType }) => {
-      return {
-        allowClear: false,
-        options: [
-          { label: t('ml.algorithm.form.algo.framework.python'), value: 'python' },
-          { label: t('ml.algorithm.form.algo.framework.sklearn'), value: 'sklearn' },
-          { label: t('ml.algorithm.form.algo.framework.xgboost'), value: 'xgboost' },
-          { label: t('ml.algorithm.form.algo.framework.lightgbm'), value: 'lightgbm' },
-          { label: t('ml.algorithm.form.algo.framework.pytorch'), value: 'pytorch' },
-          { label: t('ml.algorithm.form.algo.framework.tensorflow'), value: 'tensorflow' },
-          { label: t('ml.algorithm.form.algo.framework.java'), value: 'java' },
-          { label: t('ml.algorithm.form.algo.framework.js'), value: 'js' }
-        ],
-        onChange: (frame: any) => {
-          let catOptions = [];
-          if (frame == 'sklearn') {
-            catOptions = [
-              { label: t('ml.algorithm.form.algo.category.clf'), value: 'clf' },
-              { label: t('ml.algorithm.form.algo.category.reg'), value: 'reg' },
-              { label: t('ml.algorithm.form.algo.category.cluster'), value: 'cluster' }
-            ];
-          } else if (frame == 'pytorch') {
-            catOptions = [
-              { label: t('ml.algorithm.form.algo.category.vision'), value: 'vision' },
-              { label: t('ml.algorithm.form.algo.category.audio'), value: 'audio' },
-            ];
-          }
-          formModel.category = undefined; //  reset category value
-          const { updateSchema } = formActionType;
-          updateSchema({
-            field: 'category',
-            componentProps: {
-              options: catOptions
-            },
-          });
-        }
-      }
-    },
-    labelWidth: 80,
-    colProps: { span: 24 }
-  },
-  {
     field: 'category',
     label: t('common.table.title.category'),
     required: true,
-    component: 'Select',
-    defaultValue: 'clf',
+    labelWidth: 80,
+    colProps: { span: 24 },
+    component: 'TreeSelect',
     componentProps: {
-      allowClear: true,
-      options: [
-        { label: t('ml.algorithm.form.algo.category.clf'), value: 'clf' },
-        { label: t('ml.algorithm.form.algo.category.reg'), value: 'reg' },
-        { label: t('ml.algorithm.form.algo.category.cluster'), value: 'cluster' },
-        { label: t('ml.algorithm.form.algo.category.vision'), value: 'vision' },
-        { label: t('ml.algorithm.form.algo.category.audio'), value: 'audio' }
+      treeData: [
+        {
+          label: t('ml.algorithm.form.algo.category.classic'),
+          value: 'classic',
+          selectable: true,
+          children: [] // xgboost, lightgbm, som...
+        },
+        {
+          label: t('ml.algorithm.form.algo.category.sklearn'),
+          value: 'sklearn',
+          selectable: false,
+          children: [
+            {
+              label: t('ml.algorithm.form.algo.category.classifier'),
+              value: 'sklearn.classifier'
+            },
+            {
+              label: t('ml.algorithm.form.algo.category.regressor'),
+              value: 'sklearn.regressor'
+            },
+            {
+              label: t('ml.algorithm.form.algo.category.cluster'),
+              value: 'sklearn.cluster'
+            },
+            {
+              label: t('ml.algorithm.form.algo.category.transformer'),
+              value: 'sklearn.transformer'
+            }
+          ]
+        },
+        {
+          label: t('ml.algorithm.form.algo.category.pytorch'),
+          value: 'pytorch',
+          selectable: false,
+          children: [
+            {
+              label: t('ml.algorithm.form.algo.category.vision'),
+              value: 'pytorch.vision'
+            },
+            {
+              label: t('ml.algorithm.form.algo.category.audio'),
+              value: 'pytorch.audio'
+            },
+            {
+              label: t('ml.algorithm.form.algo.category.custom'),
+              value: 'pytorch.custom'
+            }
+          ]
+        },
       ],
     },
-    labelWidth: 80,
-    colProps: { span: 24 }
   },
   {
     field: 'div-label',
@@ -332,23 +329,6 @@ export const formTrainSchema: FormSchema[] = [
     label: t('ml.algorithm.form.train.metrics'),
     component: 'Input',
     slot: 'score',
-    componentProps: {
-      options: [
-        { label: t('ml.algorithm.form.train.metrics.acc'), value: 'acc' },
-        { label: t('ml.algorithm.form.train.metrics.r2'), value: 'r2' },
-        { label: t('ml.algorithm.form.train.metrics.mape'), value: 'mape' },
-        { label: t('ml.algorithm.form.train.metrics.auc'), value: 'auc' },
-        { label: t('ml.algorithm.form.train.metrics.recall'), value: 'recall' },
-        { label: t('ml.algorithm.form.train.metrics.prec'), value: 'prec' },
-        { label: t('ml.algorithm.form.train.metrics.f1'), value: 'f1' },
-        { label: t('ml.algorithm.form.train.metrics.kappa'), value: 'kappa' },
-        { label: t('ml.algorithm.form.train.metrics.mcc'), value: 'mcc' },
-        { label: t('ml.algorithm.form.train.metrics.mae'), value: 'mae' },
-        { label: t('ml.algorithm.form.train.metrics.mse'), value: 'mse' },
-        { label: t('ml.algorithm.form.train.metrics.rmse'), value: 'rmse' },
-        { label: t('ml.algorithm.form.train.metrics.rmsle'), value: 'rmsle' }
-      ],
-    },
     labelWidth: 80,
     colProps: { span: 18 }
   },
@@ -467,60 +447,238 @@ class MySklearnModel(PythonModel):
           return None
 `;
 
-// algo template (for MLflowLoggerCallback())
+// algo template of sklearn
 export const algoTplSklearn = `
 # python version: {PYTHON_VER}, sklearn version: {SKLEARN_VER}
 import ray
-import mlflow
-import matplotlib
-from mlflow.utils.mlflow_tags import MLFLOW_RUN_NAME, MLFLOW_USER
-from sklearn.{MODULE} import {ALGORITHM}
 from sklearn import metrics
+from sklearn.{MODULE} import {ALGORITHM}
 
 class CustomTrain:
   def train(config: dict, data: dict):
-    setup_mlflow()
+    train_y = val_x = val_y = None
+    train_x = data.get('train_x').to_pandas()
+    if data.get('train_y'):
+      train_y = data.get('train_y').to_pandas()
+    if data.get('val_x'):
+      val_x = data.get('val_x').to_pandas()
+    if data.get('val_y'):
+      val_y = data.get('val_y').to_pandas()
 
     estimator = {ALGORITHM}({PARAMS})
-    for epoch in range(config.get("epochs", {EPOCHS})):
-      estimator.fit(data['x'], data['y'])
-      metrics_fn = metrics.get_scorer('{SCORE_NAME}')
-      metrics_value = metrics_fn(estimator, data['x'], data['y'])
-      ray.train.report({"{SCORE_NAME}": metrics_value})
+    estimator.fit(train_x, train_y)
+    val_pred = estimator.predict(val_x)
+    metrics_fn = metrics.get_scorer('{SCORE_NAME}')
+    metrics_value = metrics_fn(estimator, val_x, val_y)
+    ray.train.report({"{SCORE_NAME}": metrics_value})
 `;
 
-// algo template (for setup_mlflow())
-export const algoTplSklearn_backup = `
-import mlflow
-import ray
-import matplotlib
-from ray.air.integrations.mlflow import setup_mlflow
-from sklearn.{MODULE} import {ALGORITHM}
-from sklearn.metrics import *
+// algo template of lightning for data
+export const algoTplPytorch = `
+# pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
+import torch.nn as nn
+import torch.nn.functional as F
+from {MODULE}.models import {ALGORITHM}
 
-class CustomAlgo:
-  def train(config: dict, data: dict):
-    setup_mlflow(
-      config,
-      experiment_id=config.get("exper_id", None),
-      experiment_name=config.get("exper_name", None),
-      tracking_uri=config.get("tracking_uri", None),
-      artifact_location=config.get("artifact_location", None),
-      create_experiment_if_not_exists=True,
-      run_name=config.get("run_name", None),
-      tags=config.get("exper_tags", None)
-    )
-    mlflow.set_tracking_uri(config.get("tracking_url"))
-    mlflow.set_experiment(experiment_id=config.get("exper_id"))
-    # mlflow.set_tag(MLFLOW_RUN_NAME, ray.train.get_context().get_trial_id())
-    # mlflow.set_tag(MLFLOW_USER, f'{config.get("org_id")}_{config.get("user_id")}_{config.get("user_name")}')
-    matplotlib.use('agg')
-    mlflow.autolog()
+class CustomModel(pl.LightningModule):
+    def __init__(self,config: dict):
+        super().__init__()
+        self.config = config
+        self.model = {ALGORITHM}({PARAMS})
+        # update base model
+        self.model.conv1 = nn.Conv2d(
+          1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False
+        )
 
-    model = {ALGORITHM}({PARAMS})
-    for epoch in range(config.get("epochs", 1)):
-      model.fit(data['x'], data['y'])
-      y_predict = model.predict(data['x'])
-      {METRIC_FUNC}
-      ray.train.report({{METRICS}})
+    def forward(self, x):
+        return self.model(x)
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = F.cross_entropy(y_hat, y)
+        self.log('train_loss', loss)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = F.cross_entropy(y_hat, y)
+        self.log('val_loss', loss)
+        return loss
+
+    def configure_optimizers(self):
+        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        return optimizer
+`;
+
+// algo template of FNN
+export const algoTplPytorchFNN = `
+# pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
+import torch.nn as nn
+import torch.nn.functional as F
+
+class CustomModel(pl.LightningModule):
+    def __init__(self,config: dict):
+        super().__init__()
+        self.config = config
+        # define model
+        self.model = nn.Sequential(
+            nn.Linear(8, 128),
+            nn.ReLU(),
+            nn.Linear(128, 256)
+            nn.ReLU(),
+            nn.Linear(256, 1)
+          )
+
+    def forward(self, x):
+        return self.model(x)
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = F.cross_entropy(y_hat, y)
+        self.log('train_loss', loss)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = F.cross_entropy(y_hat, y)
+        self.log('val_loss', loss)
+        return loss
+
+    def configure_optimizers(self):
+        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        return optimizer
+`;
+
+
+// algo template of FNN
+export const algoTplPytorchRNN = `
+# pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
+import torch.nn as nn
+import torch.nn.functional as F
+
+class CustomModel(pl.LightningModule):
+    def __init__(self,config: dict):
+        super().__init__()
+        self.config = config
+        # define model
+        self.rnn = nn.RNN(
+            input_size=6,
+            hidden_size=32,
+            num_layers=1,
+            batch_first=True
+        )
+        self.out = nn.Linear(32, 1)
+        self.criteria = nn.MSELoss()
+
+    def forward(self, x):
+        h0 = torch.zeros(1, x.size(0), hidden_size).to(x.device)
+        out, _ = self.rnn(x, h0)
+        out = self.fc(out)
+        return out
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = self.criteria(y_hat, y)
+        self.log('train_loss', loss)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = self.criteria(y_hat, y)
+        self.log('val_loss', loss)
+        return loss
+
+    def configure_optimizers(self):
+        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        return optimizer
+`;
+
+// algo template of CNN
+export const algoTplPytorchCNN = `
+# pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
+import torch.nn as nn
+import torch.nn.functional as F
+
+class CustomModel(pl.LightningModule):
+    def __init__(self,config: dict):
+        super().__init__()
+        self.config = config
+        # define model
+        self.model = nn.Sequential(
+            Conv2d(3,32,5,padding=2),
+            MaxPool2d(2),
+            Conv2d(32, 32, 5, padding=2),
+            MaxPool2d(2),
+            Conv2d(32, 64, 5, padding=2),
+            MaxPool2d(2),
+            Flatten(),
+            Linear(1024, 64),
+            Linear(64, 10)
+        ）
+
+    def forward(self, x):
+        return self.model(x)
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = F.cross_entropy(y_hat, y)
+        self.log('train_loss', loss)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = F.cross_entropy(y_hat, y)
+        self.log('val_loss', loss)
+        return loss
+
+    def configure_optimizers(self):
+        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        return optimizer
+`;
+
+// algo template of CNN
+export const algoTplPytorchLSTM = `
+# pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
+import torch.nn as nn
+import torch.nn.functional as F
+
+class CustomModel(pl.LightningModule):
+    def __init__(self,config: dict):
+        super().__init__()
+        self.config = config
+        # define model
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_size, 1) 
+        self.criteria = nn.MSELoss()
+
+    def forward(self, x):
+        out, _ = self.lstm(x)
+        out = self.fc(out[:, -1, :])  # Get the last time step
+        return out
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = self.criteria(y_hat, y)
+        self.log('train_loss', loss)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = self.criteria(y_hat, y)
+        self.log('val_loss', loss)
+        return loss
+
+    def configure_optimizers(self):
+        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        return optimizer
 `;

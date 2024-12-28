@@ -31,6 +31,7 @@
                   placeholder="Input code"
                   v-model:value="rawData.srcCode"
                   mode="python"
+                  :readonly="readonly"
                 />
               </div>
             </Tabs.TabPane>
@@ -92,7 +93,7 @@
                 <template #algoName="{ model, field }">
                   <ApiTree
                     :api="API_ML_ALGO_ALGOS"
-                    :params="algoParams"
+                    :params="algoCategory"
                     :immediate="true"
                     :height="600"
                     v-model:value="model[field]"
@@ -159,7 +160,7 @@
                 <template #score="{ model, field }">
                   <ApiSelect
                     :api="API_ML_ALGO_SCORES"
-                    :params="algoParams"
+                    :params="algoCategory"
                     :immediate="true"
                     v-model:value="model[field]"
                     @select="handleScoreSelection"
@@ -299,7 +300,8 @@
 <script lang="ts" setup name="DetailForm">
   import { ref, unref, h, reactive } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formExperSchema, algoTplSklearn, paramColumns } from './data';
+  import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formExperSchema, algoTplSklearn, algoTplPytorch, paramColumns, 
+    algoTplPytorchFNN, algoTplPytorchCNN, algoTplPytorchRNN, algoTplPytorchLSTM } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { ApiTree, ApiSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
@@ -368,7 +370,7 @@
   const experData = ref<any[]>([]);
   const selExperItem = ref<[]>([]);
   const selExperId = ref<number[]>([]);
-  const algoParams = reactive<any>({framework: 'sklearn', category: 'clf'});
+  const algoCategory = ref<string>('');
   const selectedAlgo = ref<string[]>([]);
   const expandedAlgo = ref<string[]>([]);
   const selectedDataset = ref<number[]>([]);
@@ -378,6 +380,7 @@
   const DATE_TIME_FORMAT = 'MM/DD/YYYY HH:mm';
   let frameVers = {};
   let algoArgDocCache = ref<any>({});
+  const readonly = ref<boolean>(false);
 
 /*
 BasicTree: ok
@@ -409,8 +412,7 @@ which one is better?
     if(data.id){
       // save received data
       rawData.value = data;
-      algoParams.framework = data.framework;
-      algoParams.category = data.category;
+      algoCategory.value = data.category;
 
       // pass received data to info form
       if (infoFormRef.value) {
@@ -450,8 +452,7 @@ which one is better?
           }
         } else {
           // get arguments of the algo
-          const arg_params = {...unref(algoParams), algo: data.algoName}
-          API_ML_ALGO_ARGS(arg_params).then((response) => {
+          API_ML_ALGO_ARGS(algoCategory.value, data.algoName).then((response) => {
             // cache algo, parameter and doc
             algoArgDocCache.value[response.records.algo] = {args: response.records.args, doc: response.records.doc};
 
@@ -504,6 +505,7 @@ which one is better?
    * update parameter
    */
    function handleParamEditEnd({ index, key, value }: Recordable) {
+    // paramList: [{name:'aaa', default: 'bbb', value:'ccc'}]
     rawData.value.trainCfg.params[paramList.value[index]['name']] = value.trim();
     // build source code based on updated parameters
     buildSrcCode();
@@ -532,13 +534,7 @@ which one is better?
   */
   const handleAlgoFormChange = (key: string, value: string) => {
     // as query parameter to get algo list
-    if(key == 'framework'){
-      // clearn category when frameowrk is changed
-      algoParams[key] = value;
-      algoParams['category'] = null;
-    } else if (key == 'category'){
-      algoParams[key] = value;
-    }
+    algoCategory.value = value;
   };
 
 
@@ -683,20 +679,25 @@ which one is better?
     // clean up parameters
     rawData.value.trainCfg['params'] = {};
     rawData.value.algoName = names[0];
-
-    // build source code without parameters
-    buildSrcCode();
+    for(let param of paramList.value){
+      // paramList: [{name:'aaa', default: 'bbb', value:'ccc'}]
+      if(param['value']!=undefined){
+        delete param['value'];
+      }
+    }
 
     if(algoArgDocCache.value[names[0]]){
       paramList.value = algoArgDocCache.value[names[0]].args;
     } else {
       // get arguments of the algo
-      const arg_params = {...unref(algoParams), algo: names[0]}
-      API_ML_ALGO_ARGS(arg_params).then((response) => {
+      API_ML_ALGO_ARGS(algoCategory.value, names[0]).then((response) => {
         algoArgDocCache.value[response.records.algo] = {args: response.records.args, doc: response.records.doc};
         paramList.value = response.records.args;
       });
     }
+
+    // build source code without parameters
+    buildSrcCode();
   };
 
 
@@ -735,53 +736,87 @@ which one is better?
   const buildSrcCode = () =>{
     const algoName = selectedAlgo.value[0]
     let modelName = null;
-    if(algoParams.framework == 'sklearn'){
-      let tplCode = cloneDeep(algoTplSklearn);
-      for(let node in algoTree){
+    let tplCode = '';
+    for(let node in algoTree){
         if(algoTree[node].indexOf(algoName)>=0){
           modelName = node;
           break;
         }
       }
-      
-      tplCode = tplCode.replaceAll('{PYTHON_VER}', frameVers['python']);
-      tplCode = tplCode.replaceAll('{SKLEARN_VER}', frameVers['sklearn']);
-      tplCode = tplCode.replaceAll('{MODULE}', modelName);
-      tplCode = tplCode.replaceAll('{ALGORITHM}', algoName);
 
-      // build arguments based on parameters
-      let paramArray: string[] = [];
-      if(rawData.value.trainCfg?.params){
-        for(let item in rawData.value.trainCfg.params){
-          const pValue = rawData.value.trainCfg.params[item];
-          if(pValue.trim() != ''){
-            paramArray.push(`${item}=config['${item}']`);
-          }
+    if(algoCategory.value.startsWith('sklearn')){
+      tplCode = buildSklearnCode(algoName, modelName);
+    } else if(algoCategory.value.startsWith('pytorch')){
+      tplCode = buildPytorchCode(algoName, modelName);
+    } else if(algoCategory.value.startsWith('classic')){
+      tplCode = buildPytorchCode(algoName, modelName);
+    } 
+    rawData.value.srcCode = tplCode;
+  };
+
+  const buildSklearnCode = (algoName: string, modelName: string) => {
+    let tplCode = cloneDeep(algoTplSklearn);
+    tplCode = tplCode.replaceAll('{PYTHON_VER}', frameVers['python']);
+    tplCode = tplCode.replaceAll('{SKLEARN_VER}', frameVers['sklearn']);
+    tplCode = tplCode.replaceAll('{MODULE}', modelName);
+    tplCode = tplCode.replaceAll('{ALGORITHM}', algoName);
+
+    // build arguments based on parameters
+    let paramArray: string[] = [];
+    if(rawData.value.trainCfg?.params){
+      for(let item in rawData.value.trainCfg.params){
+        const pValue = rawData.value.trainCfg.params[item];
+        if(pValue.trim() != ''){
+          paramArray.push(`${item}=config['${item}']`);
         }
       }
-      let paramArgStr = paramArray.join();
-      tplCode = tplCode.replaceAll('{PARAMS}', paramArgStr);
-
-      if(rawData.value.trainCfg?.epochs){
-        tplCode = tplCode.replaceAll('{EPOCHS}', rawData.value.trainCfg?.epochs);
-      } else {
-        tplCode = tplCode.replaceAll('{EPOCHS}', '1');
-      }
-      
-
-      if(rawData.value.trainCfg?.score){
-        const mScore = rawData.value.trainCfg?.score;
-        if(mScore == 'silhouette_score' || mScore == 'calinski_harabasz_score'){
-          // the two scores are not available for metrics.get_scorer()
-          // the two scores don't need target values(y)
-          tplCode = tplCode.replaceAll("get_scorer('{SCORE_NAME}')", mScore);
-          tplCode = tplCode.replaceAll("estimator, data['x'], data['y']", "data['x'], estimator.labels_");
-        } 
-        tplCode = tplCode.replaceAll('{SCORE_NAME}', mScore);
-      }
-      rawData.value.srcCode = tplCode;
     }
+    let paramArgStr = paramArray.join();
+    tplCode = tplCode.replaceAll('{PARAMS}', paramArgStr);
+
+    if(rawData.value.trainCfg?.epochs){
+      tplCode = tplCode.replaceAll('{EPOCHS}', rawData.value.trainCfg?.epochs);
+    } else {
+      tplCode = tplCode.replaceAll('{EPOCHS}', '1');
+    }
+    
+
+    if(rawData.value.trainCfg?.score){
+      const mScore = rawData.value.trainCfg?.score;
+      if(mScore == 'silhouette_score' || mScore == 'calinski_harabasz_score' || mScore == 'davies_bouldin_score'){
+        // the 3 scores are not available for metrics.get_scorer()
+        // the 3 scores don't need target values(y) but predict y
+        tplCode = tplCode.replaceAll("get_scorer('{SCORE_NAME}')", mScore);
+        tplCode = tplCode.replaceAll("estimator, val_x, val_y", "val_x, val_pred");
+      } 
+      tplCode = tplCode.replaceAll('{SCORE_NAME}', mScore);
+    }
+
+    return tplCode;
   };
+
+
+  const buildPytorchCode = (algoName: string, modelName: string) => {
+    let tplCode = cloneDeep(algoTplPytorch);
+    if(modelName == 'classic'){
+      if(algoName == 'Convolutional NN'){
+        tplCode = cloneDeep(algoTplPytorchCNN);
+      } else if(algoName=='Feedforward NN'){
+        tplCode = cloneDeep(algoTplPytorchFNN);
+      } else if(algoName=='LSTM NN'){
+        tplCode = cloneDeep(algoTplPytorchLSTM);
+      } else if(algoName=='Recurrent NN'){
+        tplCode = cloneDeep(algoTplPytorchRNN);
+      }
+    }
+
+    tplCode = tplCode.replaceAll('{PYTORCH_VER}', frameVers['pytorch']);
+    tplCode = tplCode.replaceAll('{LIGHTNING_VER}', frameVers['lightning']);
+    tplCode = tplCode.replaceAll('{MODULE}', modelName);
+    tplCode = tplCode.replaceAll('{ALGORITHM}', algoName);
+    return tplCode;
+  }
+
   /*
   * dataset selection
   */
@@ -816,7 +851,7 @@ which one is better?
     //await handleSubmit();
 
     // execute algo training
-    API_ML_ALGO_EXECUTE(rawData.value.id, rawData.value.framework).then((response) => {
+    API_ML_ALGO_EXECUTE(rawData.value.id, rawData.value.category).then((response) => {
       emitter.emit('INFO', `${rawData.value.name}: Job is scheduled!`);
     });
   };
@@ -993,9 +1028,8 @@ which one is better?
       rawData.value.name = info.name;
       rawData.value.desc = info.desc;
       rawData.value.group = info.group;
+      rawData.value.tags = info.tags;
 
-      rawData.value.framework = algo.framework;
-      rawData.value.frameVer = frameVers[algo.framework];
       rawData.value.category = algo.category;
       rawData.value.algoName = selectedAlgo.value[0];
     

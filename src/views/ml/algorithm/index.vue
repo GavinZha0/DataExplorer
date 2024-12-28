@@ -39,12 +39,14 @@
             @click="() => handleEdit(record)"
           >
         </template>
-        <template v-else-if="column.key === 'framework'">
+        <template v-else-if="column.key === 'tags'">
           <Tag
-            color='green'
+            v-for="(tag, index) in record.tags"
+            :key="index"
+            color="green"
             style="margin-right: 2px"
           >
-            {{ record.framework }}
+            {{ tag }}
           </Tag>
         </template>
         <template v-else-if="column.key === 'pubFlag'">

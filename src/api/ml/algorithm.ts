@@ -3,6 +3,7 @@ import { defHttp } from '/@/utils/http/axios';
 import { AxiosResponse } from 'axios';
 import { ApiAlgorithmDataType } from '/@/api/ml/model/algorithm';
 
+const pyFramework = ['classic', 'sklearn', 'pytorch'];
 //----------------------------------------------------------------------------------------
 // PATH definition
 export const API = {
@@ -110,10 +111,10 @@ export function API_ML_ALGO_DEL(id: number) {
 /* execute dataset to query data
  * id: algo id
  */
-export function API_ML_ALGO_EXECUTE(id: number, framework: string) {
-  const pyFrames = ['python', 'sklearn', 'pytorch', 'tensorflow'];
+export function API_ML_ALGO_EXECUTE(id: number, category: string) {
   let url = API.ML_ALGO_EXECUTE;
-  if(pyFrames.includes(framework)){
+  const framework = category.split('.')[0];
+  if(pyFramework.includes(framework)){
     // send to python server
     url = '/py' + url;
   }
@@ -147,18 +148,18 @@ export function API_ML_ALGO_GROUPS() {
 /* get existing algos
  *
  */
-export function API_ML_ALGO_ALGOS(params: any) {
-  if(params.framework && params.category){
-    const pyFrames = ['python', 'sklearn', 'pytorch', 'tensorflow'];
+export function API_ML_ALGO_ALGOS(category: string) {
+  if(category){
+    const framework = category.split('.')[0];
     let url = API.ML_ALGO_ALGOS;
-    if(pyFrames.includes(params.framework)){
+    if(pyFramework.includes(framework)){
       // send to python server
       url = '/py' + url;
     }
 
     return defHttp.post<AxiosResponse>({
       url: url,
-      data: params
+      data: {category: category}
     });
   }
 }
@@ -173,39 +174,40 @@ export function API_ML_ALGO_VERS() {
 }
 
 /* get arguments of algo
- *
+ * params: {category: 'clf', algo: 'svm'}
  */
-export function API_ML_ALGO_ARGS(params: any) {
-  if(params.framework && params.category){
-    const pyFrames = ['python', 'sklearn', 'pytorch', 'tensorflow'];
+export function API_ML_ALGO_ARGS(category: string, algo: string) {
+  // params
+  if(category){
+    const framework = category.split('.')[0];
     let url = API.ML_ALGO_ARGS;
-    if(pyFrames.includes(params.framework)){
+    if(pyFramework.includes(framework)){
       // send to python server
       url = '/py' + url;
     }
 
     return defHttp.post<AxiosResponse>({
       url: url,
-      data: params
+      data: {category: category, algo: algo}
     });
   }
 }
 
 /* get eval scores of algo
- *
+ * params: {category: 'clf'}
  */
-export function API_ML_ALGO_SCORES(params: any) {
-  if(params.framework && params.category){
-    const pyFrames = ['python', 'sklearn', 'pytorch', 'tensorflow'];
+export function API_ML_ALGO_SCORES(category: string) {
+  if(category){
+    const framework = category.split('.')[0];
     let url = API.ML_ALGO_SCORES;
-    if(pyFrames.includes(params.framework)){
+    if(pyFramework.includes(framework)){
       // send to python server
       url = '/py' + url;
     }
 
     return defHttp.post<AxiosResponse>({
       url: url,
-      data: params
+      data: {category: category}
     });
   }
 }

@@ -8,9 +8,8 @@ export default {
   },
   table: {
     title: {
-      framework: 'Framework',
-      frame_ver: 'Frame Ver',
-      algo_name: 'Algo Name',
+      tags: 'Tags',
+      algo_name: 'Reference Algo',
       dataset: 'Dataset',
       yes: 'Yes',
       no: 'No',
@@ -25,22 +24,17 @@ export default {
   },
   form: {
     algo: {
-      framework: {
-        python: 'Python',
-        sklearn: 'Sk-Learn',
-        pytorch: 'PyTorch',
-        xgboost: 'XGBoost',
-        lightgbm: 'LightGBM',
-        tensorflow: 'Tensorflow',
-        java: 'Java',
-        js: 'Javascript'
-      },
       category: {
-        clf: 'Classification',
-        reg: 'Regression',
-        cluster: 'Clustering',
+        sklearn: 'Scikit-Learn',
+        classic: 'Classic',
+        pytorch: 'PyTorch',
+        classifier: 'Classifier',
+        regressor: 'Regressor',
+        cluster: 'Cluster',
+        transformer: 'Transformer',
         vision: 'Vison',
-        audio: 'Audio'
+        audio: 'Audio',
+        custom: 'Custom'
       },
       algo_name: 'Algorithm'
     },

@@ -1624,7 +1624,8 @@ export const tsPredictOptionSchema: FormSchema[] = [
         { label: 'Autoregressive Moving Average', value: 'arima' },
         { label: 'Auto ARIMA', value: 'autoarima' },
         { label: 'auto ETS', value: 'autoets' },
-        { label: 'FB Prophet', value: 'fb' }
+        { label: 'Prophet', value: 'prophet' },
+        { label: 'DeepAR', value: 'deepar' }
       ]
     }
   },

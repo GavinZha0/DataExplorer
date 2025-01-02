@@ -16,6 +16,7 @@ export default {
     stats: {
       title: 'Statistics',
       count: 'Count',
+      nunique: 'N-Unique',
       unique: 'Unique',
       dataType: 'Type',
       max: 'Max',

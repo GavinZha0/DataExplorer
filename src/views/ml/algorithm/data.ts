@@ -45,7 +45,7 @@ export const indexColumns: BasicColumn[] = [
   {
     title: t('ml.algorithm.table.title.algo_name'),
     dataIndex: 'algoName',
-    width: 200,
+    width: 300,
     sorter: true,
     align: 'left'
   },
@@ -161,10 +161,34 @@ export const formAlgoSchema: FormSchema[] = [
     componentProps: {
       treeData: [
         {
-          label: t('ml.algorithm.form.algo.category.classic'),
-          value: 'classic',
-          selectable: true,
-          children: [] // xgboost, lightgbm, som...
+          label: t('ml.algorithm.form.algo.category.ann'),
+          value: 'ann',
+          selectable: false,
+          children: [
+            {
+              label: t('ml.algorithm.form.algo.category.som'),
+              value: 'ann.som'
+            },
+          ] 
+        },
+        {
+          label: t('ml.algorithm.form.algo.category.boost'),
+          value: 'boost',
+          selectable: false,
+          children: [
+            {
+              label: t('ml.algorithm.form.algo.category.xgboost'),
+              value: 'boost.xgboost'
+            },
+            {
+              label: t('ml.algorithm.form.algo.category.lightgbm'),
+              value: 'boost.lightgbm'
+            },
+            {
+              label: t('ml.algorithm.form.algo.category.catboost'),
+              value: 'boost.catboost'
+            }
+          ] 
         },
         {
           label: t('ml.algorithm.form.algo.category.sklearn'),
@@ -681,4 +705,27 @@ class CustomModel(pl.LightningModule):
     def configure_optimizers(self):
         optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
         return optimizer
+`;
+
+// algo template of sklearn
+export const algoTplXGBoost = `
+# python version: {PYTHON_VER}, XGBoost version: {XGBOOST_VER}
+import ray
+from ray.tune.integration.xgboost import TuneReportCheckpointCallback
+import xgboost as xgb
+# from sklearn import metrics
+
+class CustomTrain:
+  def train(config: dict, data: dict):
+    train_y = val_x = val_y = None
+    train_x = data.get('train_x').to_pandas()
+    if data.get('train_y'):
+      train_y = data.get('train_y').to_pandas()
+    if data.get('val_x'):
+      val_x = data.get('val_x').to_pandas()
+    if data.get('val_y'):
+      val_y = data.get('val_y').to_pandas()
+
+    estimator = xgb.{ALGORITHM}({PARAMS})
+    estimator.fit(train_x, train_y, eval_set=[(val_x, val_y)])
 `;

@@ -28,6 +28,13 @@ export default {
       category: {
         sklearn: 'Scikit-Learn',
         classic: '经典算法',
+        ann: '人工神经网络',
+        som: '自组织映射',
+        minisom: 'MiniSOM',
+        boost: '提升树',
+        xgboost: 'XGBoost',
+        lightgbm: 'LightGBM',
+        catboost: 'CatBoost',
         pytorch: 'PyTorch',
         classifier: '分类算法',
         regressor: '回归算法',

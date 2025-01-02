@@ -86,9 +86,15 @@ export const dataStatColumns: BasicColumn[] = [
     resizable: true
   },
   {
+    title: t('ml.dataset.tab.stats.nunique'),
+    dataIndex: 'nunique',
+    width: 80,
+    align: 'left',
+    resizable: true
+  },
+  {
     title: t('ml.dataset.tab.stats.unique'),
     dataIndex: 'unique',
-    width: 80,
     align: 'left',
     resizable: true
   },
@@ -108,7 +114,7 @@ export const dataStatColumns: BasicColumn[] = [
   {
     title: t('ml.dataset.tab.stats.min'),
     dataIndex: 'min',
-    width: 90,
+    width: 70,
     sorter: true,
     align: 'left',
     resizable: true
@@ -132,7 +138,7 @@ export const dataStatColumns: BasicColumn[] = [
   {
     title: t('ml.dataset.tab.stats.mean'),
     dataIndex: 'mean',
-    width: 90,
+    width: 70,
     sorter: true,
     align: 'left',
     resizable: true
@@ -148,7 +154,7 @@ export const dataStatColumns: BasicColumn[] = [
   {
     title: t('ml.dataset.tab.stats.max'),
     dataIndex: 'max',
-    width: 90,
+    width: 70,
     sorter: true,
     align: 'left',
     resizable: true

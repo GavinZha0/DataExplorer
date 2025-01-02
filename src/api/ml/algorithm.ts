@@ -3,7 +3,7 @@ import { defHttp } from '/@/utils/http/axios';
 import { AxiosResponse } from 'axios';
 import { ApiAlgorithmDataType } from '/@/api/ml/model/algorithm';
 
-const pyFramework = ['classic', 'sklearn', 'pytorch'];
+const pyFramework = ['ann', 'boost', 'sklearn', 'pytorch'];
 //----------------------------------------------------------------------------------------
 // PATH definition
 export const API = {
@@ -14,14 +14,14 @@ export const API = {
   ML_ALGO_PUBLIC: '/ml/algo/public',
   ML_ALGO_CLONE: '/ml/algo/clone',
   ML_ALGO_DELETE: '/ml/algo/delete',
-  ML_ALGO_EXECUTE: '/ml/algo/execute',
+  ML_ALGO_EXECUTE: '/py/ml/algo/execute',
   ML_ALGO_EXECUTE_SCRIPT: '/ml/algo/execute_script',
   ML_ALGO_GROUPS: '/ml/algo/groups',
   ML_ALGO_ONE: '/ml/algo/getone',
-  ML_ALGO_ALGOS: '/ml/algo/algos',
+  ML_ALGO_ALGOS: '/py/ml/algo/algos',
   ML_ALGO_VERS: '/py/ml/algo/vers',
-  ML_ALGO_ARGS: '/ml/algo/args',
-  ML_ALGO_SCORES: '/ml/algo/scores'
+  ML_ALGO_ARGS: '/py/ml/algo/args',
+  ML_ALGO_METRICS: '/py/ml/algo/metrics'
 }
 
 /* get all algo as list
@@ -112,14 +112,8 @@ export function API_ML_ALGO_DEL(id: number) {
  * id: algo id
  */
 export function API_ML_ALGO_EXECUTE(id: number, category: string) {
-  let url = API.ML_ALGO_EXECUTE;
-  const framework = category.split('.')[0];
-  if(pyFramework.includes(framework)){
-    // send to python server
-    url = '/py' + url;
-  }
   return defHttp.post<AxiosResponse>({
-    url: url,
+    url: API.ML_ALGO_EXECUTE,
     params: { id: id },
   });
 }
@@ -146,19 +140,12 @@ export function API_ML_ALGO_GROUPS() {
 }
 
 /* get existing algos
- *
+ * category: 'boost.xgboost'
  */
 export function API_ML_ALGO_ALGOS(category: string) {
   if(category){
-    const framework = category.split('.')[0];
-    let url = API.ML_ALGO_ALGOS;
-    if(pyFramework.includes(framework)){
-      // send to python server
-      url = '/py' + url;
-    }
-
     return defHttp.post<AxiosResponse>({
-      url: url,
+      url: API.ML_ALGO_ALGOS,
       data: {category: category}
     });
   }
@@ -174,40 +161,25 @@ export function API_ML_ALGO_VERS() {
 }
 
 /* get arguments of algo
- * params: {category: 'clf', algo: 'svm'}
+ * params: {category: 'boost.xgboost', algo: 'XGBClassifier'}
  */
 export function API_ML_ALGO_ARGS(category: string, algo: string) {
-  // params
-  if(category){
-    const framework = category.split('.')[0];
-    let url = API.ML_ALGO_ARGS;
-    if(pyFramework.includes(framework)){
-      // send to python server
-      url = '/py' + url;
-    }
-
+  if(algo){
     return defHttp.post<AxiosResponse>({
-      url: url,
+      url: API.ML_ALGO_ARGS,
       data: {category: category, algo: algo}
     });
   }
 }
 
-/* get eval scores of algo
- * params: {category: 'clf'}
+/* get eval metrics of algo
+ * params: {category: 'sklearn.classifier', algo: 'svm'}
  */
-export function API_ML_ALGO_SCORES(category: string) {
-  if(category){
-    const framework = category.split('.')[0];
-    let url = API.ML_ALGO_SCORES;
-    if(pyFramework.includes(framework)){
-      // send to python server
-      url = '/py' + url;
-    }
-
+export function API_ML_ALGO_METRICS(params: any) {
+  if (params && params.algo){
     return defHttp.post<AxiosResponse>({
-      url: url,
-      data: {category: category}
+      url: API.ML_ALGO_METRICS,
+      data: params
     });
   }
 }

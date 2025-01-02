@@ -93,7 +93,7 @@
                 <template #algoName="{ model, field }">
                   <ApiTree
                     :api="API_ML_ALGO_ALGOS"
-                    :params="algoCategory"
+                    :params="rawData.category"
                     :immediate="true"
                     :height="600"
                     v-model:value="model[field]"
@@ -159,8 +159,8 @@
                 >
                 <template #score="{ model, field }">
                   <ApiSelect
-                    :api="API_ML_ALGO_SCORES"
-                    :params="algoCategory"
+                    :api="API_ML_ALGO_METRICS"
+                    :params="algoReference"
                     :immediate="true"
                     v-model:value="model[field]"
                     @select="handleScoreSelection"
@@ -301,7 +301,7 @@
   import { ref, unref, h, reactive } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
   import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formExperSchema, algoTplSklearn, algoTplPytorch, paramColumns, 
-    algoTplPytorchFNN, algoTplPytorchCNN, algoTplPytorchRNN, algoTplPytorchLSTM } from './data';
+    algoTplPytorchFNN, algoTplPytorchCNN, algoTplPytorchRNN, algoTplPytorchLSTM, algoTplXGBoost } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { ApiTree, ApiSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
@@ -317,7 +317,6 @@
     HistoryOutlined,
     HddOutlined,
     StarOutlined,
-    SmileOutlined
   } from '@ant-design/icons-vue';
   import { CodeEditor } from '/@/components/CodeEditor';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -339,7 +338,7 @@
     API_ML_ALGO_ALGOS,
     API_ML_ALGO_VERS,
     API_ML_ALGO_ARGS,
-    API_ML_ALGO_SCORES,
+    API_ML_ALGO_METRICS,
     API_ML_ALGO_EXECUTE
   } from '/@/api/ml/algorithm';
   import {
@@ -370,7 +369,7 @@
   const experData = ref<any[]>([]);
   const selExperItem = ref<[]>([]);
   const selExperId = ref<number[]>([]);
-  const algoCategory = ref<string>('');
+  const algoReference = reactive({category:'', algo:''});
   const selectedAlgo = ref<string[]>([]);
   const expandedAlgo = ref<string[]>([]);
   const selectedDataset = ref<number[]>([]);
@@ -412,7 +411,7 @@ which one is better?
     if(data.id){
       // save received data
       rawData.value = data;
-      algoCategory.value = data.category;
+      algoReference.category = data.category;
 
       // pass received data to info form
       if (infoFormRef.value) {
@@ -420,9 +419,6 @@ which one is better?
       }
       if (algoFormRef.value){
         algoFormRef.value.setFieldsValue(data);
-        if(data.algoName){
-          selectedAlgo.value = [data.algoName];
-        }
       }
 
       if (dataFormRef.value && data.dataCfg) {
@@ -437,6 +433,7 @@ which one is better?
       }
 
       if(data.algoName){
+        algoReference.algo = data.algoName;
         if(algoArgDocCache.value[data.algoName]){
           paramList.value = algoArgDocCache.value[data.algoName].args;
           if(data.trainCfg?.params){
@@ -452,7 +449,7 @@ which one is better?
           }
         } else {
           // get arguments of the algo
-          API_ML_ALGO_ARGS(algoCategory.value, data.algoName).then((response) => {
+          API_ML_ALGO_ARGS(data.category, data.algoName).then((response) => {
             // cache algo, parameter and doc
             algoArgDocCache.value[response.records.algo] = {args: response.records.args, doc: response.records.doc};
 
@@ -533,8 +530,14 @@ which one is better?
   * algo form config change
   */
   const handleAlgoFormChange = (key: string, value: string) => {
-    // as query parameter to get algo list
-    algoCategory.value = value;
+    if(key == 'category'){
+      // as query parameter to get algo list
+      rawData.value.category = value;
+      algoReference.category = value;
+      // clear algo name
+      rawData.value.algoName = '';
+      algoReference.algo = '';
+    }
   };
 
 
@@ -625,25 +628,34 @@ which one is better?
   * cache algo tree after get it from backend
   */
   const afterFetchAlgos = (data: any) =>{
+    // data: {group1: [algo1, algo2], group2: [alog3, algo4]}
     algoTree = data;
     const algoTreeList: any[] = [];
     if(data){
       // build algo tree
       for(const pname in data){
-        if(data[pname].length>0){
+        if(pname == 'root'){
+          // don't show root
+          for(const cname of data[pname]){
+            const node: any = {key: cname, title: cname, value: cname, selectable: true};
+            algoTreeList.push(node);
+          }
+        } else {
           const node: any = {key: pname, title: pname, value: pname, selectable: false, children: []};
           for(const cname of data[pname]){
-            node.children.push({key: cname, title: cname, value: cname});
-          }
-          algoTreeList.push(node);
-          if(selectedAlgo.value[0]){
-            if(data[pname].indexOf(selectedAlgo.value[0]) >= 0){
+            node.children.push({key: pname + '.' + cname, title: cname, value: pname + '.' + cname});
+            if(rawData.value.algoName && rawData.value.algoName == pname + '.' + cname){
               expandedAlgo.value = [pname];
             }
           }
+          algoTreeList.push(node);
         }
       } 
+      selectedAlgo.value = [rawData.value.algoName];
     }
+
+    // return algo tree list
+    // algoTreeList: [{key: 'group1', title: 'group1', value: 'group1', children: [{key: 'algo1', title: 'algo1', value: 'group1.algo1'}]}]
     return algoTreeList;
   };
 
@@ -672,13 +684,16 @@ which one is better?
   /*
   * algo name selection
   */
-  const handleAlgoSelection = (names: string[]) => {
-    if(names.length==0){
+  const handleAlgoSelection = (keys: string[]) => {
+    if(keys.length==0){
       return;
     }
+    const algoName = keys[0];
+    algoReference.algo = algoName;
+
     // clean up parameters
     rawData.value.trainCfg['params'] = {};
-    rawData.value.algoName = names[0];
+    rawData.value.algoName = algoName;
     for(let param of paramList.value){
       // paramList: [{name:'aaa', default: 'bbb', value:'ccc'}]
       if(param['value']!=undefined){
@@ -686,11 +701,11 @@ which one is better?
       }
     }
 
-    if(algoArgDocCache.value[names[0]]){
-      paramList.value = algoArgDocCache.value[names[0]].args;
+    if(algoArgDocCache.value[algoName]){
+      paramList.value = algoArgDocCache.value[algoName].args;
     } else {
       // get arguments of the algo
-      API_ML_ALGO_ARGS(algoCategory.value, names[0]).then((response) => {
+      API_ML_ALGO_ARGS(rawData.value.category, algoName).then((response) => {
         algoArgDocCache.value[response.records.algo] = {args: response.records.args, doc: response.records.doc};
         paramList.value = response.records.args;
       });
@@ -734,27 +749,22 @@ which one is better?
   };
 
   const buildSrcCode = () =>{
-    const algoName = selectedAlgo.value[0]
-    let modelName = null;
     let tplCode = '';
-    for(let node in algoTree){
-        if(algoTree[node].indexOf(algoName)>=0){
-          modelName = node;
-          break;
-        }
-      }
-
-    if(algoCategory.value.startsWith('sklearn')){
-      tplCode = buildSklearnCode(algoName, modelName);
-    } else if(algoCategory.value.startsWith('pytorch')){
-      tplCode = buildPytorchCode(algoName, modelName);
-    } else if(algoCategory.value.startsWith('classic')){
-      tplCode = buildPytorchCode(algoName, modelName);
-    } 
+    if(rawData.value.category.startsWith('sklearn')){
+      tplCode = buildSklearnCode(rawData.value.algoName);
+    } else if(rawData.value.category.startsWith('pytorch')){
+      tplCode = buildPytorchCode(rawData.value.algoName);
+    } else if(rawData.value.category?.endsWith('xgboost')){
+      tplCode = buildXGBoostCode(rawData.value.algoName);
+    } else if(rawData.value.category?.endsWith('lightgbm')){
+      tplCode = buildXGBoostCode(rawData.value.algoName);
+    }
     rawData.value.srcCode = tplCode;
   };
 
-  const buildSklearnCode = (algoName: string, modelName: string) => {
+  const buildSklearnCode = (algo: string) => {
+    const modelName = algo.split('.')[0];
+    const algoName = algo.split('.')[1];
     let tplCode = cloneDeep(algoTplSklearn);
     tplCode = tplCode.replaceAll('{PYTHON_VER}', frameVers['python']);
     tplCode = tplCode.replaceAll('{SKLEARN_VER}', frameVers['sklearn']);
@@ -796,7 +806,38 @@ which one is better?
   };
 
 
-  const buildPytorchCode = (algoName: string, modelName: string) => {
+  const buildXGBoostCode = (algoName: string) => {
+    let tplCode = cloneDeep(algoTplXGBoost);
+    tplCode = tplCode.replaceAll('{PYTHON_VER}', frameVers['python']);
+    tplCode = tplCode.replaceAll('{XGBOOST_VER}', frameVers['xgboost']);
+    tplCode = tplCode.replaceAll('{ALGORITHM}', algoName);
+
+    // build arguments based on parameters
+    let paramArray: string[] = ['callbacks=[TuneReportCheckpointCallback()]'];
+    if(rawData.value.trainCfg?.params){
+      for(let item in rawData.value.trainCfg.params){
+        const pValue = rawData.value.trainCfg.params[item];
+        if(pValue.trim() != ''){
+          paramArray.push(`${item}=config['${item}']`);
+        }
+      }
+    }
+    
+    if(rawData.value.trainCfg?.score){
+      const mScore = rawData.value.trainCfg?.score;
+      paramArray.push(`eval_metric='${mScore}'`);
+    }
+
+    let paramArgStr = paramArray.join();
+    tplCode = tplCode.replaceAll('{PARAMS}', paramArgStr);
+
+    return tplCode;
+  };
+
+
+  const buildPytorchCode = (algo: string) => {
+    const modelName = algo.split('.')[0];
+    const algoName = algo.split('.')[1];
     let tplCode = cloneDeep(algoTplPytorch);
     if(modelName == 'classic'){
       if(algoName == 'Convolutional NN'){
@@ -1029,10 +1070,7 @@ which one is better?
       rawData.value.desc = info.desc;
       rawData.value.group = info.group;
       rawData.value.tags = info.tags;
-
-      rawData.value.category = algo.category;
-      rawData.value.algoName = selectedAlgo.value[0];
-    
+   
       rawData.value.dataCfg.evalRatio = data.evalRatio;
       rawData.value.dataCfg.shuffle = data.shuffle==undefined?false:data.shuffle;
 

@@ -57,7 +57,7 @@ export const initAlgorithm: ApiAlgorithmDataType = {
   desc: '',
   group: '',
   tags: [],
-  category: 'clf',
+  category: '',
   algoName: '',
   srcCode: '',
   dataCfg: initDataCfg,

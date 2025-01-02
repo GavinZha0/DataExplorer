@@ -71,7 +71,7 @@
                               @resizeColumn="(w, col)=>{col.width = w;}">
                     <template #bodyCell="{ column, record }">
                       <template v-if="column.key == 'name' && record.target">
-                        <div style="margin-left: 5px; color: blue">{{ record.name }}</div>
+                        <div style="margin-left: 5px; color: red">{{ record.name }}</div>
                       </template>
                       <template v-if="column.key === 'missing'">
                         <div v-if="record.missing>0" style="margin-left: 5px; color: orange">{{ record.missing }}</div>
@@ -1212,7 +1212,6 @@
         delete item.dataIndex;
         delete item.title;
         delete item.ifShow;
-        delete item.unique;
         delete item.missing;
         delete item.min;
         delete item.max;
@@ -1227,6 +1226,9 @@
         delete item.count;
         delete item.freq;
         delete item.top;
+        if(item.unique == null){
+          delete item.unique;
+        }
 
         if (item.target) {
           clonedData.target.push(item.name);

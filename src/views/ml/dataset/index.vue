@@ -155,11 +155,10 @@ import { cloneDeep } from 'lodash-es';
     for(let i=0; i<records.length; i++){
       records[i]['features'] = [];
       for(const f of records[i].fields){
-        if(f.name != records[i].target[0]){
+        if(f.name != records[i].target[0] && (f.omit==undefined || f.omit==false)){
           records[i]['features'].push(f.name);
         }
       }
-      
     }
     return records;
   };

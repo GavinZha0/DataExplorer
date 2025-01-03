@@ -127,14 +127,13 @@
                                         :style="{ fontSize: '16px', color: 'gray', cursor: 'pointer' }"
                                         @click="handleColumnOmit(column.key)" />
                 </Tooltip>
-
                 <Tooltip>
                   <template #title>
-                    {{ t('ml.dataset.detail.table.action.target') }}
+                    {{ t('ml.dataset.detail.table.action.timeline') }}
                   </template>
-                  <AimOutlined class="ml-2"
-                               :style="{ fontSize: '16px', color: column.target ? 'red' : 'gray', cursor: 'pointer' }"
-                               @click="handleColumnTarget(column.key)" />
+                  <HourglassOutlined class="ml-2"
+                               :style="{ fontSize: '16px', color: column.timeline ? 'orange' : 'gray', cursor: 'pointer' }"
+                               @click="handleColumnTimeline(column.key)" />
                 </Tooltip>
                 <Tooltip>
                   <template #title>
@@ -170,6 +169,14 @@
                       </Menu>
                     </template>
                   </Dropdown>
+                </Tooltip>
+                <Tooltip>
+                  <template #title>
+                    {{ t('ml.dataset.detail.table.action.target') }}
+                  </template>
+                  <AimOutlined class="ml-2"
+                               :style="{ fontSize: '16px', color: column.target ? 'red' : 'gray', cursor: 'pointer' }"
+                               @click="handleColumnTarget(column.key)" />
                 </Tooltip>
                 <Tooltip>
                   <template #title>
@@ -477,7 +484,8 @@
     EnvironmentOutlined,
     FunctionOutlined,
     MergeCellsOutlined,
-    NodeIndexOutlined
+    NodeIndexOutlined,
+    HourglassOutlined
   } from '@ant-design/icons-vue';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
   import { Splitpanes, Pane } from 'splitpanes';
@@ -555,7 +563,7 @@
   const dbTables = ref<any>({ selected: undefined });
   const selectedSourceField = ref<any>({id:[], name:''});
   const expandedSourceField = ref<any>({id:[], name:''});
-  const statColumns = ref<any>({data: dataStatColumns, image: imgStatColumns});
+  const statColumns = ref<any>({data: dataStatColumns, timeseries: dataStatColumns, image: imgStatColumns});
 
   // Variable modal definition
   const [registerVarModal, { openModal: openVarModal }] = useModal();
@@ -958,6 +966,7 @@
       .then((response) => {
         datasetInfo.data = response.records;
         datasetInfo.total = response.total;
+        rawData.value.volume = response.total;
         rawData.value.fields = mergeConfig(response.stat, rawData.value.fields);
         buildColumns();
       });
@@ -1020,6 +1029,7 @@
         item.encode = field.encode;
         item.scale = field.scale;
         item.size = field.size;
+        item.timeline = field.timeline;
       }
 
       // convert array to string
@@ -1090,7 +1100,7 @@
   }
 
   /*
-   * change the column to dim or metrics
+   * mark the column as target
    */
   function handleColumnTarget(key: number) {
     // key was set to index when built columns
@@ -1099,6 +1109,21 @@
       rawField.target = true;
     } else {
       delete rawField.target; // delete unnecessary field for saving
+    }
+  }
+
+    /*
+   * mark the data type is timeseries
+   */
+   function handleColumnTimeline(key: number) {
+    // key was set to index when built columns
+    let rawField = rawData.value.fields[key];
+    if (rawField.target == undefined && rawField.attr == 'date') {
+      rawField.timeline = true;
+      rawData.value.type = 'timeseries';
+    } else {
+      delete rawField.timeline; // delete unnecessary field for saving
+      rawData.value.type = 'data';
     }
   }
 
@@ -1200,6 +1225,7 @@
       let clonedData = cloneDeep(unref(rawData));
       clonedData.transform = undefined;
       clonedData.target = [];
+      let fCount = 0;
       for (let item of clonedData.fields) {
         // update fields to remove unnecessary attributes of table
         delete item.width;
@@ -1232,8 +1258,12 @@
 
         if (item.target) {
           clonedData.target.push(item.name);
+        } else if(!item.omit){
+          fCount++;
         }
       }
+      clonedData.fCount = fCount;
+
       setDrawerProps({ confirmLoading: true });
       if (rawData.value.id) {
         API_ML_DATASET_UPDATE(clonedData).then(() => {

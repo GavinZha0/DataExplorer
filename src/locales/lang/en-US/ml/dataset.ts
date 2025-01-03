@@ -8,6 +8,7 @@ export default {
       target: 'Target',
       variable: 'Variable',
       query: 'Query',
+      volume: 'Volume',
       field: 'Field Name',
       source: 'Datasource'
     },

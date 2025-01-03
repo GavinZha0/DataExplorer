@@ -8,6 +8,7 @@ export default {
       target: '目标',
       variable: '变量',
       query: '查询',
+      volume: '数据量',
       fCount: '特征数',
       source: '数据源',
     },

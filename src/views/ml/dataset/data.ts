@@ -25,7 +25,7 @@ export const indexColumns: BasicColumn[] = [
     title: t('common.table.title.desc'),
     dataIndex: 'desc',
     align: 'left',
-    width: 200,
+    width: 250,
     resizable: true,
   },
   {
@@ -34,6 +34,13 @@ export const indexColumns: BasicColumn[] = [
     width: 100,
     align: 'left',
     sorter: true,
+    resizable: true,
+  },
+  {
+    title: t('ml.dataset.table.title.volume'),
+    dataIndex: 'volume',
+    align: 'left',
+    width: 100,
     resizable: true,
   },
   {
@@ -46,7 +53,7 @@ export const indexColumns: BasicColumn[] = [
     title: t('ml.dataset.table.title.target'),
     dataIndex: 'target',
     align: 'left',
-    width: 100,
+    width: 200,
     resizable: true,
   },
   {
@@ -104,20 +111,16 @@ export const dataStatColumns: BasicColumn[] = [
     width: 90,
     sorter: true,
     align: 'left',
-    customRender11: ({ record }) => {
-      if (record && record.missing >= 0) {
-        return { style: { backgroundColor: 'yellow' } };
-      }
-    },
     resizable: true
   },
   {
     title: t('ml.dataset.tab.stats.min'),
     dataIndex: 'min',
-    width: 70,
+    width: 90,
     sorter: true,
     align: 'left',
-    resizable: true
+    resizable: true,
+    ellipsis: false
   },
   {
     title: t('ml.dataset.tab.stats.pct25'),
@@ -125,7 +128,8 @@ export const dataStatColumns: BasicColumn[] = [
     width: 90,
     sorter: true,
     align: 'left',
-    resizable: true
+    resizable: true,
+    ellipsis: false
   },
   {
     title: t('ml.dataset.tab.stats.median'),
@@ -133,15 +137,17 @@ export const dataStatColumns: BasicColumn[] = [
     width: 90,
     sorter: true,
     align: 'left',
-    resizable: true
+    resizable: true,
+    ellipsis: false
   },
   {
     title: t('ml.dataset.tab.stats.mean'),
     dataIndex: 'mean',
-    width: 70,
+    width: 90,
     sorter: true,
     align: 'left',
-    resizable: true
+    resizable: true,
+    ellipsis: false
   },
   {
     title: t('ml.dataset.tab.stats.pct75'),
@@ -149,15 +155,17 @@ export const dataStatColumns: BasicColumn[] = [
     width: 90,
     sorter: true,
     align: 'left',
-    resizable: true
+    resizable: true,
+    ellipsis: false
   },
   {
     title: t('ml.dataset.tab.stats.max'),
     dataIndex: 'max',
-    width: 70,
+    width: 90,
     sorter: true,
     align: 'left',
-    resizable: true
+    resizable: true,
+    ellipsis: false
   },
   {
     title: t('ml.dataset.tab.stats.std'),
@@ -165,7 +173,8 @@ export const dataStatColumns: BasicColumn[] = [
     width: 90,
     sorter: true,
     align: 'left',
-    resizable: true
+    resizable: true,
+    ellipsis: false
   },
   {
     title: t('ml.dataset.tab.stats.variance'),
@@ -173,11 +182,7 @@ export const dataStatColumns: BasicColumn[] = [
     width: 90,
     sorter: true,
     align: 'left',
-    customCell: ({ record }) => {
-      if (record && record.variance == 0) {
-        return { style: { backgroundColor: 'yellow' } };
-      }
-    },
+    ellipsis: false,
     resizable: true
   },
 ];
@@ -213,6 +218,13 @@ export const imgStatColumns: BasicColumn[] = [
     dataIndex: 'size',
     width: 70,
     align: 'left'
+  },
+  {
+    title: t('ml.dataset.tab.stats.nunique'),
+    dataIndex: 'nunique',
+    width: 80,
+    align: 'left',
+    resizable: true
   },
   {
     title: t('ml.dataset.tab.stats.unique'),

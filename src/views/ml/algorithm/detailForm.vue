@@ -157,13 +157,13 @@
                 :showActionButtonGroup="false"
                 @fieldValueChange="handleTrainFormChange"
                 >
-                <template #score="{ model, field }">
+                <template #metrics="{ model, field }">
                   <ApiSelect
                     :api="API_ML_ALGO_METRICS"
                     :params="algoReference"
                     :immediate="true"
                     v-model:value="model[field]"
-                    @select="handleScoreSelection"
+                    @select="handleMetricsSelection"
                   />
                 </template>
                 <template #params>
@@ -549,17 +549,17 @@ which one is better?
     // as query parameter to get algo list
     if(key == 'epochs'){
       rawData.value.trainCfg[key] = value;
-      // build source code based on selected socre
+      // build source code based on selected epochs
       buildSrcCode();
     }
   };
 
     /*
-  * train score change
+  * Eval metrics change
   */
-  const handleScoreSelection = (key: string) => {
-    rawData.value.trainCfg.score = key;
-    // build source code based on selected socre
+  const handleMetricsSelection = (key: string) => {
+    rawData.value.trainCfg.metrics = key;
+    // build source code based on selected metrics
     buildSrcCode();
   };
 
@@ -791,15 +791,15 @@ which one is better?
     }
     
 
-    if(rawData.value.trainCfg?.score){
-      const mScore = rawData.value.trainCfg?.score;
-      if(mScore == 'silhouette_score' || mScore == 'calinski_harabasz_score' || mScore == 'davies_bouldin_score'){
+    if(rawData.value.trainCfg?.metrics){
+      const evalMetric = rawData.value.trainCfg?.metrics;
+      if(evalMetric == 'silhouette_score' || evalMetric == 'calinski_harabasz_score' || evalMetric == 'davies_bouldin_score'){
         // the 3 scores are not available for metrics.get_scorer()
         // the 3 scores don't need target values(y) but predict y
-        tplCode = tplCode.replaceAll("get_scorer('{SCORE_NAME}')", mScore);
+        tplCode = tplCode.replaceAll("get_scorer('{METRIC_NAME}')", evalMetric);
         tplCode = tplCode.replaceAll("estimator, val_x, val_y", "val_x, val_pred");
       } 
-      tplCode = tplCode.replaceAll('{SCORE_NAME}', mScore);
+      tplCode = tplCode.replaceAll('{METRIC_NAME}', evalMetric);
     }
 
     return tplCode;
@@ -807,13 +807,14 @@ which one is better?
 
 
   const buildXGBoostCode = (algoName: string) => {
+    // algoName: 'XGBClassifier.multi:softmax
     let tplCode = cloneDeep(algoTplXGBoost);
     tplCode = tplCode.replaceAll('{PYTHON_VER}', frameVers['python']);
     tplCode = tplCode.replaceAll('{XGBOOST_VER}', frameVers['xgboost']);
-    tplCode = tplCode.replaceAll('{ALGORITHM}', algoName);
+    tplCode = tplCode.replaceAll('{ALGORITHM}', algoName.split('.')[0]);
 
     // build arguments based on parameters
-    let paramArray: string[] = ['callbacks=[TuneReportCheckpointCallback()]'];
+    let paramArray: string[] = [`objective='${algoName.split('.')[1]}'`, 'callbacks=[TuneReportCheckpointCallback()]'];
     if(rawData.value.trainCfg?.params){
       for(let item in rawData.value.trainCfg.params){
         const pValue = rawData.value.trainCfg.params[item];
@@ -823,9 +824,9 @@ which one is better?
       }
     }
     
-    if(rawData.value.trainCfg?.score){
-      const mScore = rawData.value.trainCfg?.score;
-      paramArray.push(`eval_metric='${mScore}'`);
+    if(rawData.value.trainCfg?.metrics){
+      const evalMetric = rawData.value.trainCfg?.metrics;
+      paramArray.push(`eval_metric='${evalMetric}'`);
     }
 
     let paramArgStr = paramArray.join();
@@ -1079,7 +1080,7 @@ which one is better?
       rawData.value.trainCfg.trials = train.trials;
       rawData.value.trainCfg.epochs = train.epochs;
       rawData.value.trainCfg.timeout = train.timeout;
-      rawData.value.trainCfg.score = train.score;
+      rawData.value.trainCfg.metrics = train.metrics;
       rawData.value.trainCfg.threshold = train.threshold;
 
       if(rawData.value.trainCfg.params == {}){

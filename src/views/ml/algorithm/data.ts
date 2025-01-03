@@ -349,10 +349,10 @@ export const formTrainSchema: FormSchema[] = [
     colProps: { span: 24 },
   },
   {
-    field: 'score',
+    field: 'metrics',
     label: t('ml.algorithm.form.train.metrics'),
     component: 'Input',
-    slot: 'score',
+    slot: 'metrics',
     labelWidth: 80,
     colProps: { span: 18 }
   },
@@ -492,9 +492,9 @@ class CustomTrain:
     estimator = {ALGORITHM}({PARAMS})
     estimator.fit(train_x, train_y)
     val_pred = estimator.predict(val_x)
-    metrics_fn = metrics.get_scorer('{SCORE_NAME}')
+    metrics_fn = metrics.get_scorer('{METRIC_NAME}')
     metrics_value = metrics_fn(estimator, val_x, val_y)
-    ray.train.report({"{SCORE_NAME}": metrics_value})
+    ray.train.report({"{METRIC_NAME}": metrics_value})
 `;
 
 // algo template of lightning for data
@@ -707,8 +707,30 @@ class CustomModel(pl.LightningModule):
         return optimizer
 `;
 
-// algo template of sklearn
+// algo template of xgboost
 export const algoTplXGBoost = `
+# python version: {PYTHON_VER}, XGBoost version: {XGBOOST_VER}
+import ray
+from ray.tune.integration.xgboost import TuneReportCheckpointCallback
+import xgboost as xgb
+
+class CustomTrain:
+  def train(config: dict, data: dict):
+    train_y = val_x = val_y = None
+    train_x = data.get('train_x').to_pandas()
+    if data.get('train_y'):
+      train_y = data.get('train_y').to_pandas()
+    if data.get('val_x'):
+      val_x = data.get('val_x').to_pandas()
+    if data.get('val_y'):
+      val_y = data.get('val_y').to_pandas()
+
+    estimator = xgb.{ALGORITHM}({PARAMS})
+    estimator.fit(train_x, train_y, eval_set=[(val_x, val_y)])
+`;
+
+// algo template of xgboost
+export const algoTplXGBoost2 = `
 # python version: {PYTHON_VER}, XGBoost version: {XGBOOST_VER}
 import ray
 from ray.tune.integration.xgboost import TuneReportCheckpointCallback
@@ -726,6 +748,12 @@ class CustomTrain:
     if data.get('val_y'):
       val_y = data.get('val_y').to_pandas()
 
-    estimator = xgb.{ALGORITHM}({PARAMS})
-    estimator.fit(train_x, train_y, eval_set=[(val_x, val_y)])
+    train_set = xgb.DMatrix(train_x, label=train_y)
+    val_set = xgb.DMatrix(val_x, label=val_y)
+    xgb.train(
+      config,
+      train_set,
+      evals=[(val_set, 'eval')],
+      callbacks=[TuneReportCheckpointCallback()])
+    # results = estimator.evals_result()
 `;

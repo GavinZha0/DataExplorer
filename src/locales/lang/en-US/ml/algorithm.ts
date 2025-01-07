@@ -48,7 +48,8 @@ export default {
     data: {
       dataset: 'Dataset',
       eval_ratio: 'Eval ratio',
-      shuffle: 'Shuffle'
+      shuffle: 'Shuffle',
+      batch_size: 'Batch size'
     },
     train: {
       gpu: 'GPU',
@@ -56,7 +57,7 @@ export default {
       trials: 'Trials',
       epochs: 'Epochs',
       timeout: 'Trail timeout',
-      metrics: 'Metrics',
+      metrics: 'Eval metric',
       params: {
         name: 'Param',
         value: 'Search space'

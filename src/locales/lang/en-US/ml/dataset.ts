@@ -82,7 +82,8 @@ export default {
         attr: 'Attribute',
         encode: 'Encoding',
         scale: 'Scaling',
-        miss: 'Missing'
+        miss: 'Missing',
+        timeline: 'Timeline'
       },
     },
   },

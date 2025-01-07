@@ -20,6 +20,7 @@ export interface DataConfigType {
   datasetId: number; 
   evalRatio: number;
   shuffle: boolean;
+  batchSize: number;
 }
 
 export interface TrainConfigType {
@@ -36,7 +37,8 @@ export interface TrainConfigType {
 export const initDataCfg: DataConfigType = {
   datasetId: 0,
   evalRatio: 0.2,
-  shuffle: false
+  shuffle: false,
+  batchSize: 1
 };
 
 const initTrainCfg: TrainConfigType = {

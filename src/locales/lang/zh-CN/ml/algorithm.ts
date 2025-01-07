@@ -49,15 +49,16 @@ export default {
     data: {
       dataset: '数据集',
       eval_ratio: '分割比例',
-      shuffle: '洗牌'
+      shuffle: '洗牌',
+      batch_size: '批数据大小'
     },
     train: {
       gpu: 'GPU',
       strategy: '策略',
-      trials: 'Trials',
-      epochs: 'Epochs',
+      trials: '训练次数',
+      epochs: '迭代次数',
       timeout: '超时',
-      metrics: '指标',
+      metrics: '评估指标',
       params: {
         name: '参数',
         value: '搜索空间'

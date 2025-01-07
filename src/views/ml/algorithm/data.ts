@@ -277,7 +277,19 @@ export const formDataSchema: FormSchema[] = [
       step: 0.1,
     },
     labelWidth: 70,
-    colProps: { span: 24 }
+    colProps: { span: 12 }
+  },
+  {
+    field: 'batchSize',
+    label: t('ml.algorithm.form.data.batch_size'),
+    component: 'InputNumber',
+    defaultValue: 1,
+    componentProps: {
+      min: 1,
+      max: 100
+    },
+    labelWidth: 80,
+    colProps: { span: 12 },
   },
   {
     field: 'div-label',
@@ -502,6 +514,7 @@ export const algoTplPytorch = `
 # pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
 import torch.nn as nn
 import torch.nn.functional as F
+import lightning.pytorch as pl
 from {MODULE}.models import {ALGORITHM}
 
 class CustomModel(pl.LightningModule):
@@ -532,27 +545,28 @@ class CustomModel(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
         return optimizer
 `;
 
-// algo template of FNN
-export const algoTplPytorchFNN = `
+// algo template of MLP(FNN)
+export const algoTplPytorchMLP = `
 # pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
 import torch.nn as nn
 import torch.nn.functional as F
+import lightning.pytorch as pl
 
-class CustomModel(pl.LightningModule):
+class CustomMlpModel(pl.LightningModule):
     def __init__(self,config: dict):
         super().__init__()
         self.config = config
         # define model
         self.model = nn.Sequential(
-            nn.Linear(8, 128),
+            nn.Linear(config.get('input_size'), 128),
             nn.ReLU(),
             nn.Linear(128, 256)
             nn.ReLU(),
-            nn.Linear(256, 1)
+            nn.Linear(256, config.get('output_size'))
           )
 
     def forward(self, x):
@@ -573,7 +587,7 @@ class CustomModel(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
         return optimizer
 `;
 
@@ -583,19 +597,20 @@ export const algoTplPytorchRNN = `
 # pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
 import torch.nn as nn
 import torch.nn.functional as F
+import lightning.pytorch as pl
 
-class CustomModel(pl.LightningModule):
+class CustomRnnModel(pl.LightningModule):
     def __init__(self,config: dict):
         super().__init__()
         self.config = config
         # define model
         self.rnn = nn.RNN(
-            input_size=6,
-            hidden_size=32,
-            num_layers=1,
-            batch_first=True
+            input_size=config.get('input_size'),
+            hidden_size=config.get('hidden_size'),
+            num_layers=config.get('num_layers'),
+            batch_first=config.get('batch_first')
         )
-        self.out = nn.Linear(32, 1)
+        self.fc = nn.Linear(config.get('hidden_size'), config.get('output_size'))
         self.criteria = nn.MSELoss()
 
     def forward(self, x):
@@ -619,7 +634,7 @@ class CustomModel(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
         return optimizer
 `;
 
@@ -628,8 +643,9 @@ export const algoTplPytorchCNN = `
 # pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
 import torch.nn as nn
 import torch.nn.functional as F
+import lightning.pytorch as pl
 
-class CustomModel(pl.LightningModule):
+class CustomCnnModel(pl.LightningModule):
     def __init__(self,config: dict):
         super().__init__()
         self.config = config
@@ -643,7 +659,7 @@ class CustomModel(pl.LightningModule):
             MaxPool2d(2),
             Flatten(),
             Linear(1024, 64),
-            Linear(64, 10)
+            Linear(64, config.get('output_size'))
         ）
 
     def forward(self, x):
@@ -652,19 +668,19 @@ class CustomModel(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
-        loss = F.cross_entropy(y_hat, y)
+        loss = F.mse_loss(y_hat, y)
         self.log('train_loss', loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
-        loss = F.cross_entropy(y_hat, y)
+        loss = F.mse_loss(y_hat, y)
         self.log('val_loss', loss)
         return loss
 
     def configure_optimizers(self):
-        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
         return optimizer
 `;
 
@@ -673,37 +689,47 @@ export const algoTplPytorchLSTM = `
 # pytorch version: {PYTORCH_VER}, lightning version: {LIGHTNING_VER}
 import torch.nn as nn
 import torch.nn.functional as F
+import lightning.pytorch as pl
+from torchmetrics.regression import MeanSquaredError
 
-class CustomModel(pl.LightningModule):
+class CustomLstmModel(pl.LightningModule):
     def __init__(self,config: dict):
         super().__init__()
         self.config = config
-        # define model
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size, 1) 
-        self.criteria = nn.MSELoss()
+        # batch_first is for input shape (batch_size, seq_len, input_size)
+        self.lstm = torch.nn.LSTM(input_size=config.get('input_size', 1), hidden_size=config.get('hidden_size', 10),
+                            num_layers=config.get('num_layers', 1), batch_first=True)
+        self.fc = torch.nn.Linear(config.get('hidden_size', 10), config.get('output_size', 1))
+        self.eval_func = MeanSquaredError()
 
     def forward(self, x):
-        out, _ = self.lstm(x)
-        out = self.fc(out[:, -1, :])  # Get the last time step
-        return out
+        # x's shape: (batch_size, seq_len, input_size)
+        # lstm's output: out, (hidden_out, cell_out)
+        _, (hidden_out, _) = self.lstm(x)
+        # when batch_first is Ture, out shape: (batch_size, seq_len, num_directions * hidden_size)
+        # hidden_out's shape: (num_layers*num_directions, batch_size, hidden_size)
+        # For bidirectional LSTMs, forward and backward are directions 0 and 1 respectively.
+        # put last hidden_out(batch_size, hidden_size) into linear()
+        # return shape: (batch_size, output_size)
+        return self.fc(hidden_out[-1])
 
     def training_step(self, batch, batch_idx):
+        # x's shape (batch_size, seq_len, input_size)
         x, y = batch
         y_hat = self(x)
-        loss = self.criteria(y_hat, y)
+        loss = F.mse_loss(y_hat, y)
         self.log('train_loss', loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
-        loss = self.criteria(y_hat, y)
+        loss = self.eval_func(y_hat, y)
         self.log('val_loss', loss)
         return loss
 
     def configure_optimizers(self):
-        optimizer = optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.config.get('lr', 0.001))
         return optimizer
 `;
 

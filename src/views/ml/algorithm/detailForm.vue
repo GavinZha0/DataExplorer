@@ -301,7 +301,7 @@
   import { ref, unref, h, reactive } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
   import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formExperSchema, algoTplSklearn, algoTplPytorch, paramColumns, 
-    algoTplPytorchFNN, algoTplPytorchCNN, algoTplPytorchRNN, algoTplPytorchLSTM, algoTplXGBoost } from './data';
+    algoTplPytorchMLP, algoTplPytorchCNN, algoTplPytorchRNN, algoTplPytorchLSTM, algoTplXGBoost } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { ApiTree, ApiSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
@@ -753,7 +753,7 @@ which one is better?
     if(rawData.value.category.startsWith('sklearn')){
       tplCode = buildSklearnCode(rawData.value.algoName);
     } else if(rawData.value.category.startsWith('pytorch')){
-      tplCode = buildPytorchCode(rawData.value.algoName);
+      tplCode = buildPytorchCode(rawData.value.algoName, rawData.value.category);
     } else if(rawData.value.category?.endsWith('xgboost')){
       tplCode = buildXGBoostCode(rawData.value.algoName);
     } else if(rawData.value.category?.endsWith('lightgbm')){
@@ -836,18 +836,24 @@ which one is better?
   };
 
 
-  const buildPytorchCode = (algo: string) => {
-    const modelName = algo.split('.')[0];
-    const algoName = algo.split('.')[1];
+  const buildPytorchCode = (algo: string, category: string) => {
+    let modelName = '';
+    let algoName = '';
     let tplCode = cloneDeep(algoTplPytorch);
-    if(modelName == 'classic'){
-      if(algoName == 'Convolutional NN'){
+    if(category.endsWith('vision')){
+      modelName = 'torchvision';
+      algoName = algo.split('.')[1];
+    } else if(category.endsWith('audio')){
+      modelName = 'torchaudio';
+      algoName = algo.split('.')[1];
+    } else if(category.endsWith('custom')){
+      if(algo == 'CNN'){
         tplCode = cloneDeep(algoTplPytorchCNN);
-      } else if(algoName=='Feedforward NN'){
-        tplCode = cloneDeep(algoTplPytorchFNN);
-      } else if(algoName=='LSTM NN'){
+      } else if(algo == 'MLP'){
+        tplCode = cloneDeep(algoTplPytorchMLP);
+      } else if(algo == 'LSTM'){
         tplCode = cloneDeep(algoTplPytorchLSTM);
-      } else if(algoName=='Recurrent NN'){
+      } else if(algo == 'RNN'){
         tplCode = cloneDeep(algoTplPytorchRNN);
       }
     }
@@ -1074,6 +1080,7 @@ which one is better?
    
       rawData.value.dataCfg.evalRatio = data.evalRatio;
       rawData.value.dataCfg.shuffle = data.shuffle==undefined?false:data.shuffle;
+      rawData.value.dataCfg.batchSize = data.batchSize;
 
       rawData.value.trainCfg.gpu = train.gpu==undefined?false:train.gpu;
       rawData.value.trainCfg.strategy = train.strategy;

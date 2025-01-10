@@ -493,13 +493,19 @@ from sklearn.{MODULE} import {ALGORITHM}
 class CustomTrain:
   def train(config: dict, data: dict):
     train_y = val_x = val_y = None
-    train_x = data.get('train_x').to_pandas()
-    if data.get('train_y'):
-      train_y = data.get('train_y').to_pandas()
-    if data.get('val_x'):
-      val_x = data.get('val_x').to_pandas()
-    if data.get('val_y'):
-      val_y = data.get('val_y').to_pandas()
+    train_x = data.get('train').to_pandas()
+    if config['targets']:
+      train_y = train_x[config['targets']]
+      train_x = train_x.drop(columns=config['targets'])
+
+    if data.get('validation'):
+      val_x = data.get('validation').to_pandas()
+      if config['targets']:
+        val_y = val_x[config['targets']]
+        val_x = val_x.drop(columns=config['targets'])
+    else:
+      val_x = train_x
+      val_y = train_y
 
     estimator = {ALGORITHM}({PARAMS})
     estimator.fit(train_x, train_y)
@@ -651,15 +657,13 @@ class CustomCnnModel(pl.LightningModule):
         self.config = config
         # define model
         self.model = nn.Sequential(
-            Conv2d(3,32,5,padding=2),
-            MaxPool2d(2),
-            Conv2d(32, 32, 5, padding=2),
-            MaxPool2d(2),
-            Conv2d(32, 64, 5, padding=2),
-            MaxPool2d(2),
-            Flatten(),
-            Linear(1024, 64),
-            Linear(64, config.get('output_size'))
+            nn.Conv2d(3,32,5,padding=2),
+            nn.MaxPool2d(2),
+            nn.Conv2d(32, 64, 5, padding=2),
+            nn.MaxPool2d(2),
+            nn.Flatten(),
+            nn.Linear(1024, 64),
+            nn.Linear(64, config.get('output_size'))
         ）
 
     def forward(self, x):
@@ -740,39 +744,20 @@ import ray
 from ray.tune.integration.xgboost import TuneReportCheckpointCallback
 import xgboost as xgb
 
-class CustomTrain:
+class CustomXGBoostTrain:
   def train(config: dict, data: dict):
     train_y = val_x = val_y = None
-    train_x = data.get('train_x').to_pandas()
-    if data.get('train_y'):
-      train_y = data.get('train_y').to_pandas()
-    if data.get('val_x'):
-      val_x = data.get('val_x').to_pandas()
-    if data.get('val_y'):
-      val_y = data.get('val_y').to_pandas()
+    dataset = data.get('train').to_pandas()
+    train_x = dataset.drop(columns=config['targets'])
+    train_y = dataset[config['targets']]
 
-    estimator = xgb.{ALGORITHM}({PARAMS})
-    estimator.fit(train_x, train_y, eval_set=[(val_x, val_y)])
-`;
-
-// algo template of xgboost
-export const algoTplXGBoost2 = `
-# python version: {PYTHON_VER}, XGBoost version: {XGBOOST_VER}
-import ray
-from ray.tune.integration.xgboost import TuneReportCheckpointCallback
-import xgboost as xgb
-# from sklearn import metrics
-
-class CustomTrain:
-  def train(config: dict, data: dict):
-    train_y = val_x = val_y = None
-    train_x = data.get('train_x').to_pandas()
-    if data.get('train_y'):
-      train_y = data.get('train_y').to_pandas()
-    if data.get('val_x'):
-      val_x = data.get('val_x').to_pandas()
-    if data.get('val_y'):
-      val_y = data.get('val_y').to_pandas()
+    if data.get('validation'):
+      dataset = data.get('validation').to_pandas()
+      val_x = dataset.drop(columns=config['targets'])
+      val_y = dataset[config['targets']]
+    else:
+      val_x = train_x
+      val_y = train_y
 
     train_set = xgb.DMatrix(train_x, label=train_y)
     val_set = xgb.DMatrix(val_x, label=val_y)
@@ -781,5 +766,67 @@ class CustomTrain:
       train_set,
       evals=[(val_set, 'eval')],
       callbacks=[TuneReportCheckpointCallback()])
-    # results = estimator.evals_result()
 `;
+
+// algo template of xgboost
+export const algoTplXGBoost1 = `
+# python version: {PYTHON_VER}, XGBoost version: {XGBOOST_VER}
+import ray
+from ray.tune.integration.xgboost import TuneReportCheckpointCallback
+import xgboost as xgb
+
+class CustomXGBoostTrain:
+  def train(config: dict, data: dict):
+    train_y = val_x = val_y = None
+    train_x = data.get('train').to_pandas()
+    if config['targets']:
+      train_y = train_x[config['targets']]
+      train_x = train_x.drop(columns=config['targets'])
+
+    if data.get('validation'):
+      val_x = data.get('validation').to_pandas()
+      if config['targets']:
+        val_y = val_x[config['targets']]
+        val_x = val_x.drop(columns=config['targets'])
+    else:
+      val_x = train_x
+      val_y = train_y
+
+    estimator = xgb.{ALGORITHM}({PARAMS})
+    estimator.fit(train_x, train_y, eval_set=[(val_x, val_y)])
+`;
+
+// algo template of LightGBM
+export const algoTplLightGBM = `
+# python version: {PYTHON_VER}, XGBoost version: {LIGHTGBM_VER}
+import ray
+from ray.tune.integration.lightgbm import TuneReportCheckpointCallback
+import lightgbm as lgb
+# from sklearn import metrics
+
+class CustomLightGbmTrain:
+  def train(config: dict, data: dict):
+    train_y = val_x = val_y = None
+    dataset = data.get('train').to_pandas()
+    train_x = dataset.drop(columns=config['targets'])
+    train_y = dataset[config['targets']]
+
+    if data.get('validation'):
+      dataset = data.get('validation').to_pandas()
+      val_x = dataset.drop(columns=config['targets'])
+      val_y = dataset[config['targets']]
+    else:
+      val_x = train_x
+      val_y = train_y
+
+    train_set = lgb.Dataset(train_x, label=train_y)
+    val_set = lgb.Dataset(val_x, label=val_y)
+    lgb.train(
+      config,
+      train_set,
+      valid_sets=[val_set],
+      valid_names=['eval'],
+      callbacks=[TuneReportCheckpointCallback()])
+`;
+
+

@@ -301,7 +301,7 @@
   import { ref, unref, h, reactive } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
   import { formInfoSchema, formDataSchema, formAlgoSchema, formTrainSchema, formExperSchema, algoTplSklearn, algoTplPytorch, paramColumns, 
-    algoTplPytorchMLP, algoTplPytorchCNN, algoTplPytorchRNN, algoTplPytorchLSTM, algoTplXGBoost } from './data';
+    algoTplPytorchMLP, algoTplPytorchCNN, algoTplPytorchRNN, algoTplPytorchLSTM, algoTplXGBoost, algoTplLightGBM } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { ApiTree, ApiSelect } from '/@/components/Form';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
@@ -505,7 +505,7 @@ which one is better?
     // paramList: [{name:'aaa', default: 'bbb', value:'ccc'}]
     rawData.value.trainCfg.params[paramList.value[index]['name']] = value.trim();
     // build source code based on updated parameters
-    buildSrcCode();
+    buildSrcCode('param');
   }
 
   /*
@@ -550,7 +550,7 @@ which one is better?
     if(key == 'epochs'){
       rawData.value.trainCfg[key] = value;
       // build source code based on selected epochs
-      buildSrcCode();
+      // buildSrcCode();
     }
   };
 
@@ -560,7 +560,7 @@ which one is better?
   const handleMetricsSelection = (key: string) => {
     rawData.value.trainCfg.metrics = key;
     // build source code based on selected metrics
-    buildSrcCode();
+    buildSrcCode('metric');
   };
 
   /*
@@ -748,18 +748,21 @@ which one is better?
     }
   };
 
-  const buildSrcCode = () =>{
+  const buildSrcCode = (key: string | null = null) =>{
     let tplCode = '';
     if(rawData.value.category.startsWith('sklearn')){
       tplCode = buildSklearnCode(rawData.value.algoName);
+      rawData.value.srcCode = tplCode;
     } else if(rawData.value.category.startsWith('pytorch')){
       tplCode = buildPytorchCode(rawData.value.algoName, rawData.value.category);
-    } else if(rawData.value.category?.endsWith('xgboost')){
+      rawData.value.srcCode = tplCode;
+    } else if(rawData.value.category?.endsWith('xgboost') && key == null){
       tplCode = buildXGBoostCode(rawData.value.algoName);
-    } else if(rawData.value.category?.endsWith('lightgbm')){
-      tplCode = buildXGBoostCode(rawData.value.algoName);
+      rawData.value.srcCode = tplCode;
+    } else if(rawData.value.category?.endsWith('lightgbm') && key == null){
+      tplCode = buildLightGBMCode(rawData.value.algoName);
+      rawData.value.srcCode = tplCode;
     }
-    rawData.value.srcCode = tplCode;
   };
 
   const buildSklearnCode = (algo: string) => {
@@ -811,6 +814,35 @@ which one is better?
     let tplCode = cloneDeep(algoTplXGBoost);
     tplCode = tplCode.replaceAll('{PYTHON_VER}', frameVers['python']);
     tplCode = tplCode.replaceAll('{XGBOOST_VER}', frameVers['xgboost']);
+    // tplCode = tplCode.replaceAll('{ALGORITHM}', algoName.split('.')[0]);
+
+    // build arguments based on parameters
+    let paramArray: string[] = [`objective='${algoName.split('.')[1]}'`, 'callbacks=[TuneReportCheckpointCallback()]'];
+    if(rawData.value.trainCfg?.params){
+      for(let item in rawData.value.trainCfg.params){
+        const pValue = rawData.value.trainCfg.params[item];
+        if(pValue.trim() != ''){
+          paramArray.push(`${item}=config['${item}']`);
+        }
+      }
+    }
+    
+    if(rawData.value.trainCfg?.metrics){
+      const evalMetric = rawData.value.trainCfg?.metrics;
+      paramArray.push(`eval_metric='${evalMetric}'`);
+    }
+
+    let paramArgStr = paramArray.join();
+    tplCode = tplCode.replaceAll('{PARAMS}', paramArgStr);
+
+    return tplCode;
+  };
+
+  const buildLightGBMCode = (algoName: string) => {
+    // algoName: 'LGBClassifier.multiclass
+    let tplCode = cloneDeep(algoTplLightGBM);
+    tplCode = tplCode.replaceAll('{PYTHON_VER}', frameVers['python']);
+    tplCode = tplCode.replaceAll('{LIGHTGBM_VER}', frameVers['lightgbm']);
     tplCode = tplCode.replaceAll('{ALGORITHM}', algoName.split('.')[0]);
 
     // build arguments based on parameters
@@ -834,6 +866,7 @@ which one is better?
 
     return tplCode;
   };
+
 
 
   const buildPytorchCode = (algo: string, category: string) => {

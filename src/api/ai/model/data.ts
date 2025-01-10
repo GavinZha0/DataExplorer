@@ -22,7 +22,7 @@ export const initDataData: ApiDataDataType = {
   desc: '',
   group: '',
   modelId: 0,
-  fields: {},
+  fields: null,
   modelName: '',
   orgId: 0,
   pubFlag: false,

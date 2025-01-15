@@ -162,10 +162,11 @@ export function API_ML_DATASET_EXECUTE(id: number, limit = 0) {
 /* execute dataset to query data
  * id: dataset id
  * update: merge config to query result or not
+ * don't need to format datetime
  */
 export function API_ML_DATASET_STAT(id: number, content: string, type: string, variable: any, limit = 0) {
   return defHttp.post<AxiosResponse>({
     url: API.ML_DATASET_STAT,
     params: { id: id, content: content, type: type, variable: variable, limit: limit },
-  });
+  },{formatDateRsp: false});
 }

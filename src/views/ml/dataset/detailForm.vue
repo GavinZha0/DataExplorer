@@ -41,7 +41,7 @@
         <div class="mr-2 overflow-hidden bg-white" style="border: solid 1px; height: 760px">
           <div style="width: 100%; height: 380px">
             <splitpanes>
-              <pane size="30">
+              <pane size="20">
                 <div id="codeEditor" style="width: 100%; height: 380px; border: solid 1px">
                   <CodeEditor border
                               class="code-mirror"
@@ -50,7 +50,7 @@
                               mode="sql" />
                 </div>
               </pane>
-              <pane size="70">
+              <pane size="80">
                 <div id="stats"
                      ref="statsRef"
                      style="width: 100%; height: 380px; border: solid 1px">
@@ -1010,7 +1010,7 @@
         } else if (item.type == 'string' || item.type == 'object') {
           item.type = 'string';
           item.attr = 'cat';
-        } else if (item.type == 'timestamp') {
+        } else if (item.type == 'timestamp' || item.type == 'datetime') {
           item.attr = 'date';
         } else if (item.type == 'numberxxxxxx') {
           item.attr = 'coor';

@@ -8,7 +8,7 @@ export const indexColumns: BasicColumn[] = [
     title: t('common.table.title.type'),
     dataIndex: 'type',
     width: 60,
-    align: 'left',
+    align: 'left'
   },
   {
     title: t('common.table.title.name'),
@@ -16,11 +16,13 @@ export const indexColumns: BasicColumn[] = [
     width: 200,
     align: 'left',
     sorter: true,
+    resizable: true
   },
   {
     title: t('common.table.title.desc'),
     dataIndex: 'desc',
     align: 'left',
+    resizable: true
   },
   {
     title: t('common.table.title.group'),
@@ -28,6 +30,7 @@ export const indexColumns: BasicColumn[] = [
     width: 150,
     align: 'left',
     sorter: true,
+    resizable: true
   },
   {
     title: t('dataviz.datareport.table.title.pages'),
@@ -39,6 +42,7 @@ export const indexColumns: BasicColumn[] = [
     title: t('dataviz.datareport.table.title.menu'),
     dataIndex: 'menuName',
     align: 'left',
+    resizable: true
   },
   {
     title: t('common.table.title.public'),

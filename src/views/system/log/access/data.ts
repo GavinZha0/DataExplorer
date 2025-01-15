@@ -11,6 +11,7 @@ export const columns: BasicColumn[] = [
     //sorter: (a, b) => a.ts - b.ts,
     sortOrder: 'descend',
     defaultSortOrder: 'descend',
+    resizable: true
   },
   {
     title: t('system.log.access.table.title.username'),
@@ -18,6 +19,7 @@ export const columns: BasicColumn[] = [
     width: 150,
     sorter: true,
     align: 'left',
+    resizable: true
   },
   {
     title: t('system.log.access.table.title.action'),
@@ -33,6 +35,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'ip',
     width: 120,
     sorter: true,
+    resizable: true
   },
   {
     title: t('system.log.access.table.title.browser'),
@@ -40,32 +43,38 @@ export const columns: BasicColumn[] = [
     width: 120,
     sorter: true,
     align: 'left',
+    resizable: true
   },
   {
     title: t('system.log.access.table.title.os'),
     dataIndex: 'os',
     align: 'left',
+    resizable: true
   },
   {
     title: t('system.log.access.table.title.lang'),
     dataIndex: 'lang',
     width: 100,
     sorter: true,
+    resizable: true
   },
   {
     title: t('system.log.access.table.title.tz'),
     dataIndex: 'timeZone',
     sorter: true,
     align: 'left',
+    resizable: true
   },
   {
     title: t('system.log.access.table.title.location'),
     dataIndex: 'location',
     align: 'left',
+    resizable: true
   },
   {
     title: t('system.log.access.table.title.result'),
     dataIndex: 'result',
     align: 'left',
+    resizable: true
   },
 ];

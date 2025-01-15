@@ -10,6 +10,7 @@ export const columns: BasicColumn[] = [
     sorter: true,
     sortOrder: 'descend',
     defaultSortOrder: 'descend',
+    resizable: true
   },
   {
     title: t('system.log.action.table.title.username'),
@@ -17,23 +18,26 @@ export const columns: BasicColumn[] = [
     width: 150,
     sorter: true,
     align: 'left',
+    resizable: true
   },
   {
     title: t('common.table.title.type'),
     dataIndex: 'type',
     width: 80,
-    sorter: true,
+    sorter: true
   },
   {
     title: t('system.log.action.table.title.url'),
     dataIndex: 'url',
     width: 150,
     align: 'left',
+    resizable: true
   },
   {
     title: t('system.log.action.table.title.module'),
     dataIndex: 'module',
     align: 'left',
+    resizable: true
   },
   {
     title: t('system.log.action.table.title.method'),
@@ -41,6 +45,7 @@ export const columns: BasicColumn[] = [
     width: 150,
     sorter: true,
     align: 'left',
+    resizable: true
   },
   {
     title: t('system.log.action.table.title.tid'),
@@ -52,10 +57,12 @@ export const columns: BasicColumn[] = [
     title: t('system.log.action.table.title.param'),
     dataIndex: 'param',
     align: 'left',
+    resizable: true
   },
   {
     title: t('system.log.action.table.title.result'),
     dataIndex: 'result',
     align: 'left',
+    resizable: true
   },
 ];

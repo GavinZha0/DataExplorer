@@ -9,37 +9,44 @@ export const columns: BasicColumn[] = [
     dataIndex: 'name',
     width: 200,
     sorter: true,
+    resizable: true
   },
   {
     title: t('common.table.title.desc'),
     dataIndex: 'desc',
+    resizable: true
   },
   {
     title: t('common.table.title.group'),
     dataIndex: 'group',
     width: 200,
     sorter: true,
+    resizable: true
   },
   {
     title: t('admin.param.table.title.module'),
     dataIndex: 'module',
     width: 200,
     sorter: true,
+    resizable: true
   },
   {
     title: t('common.table.title.type'),
     dataIndex: 'type',
     width: 150,
+    resizable: true
     //slots: { customRender: 'roles' },
   },
   {
     title: t('admin.param.table.title.value'),
     dataIndex: 'value',
+    resizable: true
     //slots: { customRender: 'roles' },
   },
   {
     title: t('admin.param.table.title.previous'),
     dataIndex: 'previous',
+    resizable: true
   },
 ];
 

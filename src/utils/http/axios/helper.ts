@@ -27,7 +27,7 @@ export function joinTimestamp(join: boolean, restful = false): string | object {
 /**
  * @description: Format request parameter time
  */
-export function formatRequestDate(params: any) {
+export function formatReqRspDate(params: any) {
   if (Object.prototype.toString.call(params) == '[object Array]') {
     for (const item of params) {
       formatTimestamps(item);

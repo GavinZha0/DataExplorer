@@ -19,18 +19,21 @@ export const columns: BasicColumn[] = [
     align: 'left',
     width: 120,
     sorter: true,
+    resizable: true
   },
   {
     title: t('admin.user.table.title.realname'),
     dataIndex: 'realname',
     align: 'left',
     sorter: true,
+    resizable: true
   },
   {
     title: t('admin.user.table.title.email'),
     dataIndex: 'email',
     align: 'left',
     sorter: true,
+    resizable: true
   },
   {
     title: t('admin.user.table.title.phone'),
@@ -38,16 +41,19 @@ export const columns: BasicColumn[] = [
     align: 'left',
     width: 130,
     sorter: true,
+    resizable: true
   },
   {
     title: t('admin.user.table.title.role'),
     dataIndex: 'roleNames',
     align: 'left',
+    resizable: true
   },
   {
     title: t('common.table.title.exp_date'),
     dataIndex: 'expDate',
     width: 120,
+    resizable: true
   },
   {
     title: t('common.table.title.active'),

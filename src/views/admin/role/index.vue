@@ -95,6 +95,7 @@
     showTableSetting: true,
     showIndexColumn: false,
     bordered: true,
+    canResize: true,
     actionColumn: {
       width: 120,
       title: t('common.table.title.action'),

@@ -9,26 +9,31 @@ export const columns: BasicColumn[] = [
     title: t('common.table.title.name'),
     dataIndex: 'name',
     align: 'left',
+    resizable: true
   },
   {
     title: t('common.table.title.desc'),
     dataIndex: 'desc',
     align: 'left',
+    resizable: true
   },
   {
     title: t('admin.org.table.title.logo'),
     dataIndex: 'logo',
     width: 100,
+    resizable: true
   },
   {
     title: t('admin.org.table.title.users'),
     width: 100,
     dataIndex: 'userCount',
+    resizable: true
   },
   {
     title: t('common.table.title.exp_date'),
     dataIndex: 'expDate',
     width: 150,
+    resizable: true
   },
   {
     title: t('common.table.title.active'),

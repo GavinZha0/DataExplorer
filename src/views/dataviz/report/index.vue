@@ -2,8 +2,9 @@
   <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
     <BasicTable
       @register="registerTable"
+      :canResize="true"
       :searchInfo="searchInfo"
-      @resizeColumn=" (w, col) => { col.width = w; } "
+      @resizeColumn="(w, col) => { col.width = w; }"
     >
       <template #toolbar>
         <Tooltip>

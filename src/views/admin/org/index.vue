@@ -87,6 +87,7 @@
     useSearchForm: false,
     showTableSetting: true,
     bordered: true,
+    canResize: true,
     showIndexColumn: false,
     actionColumn: {
       width: 80,

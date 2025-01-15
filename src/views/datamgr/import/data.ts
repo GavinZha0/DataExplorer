@@ -9,13 +9,14 @@ export const indexColumns: BasicColumn[] = [
   {
     title: t('collection.importer.table.title.ts'),
     dataIndex: 'updatedAt',
-    width: 180,
+    width: 200,
+    resizable: true
   },
   {
     title: t('collection.importer.table.title.files'),
     dataIndex: 'files',
     align: 'left',
-    resizable: true,
+    resizable: true
   },
   {
     title: t('collection.importer.table.title.type'),
@@ -44,13 +45,14 @@ export const indexColumns: BasicColumn[] = [
     title: t('collection.importer.table.title.source'),
     dataIndex: 'sourceName',
     align: 'left',
-    resizable: true,
+    width: 200,
+    resizable: true
   },
   {
     title: t('collection.importer.table.title.table'),
     dataIndex: 'tableName',
     align: 'left',
-    resizable: true,
+    resizable: true
   },
   {
     title: t('collection.importer.table.title.overwrite'),
@@ -146,6 +148,7 @@ export const formTsAttrSchema: FormSchema[] = [
         { label: 'MM/dd/yyyy HH:mm:ss', value: 'MM/dd/yyyy HH:mm:ss' }, // 03/15/2023 06:30:15;
         { label: 'MM/dd/yyyy hh:mm a', value: 'MM/dd/yyyy hh:mm a' }, // 03/15/2023 06:30 AM
         { label: 'MM/dd/yyyy HH:mm:ssX', value: 'MM/dd/yyyy HH:mm:ssX' }, // 03/15/2023 06:30:15+08
+        { label: 'MM/dd/yyyy HH:mm:ss.SSS', value: 'MM/dd/yyyy HH:mm:ss.SSS' }, // 03/15/2023 06:30:15.526
 
         { label: 'yyyy-MM-dd HH:mm:ss', value: 'yyyy-MM-dd HH:mm:ss' }, // 2023-03-15 06:30:15;
         { label: 'yyyy-MM-dd hh:mm a', value: 'yyyy-MM-dd hh:mm a' }, // 2023-03-15 06:30 AM
@@ -153,10 +156,12 @@ export const formTsAttrSchema: FormSchema[] = [
         { label: 'yyyy-MM-dd HH:mm:ss z', value: 'yyyy-MM-dd HH:mm:ss z' }, // 2015-05-05 10:15:30 PDT; 2015-05-05 10:15:30 Europe/Paris
         { label: "yyyy-MM-dd HH:mm:ss 'UTC'X", value: "yyyy-MM-dd HH:mm:ss 'UTC'X" }, // 2015-05-05 10:15:30 UTC+08:00
         { label: 'yyyy-MM-dd HH:mm:ss O', value: 'yyyy-MM-dd HH:mm:ss O' }, // 2015-05-05 10:15:30 GMT+8
+        { label: 'yyyy-MM-dd HH:mm:ss.SSS', value: 'yyyy-MM-dd HH:mm:ss.SSS' }, // 2023-03-15 06:30:15.358;
         { label: "yyyy-MM-dd, HH:mm:ssXXX '['VV']'", value: "yyyy-MM-dd, HH:mm:ssXXX '['VV']'" }, // 2023-03-15, 06:30:15+08:00 [Asia/Shanghai],
 
         { label: "yyyy-MM-dd'T'HH:mm:ss", value: "yyyy-MM-dd'T'HH:mm:ss" }, // 2023-03-15T06:30:15, ISO 8601
         { label: "yyyy-MM-dd'T'HH:mm:ssX", value: "yyyy-MM-dd'T'HH:mm:ssX" }, // 2023-03-15T06:30:15+08; 2023-03-15T06:30:15+0800; 2023-03-15T06:30:15+08:00
+        { label: "yyyy-MM-dd'T'HH:mm:ss.SSS", value: "yyyy-MM-dd'T'HH:mm:ss.SSS" }, // 2023-03-15T06:30:15.635
 
         { label: 'dd.MM.yyyy HH:mm:ss', value: 'dd.MM.yyyy HH:mm:ss' }, // 15.03.2023 06:30:15
         { label: 'yyyyMMddHHmmss', value: 'yyyyMMddHHmmss' },

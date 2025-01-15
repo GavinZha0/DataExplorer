@@ -3,11 +3,8 @@
     <BasicTable
       @register="registerTable"
       :searchInfo="searchInfo"
-      @resizeColumn="
-        (w, col) => {
-          col.width = w;
-        }
-      "
+      :canResize="true"
+      @resizeColumn="(w, col) => { col.width = w; }"
     >
       <template #toolbar>
         <Tooltip>

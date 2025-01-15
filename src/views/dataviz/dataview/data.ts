@@ -8,8 +8,7 @@ export const indexColumns: BasicColumn[] = [
     title: t('common.table.title.type'),
     dataIndex: 'type',
     width: 50,
-    align: 'left',
-    resizable: true,
+    align: 'left'
   },
   {
     title: t('common.table.title.name'),

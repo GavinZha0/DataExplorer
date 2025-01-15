@@ -55,6 +55,7 @@
     showTableSetting: true,
     showIndexColumn: false,
     bordered: true,
+    canResize: true
   });
 
   /*

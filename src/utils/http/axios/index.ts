@@ -14,7 +14,7 @@ import { isString } from '/@/utils/is';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
 import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
 import { useI18n } from '/@/hooks/web/useI18n';
-import { joinTimestamp, formatRequestDate } from './helper';
+import { joinTimestamp, formatReqRspDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 import { AxiosRetry } from '/@/utils/http/axios/axiosRetry';
 import { SHADOW_TOKEN_KEY, ACCESS_TOKEN_KEY, AUTH_TOKEN_KEY } from '/@/enums/cacheEnum';
@@ -51,7 +51,13 @@ const transform: AxiosTransform = {
     //  这里 code，data，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
     const { code, data, msg } = res.data;
     if (code === ResultEnum.SUCCESS || code === ResultEnum.HTTP_200_OK) {
-      formatDateRsp && data && !isString(data) && formatRequestDate(data.records);
+      if(formatDateRsp && data && !isString(data)){
+        for(var obj in data){
+          if (data[obj] instanceof Array){
+            formatReqRspDate(data[obj]);
+          }
+        }
+      }
       return data;
     }
 
@@ -98,7 +104,7 @@ const transform: AxiosTransform = {
     const data = config.data || false;
 
     // convert date time in data before it is sent out
-    formatDateReq && data && !isString(data) && formatRequestDate(data);
+    formatDateReq && data && !isString(data) && formatReqRspDate(data);
 
     if (config.method?.toUpperCase() === RequestEnum.GET) {
       if (!isString(params)) {
@@ -111,7 +117,7 @@ const transform: AxiosTransform = {
       }
     } else if (config.method?.toUpperCase() != RequestEnum.DELETE) {
       if (!isString(params)) {
-        formatDateReq && formatRequestDate(params);
+        formatDateReq && formatReqRspDate(params);
         if (
           Reflect.has(config, 'data') &&
           config.data &&

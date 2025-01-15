@@ -116,7 +116,7 @@ export const dataStatColumns: BasicColumn[] = [
   {
     title: t('ml.dataset.tab.stats.min'),
     dataIndex: 'min',
-    width: 90,
+    width: 100,
     sorter: true,
     align: 'left',
     resizable: true,
@@ -125,7 +125,7 @@ export const dataStatColumns: BasicColumn[] = [
   {
     title: t('ml.dataset.tab.stats.pct25'),
     dataIndex: 'pct25',
-    width: 90,
+    width: 100,
     sorter: true,
     align: 'left',
     resizable: true,
@@ -134,7 +134,7 @@ export const dataStatColumns: BasicColumn[] = [
   {
     title: t('ml.dataset.tab.stats.median'),
     dataIndex: 'median',
-    width: 90,
+    width: 100,
     sorter: true,
     align: 'left',
     resizable: true,
@@ -143,7 +143,7 @@ export const dataStatColumns: BasicColumn[] = [
   {
     title: t('ml.dataset.tab.stats.mean'),
     dataIndex: 'mean',
-    width: 90,
+    width: 100,
     sorter: true,
     align: 'left',
     resizable: true,
@@ -152,7 +152,7 @@ export const dataStatColumns: BasicColumn[] = [
   {
     title: t('ml.dataset.tab.stats.pct75'),
     dataIndex: 'pct75',
-    width: 90,
+    width: 100,
     sorter: true,
     align: 'left',
     resizable: true,
@@ -161,7 +161,7 @@ export const dataStatColumns: BasicColumn[] = [
   {
     title: t('ml.dataset.tab.stats.max'),
     dataIndex: 'max',
-    width: 90,
+    width: 100,
     sorter: true,
     align: 'left',
     resizable: true,

@@ -245,7 +245,8 @@ export const outlierQtOptionSchema: FormSchema[] = [
         { label: 'KNN', value: 'knn' },
         { label: 'DBSCAN', value: 'dbscan' },
         { label: 'LOF', value: 'lof' },
-        { label: 'SVM', value: 'svm' }
+        { label: 'SVM', value: 'svm' },
+        { label: 'SOM', value: 'som' }
       ]
     }
   },
@@ -280,7 +281,8 @@ export const outlierZsOptionSchema: FormSchema[] = [
         { label: 'KNN', value: 'knn' },
         { label: 'DBSCAN', value: 'dbscan' },
         { label: 'LOF', value: 'lof' },
-        { label: 'SVM', value: 'svm' }
+        { label: 'SVM', value: 'svm' },
+        { label: 'SOM', value: 'som' }
       ]
     }
   },
@@ -315,7 +317,8 @@ export const outlierKnnOptionSchema: FormSchema[] = [
         { label: 'KNN', value: 'knn' },
         { label: 'DBSCAN', value: 'dbscan' },
         { label: 'LOF', value: 'lof' },
-        { label: 'SVM', value: 'svm' }
+        { label: 'SVM', value: 'svm' },
+        { label: 'SOM', value: 'som' }
       ]
     }
   },
@@ -360,7 +363,8 @@ export const outlierSvmOptionSchema: FormSchema[] = [
         { label: 'KNN', value: 'knn' },
         { label: 'DBSCAN', value: 'dbscan' },
         { label: 'LOF', value: 'lof' },
-        { label: 'SVM', value: 'svm' }
+        { label: 'SVM', value: 'svm' },
+        { label: 'SOM', value: 'som' }
       ]
     }
   },

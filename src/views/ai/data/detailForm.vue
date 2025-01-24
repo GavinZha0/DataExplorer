@@ -60,7 +60,7 @@
                         <Button type="link">{{ column.alias }}<DownOutlined /></Button>
                         <template #overlay>
                           <Menu @click="handleFieldChange($event, column)">
-                            <MenuItem v-for="item in inputFields" :key="item.name">
+                            <MenuItem v-for="item in inputSchema" :key="item.name">
                             <span>{{ item.name }}</span>
                             </MenuItem>
                           </Menu>
@@ -120,11 +120,11 @@
           >
             <BasicForm
               ref="modelFormRef"
-              layout="vertical"
               :forceRender="true"
               :schemas="formModelSchema"
               :showActionButtonGroup="false"
               :autoSubmitOnEnter="true"
+              @fieldValueChange="handleModelChange"
               :submitFunc="handleModelSearch"
             >
               <template #modelList="{ model, field }">
@@ -301,8 +301,9 @@
   const dataPreview = reactive<any>({rows: 0, data: []});
   let modelList = ref<any>([]);
   const executing = ref<Boolean>(false);
-  const inputFields = ref<any[]>([]);
+  const inputSchema = ref<any[]>([]);
   const columnFields = ref<any[]>([]);
+  const dataTransform = ref<boolean>(false);
 
   // model pages
   const pagination = {
@@ -329,7 +330,7 @@
     dataPreview.rows = 0;
     dataPreview.data = [];
     executing.value = false;
-    inputFields.value = [];
+    inputSchema.value = [];
 
     // get drawer title
     if (data && data.id) {
@@ -380,14 +381,26 @@
     }
   };
 
+
+  
+  /*
+   * model form change
+  */
+  const handleModelChange = (key: string, value: any) => {
+    if(key == 'transform'){
+      dataTransform.value = value;
+    }
+  };
+
   /*
    * model search
-   */
-   async function handleModelSearch() {
+  */
+  async function handleModelSearch() {
     const formData = await modelFormRef.value?.validate();
     // filter by area(data) and status(1:serving)
     // search by name or tag
-    API_AI_MODEL_LIST({page: {current: 1, pageSize: 5}, sorter: null, filter: {fields: ["area", "status"], values: [["data"], ["1"]]}, search: {fields: ["name", "tags"], value: formData?.search}}).then(response => {
+    API_AI_MODEL_LIST({page: {current: 1, pageSize: 5}, sorter: null, filter: {fields: ["area", "status"], values: [["data"], ["1"]]}, search: {fields: ["name", "tags"], value: formData?.search}})
+      .then(response => {
         modelList.value.length = 0;
         for(let rec of response.records){
           rec.loading = false;
@@ -406,25 +419,37 @@
     // find model and schema
     const selModel = modelList.value.find((it)=>it.id==modelId);
 
-    // schema like [{name: 'a', required: true, type: 'double'}]
-    if(selModel.schema) {
-      inputFields.value = selModel.schema;
-    } else if (rawData.value.fields){
-      inputFields.value = [];
-      for(let field in rawData.value.fields){
-        inputFields.value.push({name: field, required: true});
+    // schema like {inputs:[{name: 'a', required: true, type: 'double'}], outputs:[{type: "tensor", tensor-spec: {dtype: "int64",shape: [-1]}}]}
+    if(selModel.schema?.inputs) {
+      // show input schema as a list on table title
+      inputSchema.value = selModel.schema.inputs;
+    } else if (rawData.value.fieldMap){
+      // show it if ai application has saved schema
+      inputSchema.value = [];
+      for(let field in rawData.value.fieldMap){
+        inputSchema.value.push({name: field, required: true});
       }
     } else {
-      inputFields.value = [];
+      // no schema (should NOT be)
+      inputSchema.value = [];
     }
     
-    if(inputFields.value){
+    // clean old config
+    let apiColumns = [];
+    rawData.value.fieldMap = {};
+
+    if(inputSchema.value){
+      for(const sch of inputSchema.value){
+        // api column name list
+        apiColumns.push(sch.name);
+      }
+
       for(let field of columnFields.value){
-        // update column alias if column name matches with one of schema
-        const matchField = inputFields.value.find((it)=>it.name==field.title);
-        if(matchField){
+        if(apiColumns.includes(field.title)){
+          // column name is same with schema name
           field.alias = field.title;
         } else {
+          // show ? and let user choose
           field.alias = '???';
         }
       }
@@ -447,12 +472,14 @@
   const handleFieldChange = (e: Event, column: any) => {
     if (columnFields.value[column.key]) {
       // find if it was assgned
+      // e.key and it.alias are schema name of model
       const idx = columnFields.value?.findIndex((it)=>it.alias==e.key);
       if(idx >= 0){
         // remove previous assign
         columnFields.value[idx].alias = '???';
       }
       // new assign
+      // column.key is index
       columnFields.value[column.key].alias = e.key;
     }
   };
@@ -505,10 +532,6 @@
           fields = row.meta.fields;
           let colFields: any[] = [];
 
-
-          // find model and schema
-          const selModel = modelList.value.find((it)=>it.id==rawData.value.modelId);
-
           // get column names and add column config
           for (let field of fields) {
             const columnField = {
@@ -522,9 +545,9 @@
               alias: '???'
             };
 
-            if(selModel){
+            if(inputSchema.value){
               // update alias if model was selected
-              const matchField = selModel.schema.find((it)=>it.name==columnField.dataIndex);
+              const matchField = inputSchema.value.find((it)=>it.name==columnField.dataIndex);
               if(matchField){
                 columnField.alias = columnField.dataIndex;
               }
@@ -629,10 +652,9 @@
    */
   const execute = () => {
     if(rawData.value.modelId){
-      
+      // convert data to json format with schema names
       const selModel = modelList.value.find((it)=>it.id==rawData.value.modelId);
-      
-      const dataFrame = jsonToDataFrame(dataPreview.data, selModel);
+      const dataFrame = jsonToDataFrame(dataPreview.data);
       if(dataFrame == null){
         message.error(t('common.error.data.incorrect'));
         return;
@@ -640,7 +662,7 @@
       
       if(selModel.status == 1){
         executing.value = true;
-        API_AI_DATA_EXECUTE(selModel.endpoint, dataFrame).then((response) => {
+        API_AI_DATA_EXECUTE(selModel.id, selModel.endpoint, dataFrame, dataTransform.value).then((response) => {
             executing.value = false;
             const backData = cloneDeep(dataPreview.data);
             dataPreview.data = [];
@@ -689,42 +711,48 @@
   /*
    * convert json data to data frame
    */
-  const jsonToDataFrame = (data: any[], model: any) =>{
-    const columns = [];
-    let mappedColumns = {};
+  const jsonToDataFrame = (data: any[]) =>{
+    let fieldMap = {};
+    let apiColumns = [];
     const arrayData = [];
 
-    // fields is a map like {a: 'aaa', b: 'bbb'}
-    if(rawData.value.fields){
-      mappedColumns = rawData.value.fields;
-      for(const name in mappedColumns){
-        columns.push(name);
-      }
-    } else {
-      for(const sch of model.schema){
-        columns.push(sch.name);
+    // fieldMap is a map like {petal_length: 'aaa', sepal_width: 'bbb'}
+    if (inputSchema.value) {
+      // build api columns and field map from model schema
+      for(const sch of inputSchema.value){
+        apiColumns.push(sch.name);
         const field = columnFields.value?.find((it)=>it.alias==sch.name);
         if(field){
-          mappedColumns[sch.name] = field.dataIndex;
+          fieldMap[sch.name] = field.dataIndex;
         }
       }
+      rawData.value.fieldMap = fieldMap;
+    } else if(rawData.value.fieldMap){
+      // ai application has saved column map
+      fieldMap = rawData.value.fieldMap;
+      for(const name in fieldMap){
+        apiColumns.push(name);
+      }
+    } 
 
-      rawData.value.fields = mappedColumns;
-    }
-
-    if(Object.keys(mappedColumns).length > 0){
+    if(Object.keys(fieldMap).length == inputSchema.value.length){
+      // all required fields are ready
       for(const dt of data){
         const record = [];
-        for(const name in mappedColumns){
-          record.push(dt[mappedColumns[name]]);
+        // build data frame
+        for(const name in fieldMap){
+          record.push(dt[fieldMap[name]]);
         }
         arrayData.push(record);
       }
+    } else {
+      // some required fields are empty
+      return null;
     }
 
     // example: {"dataframe_split": {"columns": ["petal_length", "sepal_width", "petal_width", "sepal_length"], "data": [[4.5,2.3,1.3,0.3],[6.3,2.9,5.6,1.8],[5.0,3.4,1.5,0.2]]}};
     if(arrayData.length > 0){
-      return {dataframe_split: {columns: columns, data: arrayData}};
+      return {dataframe_split: {columns: apiColumns, data: arrayData}};
     } else {
       return null;
     }

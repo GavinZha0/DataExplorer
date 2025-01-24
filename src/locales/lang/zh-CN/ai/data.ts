@@ -24,12 +24,9 @@ export default {
     },
   },
   form: {
-    config: {
-      input: 'Input',
-      limit: 'Limit',
-      type: 'Type',
-      source: 'Source',
-      expect: 'Expectation',
+    model: {
+      transform: '数据转换',
+      search: '搜索模型'
     },
     create: {
       info: 'Info',

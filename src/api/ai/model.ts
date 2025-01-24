@@ -19,7 +19,8 @@ export const API = {
   AI_MODEL_CATEGORY: '/ai/model/category',
   AI_MODEL_GROUPS: '/ai/model/groups',
   AI_MODEL_TYPES: '/ai/model/types',
-  AI_MODEL_ONE: '/ai/model/getone'
+  AI_MODEL_ONE: '/ai/model/getone',
+  AI_MODEL_SCHEMA: '/py/ai/model/schema'
 }
 
 /* get all algo as list
@@ -134,6 +135,16 @@ export function API_AI_MODEL_REMOVE(algoId: number, version: number) {
   return defHttp.post<AxiosResponse>({
     url: API.AI_MODEL_REMOVE,
     data: { algoId: algoId, version: version },
+  });
+}
+
+/* get model schema
+ * run_id: run id
+ */
+export function API_AI_MODEL_SCHEMA(run_id: string) {
+  return defHttp.post<AxiosResponse>({
+    url: API.AI_MODEL_SCHEMA,
+    params: {runId: run_id},
   });
 }
 

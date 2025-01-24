@@ -116,10 +116,10 @@ export function API_AI_DATA_DEL(id: number) {
  * id: dataset id
  * update: merge config to query result or not
  */
-export function API_AI_DATA_EXECUTE(endpoint: string, data: any) {
+export function API_AI_DATA_EXECUTE(mId: number, endpoint: string, data: any, transform: boolean) {
   return defHttp.post<AxiosResponse>({
     url: API.AI_DATA_EXECUTE,
-    data: { endpoint: endpoint, data: data },
+    data: { mId: mId, endpoint: endpoint, data: data, transform: transform },
   });
 }
 

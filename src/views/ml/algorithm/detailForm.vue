@@ -1025,7 +1025,7 @@ which one is better?
       API_ML_EXPERIMENT_REG_TRIAL(node.run_uuid, rawData.value.algoName, rawData.value.id).then((response) => {
         regTrial['version'] = response.version;
         // create a record for AI store, so you can see it in AI store
-        const mdInfo = {name:rawData.value.name, algoId: rawData.value.id, area: 'data', runId: node.run_uuid, version: response.version};
+        const mdInfo = {name:rawData.value.name, algoId: rawData.value.id, area: 'data', datasetId: rawData.value.dataCfg?.datasetId, runId: node.run_uuid, version: response.version};
         API_AI_MODEL_CREATE(mdInfo).then((rsp) => {
           // do nothing when create successfully        
         });

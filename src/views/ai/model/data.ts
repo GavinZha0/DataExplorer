@@ -33,14 +33,14 @@ export const indexColumns: BasicColumn[] = [
     title: t('ai.model.table.title.tags'),
     dataIndex: 'tags',
     key: 'tags',
-    width: 200,
+    width: 240,
     align: 'left',
   },
   {
     title: t('ai.model.table.title.algo'),
     dataIndex: 'algoName',
     key: 'algo',
-    width: 180,
+    width: 240,
     sorter: true,
     align: 'left'
   },
@@ -55,7 +55,7 @@ export const indexColumns: BasicColumn[] = [
     dataIndex: 'eval',
     key: 'eval',
     align: 'left',
-    width: 110,
+    width: 200,
   },
   {
     title: t('ai.model.table.title.deployTo'),

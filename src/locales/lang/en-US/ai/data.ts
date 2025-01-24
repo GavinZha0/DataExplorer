@@ -27,7 +27,8 @@ export default {
   },
   form: {
     model: {
-      search: 'Search name or tag'
+      transform: 'Transformation',
+      search: 'Search model'
     },
     create: {
       info: 'Info',

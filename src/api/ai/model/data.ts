@@ -6,7 +6,7 @@ export interface ApiDataDataType {
   group?: string;
   modelId: number;
   modelName: string;
-  fields?: any;
+  fieldMap?: any;
   orgId?: number;
   pubFlag?: boolean;
   createdBy?: string;
@@ -22,7 +22,7 @@ export const initDataData: ApiDataDataType = {
   desc: '',
   group: '',
   modelId: 0,
-  fields: null,
+  fieldMap: {},
   modelName: '',
   orgId: 0,
   pubFlag: false,

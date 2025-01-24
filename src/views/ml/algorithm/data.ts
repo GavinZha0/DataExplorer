@@ -829,4 +829,43 @@ class CustomLightGbmTrain:
       callbacks=[TuneReportCheckpointCallback()])
 `;
 
+// algo template of sklearn
+export const algoTplSom = `
+import ray
+from sklearn import metrics
+from minisom import MiniSom
 
+class CustomSomTrain:
+  def train(config: dict, data: dict):
+    train_y = val_x = val_y = None
+    train_x = data.get('train').to_pandas()
+    if config['targets']:
+      train_y = train_x[config['targets']]
+      train_x = train_x.drop(columns=config['targets'])
+
+    if data.get('validation'):
+      val_x = data.get('validation').to_pandas()
+      if config['targets']:
+        val_y = val_x[config['targets']]
+        val_x = val_x.drop(columns=config['targets'])
+    else:
+      val_x = train_x
+      val_y = train_y
+
+    size = math.ceil(np.sqrt(5 * np.sqrt(len(train_x))))
+    som = MiniSom(size, size, len(train_x.columns))
+    # som.pca_weights_init(train_x.values)
+    som.random_weights_init(train_x.values)
+    som.train_batch(train_x.values, config['epochs'])
+
+    winmap = som.labels_map(train_x.values, train_y.values)
+    winner_map = np.array([som.winner(x) for x in train_x.values]).T
+    cluster_index = np.ravel_multi_index(winner_map, (size, size))
+    clusters = np.unique(cluster_index)
+    heatmap = som.distance_map()
+
+    val_pred = som.winner(val_x.values)
+    metrics_fn = metrics.get_scorer('{METRIC_NAME}')
+    metrics_value = metrics_fn(estimator, val_x, val_y)
+    ray.train.report({"{METRIC_NAME}": metrics_value})
+`;

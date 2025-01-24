@@ -127,6 +127,14 @@ export const formInfoSchema: FormSchema[] = [
 // model form schema
 export const formModelSchema: FormSchema[] = [
   {
+    field: 'transform',
+    label: t('ai.data.form.model.transform'),
+    component: 'Switch',
+    defaultValue: false,
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
     field: 'search',
     component: 'Input',
     componentProps: {

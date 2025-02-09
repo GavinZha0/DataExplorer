@@ -185,6 +185,13 @@ export const dataStatColumns: BasicColumn[] = [
     ellipsis: false,
     resizable: true
   },
+  {
+    title: t('ml.dataset.tab.stats.min_gap'),
+    dataIndex: 'gap',
+    width: 60,
+    ellipsis: false,
+    resizable: true
+  },
 ];
 
 // image stat form columns
@@ -236,7 +243,7 @@ export const imgStatColumns: BasicColumn[] = [
 // Table fields
 export const tableColumns: BasicColumn[] = [
   {
-    title: t('dataviz.dataset.table.title.field'),
+    title: t('ml.dataset.table.title.field'),
     dataIndex: 'name',
     width: 120,
     align: 'left',
@@ -325,24 +332,22 @@ export const formInfoSchema: FormSchema[] = [
 ];
 
 // source form schema
-export const formConfigSchema: FormSchema[] = [
+export const formConfigCsvSchema: FormSchema[] = [
   {
-    field: 'variable',
-    component: 'ApiTree',
-    label: '',
-    slot: 'sourceSelectTree',
-  },
-  {
-    field: 'hidden',
-    component: 'Input',
-    label: '',
-    slot: 'fieldTree',
-  },
-  {
-    field: 'sorter',
-    component: 'Input',
-    label: '',
-    slot: 'fieldTree',
+    field: 'delimiter',
+    label: t('ml.dataset.form.csv.delimiter'),
+    component: 'Select',
+    defaultValue: ',',
+    labelWidth: 80,
+    colProps: { span: 24 },
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: t('ml.dataset.form.csv.comma'), value: ',' },
+        { label: t('ml.dataset.form.csv.colon'), value: ':' },
+        { label: t('ml.dataset.form.csv.tab'), value: '\t' },
+      ],
+    },
   },
 ];
 
@@ -351,22 +356,22 @@ export const formTransformSchema: FormSchema[] = [
   {
     field: 'operation',
     component: 'Select',
-    label: t('dataviz.dataset.form.transform.operation'),
+    label: t('ml.dataset.form.transform.operation'),
     componentProps: {
       options: [
-        { label: t('dataviz.dataset.form.transform.operation.crop'), value: 'crop' }, // 剪裁
-        { label: t('dataviz.dataset.form.transform.operation.resize'), value: 'resize' }, // 缩放
-        { label: t('dataviz.dataset.form.transform.operation.pad'), value: 'pad' }, // 对图像边框进行填充
-        { label: t('dataviz.dataset.form.transform.operation.brightness'), value: 'brightness' }, // 亮度
-        { label: t('dataviz.dataset.form.transform.operation.contrast'), value: 'contrast' }, // 对比度
-        { label: t('dataviz.dataset.form.transform.operation.saturation'), value: 'saturation' }, // 饱和度
-        { label: t('dataviz.dataset.form.transform.operation.sharpness'), value: 'sharpness' }, // 锐度
-        { label: t('dataviz.dataset.form.transform.operation.hue'), value: 'hue' }, // 色调
-        { label: t('dataviz.dataset.form.transform.operation.rotate'), value: 'rotate' }, // 旋转角度
-        { label: t('dataviz.dataset.form.transform.operation.blur'), value: 'blur' }, // 高斯模糊
-        { label: t('dataviz.dataset.form.transform.operation.grayscale'), value: 'grayscale' }, // 将图像转换为灰度图像
-        { label: t('dataviz.dataset.form.transform.operation.hflip'), value: 'hflip' }, // 水平翻转
-        { label: t('dataviz.dataset.form.transform.operation.vflip'), value: 'vflip' }, // 垂直翻转
+        { label: t('ml.dataset.form.transform.operation.crop'), value: 'crop' }, // 剪裁
+        { label: t('ml.dataset.form.transform.operation.resize'), value: 'resize' }, // 缩放
+        { label: t('ml.dataset.form.transform.operation.pad'), value: 'pad' }, // 对图像边框进行填充
+        { label: t('ml.dataset.form.transform.operation.brightness'), value: 'brightness' }, // 亮度
+        { label: t('ml.dataset.form.transform.operation.contrast'), value: 'contrast' }, // 对比度
+        { label: t('ml.dataset.form.transform.operation.saturation'), value: 'saturation' }, // 饱和度
+        { label: t('ml.dataset.form.transform.operation.sharpness'), value: 'sharpness' }, // 锐度
+        { label: t('ml.dataset.form.transform.operation.hue'), value: 'hue' }, // 色调
+        { label: t('ml.dataset.form.transform.operation.rotate'), value: 'rotate' }, // 旋转角度
+        { label: t('ml.dataset.form.transform.operation.blur'), value: 'blur' }, // 高斯模糊
+        { label: t('ml.dataset.form.transform.operation.grayscale'), value: 'grayscale' }, // 将图像转换为灰度图像
+        { label: t('ml.dataset.form.transform.operation.hflip'), value: 'hflip' }, // 水平翻转
+        { label: t('ml.dataset.form.transform.operation.vflip'), value: 'vflip' }, // 垂直翻转
       ],
     },
     colProps: { span: 24 }
@@ -374,24 +379,24 @@ export const formTransformSchema: FormSchema[] = [
   {
     field: 'param',
     component: 'Input',
-    label: t('dataviz.dataset.form.transform.param')
+    label: t('ml.dataset.form.transform.param')
   }
 ];
 
 export const varModalSchemas: FormSchema[] = [
   {
     field: 'type',
-    label: t('dataviz.dataset.form.var.type'),
+    label: t('ml.dataset.form.var.type'),
     required: true,
     component: 'Select',
     componentProps: {
       options: [
-        { label: t('dataviz.dataset.form.var.cat.number'), value: 'number' },
-        { label: t('dataviz.dataset.form.var.cat.string'), value: 'string' },
-        { label: t('dataviz.dataset.form.var.cat.bool'), value: 'bool' },
-        { label: t('dataviz.dataset.form.var.cat.ts'), value: 'timestamp' },
-        { label: t('dataviz.dataset.form.var.cat.arrayN'), value: '[number]' },
-        { label: t('dataviz.dataset.form.var.cat.arrayS'), value: '[string]' },
+        { label: t('ml.dataset.form.var.cat.number'), value: 'number' },
+        { label: t('ml.dataset.form.var.cat.string'), value: 'string' },
+        { label: t('ml.dataset.form.var.cat.bool'), value: 'bool' },
+        { label: t('ml.dataset.form.var.cat.ts'), value: 'timestamp' },
+        { label: t('ml.dataset.form.var.cat.arrayN'), value: '[number]' },
+        { label: t('ml.dataset.form.var.cat.arrayS'), value: '[string]' },
       ],
     },
     colProps: { span: 24 },
@@ -400,14 +405,14 @@ export const varModalSchemas: FormSchema[] = [
     field: 'name',
     component: 'Input',
     required: true,
-    label: t('dataviz.dataset.form.var.name'),
+    label: t('ml.dataset.form.var.name'),
     colProps: { span: 24 },
   },
   {
     field: 'value',
     component: 'Input',
     required: true,
-    label: t('dataviz.dataset.form.var.value'),
+    label: t('ml.dataset.form.var.value'),
     colProps: { span: 24 },
   },
 ];

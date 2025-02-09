@@ -29,6 +29,7 @@ export default {
       variance: '方差',
       missing: '缺失值',
       zeros: '零值',
+      min_gap: '最小间隔',
     }
   },
   form: {
@@ -45,6 +46,13 @@ export default {
       group: '分组',
       sorter: '排序',
       filter: '过滤',
+      csv: 'CSV'
+    },
+    csv: {
+      delimiter: '分隔符',
+      comma: '逗号 (,)',
+      colon: '冒号 (:)',
+      tab: '制表符 (\\t)',
     },
     var: {
       new: '新建变量',

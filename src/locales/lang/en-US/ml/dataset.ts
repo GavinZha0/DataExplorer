@@ -32,7 +32,8 @@ export default {
       zeros: 'Zeros',
       mode: 'Mode',
       channel: 'Channel',
-      size: 'Size'
+      size: 'Size',
+      min_gap: 'Min Gap'
     },
   },
   form: {
@@ -49,6 +50,13 @@ export default {
       group: 'Group',
       sorter: 'Sorter',
       filter: 'Filter',
+      csv: 'CSV'
+    },
+    csv: {
+      delimiter: 'Delimiter',
+      comma: 'Comma (,)',
+      colon: 'Colon (:)',
+      tab: 'Tab (\\t)',
     },
     var: {
       new: 'Create Variable',

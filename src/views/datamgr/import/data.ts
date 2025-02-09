@@ -7,19 +7,19 @@ const { t } = useI18n();
 // index form columns
 export const indexColumns: BasicColumn[] = [
   {
-    title: t('collection.importer.table.title.ts'),
+    title: t('datamgr.importer.table.title.ts'),
     dataIndex: 'updatedAt',
     width: 200,
     resizable: true
   },
   {
-    title: t('collection.importer.table.title.files'),
+    title: t('datamgr.importer.table.title.files'),
     dataIndex: 'files',
     align: 'left',
     resizable: true
   },
   {
-    title: t('collection.importer.table.title.type'),
+    title: t('datamgr.importer.table.title.type'),
     dataIndex: 'type',
     width: 100,
     align: 'left',
@@ -30,32 +30,32 @@ export const indexColumns: BasicColumn[] = [
     ],
   },
   {
-    title: t('collection.importer.table.title.total'),
+    title: t('datamgr.importer.table.title.total'),
     dataIndex: 'rows',
     align: 'left',
     width: 120,
   },
   {
-    title: t('collection.importer.table.title.records'),
+    title: t('datamgr.importer.table.title.records'),
     dataIndex: 'records',
     align: 'left',
     width: 120,
   },
   {
-    title: t('collection.importer.table.title.source'),
+    title: t('datamgr.importer.table.title.source'),
     dataIndex: 'sourceName',
     align: 'left',
     width: 200,
     resizable: true
   },
   {
-    title: t('collection.importer.table.title.table'),
+    title: t('datamgr.importer.table.title.table'),
     dataIndex: 'tableName',
     align: 'left',
     resizable: true
   },
   {
-    title: t('collection.importer.table.title.overwrite'),
+    title: t('datamgr.importer.table.title.overwrite'),
     dataIndex: 'overwrite',
     width: 100,
     filters: [
@@ -64,7 +64,7 @@ export const indexColumns: BasicColumn[] = [
     ],
   },
   {
-    title: t('collection.importer.table.title.status'),
+    title: t('datamgr.importer.table.title.status'),
     dataIndex: 'status',
     width: 120,
     filters: [
@@ -81,7 +81,7 @@ export const indexColumns: BasicColumn[] = [
 export const formTsAttrSchema: FormSchema[] = [
   {
     field: 'timezone',
-    label: t('collection.importer.detail.form.attr.timezone'),
+    label: t('datamgr.importer.detail.form.attr.timezone'),
     component: 'Select',
     labelWidth: 80,
     defaultValue: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -95,7 +95,7 @@ export const formTsAttrSchema: FormSchema[] = [
   },
   {
     field: 'timeFormat',
-    label: t('collection.importer.detail.form.attr.timeFormat'),
+    label: t('datamgr.importer.detail.form.attr.timeFormat'),
     component: 'Select',
     labelWidth: 80,
     componentProps: {
@@ -112,7 +112,7 @@ export const formTsAttrSchema: FormSchema[] = [
   },
   {
     field: 'dateFormat',
-    label: t('collection.importer.detail.form.attr.dateFormat'),
+    label: t('datamgr.importer.detail.form.attr.dateFormat'),
     component: 'Select',
     labelWidth: 80,
     componentProps: {
@@ -138,7 +138,7 @@ export const formTsAttrSchema: FormSchema[] = [
   },
   {
     field: 'tsFormat',
-    label: t('collection.importer.detail.form.attr.tsFormat'),
+    label: t('datamgr.importer.detail.form.attr.tsFormat'),
     component: 'Select',
     labelWidth: 80,
     componentProps: {
@@ -181,7 +181,7 @@ export const formTsAttrSchema: FormSchema[] = [
 export const formCsvAttrSchema: FormSchema[] = [
   {
     field: 'header',
-    label: t('collection.importer.detail.form.attr.header'),
+    label: t('datamgr.importer.detail.form.attr.header'),
     defaultValue: true,
     component: 'Switch',
     labelWidth: 80,
@@ -189,21 +189,21 @@ export const formCsvAttrSchema: FormSchema[] = [
   },
   {
     field: 'quote',
-    label: t('collection.importer.detail.form.attr.quote'),
+    label: t('datamgr.importer.detail.form.attr.quote'),
     component: 'Select',
     defaultValue: '"',
     labelWidth: 80,
     colProps: { span: 24 },
     componentProps: {
       options: [
-        { label: t('collection.importer.detail.form.attr.singleQuote'), value: "'" },
-        { label: t('collection.importer.detail.form.attr.doubleQuote'), value: '"' },
+        { label: t('datamgr.importer.detail.form.attr.singleQuote'), value: "'" },
+        { label: t('datamgr.importer.detail.form.attr.doubleQuote'), value: '"' },
       ],
     },
   },
   {
     field: 'encoding',
-    label: t('collection.importer.detail.form.attr.encoding'),
+    label: t('datamgr.importer.detail.form.attr.encoding'),
     component: 'Select',
     defaultValue: 'UTF-8',
     labelWidth: 80,
@@ -220,7 +220,7 @@ export const formCsvAttrSchema: FormSchema[] = [
   },
   {
     field: 'delimiter',
-    label: t('collection.importer.detail.form.attr.delimiter'),
+    label: t('datamgr.importer.detail.form.attr.delimiter'),
     component: 'Select',
     defaultValue: ',',
     labelWidth: 80,
@@ -228,9 +228,9 @@ export const formCsvAttrSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: [
-        { label: t('collection.importer.detail.form.attr.comma'), value: ',' },
-        { label: t('collection.importer.detail.form.attr.colon'), value: ':' },
-        { label: t('collection.importer.detail.form.attr.tab'), value: '\t' },
+        { label: t('datamgr.importer.detail.form.attr.comma'), value: ',' },
+        { label: t('datamgr.importer.detail.form.attr.colon'), value: ':' },
+        { label: t('datamgr.importer.detail.form.attr.tab'), value: '\t' },
       ],
     },
   },
@@ -240,14 +240,14 @@ export const formCsvAttrSchema: FormSchema[] = [
 export const formConfigSchemas: FormSchema[] = [
   {
     field: 'overwrite',
-    label: t('collection.importer.detail.form.config.overwrite'),
+    label: t('datamgr.importer.detail.form.config.overwrite'),
     component: 'Switch',
     labelWidth: 80,
     colProps: { span: 24 },
   },
   {
     field: 'source',
-    label: t('collection.importer.detail.form.config.source'),
+    label: t('datamgr.importer.detail.form.config.source'),
     required: true,
     component: 'Input',
     slot: 'datasource',
@@ -256,7 +256,7 @@ export const formConfigSchemas: FormSchema[] = [
   },
   {
     field: 'table',
-    label: t('collection.importer.detail.form.config.table'),
+    label: t('datamgr.importer.detail.form.config.table'),
     required: true,
     component: 'Input',
     labelWidth: 80,
@@ -264,7 +264,7 @@ export const formConfigSchemas: FormSchema[] = [
   },
   {
     field: 'nullMap',
-    label: t('collection.importer.detail.form.config.null'),
+    label: t('datamgr.importer.detail.form.config.null'),
     component: 'Select',
     defaultValue: ['null', '(null)', 'n/a', 'Blank'],
     labelWidth: 80,
@@ -283,7 +283,7 @@ export const formConfigSchemas: FormSchema[] = [
   },
   {
     field: 'trueMap',
-    label: t('collection.importer.detail.form.config.true'),
+    label: t('datamgr.importer.detail.form.config.true'),
     component: 'Select',
     defaultValue: ['true', 'yes', 'on', '1'],
     labelWidth: 80,
@@ -302,7 +302,7 @@ export const formConfigSchemas: FormSchema[] = [
   },
   {
     field: 'falseMap',
-    label: t('collection.importer.detail.form.config.false'),
+    label: t('datamgr.importer.detail.form.config.false'),
     component: 'Select',
     defaultValue: ['false', 'no', 'off', '0'],
     labelWidth: 80,
@@ -324,37 +324,37 @@ export const formConfigSchemas: FormSchema[] = [
 export const FieldModalSchemas: FormSchema[] = [
   {
     field: 'ignore',
-    label: t('collection.importer.detail.table.action.ignore'),
+    label: t('datamgr.importer.detail.table.action.ignore'),
     component: 'Switch',
     colProps: { span: 24 },
   },
   {
     field: 'alias',
     component: 'Input',
-    label: t('collection.importer.detail.table.action.alias'),
+    label: t('datamgr.importer.detail.table.action.alias'),
     colProps: { span: 24 },
   },
   {
     field: 'type',
-    label: t('collection.importer.detail.table.action.type.title'),
+    label: t('datamgr.importer.detail.table.action.type.title'),
     component: 'Select',
     defaultValue: 'String',
     componentProps: {
       options: [
-        { label: t('collection.importer.detail.table.action.type.varchar'), value: 'Varchar' },
-        { label: t('collection.importer.detail.table.action.type.text'), value: 'Text' },
-        { label: t('collection.importer.detail.table.action.type.integer'), value: 'Integer' },
-        { label: t('collection.importer.detail.table.action.type.bigint'), value: 'Bigint' },
-        { label: t('collection.importer.detail.table.action.type.float'), value: 'Float' },
-        { label: t('collection.importer.detail.table.action.type.double'), value: 'Double' },
-        { label: t('collection.importer.detail.table.action.type.boolean'), value: 'Boolean' },
-        { label: t('collection.importer.detail.table.action.type.time'), value: 'Time' },
-        { label: t('collection.importer.detail.table.action.type.date'), value: 'Date' },
-        { label: t('collection.importer.detail.table.action.type.dt'), value: 'Datetime' },
-        { label: t('collection.importer.detail.table.action.type.ts'), value: 'Timestamp' },
-        { label: t('collection.importer.detail.table.action.type.bit'), value: 'Bit' },
-        { label: t('collection.importer.detail.table.action.type.binary'), value: 'Binary' },
-        { label: t('collection.importer.detail.table.action.type.blob'), value: 'Blob' },
+        { label: t('datamgr.importer.detail.table.action.type.varchar'), value: 'Varchar' },
+        { label: t('datamgr.importer.detail.table.action.type.text'), value: 'Text' },
+        { label: t('datamgr.importer.detail.table.action.type.integer'), value: 'Integer' },
+        { label: t('datamgr.importer.detail.table.action.type.bigint'), value: 'Bigint' },
+        { label: t('datamgr.importer.detail.table.action.type.float'), value: 'Float' },
+        { label: t('datamgr.importer.detail.table.action.type.double'), value: 'Double' },
+        { label: t('datamgr.importer.detail.table.action.type.boolean'), value: 'Boolean' },
+        { label: t('datamgr.importer.detail.table.action.type.time'), value: 'Time' },
+        { label: t('datamgr.importer.detail.table.action.type.date'), value: 'Date' },
+        { label: t('datamgr.importer.detail.table.action.type.dt'), value: 'Datetime' },
+        { label: t('datamgr.importer.detail.table.action.type.ts'), value: 'Timestamp' },
+        { label: t('datamgr.importer.detail.table.action.type.bit'), value: 'Bit' },
+        { label: t('datamgr.importer.detail.table.action.type.binary'), value: 'Binary' },
+        { label: t('datamgr.importer.detail.table.action.type.blob'), value: 'Blob' },
       ],
     },
     colProps: { span: 12 },
@@ -362,7 +362,7 @@ export const FieldModalSchemas: FormSchema[] = [
   {
     field: 'precision',
     component: 'InputNumber',
-    label: t('collection.importer.detail.table.action.precision'),
+    label: t('datamgr.importer.detail.table.action.precision'),
     colProps: { span: 12 },
     componentProps: {
       min: 0,
@@ -370,7 +370,7 @@ export const FieldModalSchemas: FormSchema[] = [
   },
   {
     field: 'formula',
-    label: t('collection.importer.detail.table.action.formula'),
+    label: t('datamgr.importer.detail.table.action.formula'),
     component: 'Select',
     componentProps: {
       options: [

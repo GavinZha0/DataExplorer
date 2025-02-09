@@ -20,7 +20,7 @@
         <a-input-search
           v-model:value="searchText"
           allow-clear
-          :placeholder="t('collection.importer.toolbar.search')"
+          :placeholder="t('datamgr.importer.toolbar.search')"
           style="width: 360px"
           @search="handleSearch"
         />

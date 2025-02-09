@@ -15,6 +15,7 @@ export default {
       variance: 'Variance',
       missing: 'Missing',
       zeros: 'Zeros',
+      gap: 'Min Gap'
     },
     distribution: 'Distribution',
     interaction: 'Interaction',
@@ -75,6 +76,8 @@ export default {
         method: 'Method',
         iqr: 'IQR coff',
         sigma: 'Sigma coff',
+        cont_ratio: 'Contamination',
+        distance: 'Distance',
         metric: 'Metric',
         kernel: 'Kernel',
         umap: 'UMAP',

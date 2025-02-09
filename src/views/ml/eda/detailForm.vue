@@ -62,6 +62,13 @@
                        layout="inline"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
+            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'dbscan'"
+                       ref="optionFormRef"
+                       :schemas="outlierDbscanOptionSchema"
+                       :showActionButtonGroup="false"
+                       layout="inline"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
             <BasicForm v-else-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'svm'"
                        ref="optionFormRef"
                        :schemas="outlierSvmOptionSchema"
@@ -69,9 +76,16 @@
                        layout="inline"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier'"
+            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier' && (rawData.config.outlier.method == 'knn' || rawData.config.outlier.method == 'lof')"
                        ref="optionFormRef"
                        :schemas="outlierKnnOptionSchema"
+                       :showActionButtonGroup="false"
+                       layout="inline"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier'"
+                       ref="optionFormRef"
+                       :schemas="outlierCofOptionSchema"
                        :showActionButtonGroup="false"
                        layout="inline"
                        @fieldValueChange="handleVisOptionChange">
@@ -467,7 +481,7 @@
     outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
     featureModelOptionSchema, featureSearchOptionSchema, featureDetectOptionSchema, tsSeriesOptionSchema, tsTrendOptionSchema, tsDiffOptionSchema,
     tsFreqOptionSchema, tsCompareOptionSchema, tsAcfOptionSchema, tsMavgOptionSchema, tsQuantileOptionSchema, tsCycleOptionSchema, tsDecompOptionSchema,
-    tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema
+    tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema, outlierDbscanOptionSchema, outlierCofOptionSchema
   } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import {
@@ -515,6 +529,7 @@
   const optionFormRef = ref<Nullable<FormActionType>>(null);
   const dataset = reactive<any>({ info: {}, data: [], tf: [], vf: [], cf: []});
   const anaImgs = ref<any>({});
+  let clonedEdaCfg = cloneDeep(eda_cfg_default);
 
   let statBoxOptSchema = cloneDeep(boxOptionSchema);
   let statViolinOptSchema = cloneDeep(violinOptionSchema);
@@ -634,6 +649,9 @@
         tsDecompOptSchema = cloneDeep(tsDecompOptionSchema);
         tsPredictOptSchema = cloneDeep(tsPredictOptionSchema);
 
+        // reinitalize default config
+        clonedEdaCfg = cloneDeep(eda_cfg_default);
+
         for(const field of response.fields){
           if (field.omit) {
             continue;
@@ -642,6 +660,7 @@
           }
 
           if (field.attr == 'date') {
+            // add ts field to schema options
             dataset.tf.push(field.name);
             tsSeriesOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsTrendOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
@@ -654,7 +673,9 @@
             tsCycleOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsDecompOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
+            
           } else if(field.attr == 'conti' || field.attr == 'disc'){
+            // add value field to schema options
             dataset.vf.push(field.name);
             statAnovaOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             corrSingleScatterOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
@@ -671,6 +692,7 @@
             tsDecompOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
           } else if(field.attr == 'cat'){
+            // add category field to schema options
             dataset.cf.push(field.name);
             statBoxOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             statViolinOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
@@ -682,7 +704,9 @@
             corrSingleScatterOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
           }
         }
+
         if (tsSeriesOptSchema[0].componentProps.options.length == 1) {
+          // set default field when only one field
           tsSeriesOptSchema[0].defaultValue = tsSeriesOptSchema[0].componentProps.options[0].value;
           tsTrendOptSchema[0].defaultValue = tsTrendOptSchema[0].componentProps.options[0].value;
           tsDiffOptSchema[0].defaultValue = tsDiffOptSchema[0].componentProps.options[0].value;
@@ -694,9 +718,22 @@
           tsCycleOptSchema[0].defaultValue = tsCycleOptSchema[0].componentProps.options[0].value;
           tsDecompOptSchema[0].defaultValue = tsDecompOptSchema[0].componentProps.options[0].value;
           tsPredictOptSchema[0].defaultValue = tsPredictOptSchema[0].componentProps.options[0].value;
+
+          rawData.value.config.series['ts'] = tsSeriesOptSchema[0].defaultValue;
+          rawData.value.config.trend['ts'] = tsTrendOptSchema[0].defaultValue;
+          rawData.value.config.diff['ts'] = tsDiffOptSchema[0].defaultValue;
+          rawData.value.config.quantile['ts'] = tsQuantileOptSchema[0].defaultValue;
+          rawData.value.config.compare['ts'] = tsCompareOptSchema[0].defaultValue;
+          rawData.value.config.mavg['ts'] = tsMavgOptSchema[0].defaultValue;
+          rawData.value.config.tsfreq['ts'] = tsFreqOptSchema[0].defaultValue;
+          rawData.value.config.autocorr['ts'] = tsAcfOptSchema[0].defaultValue;
+          rawData.value.config.cycle['ts'] = tsCycleOptSchema[0].defaultValue;
+          rawData.value.config.decomp['ts'] = tsDecompOptSchema[0].defaultValue;
+          rawData.value.config.predict['ts'] = tsPredictOptSchema[0].defaultValue;
         }
 
         if (tsTrendOptSchema[2].componentProps.options.length == 1) {
+          // set default field when only one field
           tsTrendOptSchema[2].defaultValue = tsTrendOptSchema[2].componentProps.options[0].value;
           tsDiffOptSchema[2].defaultValue = tsDiffOptSchema[2].componentProps.options[0].value;
           tsFreqOptSchema[1].defaultValue = tsFreqOptSchema[1].componentProps.options[0].value;
@@ -707,6 +744,17 @@
           tsCycleOptSchema[2].defaultValue = tsCycleOptSchema[2].componentProps.options[0].value;
           tsDecompOptSchema[2].defaultValue = tsDecompOptSchema[2].componentProps.options[0].value;
           tsPredictOptSchema[2].defaultValue = tsPredictOptSchema[2].componentProps.options[0].value;
+
+          rawData.value.config.trend['vf'] = tsTrendOptSchema[2].defaultValue;
+          rawData.value.config.diff['vf'] = tsDiffOptSchema[2].defaultValue;
+          rawData.value.config.tsfreq['vf'] = tsFreqOptSchema[1].defaultValue;
+          rawData.value.config.compare['vf'] = tsCompareOptSchema[2].defaultValue;
+          rawData.value.config.autocorr['vf'] = tsAcfOptSchema[2].defaultValue;
+          rawData.value.config.mavg['vf'] = tsMavgOptSchema[2].defaultValue;
+          rawData.value.config.quantile['vf'] = tsQuantileOptSchema[2].defaultValue;
+          rawData.value.config.cycle['vf'] = tsCycleOptSchema[2].defaultValue;
+          rawData.value.config.decomp['vf'] = tsDecompOptSchema[2].defaultValue;
+          rawData.value.config.predict['vf'] = tsPredictOptSchema[2].defaultValue;
         }
       });
     }
@@ -740,9 +788,7 @@
   * show different chart when click different vis option
   */
   const handleSubVisSwitch = (menu: any) => {
-    if (rawData.value.config[menu.key] == undefined) {
-      rawData.value.config[menu.key] = cloneDeep(eda_cfg_default[menu.key]);
-    }
+    rawData.value.config[menu.key] = cloneDeep(clonedEdaCfg[menu.key]);
     buildChart(menu.key, rawData.value.config[menu.key]);
   };
 
@@ -756,6 +802,11 @@
       delete cfg[key];
     } else {
       cfg[key] = value;
+      if(key == 'method'){
+        if(cfg['threshold']){
+          delete cfg['threshold'];
+        }
+      }
     }
 
     buildChart(visKind, cfg);

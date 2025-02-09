@@ -10,7 +10,7 @@
   >
     <template #titleToolbar>
       <Tooltip>
-        <template #title>{{ t('collection.importer.detail.toolbar.limit') }}</template>
+        <template #title>{{ t('datamgr.importer.detail.toolbar.limit') }}</template>
         <InputNumber
           :min="0"
           :max="1000"
@@ -18,7 +18,7 @@
           size="small"
           v-model:value="rawData.limit"
           class="toolbar-input"
-          :placeholder="t('collection.importer.form.attr.limit')"
+          :placeholder="t('datamgr.importer.form.attr.limit')"
           :addonAfter="selectedFile ? filePreview[selectedFile].rows.toLocaleString() : 0"
         />
       </Tooltip>
@@ -33,7 +33,7 @@
           <a-col :md="8" :sm="24">
             <fieldset class="filesets" style="height: 350px; border: solid 1px; margin-top: 5px">
               <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
-                {{ t('collection.importer.detail.form.attr.csvAttr') }}
+                {{ t('datamgr.importer.detail.form.attr.csvAttr') }}
               </legend>
               <BasicForm
                 :forceRender="true"
@@ -47,7 +47,7 @@
           <a-col :md="8" :sm="24">
             <fieldset class="filesets" style="height: 350px; border: solid 1px; margin-top: 5px">
               <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
-                {{ t('collection.importer.detail.form.attr.tsAttr') }}
+                {{ t('datamgr.importer.detail.form.attr.tsAttr') }}
               </legend>
               <BasicForm
                 :forceRender="true"
@@ -61,7 +61,7 @@
           <a-col :md="8" :sm="24">
             <fieldset class="filesets" style="height: 350px; border: solid 1px; margin-top: 5px">
               <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
-                {{ t('collection.importer.detail.form.attr.fileList') }}
+                {{ t('datamgr.importer.detail.form.attr.fileList') }}
               </legend>
               <div>
                 <Upload.Dragger
@@ -73,12 +73,12 @@
                 >
                   <p class="ant-upload-drag-icon"><FileAddOutlined /></p>
                   <p class="ant-upload-text">
-                    {{ t('collection.importer.detail.form.attr.uploadTip') }}
+                    {{ t('datamgr.importer.detail.form.attr.uploadTip') }}
                   </p>
                   <p class="ant-upload-hint">
-                    {{ t('collection.importer.detail.form.attr.uploadHint1') }}
+                    {{ t('datamgr.importer.detail.form.attr.uploadHint1') }}
                     <br />
-                    {{ t('collection.importer.detail.form.attr.uploadHint2') }}
+                    {{ t('datamgr.importer.detail.form.attr.uploadHint2') }}
                   </p>
                   <template #itemRender="{ file, actions }">
                     <div :style="{ backgroundColor: file.status == 'selected' ? 'wheat' : '' }">
@@ -130,7 +130,7 @@
                   <HeaderCell :column="column" />
                   <br />
                   <Tooltip>
-                    <template #title>{{t('collection.importer.detail.table.action.ignore')}}</template>
+                    <template #title>{{t('datamgr.importer.detail.table.action.ignore')}}</template>
                     <EyeInvisibleOutlined
                       class="ml-2"
                       :style="{fontSize: '16px', color: column.ignore ? '#08c' : 'gray', cursor: 'pointer'}"
@@ -139,7 +139,7 @@
                   </Tooltip>
                   <Tooltip>
                     <template #title>
-                      {{ t('collection.importer.detail.table.action.formula') }}
+                      {{ t('datamgr.importer.detail.table.action.formula') }}
                     </template>
                     <Dropdown placement="bottom" :trigger="['click']">
                       <CalculatorOutlined
@@ -167,7 +167,7 @@
                   </Tooltip>
                   <Tooltip>
                     <template #title>{{
-                      t('collection.importer.detail.table.action.type.title')
+                      t('datamgr.importer.detail.table.action.type.title')
                     }}</template>
                     <Dropdown placement="bottom" :trigger="['click']">
                       <FieldBinaryOutlined
@@ -231,7 +231,7 @@
                   </Tooltip>
                   <Tooltip>
                     <template #title>
-                      {{ t('collection.importer.detail.table.action.precision') }}
+                      {{ t('datamgr.importer.detail.table.action.precision') }}
                     </template>
                     <Dropdown placement="bottom" :trigger="['click']">
                       <AimOutlined
@@ -304,7 +304,7 @@
               key="config"
               :forceRender="true"
               :closable="false"
-              :tab="t('collection.importer.detail.form.config.title')"
+              :tab="t('datamgr.importer.detail.form.config.title')"
             >
               <BasicForm
                 :forceRender="true"
@@ -379,10 +379,10 @@
   import { ApiTreeSelect } from '/@/components/Form';
   import Papa from 'papaparse';
   import { API_DATASOURCE_TREE } from '/@/api/datamgr/datasource';
-  import { API_IMPORTER_UPLOAD } from '/@/api/collection/importer';
+  import { API_IMPORTER_UPLOAD } from '/@/api/datamgr/importer';
   import ExcelJS from 'exceljs';
   import dayjs from 'dayjs';
-  import { ApiImporterDataType, initImporter } from '/@/api/collection/Model/importer';
+  import { ApiImporterDataType, initImporter } from '/@/api/datamgr/Model/importer';
   import { useModal } from '/@/components/Modal';
   import FieldModal from './fieldModal.vue';
   import { cloneDeep } from 'lodash-es';

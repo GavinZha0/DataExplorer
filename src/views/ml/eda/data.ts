@@ -240,18 +240,19 @@ export const outlierQtOptionSchema: FormSchema[] = [
       options: [
         { label: 'Quantile', value: 'quantile' },
         { label: 'Zscore', value: 'zscore' },
+        { label: 'DBSCAN', value: 'dbscan' },
+        { label: 'SVM', value: 'svm' },
+        { label: 'KNN', value: 'knn' },
+        { label: 'LOF', value: 'lof' },
         { label: 'COF', value: 'cof' },
         { label: 'iForest', value: 'iforest' },
-        { label: 'KNN', value: 'knn' },
-        { label: 'DBSCAN', value: 'dbscan' },
-        { label: 'LOF', value: 'lof' },
-        { label: 'SVM', value: 'svm' },
-        { label: 'SOM', value: 'som' }
+        { label: 'SOM', value: 'som' },
+        { label: 'AutoEncoder', value: 'vae' }
       ]
     }
   },
   {
-    field: 'iqr',
+    field: 'threshold',
     component: 'InputNumber',
     label: t('ml.eda.form.vis.outlier.iqr'),
     defaultValue: 1.6,
@@ -276,18 +277,19 @@ export const outlierZsOptionSchema: FormSchema[] = [
       options: [
         { label: 'Quantile', value: 'quantile' },
         { label: 'Zscore', value: 'zscore' },
+        { label: 'DBSCAN', value: 'dbscan' },
+        { label: 'SVM', value: 'svm' },
+        { label: 'KNN', value: 'knn' },
+        { label: 'LOF', value: 'lof' },
         { label: 'COF', value: 'cof' },
         { label: 'iForest', value: 'iforest' },
-        { label: 'KNN', value: 'knn' },
-        { label: 'DBSCAN', value: 'dbscan' },
-        { label: 'LOF', value: 'lof' },
-        { label: 'SVM', value: 'svm' },
-        { label: 'SOM', value: 'som' }
+        { label: 'SOM', value: 'som' },
+        { label: 'AutoEncoder', value: 'vae' }
       ]
     }
   },
   {
-    field: 'sigma',
+    field: 'threshold',
     component: 'InputNumber',
     label: t('ml.eda.form.vis.outlier.sigma'),
     defaultValue: 3,
@@ -300,25 +302,26 @@ export const outlierZsOptionSchema: FormSchema[] = [
   }
 ];
 
-// Outlier Knn/LOF/DBSCAN options
-export const outlierKnnOptionSchema: FormSchema[] = [
+// DBSCAN options
+export const outlierDbscanOptionSchema: FormSchema[] = [
   {
     field: 'method',
     component: 'Select',
     label: t('ml.eda.form.vis.outlier.method'),
-    defaultValue: 'lof',
+    defaultValue: 'dbscan',
     componentProps: {
       allowClear: false,
       options: [
         { label: 'Quantile', value: 'quantile' },
         { label: 'Zscore', value: 'zscore' },
+        { label: 'DBSCAN', value: 'dbscan' },
+        { label: 'SVM', value: 'svm' },
+        { label: 'KNN', value: 'knn' },
+        { label: 'LOF', value: 'lof' },
         { label: 'COF', value: 'cof' },
         { label: 'iForest', value: 'iforest' },
-        { label: 'KNN', value: 'knn' },
-        { label: 'DBSCAN', value: 'dbscan' },
-        { label: 'LOF', value: 'lof' },
-        { label: 'SVM', value: 'svm' },
-        { label: 'SOM', value: 'som' }
+        { label: 'SOM', value: 'som' },
+        { label: 'AutoEncoder', value: 'vae' }
       ]
     }
   },
@@ -340,11 +343,24 @@ export const outlierKnnOptionSchema: FormSchema[] = [
     }
   },
   {
+    field: 'threshold',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.distance'),
+    defaultValue: 0.5,
+    componentProps: {
+      allowClear: false,
+      min: 0.1,
+      max: 10,
+      step: 0.1
+    }
+  },
+  {
     field: 'd3',
     component: 'Switch',
     label: t('ml.eda.form.vis.outlier.d3')
   },
 ];
+
 
 // Outlier SVM options
 export const outlierSvmOptionSchema: FormSchema[] = [
@@ -358,13 +374,14 @@ export const outlierSvmOptionSchema: FormSchema[] = [
       options: [
         { label: 'Quantile', value: 'quantile' },
         { label: 'Zscore', value: 'zscore' },
+        { label: 'DBSCAN', value: 'dbscan' },
+        { label: 'SVM', value: 'svm' },
+        { label: 'KNN', value: 'knn' },
+        { label: 'LOF', value: 'lof' },
         { label: 'COF', value: 'cof' },
         { label: 'iForest', value: 'iforest' },
-        { label: 'KNN', value: 'knn' },
-        { label: 'DBSCAN', value: 'dbscan' },
-        { label: 'LOF', value: 'lof' },
-        { label: 'SVM', value: 'svm' },
-        { label: 'SOM', value: 'som' }
+        { label: 'SOM', value: 'som' },
+        { label: 'AutoEncoder', value: 'vae' }
       ]
     }
   },
@@ -384,6 +401,18 @@ export const outlierSvmOptionSchema: FormSchema[] = [
     }
   },
   {
+    field: 'threshold',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.cont_ratio'),
+    defaultValue: 0.05,
+    componentProps: {
+      allowClear: false,
+      min: 0.01,
+      max: 0.5,
+      step: 0.01
+    }
+  },
+  {
     field: 'umap',
     component: 'Switch',
     label: t('ml.eda.form.vis.outlier.umap')
@@ -394,6 +423,108 @@ export const outlierSvmOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.outlier.d3')
   }
 ];
+
+// Outlier Knn/LOF options
+export const outlierKnnOptionSchema: FormSchema[] = [
+  {
+    field: 'method',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.method'),
+    defaultValue: 'knn',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Quantile', value: 'quantile' },
+        { label: 'Zscore', value: 'zscore' },
+        { label: 'DBSCAN', value: 'dbscan' },
+        { label: 'SVM', value: 'svm' },
+        { label: 'KNN', value: 'knn' },
+        { label: 'LOF', value: 'lof' },
+        { label: 'COF', value: 'cof' },
+        { label: 'iForest', value: 'iforest' },
+        { label: 'SOM', value: 'som' },
+        { label: 'AutoEncoder', value: 'vae' }
+      ]
+    }
+  },
+  {
+    field: 'metric',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.metric'),
+    defaultValue: 'euclidean',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Chebyshev', value: 'chebyshev' },
+        { label: 'Correlation', value: 'correlation' },
+        { label: 'Euclidean', value: 'euclidean' },
+        { label: 'Hamming', value: 'hamming' },
+        { label: 'Jaccard', value: 'jaccard' },
+        { label: 'Minkowski', value: 'minkowski' }
+      ]
+    }
+  },
+  {
+    field: 'threshold',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.cont_ratio'),
+    defaultValue: 0.05,
+    componentProps: {
+      allowClear: false,
+      min: 0.01,
+      max: 0.5,
+      step: 0.01
+    }
+  },
+  {
+    field: 'd3',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.outlier.d3')
+  },
+];
+
+// Outlier COF/iForest/SOM/VAE options
+export const outlierCofOptionSchema: FormSchema[] = [
+  {
+    field: 'method',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.method'),
+    defaultValue: 'cof',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Quantile', value: 'quantile' },
+        { label: 'Zscore', value: 'zscore' },
+        { label: 'DBSCAN', value: 'dbscan' },
+        { label: 'SVM', value: 'svm' },
+        { label: 'KNN', value: 'knn' },
+        { label: 'LOF', value: 'lof' },
+        { label: 'COF', value: 'cof' },
+        { label: 'iForest', value: 'iforest' },
+        { label: 'SOM', value: 'som' },
+        { label: 'AutoEncoder', value: 'vae' }
+      ]
+    }
+  },
+  {
+    field: 'threshold',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.cont_ratio'),
+    defaultValue: 0.05,
+    componentProps: {
+      allowClear: false,
+      min: 0.01,
+      max: 0.5,
+      step: 0.01
+    }
+  },
+  {
+    field: 'd3',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.outlier.d3')
+  },
+];
+
 
 // histogram options
 export const histOptionSchema: FormSchema[] = [

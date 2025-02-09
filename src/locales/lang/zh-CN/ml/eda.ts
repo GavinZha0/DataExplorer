@@ -75,6 +75,8 @@ export default {
         method: '算法',
         irq: 'IQR系数',
         sigma: 'Sigma系数',
+        cont_ratio: '污染率',
+        distance: '最大距离',
         metric: '度量标准',
         kernel: '核方法',
         umap: 'UMAP',

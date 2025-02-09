@@ -407,6 +407,27 @@
                   :fieldNames="{ title: 'name' }"
                 />
               </fieldset>
+              <fieldset class="filesets">
+                <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
+                  {{ t('ml.dataset.form.config.csv') }}
+                </legend>
+                  <BasicForm
+                  ref="configFormCsvRef"
+                  :schemas="formConfigCsvSchema"
+                  :showActionButtonGroup="false"
+                  layout="vertical"
+                  >
+                  <template #group="{ model, field }">
+                    <ApiSelect
+                      :api="API_ML_DATASET_GROUPS"
+                      mode="tags"
+                      v-model:value="model[field]"
+                      resultField="records"
+                      @change="handleDatasetGroupChange"
+                    />
+                  </template>
+                </BasicForm>
+              </fieldset>
             </div>  
           </Col>
         </Row>
@@ -462,7 +483,7 @@
 <script lang="ts" setup name="DetailForm">
   import { computed, h, reactive, ref, unref } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { dataStatColumns, imgStatColumns, formInfoSchema } from './data';
+  import { dataStatColumns, imgStatColumns, formInfoSchema, formConfigCsvSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { BasicTable } from '/@/components/Table';
   import HeaderCell from '/@/components/Table/src/components/HeaderCell.vue';
@@ -780,7 +801,12 @@
  */
   const handleFieldDbClick = (evt: any, target: any) => {
     if(target.id > 0){
-      rawData.value.content = 'select * from ' + target.name;
+      const targetName = recurveFullPath(target);
+      if(targetName.indexOf('/') > 0){
+        rawData.value.content = "select * from '" + targetName + "'";
+      } else {
+        rawData.value.content = 'select * from ' + targetName;
+      }
       rawData.value.type = 'data';
     } else {
       if(target.parent?.node?.name){
@@ -799,6 +825,18 @@
       }
     }    
   };
+
+  function recurveFullPath(target: any){
+    let fileName = target.name;
+    if(target.parent?.node){
+      const pName = target.parent.node.name;
+      fileName = pName + '/' + fileName;
+      if(target.parent.node.parent?.node){
+        fileName = recurveFullPath(target.parent.node) + '/' + fileName;
+      }
+    }
+    return fileName;
+  }
 
   // variable computation filed for list to show
   // when this is used everything is good (renderIcon and actionList work well)

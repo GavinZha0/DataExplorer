@@ -81,7 +81,8 @@ export default {
         metric: 'Metric',
         kernel: 'Kernel',
         umap: 'UMAP',
-        d3: '3D'
+        d3: '3D',
+        threshold: 'Threshold',
       },
       hist: {
         kde: 'KDE',

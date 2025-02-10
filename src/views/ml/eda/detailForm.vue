@@ -293,6 +293,13 @@
                        layout="inline"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
+            <BasicForm v-else-if="selectedVisKeys[0] == 'anomaly'"
+                       ref="optionFormRef"
+                       :schemas="tsAnomalyOptSchema"
+                       :showActionButtonGroup="false"
+                       layout="inline"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
           </div>
           <div style="height: 1px; border: dotted gray 1px"></div>
           <div id="chartContainer" style="width: 100%; height: 700px; overflow: scroll" />
@@ -434,6 +441,7 @@
                   <MenuItem key="cycle">Periodicity</MenuItem>
                   <MenuItem key="decomp">Decomposition</MenuItem>
                   <MenuItem key="predict">Prediction</MenuItem>
+                  <MenuItem key="anomaly">Anomaly detection</MenuItem>
                 </SubMenu>
               </Menu>
             </div>
@@ -481,7 +489,7 @@
     outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
     featureModelOptionSchema, featureSearchOptionSchema, featureDetectOptionSchema, tsSeriesOptionSchema, tsTrendOptionSchema, tsDiffOptionSchema,
     tsFreqOptionSchema, tsCompareOptionSchema, tsAcfOptionSchema, tsMavgOptionSchema, tsQuantileOptionSchema, tsCycleOptionSchema, tsDecompOptionSchema,
-    tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema, outlierDbscanOptionSchema, outlierCofOptionSchema
+    tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema, outlierDbscanOptionSchema, outlierCofOptionSchema, tsAnomalyOptionSchema
   } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import {
@@ -551,6 +559,7 @@
   let tsCycleOptSchema = cloneDeep(tsCycleOptionSchema);
   let tsDecompOptSchema = cloneDeep(tsDecompOptionSchema);
   let tsPredictOptSchema = cloneDeep(tsPredictOptionSchema);
+  let tsAnomalyOptSchema = cloneDeep(tsAnomalyOptionSchema);
 
   // drawer data initialization
   const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (data) => {
@@ -586,12 +595,14 @@
     dataset.vf = [];
     dataset.cf = [];
     if (rawData.value.config == undefined) {
-      rawData.value.config = { overall: cloneDeep(eda_cfg_default['overall']) };
+      rawData.value.config = cloneDeep(clonedEdaCfg);
     }
 
     if (data && data.id) {
       buildChart('overall', rawData.value.config['overall']);
     }
+
+    handleDatasetChange(data.datasetId);
   });
 
 
@@ -627,7 +638,6 @@
         dataset.cf = [];
         
         // re-initialize eda data
-        rawData.value.config = { overall: cloneDeep(eda_cfg_default['overall']) };
         statBoxOptSchema = cloneDeep(boxOptionSchema);
         statViolinOptSchema = cloneDeep(violinOptionSchema);
         statAnovaOptSchema = cloneDeep(anovaOptionSchema);
@@ -650,7 +660,7 @@
         tsPredictOptSchema = cloneDeep(tsPredictOptionSchema);
 
         // reinitalize default config
-        clonedEdaCfg = cloneDeep(eda_cfg_default);
+        rawData.value.config = clonedEdaCfg = cloneDeep(eda_cfg_default);
 
         for(const field of response.fields){
           if (field.omit) {
@@ -673,6 +683,7 @@
             tsCycleOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsDecompOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
+            tsAnomalyOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             
           } else if(field.attr == 'conti' || field.attr == 'disc'){
             // add value field to schema options
@@ -691,6 +702,7 @@
             tsCycleOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsDecompOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
+            tsAnomalyOptSchema[1].componentProps.options.push({ label: field.name, value: field.name });
           } else if(field.attr == 'cat'){
             // add category field to schema options
             dataset.cf.push(field.name);
@@ -706,7 +718,7 @@
         }
 
         if (tsSeriesOptSchema[0].componentProps.options.length == 1) {
-          // set default field when only one field
+          // set default ts field when only one field
           tsSeriesOptSchema[0].defaultValue = tsSeriesOptSchema[0].componentProps.options[0].value;
           tsTrendOptSchema[0].defaultValue = tsTrendOptSchema[0].componentProps.options[0].value;
           tsDiffOptSchema[0].defaultValue = tsDiffOptSchema[0].componentProps.options[0].value;
@@ -718,6 +730,7 @@
           tsCycleOptSchema[0].defaultValue = tsCycleOptSchema[0].componentProps.options[0].value;
           tsDecompOptSchema[0].defaultValue = tsDecompOptSchema[0].componentProps.options[0].value;
           tsPredictOptSchema[0].defaultValue = tsPredictOptSchema[0].componentProps.options[0].value;
+          tsAnomalyOptSchema[0].defaultValue = tsAnomalyOptSchema[0].componentProps.options[0].value;
 
           rawData.value.config.series['ts'] = tsSeriesOptSchema[0].defaultValue;
           rawData.value.config.trend['ts'] = tsTrendOptSchema[0].defaultValue;
@@ -730,10 +743,11 @@
           rawData.value.config.cycle['ts'] = tsCycleOptSchema[0].defaultValue;
           rawData.value.config.decomp['ts'] = tsDecompOptSchema[0].defaultValue;
           rawData.value.config.predict['ts'] = tsPredictOptSchema[0].defaultValue;
+          rawData.value.config.anomaly['ts'] = tsAnomalyOptSchema[0].defaultValue;
         }
 
         if (tsTrendOptSchema[2].componentProps.options.length == 1) {
-          // set default field when only one field
+          // set default value field when only one field
           tsTrendOptSchema[2].defaultValue = tsTrendOptSchema[2].componentProps.options[0].value;
           tsDiffOptSchema[2].defaultValue = tsDiffOptSchema[2].componentProps.options[0].value;
           tsFreqOptSchema[1].defaultValue = tsFreqOptSchema[1].componentProps.options[0].value;
@@ -744,6 +758,7 @@
           tsCycleOptSchema[2].defaultValue = tsCycleOptSchema[2].componentProps.options[0].value;
           tsDecompOptSchema[2].defaultValue = tsDecompOptSchema[2].componentProps.options[0].value;
           tsPredictOptSchema[2].defaultValue = tsPredictOptSchema[2].componentProps.options[0].value;
+          tsAnomalyOptSchema[1].defaultValue = tsAnomalyOptSchema[1].componentProps.options[0].value;
 
           rawData.value.config.trend['vf'] = tsTrendOptSchema[2].defaultValue;
           rawData.value.config.diff['vf'] = tsDiffOptSchema[2].defaultValue;
@@ -755,6 +770,7 @@
           rawData.value.config.cycle['vf'] = tsCycleOptSchema[2].defaultValue;
           rawData.value.config.decomp['vf'] = tsDecompOptSchema[2].defaultValue;
           rawData.value.config.predict['vf'] = tsPredictOptSchema[2].defaultValue;
+          rawData.value.config.anomaly['vf'] = tsAnomalyOptSchema[1].defaultValue;
         }
       });
     }
@@ -788,6 +804,7 @@
   * show different chart when click different vis option
   */
   const handleSubVisSwitch = (menu: any) => {
+    // reset config to default
     rawData.value.config[menu.key] = cloneDeep(clonedEdaCfg[menu.key]);
     buildChart(menu.key, rawData.value.config[menu.key]);
   };

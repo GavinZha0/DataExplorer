@@ -1756,7 +1756,7 @@ export const tsPredictOptionSchema: FormSchema[] = [
         { label: 'Simple Exponential Smoothing', value: 'ses' },
         { label: 'Holt Linear Trend', value: 'holt' },
         { label: 'Holt-Winter', value: 'ets' },
-        { label: 'Autoregressive Moving Average', value: 'arima' },
+        { label: 'ARIMA', value: 'arima' },
         { label: 'Auto ARIMA', value: 'autoarima' },
         { label: 'auto ETS', value: 'autoets' },
         { label: 'Prophet', value: 'prophet' },
@@ -1793,6 +1793,59 @@ export const tsPredictOptionSchema: FormSchema[] = [
   }
 ];
 
+// ts anomaly detection options
+export const tsAnomalyOptionSchema: FormSchema[] = [
+  {
+    field: 'tf',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.tf'),
+    componentProps: {
+      allowClear: false,
+      options: []
+    }
+  },
+  {
+    field: 'vf',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.vf'),
+    componentProps: {
+      allowClear: false,
+      options: []
+    }
+  },
+  {
+    field: 'method',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.algo'),
+    defaultValue: 'quantile',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Quantile', value: 'quantile' },
+        { label: 'Zscore', value: 'zscore' },
+        { label: 'DBSCAN', value: 'dbscan' },
+        { label: 'COF', value: 'cof' },
+        { label: 'AutoEncoder', value: 'vae' },
+        { label: 'Deep iForest', value: 'dif' },
+        { label: 'ECOD', value: 'ecod' },
+        { label: 'Deep SVDD', value: 'dsvdd' },
+        { label: 'AE1SVM', value: 'ae1svm' },
+      ]
+    }
+  },
+  {
+    field: 'threshold',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.threshold'),
+    defaultValue: 0.1,
+    componentProps: {
+      allowClear: false,
+      min: 0.0,
+      max: 10,
+      step: 0.01
+    }
+  }
+];
 
 export const eda_cfg_default = {
   overall: { pid: 'stat' },
@@ -1835,6 +1888,7 @@ export const eda_cfg_default = {
   cycle: { pid: 'ts', period: 'D', agg: 'mean', algo: 'psd' },
   decomp: { pid: 'ts', period: 'D', agg: 'mean', algo: 'stl' },
   predict: { pid: 'ts', period: 'D', agg: 'mean', algo: 'ets' },
+  anomaly: { pid: 'ts', method: 'quantile' },
   quantile: { pid: 'ts', period: 'D', agg: 'mean' }
 };
 

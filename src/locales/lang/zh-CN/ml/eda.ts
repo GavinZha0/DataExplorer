@@ -80,7 +80,8 @@ export default {
         metric: '度量标准',
         kernel: '核方法',
         umap: 'UMAP',
-        d3: '3D'
+        d3: '3D',
+        threshold: '阈值',
       },
       hist: {
         kde: '核密度',

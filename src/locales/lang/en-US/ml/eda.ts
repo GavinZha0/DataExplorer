@@ -181,6 +181,7 @@ export default {
         agg: 'Aggregation',
         vf: 'Value field',
         diff: 'Diff gap',
+        step: 'Step',
         solo: 'Solo'
       },
       tsfreq: {

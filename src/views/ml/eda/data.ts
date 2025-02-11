@@ -1037,7 +1037,6 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     field: 'period',
     component: 'Select',
     label: t('ml.eda.form.vis.tsseries.period'),
-    defaultValue: 'D',
     componentProps: {
       options: [
         { label: 'Year', value: 'YS' },
@@ -1222,6 +1221,18 @@ export const tsDiffOptionSchema: FormSchema[] = [
       allowClear: false,
       min: 1,
       max: 100,
+      step: 1
+    }
+  },
+  {
+    field: 'step',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.tsdiff.step'),
+    defaultValue: 1,
+    componentProps: {
+      allowClear: false,
+      min: 1,
+      max: 20,
       step: 1
     }
   },
@@ -1436,9 +1447,8 @@ export const tsMavgOptionSchema: FormSchema[] = [
     field: 'period',
     component: 'Select',
     label: t('ml.eda.form.vis.tsma.period'),
-    defaultValue: 'D',
     componentProps: {
-      allowClear: false,
+      allowClear: true,
       options: [
         { label: 'Year', value: 'YS' },
         { label: 'Quarater', value: 'QS' },
@@ -1553,7 +1563,6 @@ export const tsCycleOptionSchema: FormSchema[] = [
     field: 'period',
     component: 'Select',
     label: t('ml.eda.form.vis.tscycle.period'),
-    defaultValue: 'D',
     componentProps: {
       allowClear: false,
       options: [
@@ -1622,6 +1631,7 @@ export const tsDecompOptionSchema: FormSchema[] = [
     }
   },
   {
+    // doesn't support 'min' and 's'
     field: 'period',
     component: 'Select',
     label: t('ml.eda.form.vis.tsdecomp.period'),
@@ -1634,9 +1644,7 @@ export const tsDecompOptionSchema: FormSchema[] = [
         { label: 'Month', value: 'MS' },
         { label: 'Week', value: 'W' },
         { label: 'Day', value: 'D' },
-        { label: 'Hour', value: 'h' },
-        { label: 'Minute', value: 'min' },
-        { label: 'Second', value: 's' }
+        { label: 'Hour', value: 'h' }
       ]
     }
   },
@@ -1805,6 +1813,24 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
     }
   },
   {
+    field: 'period',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.period'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Year', value: 'YS' },
+        { label: 'Quarater', value: 'QS' },
+        { label: 'Month', value: 'MS' },
+        { label: 'Week', value: 'W' },
+        { label: 'Day', value: 'D' },
+        { label: 'Hour', value: 'h' },
+        { label: 'Minute', value: 'min' },
+        { label: 'Second', value: 's' }
+      ]
+    }
+  },
+  {
     field: 'vf',
     component: 'Select',
     label: t('ml.eda.form.vis.tspredict.vf'),
@@ -1814,10 +1840,28 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
     }
   },
   {
+    field: 'agg',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.agg'),
+    defaultValue: 'mean',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Mean', value: 'mean' },
+        { label: 'Median', value: 'median' },
+        { label: 'Sum', value: 'sum' },
+        { label: 'Min', value: 'min' },
+        { label: 'Max', value: 'max' },
+        { label: 'Std Dev', value: 'std' },
+        { label: 'Count', value: 'count' }
+      ]
+    }
+  },
+  {
     field: 'method',
     component: 'Select',
     label: t('ml.eda.form.vis.tspredict.algo'),
-    defaultValue: 'quantile',
+    defaultValue: 'zscore',
     componentProps: {
       allowClear: false,
       options: [
@@ -1837,7 +1881,7 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
     field: 'threshold',
     component: 'InputNumber',
     label: t('ml.eda.form.vis.outlier.threshold'),
-    defaultValue: 0.1,
+    defaultValue: 3,
     componentProps: {
       allowClear: false,
       min: 0.0,
@@ -1878,17 +1922,17 @@ export const eda_cfg_default = {
   itersearch: { pid: 'feature', method: 'rfe' },
   autodetect: { pid: 'feature', method: 'dfs' },
 
-  series: { pid: 'ts', period: 'D', agg: 'mean' },
+  series: { pid: 'ts', agg: 'mean' },
   trend: { pid: 'ts', period: 'D', agg: 'mean' },
   diff: { pid: 'ts', period: 'D', agg: 'mean' },
   compare: { pid: 'ts', period: 'd', agg: 'mean', groupby: 'm'},
-  mavg: { pid: 'ts', period: 'D', agg: 'mean'},
+  mavg: { pid: 'ts', agg: 'mean'},
   tsfreq: { pid: 'ts', agg: 'mean' },
   autocorr: { pid: 'ts', period: 'D', agg: 'mean' },
-  cycle: { pid: 'ts', period: 'D', agg: 'mean', algo: 'psd' },
+  cycle: { pid: 'ts', agg: 'mean', algo: 'psd' },
   decomp: { pid: 'ts', period: 'D', agg: 'mean', algo: 'stl' },
   predict: { pid: 'ts', period: 'D', agg: 'mean', algo: 'ets' },
-  anomaly: { pid: 'ts', method: 'quantile' },
+  anomaly: { pid: 'ts', agg: 'mean', method: 'zscore' },
   quantile: { pid: 'ts', period: 'D', agg: 'mean' }
 };
 

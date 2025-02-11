@@ -180,6 +180,7 @@ export default {
         agg: '聚合',
         vf: '值域',
         diff: '比较间隔',
+        step: '阶数',
         solo: '分开显示'
       },
       tsfreq: {

@@ -1295,8 +1295,10 @@
         }
 
         if (item.target) {
+          // add target to parent
           clonedData.target.push(item.name);
         } else if(!item.omit){
+          // count the number of feature fields
           fCount++;
         }
       }

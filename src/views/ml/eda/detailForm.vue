@@ -435,7 +435,7 @@
                   <MenuItem key="trend">Trending</MenuItem>
                   <MenuItem key="mavg">Moving average</MenuItem>
                   <MenuItem key="quantile">Quantile</MenuItem>
-                  <MenuItem key="diff">Difference</MenuItem>
+                  <MenuItem key="diff">Differencing</MenuItem>
                   <MenuItem key="compare">Comparison</MenuItem>
                   <MenuItem key="autocorr">Stationarity</MenuItem>
                   <MenuItem key="cycle">Periodicity</MenuItem>
@@ -702,7 +702,7 @@
             tsCycleOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsDecompOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
-            tsAnomalyOptSchema[1].componentProps.options.push({ label: field.name, value: field.name });
+            tsAnomalyOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
           } else if(field.attr == 'cat'){
             // add category field to schema options
             dataset.cf.push(field.name);
@@ -758,7 +758,7 @@
           tsCycleOptSchema[2].defaultValue = tsCycleOptSchema[2].componentProps.options[0].value;
           tsDecompOptSchema[2].defaultValue = tsDecompOptSchema[2].componentProps.options[0].value;
           tsPredictOptSchema[2].defaultValue = tsPredictOptSchema[2].componentProps.options[0].value;
-          tsAnomalyOptSchema[1].defaultValue = tsAnomalyOptSchema[1].componentProps.options[0].value;
+          tsAnomalyOptSchema[2].defaultValue = tsAnomalyOptSchema[2].componentProps.options[0].value;
 
           rawData.value.config.trend['vf'] = tsTrendOptSchema[2].defaultValue;
           rawData.value.config.diff['vf'] = tsDiffOptSchema[2].defaultValue;
@@ -770,7 +770,7 @@
           rawData.value.config.cycle['vf'] = tsCycleOptSchema[2].defaultValue;
           rawData.value.config.decomp['vf'] = tsDecompOptSchema[2].defaultValue;
           rawData.value.config.predict['vf'] = tsPredictOptSchema[2].defaultValue;
-          rawData.value.config.anomaly['vf'] = tsAnomalyOptSchema[1].defaultValue;
+          rawData.value.config.anomaly['vf'] = tsAnomalyOptSchema[2].defaultValue;
         }
       });
     }

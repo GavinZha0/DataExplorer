@@ -1761,14 +1761,11 @@ export const tsPredictOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: [
-        { label: 'Simple Exponential Smoothing', value: 'ses' },
         { label: 'Holt Linear Trend', value: 'holt' },
-        { label: 'Holt-Winter', value: 'ets' },
+        { label: 'Holt-Winter(ETS)', value: 'ets' },
         { label: 'ARIMA', value: 'arima' },
-        { label: 'Auto ARIMA', value: 'autoarima' },
         { label: 'auto ETS', value: 'autoets' },
-        { label: 'Prophet', value: 'prophet' },
-        { label: 'DeepAR', value: 'deepar' }
+        { label: 'Prophet', value: 'prophet' }
       ]
     }
   },
@@ -1793,11 +1790,6 @@ export const tsPredictOptionSchema: FormSchema[] = [
         { label: 'Multiplicative', value: 'multiplicative' }
       ]
     }
-  },
-  {
-    field: 'damped',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.tspredict.damped')
   }
 ];
 

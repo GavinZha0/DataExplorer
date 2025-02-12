@@ -115,9 +115,7 @@ export const infoFormSchema: FormSchema[] = [
     componentProps: {
       options: [
         { label: 'MySQL', value: 'mysql' },
-        { label: 'Vertica', value: 'vertica' },
         { label: 'FTP Server', value: 'ftp' },
-        { label: 'PostgreSQL', value: 'postgresql' },
         { label: 'S3 Bucket', value: 's3bucket' },
         { label: 'BuildIn', value: 'buildin' },
       ],

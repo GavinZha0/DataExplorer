@@ -82,7 +82,7 @@
   </PageWrapper>
 </template>
 
-<script lang="ts" setup name="Import">
+<script lang="ts" setup name="Importor">
   import { reactive, ref } from 'vue';
   import { BasicTable, useTable, TableAction, TableSearch } from '/@/components/Table';
   import { PageWrapper } from '/@/components/Page';
@@ -103,7 +103,7 @@
     API_IMPORTER_DEL,
     API_IMPORTER_LIST,
     API_IMPORTER_UPLOAD,
-  } from '/@/api/collection/importer';
+  } from '/@/api/datamgr/importer';
 
   const { t } = useI18n();
   const [uploadDrawer, { openDrawer: openUploadDrawer }] = useDrawer();

@@ -509,8 +509,7 @@
     SubMenu,
     MenuItem,
     Avatar,
-    Button,
-    Select
+    Tag
   } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
   import { API_ML_DATASET_EXECUTE, API_ML_DATASET_TREE, API_ML_DATASET_GET } from '/@/api/ml/dataset';

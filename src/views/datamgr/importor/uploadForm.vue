@@ -382,7 +382,7 @@
   import { API_IMPORTER_UPLOAD } from '/@/api/datamgr/importer';
   import ExcelJS from 'exceljs';
   import dayjs from 'dayjs';
-  import { ApiImporterDataType, initImporter } from '/@/api/datamgr/Model/importer';
+  import { ApiImporterDataType, initImporter } from '/@/api/datamgr/model/importer';
   import { useModal } from '/@/components/Modal';
   import FieldModal from './fieldModal.vue';
   import { cloneDeep } from 'lodash-es';

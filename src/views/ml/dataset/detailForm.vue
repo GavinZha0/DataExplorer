@@ -542,7 +542,6 @@
   import { cloneDeep } from 'lodash-es';
   import { useModal } from '/@/components/Modal';
   import VarModal from './varModal.vue';
-  import FilterModal from './filterModal.vue';
   import { ApiSelect } from '/@/components/Form';
   import { ApiMlDatasetDataType, initDataset } from '/@/api/ml/model/dataset';
 

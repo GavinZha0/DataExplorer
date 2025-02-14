@@ -1014,9 +1014,10 @@ export const featureDetectOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.fdetect.method'),
     defaultValue: 'dfs',
     componentProps: {
+      allowClear: false,
       options: [
         { label: 'Deep Synthesis', value: 'dfs' },
-        { label: 'SVM', value: 'svm' }
+        { label: 'TsFresh', value: 'tsfresh' }
       ]
     }
   }

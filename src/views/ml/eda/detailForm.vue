@@ -856,20 +856,31 @@
         break;
       }
       case 'autodetect': {
-        title = 'Auto Feature Detection with method ' + figData.method;
+        title = 'Total features: ' + figData.columns.length;
+        figData.data.unshift(figData.columns);
+        figData.index.unshift('Feature');
         pData = [{
           type: 'table',
+          columnwidth: [500,150],
           header: {
             values: figData.index,
-            fill: { color: "grey" }
+            line: {width: 1, color: 'black'},
+            fill: { color: "gray" }
           },
           cells: {
-            values: figData.data
+            values: figData.data,
+            align: ["left", "center"],
+            line: {color: "black", width: 1},
+            fill: {color: ['gray', 'white']},
           }
         }];
         if (figData.index.length > 14) {
           width = figData.index.length * 100;
         }
+
+        pLayout = {
+          title: {text: title}
+        };
         break;
       }
     }

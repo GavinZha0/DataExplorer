@@ -36,7 +36,7 @@ export function API_ML_DATASET_LIST(params: ApiListReqType) {
  *
  */
 export function API_ML_DATASET_TREE(pub: boolean) {
-  let params = {pub: false}
+  let params = {pub: true}
   if(pub){
     params = {pub: true}
   } 

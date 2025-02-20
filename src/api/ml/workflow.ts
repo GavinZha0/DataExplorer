@@ -13,7 +13,7 @@ export const API = {
   ML_WORKFLOW_PUBLIC: '/ml/workflow/public',
   ML_WORKFLOW_CLONE: '/ml/workflow/clone',
   ML_WORKFLOW_DELETE: '/ml/workflow/delete',
-  ML_WORKFLOW_EXECUTE: '/ml/workflow/execute',
+  ML_WORKFLOW_EXECUTE: '/py/ml/workflow/execute',
   ML_WORKFLOW_EXECUTE_SQL: '/ml/workflow/execute_sql',
   ML_WORKFLOW_CATEGORY: '/ml/workflow/category',
   ML_WORKFLOW_GROUPS: '/ml/workflow/groups',

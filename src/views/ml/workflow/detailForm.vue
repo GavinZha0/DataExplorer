@@ -29,7 +29,7 @@
               </div>
             </Tabs.TabPane>
             <Tabs.TabPane key="experiment" :tab="t('ml.workflow.tab.experiment')">
-              <div>hello</div>
+              <div>{{ evalResult }}</div>
             </Tabs.TabPane>
           </Tabs> 
         </Col>
@@ -403,6 +403,7 @@
     API_ML_WORKFLOW_CREATE,
     API_ML_WORKFLOW_UPDATE,
     API_ML_WORKFLOW_GROUPS,
+    API_ML_WORKFLOW_EXECUTE
   } from '/@/api/ml/workflow';
   import 'splitpanes/dist/splitpanes.css';
   import X6Graph from '/@/components/X6Graph/index';
@@ -425,7 +426,8 @@
   const openMenuKeys = ref<string[]>([]);
   const x6GraphRef = ref();
   let workflow: any = undefined;
-    const nodeAttrs = reactive<any>({kind: '', node: null});
+  const nodeAttrs = reactive<any>({kind: '', node: null});
+  const evalResult = ref<string>('');
 
   // drawer data initialization
   const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (data) => {
@@ -579,11 +581,17 @@
 
 
   /*
-   * execute workflow
-   */
-   const executeWorkflow = () => {
-
-
+  * execute workflow
+  */
+  const executeWorkflow = () => {  
+    API_ML_WORKFLOW_EXECUTE(rawData.value.id)
+      .then((response) => {
+        message.success(t('common.success.execute'));
+        evalResult.value = response;
+      })
+      .catch((err) => {
+        message.warning(t('common.exception.execute'), err);
+      });
   };
 
   /*

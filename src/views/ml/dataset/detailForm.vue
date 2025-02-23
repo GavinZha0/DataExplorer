@@ -127,7 +127,7 @@
                                         :style="{ fontSize: '16px', color: 'gray', cursor: 'pointer' }"
                                         @click="handleColumnOmit(column.key)" />
                 </Tooltip>
-                <Tooltip>
+                <Tooltip v-if="column.attr == 'date' || column.attr == 'disc'">
                   <template #title>
                     {{ t('ml.dataset.detail.table.action.timeline') }}
                   </template>
@@ -170,7 +170,7 @@
                     </template>
                   </Dropdown>
                 </Tooltip>
-                <Tooltip>
+                <Tooltip v-if="column.attr != 'date'">
                   <template #title>
                     {{ t('ml.dataset.detail.table.action.target') }}
                   </template>
@@ -204,6 +204,19 @@
                     </template>
                   </Dropdown>
                 </Tooltip>
+                <Tooltip v-if="column.attr == 'date'">
+                  <template #title>
+                    {{ t('ml.dataset.detail.table.action.resample') }}
+                  </template>
+                  <Dropdown placement="bottom" :trigger="['click']">
+                    <ColumnWidthOutlined v-if="column.resample" class="ml-2" :style="{ fontSize: '16px', color: '#08c', cursor: 'pointer' }" />
+                    <ColumnWidthOutlined v-else class="ml-2" :style="{ fontSize: '16px', color: 'gray', cursor: 'pointer' }" />
+                    <template #overlay>
+                      <InputNumber v-model:value="column.resample" :min="0" :max="1440" addonAfter="Min" @change="handleColumnResample(column.key, column.resample)">
+                      </InputNumber>
+                    </template>
+                  </Dropdown>
+                </Tooltip>
                 <Tooltip>
                   <template #title>
                     {{ t('ml.dataset.detail.table.action.encode') }}
@@ -231,7 +244,7 @@
                     </template>
                   </Dropdown>
                 </Tooltip>
-                <Tooltip>
+                <Tooltip v-if="column.attr != 'date'">
                   <template #title>
                     {{ t('ml.dataset.detail.table.action.scale') }}
                   </template>
@@ -506,7 +519,8 @@
     FunctionOutlined,
     MergeCellsOutlined,
     NodeIndexOutlined,
-    HourglassOutlined
+    HourglassOutlined,
+    ColumnWidthOutlined
   } from '@ant-design/icons-vue';
   import { BasicTree, TreeActionItem } from '/@/components/Tree';
   import { Splitpanes, Pane } from 'splitpanes';
@@ -1067,6 +1081,7 @@
         item.scale = field.scale;
         item.size = field.size;
         item.timeline = field.timeline;
+        item.resample = field.resample;
       }
 
       // convert array to string
@@ -1149,7 +1164,7 @@
     }
   }
 
-    /*
+   /*
    * mark the data type is timeseries
    */
    function handleColumnTimeline(key: number) {
@@ -1161,6 +1176,19 @@
     } else {
       delete rawField.timeline; // delete unnecessary field for saving
       rawData.value.type = 'data';
+    }
+  }
+
+  /*
+   * the period of resample for date field
+   */
+   function handleColumnResample(key: number, value: number) {
+    // key was set to index when built columns
+    let rawField = rawData.value.fields[key];
+    if (value == 0) {
+      delete rawField.resample;
+    } else {
+      rawField.resample = value;
     }
   }
 

@@ -91,7 +91,8 @@ export default {
         encode: 'Encoding',
         scale: 'Scaling',
         miss: 'Missing',
-        timeline: 'Timeline'
+        timeline: 'Timeline',
+        resample: 'Resample',
       },
     },
   },

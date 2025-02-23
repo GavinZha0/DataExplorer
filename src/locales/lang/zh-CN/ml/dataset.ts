@@ -86,7 +86,8 @@ export default {
         attr: '属性',
         encode: '编码',
         scale: '缩放',
-        miss: '缺失值'
+        miss: '缺失值',
+        resample: '采样间隔',
       },
     },
   },

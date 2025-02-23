@@ -162,9 +162,12 @@ export default {
       tsseries: {
         tf: '时间域',
         period: '周期',
+        vf: '值域',
         agg: '聚合',
+        cat: '分类域',
         solo: '分开显示',
-        connected: '断点连续'
+        connected: '断点连续',
+        page: '页码'
       },
       tstrend: {
         tf: '时间域',

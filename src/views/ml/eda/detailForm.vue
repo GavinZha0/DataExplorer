@@ -25,7 +25,7 @@
     <div style="width: 98%; float: left">
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
-        <div style="width: 100%; height: 750px; border: solid 1px;" :forceRender="true">
+        <div style="width: 100%; height: 850px; border: solid 1px;" :forceRender="true">
           <div style="height: 32px;">
             <BasicForm v-if="selectedVisKeys[0] == 'box'"
                        ref="optionFormRef"
@@ -300,9 +300,16 @@
                        layout="inline"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
+            <BasicForm v-else-if="selectedVisKeys[0] == 'anc'"
+                       ref="optionFormRef"
+                       :schemas="tsAncOptSchema"
+                       :showActionButtonGroup="false"
+                       layout="inline"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
           </div>
           <div style="height: 1px; border: dotted gray 1px"></div>
-          <div id="chartContainer" style="width: 100%; height: 700px; overflow: scroll" />
+          <div id="chartContainer" style="width: 100%; height: 800px; overflow: scroll" />
           <!--img :src="'data:image/png;base64,' + anaImgs[selectedVisKeys[0]]" style="height: 700px; padding: 10px 0px 0px 10px" /-->
         </div>
           </Col>
@@ -350,7 +357,7 @@
                            :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
                            resultField="records"
                            @change="handleDatasetChange" />
-            <div style="height: 700px; overflow-y: scroll;">
+            <div style="height: 800px; overflow-y: scroll;">
               <Menu mode="inline"
                     :multiple="false"
                     v-model:selectedKeys="selectedVisKeys"
@@ -442,6 +449,7 @@
                   <MenuItem key="decomp">Decomposition</MenuItem>
                   <MenuItem key="predict">Prediction</MenuItem>
                   <MenuItem key="anomaly">Anomaly detection</MenuItem>
+                  <MenuItem key="anc">Noise Reduction</MenuItem>
                 </SubMenu>
               </Menu>
             </div>
@@ -489,7 +497,7 @@
     outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
     featureModelOptionSchema, featureSearchOptionSchema, featureDetectOptionSchema, tsSeriesOptionSchema, tsTrendOptionSchema, tsDiffOptionSchema,
     tsFreqOptionSchema, tsCompareOptionSchema, tsAcfOptionSchema, tsMavgOptionSchema, tsQuantileOptionSchema, tsCycleOptionSchema, tsDecompOptionSchema,
-    tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema, outlierDbscanOptionSchema, outlierCofOptionSchema, tsAnomalyOptionSchema
+    tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema, outlierDbscanOptionSchema, outlierCofOptionSchema, tsAnomalyOptionSchema, tsAncOptionSchema
   } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import {
@@ -559,6 +567,7 @@
   let tsDecompOptSchema = cloneDeep(tsDecompOptionSchema);
   let tsPredictOptSchema = cloneDeep(tsPredictOptionSchema);
   let tsAnomalyOptSchema = cloneDeep(tsAnomalyOptionSchema);
+  let tsAncOptSchema = cloneDeep(tsAncOptionSchema);
 
   // drawer data initialization
   const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (data) => {
@@ -657,6 +666,8 @@
         tsCycleOptSchema = cloneDeep(tsCycleOptionSchema);
         tsDecompOptSchema = cloneDeep(tsDecompOptionSchema);
         tsPredictOptSchema = cloneDeep(tsPredictOptionSchema);
+        tsAnomalyOptSchema = cloneDeep(tsAnomalyOptionSchema);
+        tsAncOptSchema = cloneDeep(tsAncOptionSchema);
 
         // reinitalize default config
         rawData.value.config = clonedEdaCfg = cloneDeep(eda_cfg_default);
@@ -683,6 +694,7 @@
             tsDecompOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsAnomalyOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
+            tsAncOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             
           } else if(field.attr == 'conti' || field.attr == 'disc'){
             // add value field to schema options
@@ -691,6 +703,7 @@
             corrSingleScatterOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             corrSingleScatterOptSchema[1].componentProps.options.push({ label: field.name, value: field.name });
 
+            tsSeriesOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsTrendOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsDiffOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsFreqOptSchema[1].componentProps.options.push({ label: field.name, value: field.name });
@@ -702,9 +715,11 @@
             tsDecompOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsAnomalyOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
+            tsAncOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
           } else if(field.attr == 'cat'){
             // add category field to schema options
             dataset.cf.push(field.name);
+            tsSeriesOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
             statBoxOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             statViolinOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             statAnovaOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
@@ -730,6 +745,7 @@
           tsDecompOptSchema[0].defaultValue = tsDecompOptSchema[0].componentProps.options[0].value;
           tsPredictOptSchema[0].defaultValue = tsPredictOptSchema[0].componentProps.options[0].value;
           tsAnomalyOptSchema[0].defaultValue = tsAnomalyOptSchema[0].componentProps.options[0].value;
+          tsAncOptSchema[0].defaultValue = tsAncOptSchema[0].componentProps.options[0].value;
 
           rawData.value.config.series['ts'] = tsSeriesOptSchema[0].defaultValue;
           rawData.value.config.trend['ts'] = tsTrendOptSchema[0].defaultValue;
@@ -743,10 +759,12 @@
           rawData.value.config.decomp['ts'] = tsDecompOptSchema[0].defaultValue;
           rawData.value.config.predict['ts'] = tsPredictOptSchema[0].defaultValue;
           rawData.value.config.anomaly['ts'] = tsAnomalyOptSchema[0].defaultValue;
+          rawData.value.config.anc['ts'] = tsAncOptSchema[0].defaultValue;
         }
 
         if (tsTrendOptSchema[2].componentProps.options.length == 1) {
           // set default value field when only one field
+          tsSeriesOptSchema[2].defaultValue = tsTrendOptSchema[2].componentProps.options[0].value;
           tsTrendOptSchema[2].defaultValue = tsTrendOptSchema[2].componentProps.options[0].value;
           tsDiffOptSchema[2].defaultValue = tsDiffOptSchema[2].componentProps.options[0].value;
           tsFreqOptSchema[1].defaultValue = tsFreqOptSchema[1].componentProps.options[0].value;
@@ -758,7 +776,9 @@
           tsDecompOptSchema[2].defaultValue = tsDecompOptSchema[2].componentProps.options[0].value;
           tsPredictOptSchema[2].defaultValue = tsPredictOptSchema[2].componentProps.options[0].value;
           tsAnomalyOptSchema[2].defaultValue = tsAnomalyOptSchema[2].componentProps.options[0].value;
+          tsAncOptSchema[2].defaultValue = tsAncOptSchema[2].componentProps.options[0].value;
 
+          rawData.value.config.series['vf'] = tsSeriesOptSchema[2].defaultValue;
           rawData.value.config.trend['vf'] = tsTrendOptSchema[2].defaultValue;
           rawData.value.config.diff['vf'] = tsDiffOptSchema[2].defaultValue;
           rawData.value.config.tsfreq['vf'] = tsFreqOptSchema[1].defaultValue;
@@ -770,6 +790,13 @@
           rawData.value.config.decomp['vf'] = tsDecompOptSchema[2].defaultValue;
           rawData.value.config.predict['vf'] = tsPredictOptSchema[2].defaultValue;
           rawData.value.config.anomaly['vf'] = tsAnomalyOptSchema[2].defaultValue;
+          rawData.value.config.anc['vf'] = tsAncOptSchema[2].defaultValue;
+        }
+
+        if (tsSeriesOptSchema[4].componentProps.options.length == 1) {
+          // set default value field when only one field
+          tsSeriesOptSchema[4].defaultValue = tsSeriesOptSchema[4].componentProps.options[0].value;
+          rawData.value.config.series['cat'] = tsSeriesOptSchema[4].defaultValue;
         }
       });
     }

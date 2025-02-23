@@ -163,9 +163,12 @@ export default {
       tsseries: {
         tf: 'Time field',
         period: 'Period',
+        vf: 'Value field',
         agg: 'Aggregation',
+        cat: 'Category field',
         solo: 'Solo',
-        connected: 'Connected'
+        connected: 'Connected',
+        page: 'Page'
       },
       tstrend: {
         tf: 'Time field',

@@ -2,6 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { DescItem } from '/@/components/Description/index';
 import { useI18n } from '/@/hooks/web/useI18n';
+import { mode } from 'crypto-js';
 
 const { t } = useI18n();
 
@@ -1052,6 +1053,15 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     }
   },
   {
+    field: 'vf',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tsseries.vf'),
+    componentProps: {
+      allowClear: false,
+      options: []
+    }
+  },
+  {
     field: 'agg',
     component: 'Select',
     label: t('ml.eda.form.vis.tsseries.agg'),
@@ -1070,15 +1080,36 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     }
   },
   {
+    field: 'cat',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tsseries.cat'),
+    componentProps: {
+      allowClear: false,
+      options: []
+    }
+  },
+  {
     field: 'connected',
     component: 'Switch',
+    defaultValue: true,
     label: t('ml.eda.form.vis.tsseries.connected')
   },
   {
     field: 'solo',
     component: 'Switch',
     label: t('ml.eda.form.vis.tsseries.solo')
-  }
+  },
+  {
+    field: 'page',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.tsseries.page'),
+    defaultValue: 0,
+    componentProps: {
+      allowClear: false,
+      min: 0,
+      max: 100,
+    }    
+  },
 ];
 
 // ts Trend options
@@ -1860,6 +1891,8 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
       options: [
         { label: 'Quantile', value: 'quantile' },
         { label: 'Zscore', value: 'zscore' },
+        { label: 'Difference', value: 'diff' },
+        { label: 'Rolling StdD', value: 'rolling' },
         { label: 'DBSCAN', value: 'dbscan' },
         { label: 'COF', value: 'cof' },
         { label: 'AutoEncoder', value: 'vae' },
@@ -1867,6 +1900,7 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
         { label: 'ECOD', value: 'ecod' },
         { label: 'Deep SVDD', value: 'dsvdd' },
         { label: 'AE1SVM', value: 'ae1svm' },
+        { label: 'Ruptures', value: 'ruptures' },
       ]
     }
   },
@@ -1883,6 +1917,91 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
     }
   }
 ];
+
+
+// ts active noice reduction(ANC) options
+export const tsAncOptionSchema: FormSchema[] = [
+  {
+    field: 'tf',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.tf'),
+    componentProps: {
+      allowClear: false,
+      options: []
+    }
+  },
+  {
+    field: 'period',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.period'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Year', value: 'YS' },
+        { label: 'Quarater', value: 'QS' },
+        { label: 'Month', value: 'MS' },
+        { label: 'Week', value: 'W' },
+        { label: 'Day', value: 'D' },
+        { label: 'Hour', value: 'h' },
+        { label: 'Minute', value: 'min' },
+        { label: 'Second', value: 's' }
+      ]
+    }
+  },
+  {
+    field: 'vf',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.vf'),
+    componentProps: {
+      allowClear: false,
+      options: []
+    }
+  },
+  {
+    field: 'agg',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.agg'),
+    defaultValue: 'mean',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Mean', value: 'mean' },
+        { label: 'Median', value: 'median' },
+        { label: 'Sum', value: 'sum' },
+        { label: 'Min', value: 'min' },
+        { label: 'Max', value: 'max' },
+        { label: 'Std Dev', value: 'std' },
+        { label: 'Count', value: 'count' }
+      ]
+    }
+  },
+  {
+    field: 'method',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tspredict.algo'),
+    defaultValue: 'fft',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'FFT', value: 'fft' }
+      ]
+    }
+  },
+  {
+    field: 'threshold',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.threshold'),
+    defaultValue: 3,
+    componentProps: {
+      allowClear: false,
+      min: 0.0,
+      max: 10,
+      step: 0.01
+    }
+  }
+];
+
+
 
 export const eda_cfg_default = {
   overall: { pid: 'stat' },
@@ -1926,6 +2045,7 @@ export const eda_cfg_default = {
   decomp: { pid: 'ts', period: 'D', agg: 'mean', algo: 'stl' },
   predict: { pid: 'ts', period: 'D', agg: 'mean', algo: 'ets' },
   anomaly: { pid: 'ts', agg: 'mean', method: 'zscore' },
+  anc: { pid: 'ts', agg: 'mean', method: 'fft' },
   quantile: { pid: 'ts', period: 'D', agg: 'mean' }
 };
 

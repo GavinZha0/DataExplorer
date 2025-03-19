@@ -2,7 +2,6 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { DescItem } from '/@/components/Description/index';
 import { useI18n } from '/@/hooks/web/useI18n';
-import { mode } from 'crypto-js';
 
 const { t } = useI18n();
 
@@ -160,6 +159,203 @@ export const formInfoSchema: FormSchema[] = [
   },
 ];
 
+
+// EDA vis options
+// two level tree
+export const edaVisTree = [
+  {
+    title: 'Statistics',
+    key: 'stat',
+    selectable: false,
+    children: [
+      {
+        title: 'Overview',
+        key: 'overview'
+      },
+      {
+        title: 'Box Plot',
+        key: 'box'
+      },
+      {
+        title: 'Violin Plot',
+        key: 'violin'
+      },
+      {
+        title: 'Variance Analysis',
+        key: 'anova'
+      },
+      {
+        title: 'Outlier',
+        key: 'outlier'
+      }
+    ]
+  },
+  {
+    title: 'Distribution',
+    key: 'dist',
+    selectable: false,
+    children: [
+      {
+        title: 'Histogram',
+        key: 'hist'
+      },
+      {
+        title: 'Kernel Density',
+        key: 'kde'
+      },
+      {
+        title: 'Ridge Plot',
+        key: 'ridge'
+      },
+      {
+        title: 'Frequency',
+        key: 'freq'
+      }
+    ]
+  },
+  {
+    title: 'Correlation',
+    key: 'corr',
+    selectable: false,
+    children: [
+      {
+        title: 'Coeff Matrix',
+        key: 'ccm'
+      },
+      {
+        title: 'Scatter Matrix',
+        key: 'scatters'
+      },
+      {
+        title: 'Scatter Plot',
+        key: 'scatter'
+      },
+      {
+        title: 'Pairwise Plot',
+        key: 'pair'
+      },
+      {
+        title: 'Corr Curves',
+        key: 'curve'
+      }      
+    ]
+  },
+  {
+    title: 'Feature Selection',
+    key: 'selection',
+    selectable: false,
+    children: [
+      {
+        title: 'Corr Filter',
+        key: 'corrfilter'
+      },
+      {
+        title: 'Model Evaluation',
+        key: 'modeleval'
+      },
+      {
+        title: 'Iterative Search',
+        key: 'itersearch'
+      },
+      {
+        title: 'Auto Detection',
+        key: 'autodetect'
+      }
+    ]
+  },
+  {
+    title: 'Dim Reduction',
+    key: 'reduction',
+    selectable: false,
+    children: [
+      {
+        title: 'PCA',
+        key: 'pca'
+      },
+      {
+        title: 'SVD',
+        key: 'svd'
+      },
+      {
+        title: 'LDA',
+        key: 'lda'
+      },
+      {
+        title: 'LLE',
+        key: 'lle'
+      },
+      {
+        title: 't-SNE',
+        key: 'tsne'
+      },
+      {
+        title: 'ISOMAP',
+        key: 'isomap'
+      }
+    ]
+  },
+  {
+    title: 'Time Series',
+    key: 'ts',
+    selectable: false,
+    children: [
+      {
+        title: 'Series',
+        key: 'series'
+      },
+      {
+        title: 'Frequency',
+        key: 'tsfreq'
+      },
+      {
+        title: 'Trending',
+        key: 'trend'
+      },
+      {
+        title: 'Moving average',
+        key: 'mavg'
+      },
+      {
+        title: 'Quantile',
+        key: 'quantile'
+      },
+      {
+        title: 'Differencing',
+        key: 'diff'
+      },
+      {
+        title: 'Comparison',
+        key: 'compare'
+      },
+      {
+        title: 'Stationarity',
+        key: 'autocorr'
+      },
+      {
+        title: 'Periodicity',
+        key: 'cycle'
+      },
+      {
+        title: 'Decomposition',
+        key: 'decomp'
+      },
+      {
+        title: 'Prediction',
+        key: 'predict'
+      },
+      {
+        title: 'Anomaly detection',
+        key: 'anomaly'
+      },
+      {
+        title: 'Noise Reduction',
+        key: 'anc'
+      }
+    ]
+  }
+];
+
+
 // stat box options
 export const boxOptionSchema: FormSchema[] = [
   {
@@ -168,18 +364,24 @@ export const boxOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.box.cat'),
     componentProps: {
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'sd',
     component: 'Switch',
-    label: t('ml.eda.form.vis.box.sd')
+    label: t('ml.eda.form.vis.box.sd'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'outlier',
     component: 'Switch',
     label: t('ml.eda.form.vis.box.outlier'),
-    defaultValue: true
+    defaultValue: true,
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -192,19 +394,25 @@ export const violinOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.violin.cat'),
     componentProps: {
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'box',
     component: 'Switch',
     label: t('ml.eda.form.vis.violin.box'),
-    defaultValue: true
+    defaultValue: true,
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'outlier',
     component: 'Switch',
     label: t('ml.eda.form.vis.violin.outlier'),
-    defaultValue: true
+    defaultValue: true,
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -220,17 +428,21 @@ export const anovaOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'line',
     component: 'Switch',
-    label: t('ml.eda.form.vis.anova.line')
+    label: t('ml.eda.form.vis.anova.line'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
 // Outlier Quantile options
-export const outlierQtOptionSchema: FormSchema[] = [
+export const outlierQtMethodSchema: FormSchema[] = [
   {
     field: 'method',
     component: 'Select',
@@ -250,8 +462,14 @@ export const outlierQtOptionSchema: FormSchema[] = [
         { label: 'SOM', value: 'som' },
         { label: 'AutoEncoder', value: 'vae' }
       ]
-    }
-  },
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
+];
+
+// Outlier Quantile options
+export const outlierQtOptionSchema: FormSchema[] = [
   {
     field: 'threshold',
     component: 'InputNumber',
@@ -262,33 +480,14 @@ export const outlierQtOptionSchema: FormSchema[] = [
       min: 1.2,
       max: 2.5,
       step: 0.1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
 // Outlier Z-score options
 export const outlierZsOptionSchema: FormSchema[] = [
-  {
-    field: 'method',
-    component: 'Select',
-    label: t('ml.eda.form.vis.outlier.method'),
-    defaultValue: 'zscore',
-    componentProps: {
-      allowClear: false,
-      options: [
-        { label: 'Quantile', value: 'quantile' },
-        { label: 'Zscore', value: 'zscore' },
-        { label: 'DBSCAN', value: 'dbscan' },
-        { label: 'SVM', value: 'svm' },
-        { label: 'KNN', value: 'knn' },
-        { label: 'LOF', value: 'lof' },
-        { label: 'COF', value: 'cof' },
-        { label: 'iForest', value: 'iforest' },
-        { label: 'SOM', value: 'som' },
-        { label: 'AutoEncoder', value: 'vae' }
-      ]
-    }
-  },
   {
     field: 'threshold',
     component: 'InputNumber',
@@ -299,33 +498,14 @@ export const outlierZsOptionSchema: FormSchema[] = [
       min: 2,
       max: 4,
       step: 0.1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
 // DBSCAN options
 export const outlierDbscanOptionSchema: FormSchema[] = [
-  {
-    field: 'method',
-    component: 'Select',
-    label: t('ml.eda.form.vis.outlier.method'),
-    defaultValue: 'dbscan',
-    componentProps: {
-      allowClear: false,
-      options: [
-        { label: 'Quantile', value: 'quantile' },
-        { label: 'Zscore', value: 'zscore' },
-        { label: 'DBSCAN', value: 'dbscan' },
-        { label: 'SVM', value: 'svm' },
-        { label: 'KNN', value: 'knn' },
-        { label: 'LOF', value: 'lof' },
-        { label: 'COF', value: 'cof' },
-        { label: 'iForest', value: 'iforest' },
-        { label: 'SOM', value: 'som' },
-        { label: 'AutoEncoder', value: 'vae' }
-      ]
-    }
-  },
   {
     field: 'metric',
     component: 'Select',
@@ -341,7 +521,9 @@ export const outlierDbscanOptionSchema: FormSchema[] = [
         { label: 'Jaccard', value: 'jaccard' },
         { label: 'Minkowski', value: 'minkowski' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'threshold',
@@ -353,39 +535,22 @@ export const outlierDbscanOptionSchema: FormSchema[] = [
       min: 0.1,
       max: 10,
       step: 0.1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'd3',
     component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.d3')
+    label: t('ml.eda.form.vis.outlier.d3'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
 ];
 
 
 // Outlier SVM options
 export const outlierSvmOptionSchema: FormSchema[] = [
-  {
-    field: 'method',
-    component: 'Select',
-    label: t('ml.eda.form.vis.outlier.method'),
-    defaultValue: 'svm',
-    componentProps: {
-      allowClear: false,
-      options: [
-        { label: 'Quantile', value: 'quantile' },
-        { label: 'Zscore', value: 'zscore' },
-        { label: 'DBSCAN', value: 'dbscan' },
-        { label: 'SVM', value: 'svm' },
-        { label: 'KNN', value: 'knn' },
-        { label: 'LOF', value: 'lof' },
-        { label: 'COF', value: 'cof' },
-        { label: 'iForest', value: 'iforest' },
-        { label: 'SOM', value: 'som' },
-        { label: 'AutoEncoder', value: 'vae' }
-      ]
-    }
-  },
   {
     field: 'kernel',
     component: 'Select',
@@ -399,7 +564,9 @@ export const outlierSvmOptionSchema: FormSchema[] = [
         { label: 'Rbf', value: 'rbf' },
         { label: 'Sigmoid', value: 'sigmoid' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'threshold',
@@ -411,43 +578,28 @@ export const outlierSvmOptionSchema: FormSchema[] = [
       min: 0.01,
       max: 0.5,
       step: 0.01
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'umap',
     component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.umap')
+    label: t('ml.eda.form.vis.outlier.umap'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'd3',
     component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.d3')
+    label: t('ml.eda.form.vis.outlier.d3'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
 // Outlier Knn/LOF options
 export const outlierKnnOptionSchema: FormSchema[] = [
-  {
-    field: 'method',
-    component: 'Select',
-    label: t('ml.eda.form.vis.outlier.method'),
-    defaultValue: 'knn',
-    componentProps: {
-      allowClear: false,
-      options: [
-        { label: 'Quantile', value: 'quantile' },
-        { label: 'Zscore', value: 'zscore' },
-        { label: 'DBSCAN', value: 'dbscan' },
-        { label: 'SVM', value: 'svm' },
-        { label: 'KNN', value: 'knn' },
-        { label: 'LOF', value: 'lof' },
-        { label: 'COF', value: 'cof' },
-        { label: 'iForest', value: 'iforest' },
-        { label: 'SOM', value: 'som' },
-        { label: 'AutoEncoder', value: 'vae' }
-      ]
-    }
-  },
   {
     field: 'metric',
     component: 'Select',
@@ -463,7 +615,9 @@ export const outlierKnnOptionSchema: FormSchema[] = [
         { label: 'Jaccard', value: 'jaccard' },
         { label: 'Minkowski', value: 'minkowski' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'threshold',
@@ -475,39 +629,22 @@ export const outlierKnnOptionSchema: FormSchema[] = [
       min: 0.01,
       max: 0.5,
       step: 0.01
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'd3',
     component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.d3')
+    label: t('ml.eda.form.vis.outlier.d3'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
 ];
 
 // Outlier COF/iForest/SOM/VAE options
 export const outlierCofOptionSchema: FormSchema[] = [
   {
-    field: 'method',
-    component: 'Select',
-    label: t('ml.eda.form.vis.outlier.method'),
-    defaultValue: 'cof',
-    componentProps: {
-      allowClear: false,
-      options: [
-        { label: 'Quantile', value: 'quantile' },
-        { label: 'Zscore', value: 'zscore' },
-        { label: 'DBSCAN', value: 'dbscan' },
-        { label: 'SVM', value: 'svm' },
-        { label: 'KNN', value: 'knn' },
-        { label: 'LOF', value: 'lof' },
-        { label: 'COF', value: 'cof' },
-        { label: 'iForest', value: 'iforest' },
-        { label: 'SOM', value: 'som' },
-        { label: 'AutoEncoder', value: 'vae' }
-      ]
-    }
-  },
-  {
     field: 'threshold',
     component: 'InputNumber',
     label: t('ml.eda.form.vis.outlier.cont_ratio'),
@@ -517,12 +654,16 @@ export const outlierCofOptionSchema: FormSchema[] = [
       min: 0.01,
       max: 0.5,
       step: 0.01
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'd3',
     component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.d3')
+    label: t('ml.eda.form.vis.outlier.d3'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
 ];
 
@@ -535,12 +676,9 @@ export const histOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.hist.cat'),
     componentProps: {
       options: []
-    }
-  },
-  {
-    field: 'kde',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.hist.kde')
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'bins',
@@ -552,7 +690,16 @@ export const histOptionSchema: FormSchema[] = [
       min: 10,
       max: 60,
       step: 10
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'kde',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.hist.kde'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -581,16 +728,6 @@ F 分布（F ~, f）
 */
 export const kdeOptionSchema: FormSchema[] = [
   {
-    field: 'combine',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.kde.combine')
-  },
-  {
-    field: 'rug',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.kde.rug')
-  },
-  {
     field: 'ref',
     component: 'Select',
     label: t('ml.eda.form.vis.kde.ref'),
@@ -605,7 +742,23 @@ export const kdeOptionSchema: FormSchema[] = [
         { label: 'Poisson', value: 'poisson' },
         { label: 'Binomial', value: 'bin' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'combine',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.kde.combine'),
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'rug',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.kde.rug'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -614,12 +767,16 @@ export const freqOptionSchema: FormSchema[] = [
   {
     field: 'pct',
     component: 'Switch',
-    label: t('ml.eda.form.vis.freq.pct')
+    label: t('ml.eda.form.vis.freq.pct'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'funnel',
     component: 'Switch',
-    label: t('ml.eda.form.vis.freq.funnel')
+    label: t('ml.eda.form.vis.freq.funnel'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -631,7 +788,9 @@ export const scatterMatrixOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.scatters.cat'),
     componentProps: {
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -643,7 +802,9 @@ export const singleScatterOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.scatter.xfield'),
     componentProps: {
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'yf',
@@ -651,7 +812,9 @@ export const singleScatterOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.scatter.yfield'),
     componentProps: {
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'cf',
@@ -659,7 +822,9 @@ export const singleScatterOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.scatter.cat'),
     componentProps: {
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'marg',
@@ -673,7 +838,9 @@ export const singleScatterOptionSchema: FormSchema[] = [
         { label: 'Violin', value: 'violin' },
         { label: 'Rug', value: 'rug' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'frac',
@@ -683,7 +850,9 @@ export const singleScatterOptionSchema: FormSchema[] = [
       min: 0,
       max: 1,
       step: 0.1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -695,12 +864,16 @@ export const pairOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.pair.cat'),
     componentProps: {
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'box',
     component: 'Switch',
-    label: t('ml.eda.form.vis.pair.box')
+    label: t('ml.eda.form.vis.pair.box'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -712,11 +885,6 @@ export const pairOptionSchema: FormSchema[] = [
 // F = MSB / MSW (组间均方 / 组内均方)
 export const ccmOptionSchema: FormSchema[] = [
   {
-    field: 'num',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.ccm.num')
-  },
-  {
     field: 'coeff',
     component: 'Select',
     label: t('ml.eda.form.vis.ccm.coeff'),
@@ -727,7 +895,16 @@ export const ccmOptionSchema: FormSchema[] = [
         { label: 'Kendall', value: 'kendall' },
         { label: 'Spearman', value: 'spearman' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'num',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.ccm.num'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -739,12 +916,16 @@ export const curveOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.curve.cat'),
     componentProps: {
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'andrews',
     component: 'Switch',
-    label: t('ml.eda.form.vis.curve.andrews')
+    label: t('ml.eda.form.vis.curve.andrews'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -760,7 +941,9 @@ export const pcaOptionSchema: FormSchema[] = [
       min: 0,
       max: 50,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'kernel',
@@ -776,7 +959,9 @@ export const pcaOptionSchema: FormSchema[] = [
         { label: 'sigmoid', value: 'sigmoid' },
         { label: 'cosine', value: 'cosine' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -792,7 +977,9 @@ export const ldaOptionSchema: FormSchema[] = [
       min: 0,
       max: 50,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -808,7 +995,9 @@ export const svdOptionSchema: FormSchema[] = [
       min: 0,
       max: 50,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -824,7 +1013,9 @@ export const tsneOptionSchema: FormSchema[] = [
       min: 0,
       max: 50,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'perplex',
@@ -836,7 +1027,9 @@ export const tsneOptionSchema: FormSchema[] = [
       min: 5,
       max: 50,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -852,7 +1045,9 @@ export const isomapOptionSchema: FormSchema[] = [
       min: 0,
       max: 50,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'neighbor',
@@ -864,7 +1059,9 @@ export const isomapOptionSchema: FormSchema[] = [
       min: 5,
       max: 50,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -880,7 +1077,9 @@ export const lleOptionSchema: FormSchema[] = [
       min: 0,
       max: 50,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'neighbor',
@@ -892,7 +1091,9 @@ export const lleOptionSchema: FormSchema[] = [
       min: 5,
       max: 50,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'method',
@@ -906,7 +1107,9 @@ export const lleOptionSchema: FormSchema[] = [
         { label: 'modified', value: 'modified' },
         { label: 'ltsa', value: 'ltsa' },
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -923,7 +1126,9 @@ export const featureFilterOptionSchema: FormSchema[] = [
         { label: 'Univariate Mutual Info', value: 'm_info' },
         { label: 'Univariate Chi2', value: 'chi2' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },/*
   {
     field: 'mode',
@@ -956,7 +1161,9 @@ export const featureModelOptionSchema: FormSchema[] = [
         { label: 'Random Forest', value: 'randomf' },
         { label: 'XGBoost', value: 'xgboost' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },/*
   {
     field: 'mode',
@@ -988,7 +1195,9 @@ export const featureSearchOptionSchema: FormSchema[] = [
         { label: 'Permuted HGBoost', value: 'permute' },
         { label: 'Null LightGBM', value: 'nullimp' },
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },/*
   {
     field: 'mode',
@@ -1020,7 +1229,9 @@ export const featureDetectOptionSchema: FormSchema[] = [
         { label: 'Deep Synthesis', value: 'dfs' },
         { label: 'TsFresh', value: 'tsfresh' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1033,7 +1244,9 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1050,7 +1263,9 @@ export const tsSeriesOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1059,7 +1274,9 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1077,7 +1294,9 @@ export const tsSeriesOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'cat',
@@ -1086,18 +1305,9 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
-  },
-  {
-    field: 'connected',
-    component: 'Switch',
-    defaultValue: true,
-    label: t('ml.eda.form.vis.tsseries.connected')
-  },
-  {
-    field: 'solo',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.tsseries.solo')
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'page',
@@ -1108,8 +1318,25 @@ export const tsSeriesOptionSchema: FormSchema[] = [
       allowClear: false,
       min: 0,
       max: 100,
-    }    
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
+  {
+    field: 'connected',
+    component: 'Switch',
+    defaultValue: true,
+    label: t('ml.eda.form.vis.tsseries.connected'),
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'solo',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.tsseries.solo'),
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
 ];
 
 // ts Trend options
@@ -1121,7 +1348,9 @@ export const tsTrendOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1140,7 +1369,9 @@ export const tsTrendOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1149,7 +1380,9 @@ export const tsTrendOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1167,7 +1400,9 @@ export const tsTrendOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'frac',
@@ -1179,12 +1414,16 @@ export const tsTrendOptionSchema: FormSchema[] = [
       min: 0,
       max: 1,
       step: 0.05
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'connected',
     component: 'Switch',
-    label: t('ml.eda.form.vis.tsseries.connected')
+    label: t('ml.eda.form.vis.tsseries.connected'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1197,7 +1436,9 @@ export const tsDiffOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1216,7 +1457,9 @@ export const tsDiffOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1224,7 +1467,9 @@ export const tsDiffOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.tsdiff.vf'),
     componentProps: {
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1242,7 +1487,9 @@ export const tsDiffOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'diff',
@@ -1254,7 +1501,9 @@ export const tsDiffOptionSchema: FormSchema[] = [
       min: 1,
       max: 100,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'step',
@@ -1266,12 +1515,16 @@ export const tsDiffOptionSchema: FormSchema[] = [
       min: 1,
       max: 20,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'solo',
     component: 'Switch',
-    label: t('ml.eda.form.vis.tsdiff.solo')
+    label: t('ml.eda.form.vis.tsdiff.solo'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1284,7 +1537,9 @@ export const tsFreqOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1293,7 +1548,9 @@ export const tsFreqOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1311,7 +1568,9 @@ export const tsFreqOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1324,7 +1583,9 @@ export const tsCompareOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1343,7 +1604,9 @@ export const tsCompareOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'M' },
         { label: 'Second', value: 'S' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1352,7 +1615,9 @@ export const tsCompareOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1370,7 +1635,9 @@ export const tsCompareOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'groupby',
@@ -1389,7 +1656,9 @@ export const tsCompareOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'M' },
         { label: 'Second', value: 'S' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1402,7 +1671,9 @@ export const tsAcfOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1421,7 +1692,9 @@ export const tsAcfOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1430,7 +1703,9 @@ export const tsAcfOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1448,7 +1723,9 @@ export const tsAcfOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'lag',
@@ -1460,7 +1737,9 @@ export const tsAcfOptionSchema: FormSchema[] = [
       min: 10,
       max: 100,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1473,7 +1752,9 @@ export const tsMavgOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1491,7 +1772,9 @@ export const tsMavgOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1500,7 +1783,9 @@ export const tsMavgOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1518,7 +1803,9 @@ export const tsMavgOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'win',
@@ -1530,7 +1817,9 @@ export const tsMavgOptionSchema: FormSchema[] = [
       min: 1,
       max: 100,
       step: 1
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1543,7 +1832,9 @@ export const tsQuantileOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1562,7 +1853,9 @@ export const tsQuantileOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1571,12 +1864,16 @@ export const tsQuantileOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'violin',
     component: 'Switch',
-    label: t('ml.eda.form.vis.tsbox.violin')
+    label: t('ml.eda.form.vis.tsbox.violin'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1589,7 +1886,9 @@ export const tsCycleOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1607,7 +1906,9 @@ export const tsCycleOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1616,7 +1917,9 @@ export const tsCycleOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1634,7 +1937,9 @@ export const tsCycleOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'algo',
@@ -1646,7 +1951,9 @@ export const tsCycleOptionSchema: FormSchema[] = [
       options: [
         { label: 'Power spectral density', value: 'psd' },
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1660,7 +1967,9 @@ export const tsDecompOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     // doesn't support 'min' and 's'
@@ -1678,7 +1987,9 @@ export const tsDecompOptionSchema: FormSchema[] = [
         { label: 'Day', value: 'D' },
         { label: 'Hour', value: 'h' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1687,7 +1998,9 @@ export const tsDecompOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1705,7 +2018,9 @@ export const tsDecompOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'algo',
@@ -1719,12 +2034,16 @@ export const tsDecompOptionSchema: FormSchema[] = [
         { label: 'Additive', value: 'add' },
         { label: 'Multiplicative', value: 'multi' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'robust',
     component: 'Switch',
-    label: t('ml.eda.form.vis.tsdecomp.robust')
+    label: t('ml.eda.form.vis.tsdecomp.robust'),
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1737,7 +2056,9 @@ export const tsPredictOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1756,7 +2077,9 @@ export const tsPredictOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1765,7 +2088,9 @@ export const tsPredictOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1783,7 +2108,9 @@ export const tsPredictOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'algo',
@@ -1799,7 +2126,9 @@ export const tsPredictOptionSchema: FormSchema[] = [
         { label: 'auto ETS', value: 'autoets' },
         { label: 'Prophet', value: 'prophet' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'trend',
@@ -1810,7 +2139,9 @@ export const tsPredictOptionSchema: FormSchema[] = [
         { label: 'Additive', value: 'add' },
         { label: 'Multiplicative', value: 'mul' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'season',
@@ -1821,7 +2152,9 @@ export const tsPredictOptionSchema: FormSchema[] = [
         { label: 'Additive', value: 'additive' },
         { label: 'Multiplicative', value: 'multiplicative' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1834,7 +2167,9 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1852,7 +2187,9 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1861,7 +2198,9 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1879,7 +2218,9 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'method',
@@ -1902,7 +2243,9 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
         { label: 'AE1SVM', value: 'ae1svm' },
         { label: 'Ruptures', value: 'ruptures' },
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'threshold',
@@ -1914,7 +2257,9 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
       min: 0.0,
       max: 10,
       step: 0.01
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -1928,7 +2273,9 @@ export const tsAncOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'period',
@@ -1946,7 +2293,9 @@ export const tsAncOptionSchema: FormSchema[] = [
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'vf',
@@ -1955,7 +2304,9 @@ export const tsAncOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: []
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'agg',
@@ -1973,7 +2324,9 @@ export const tsAncOptionSchema: FormSchema[] = [
         { label: 'Std Dev', value: 'std' },
         { label: 'Count', value: 'count' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'method',
@@ -1985,7 +2338,9 @@ export const tsAncOptionSchema: FormSchema[] = [
       options: [
         { label: 'FFT', value: 'fft' }
       ]
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   },
   {
     field: 'threshold',
@@ -1997,14 +2352,16 @@ export const tsAncOptionSchema: FormSchema[] = [
       min: 0.0,
       max: 10,
       step: 0.01
-    }
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
 
 
 export const eda_cfg_default = {
-  overall: { pid: 'stat' },
+  overview: { pid: 'stat' },
   box: { pid: 'stat', outlier: 'outliers' },
   violin: { pid: 'stat', box: true, outlier: 'outliers' },
   anova: { pid: 'stat' },
@@ -2121,41 +2478,3 @@ export const filterModalSchemas: FormSchema[] = [
   },
 ];
 
-
-export const visCategories = [{
-  id: 0,
-  name: 'Statistics',
-  icon: '/resource/img/ml-feature-stats.png'
-}, {
-  id: 1,
-  name: 'Distribution',
-  icon: '/resource/img/ml-feature-dists.png'
-}, {
-  id: 2,
-  name: 'Comparation',
-  icon: '/resource/img/ml-feature-comp.png'
-}, {
-  id: 3,
-  name: 'Interation',
-  icon: '/resource/img/ml-feature-inters.png'
-}, {
-  id: 4,
-  name: 'Correlation',
-  icon: '/resource/img/ml-feature-corr.png'
-}, {
-  id: 5,
-  name: 'Feature Detection',
-  icon: '/resource/img/ml-feature-curves.png'
-}, {
-  id: 6,
-  name: 'Dim Reduction',
-  icon: '/resource/img/ml-feature-reduction.png'
-}, {
-  id: 7,
-  name: 'Time Series',
-  icon: '/resource/img/ml-feature-trend.png'
-}, {
-  id: 8,
-  name: 'One-One Scatter',
-  icon: '/resource/img/ml-feature-scatter.png'
-}];

@@ -47,8 +47,8 @@ export default {
   },
   form: {
     config: {
-      input: 'Input',
-      limit: 'Limit',
+      datasets: 'Dataset',
+      kind: 'Kind',
       type: 'Type',
       source: 'Source',
       expect: 'Expectation',

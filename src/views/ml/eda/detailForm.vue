@@ -26,291 +26,7 @@
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
         <div style="width: 100%; height: 850px; border: solid 1px;" :forceRender="true">
-          <div style="height: 32px;">
-            <BasicForm v-if="selectedVisKeys[0] == 'box'"
-                       ref="optionFormRef"
-                       :schemas="statBoxOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'violin'"
-                       ref="optionFormRef"
-                       :schemas="statViolinOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'anova'"
-                       ref="optionFormRef"
-                       :schemas="statAnovaOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'quantile'"
-                       ref="optionFormRef"
-                       :schemas="outlierQtOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'zscore'"
-                       ref="optionFormRef"
-                       :schemas="outlierZsOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'dbscan'"
-                       ref="optionFormRef"
-                       :schemas="outlierDbscanOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'svm'"
-                       ref="optionFormRef"
-                       :schemas="outlierSvmOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier' && (rawData.config.outlier.method == 'knn' || rawData.config.outlier.method == 'lof')"
-                       ref="optionFormRef"
-                       :schemas="outlierKnnOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'outlier'"
-                       ref="optionFormRef"
-                       :schemas="outlierCofOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'hist'"
-                       ref="optionFormRef"
-                       :schemas="distHistOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'kde'"
-                       ref="optionFormRef"
-                       :schemas="kdeOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'freq'"
-                       ref="optionFormRef"
-                       :schemas="freqOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'ccm'"
-                       ref="optionFormRef"
-                       :schemas="ccmOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'pair'"
-                       ref="optionFormRef"
-                       :schemas="corrPairOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'scatter'"
-                       ref="optionFormRef"
-                       :schemas="corrSingleScatterOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'scatters'"
-                       ref="optionFormRef"
-                       :schemas="corrScatterMatrixOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'curve'"
-                       ref="optionFormRef"
-                       :schemas="corrCurveOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'corrfilter'"
-                       ref="optionFormRef"
-                       :schemas="featureFilterOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'modeleval'"
-                       ref="optionFormRef"
-                       :schemas="featureModelOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'itersearch'"
-                       ref="optionFormRef"
-                       :schemas="featureSearchOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'autodetect'"
-                       ref="optionFormRef"
-                       :schemas="featureDetectOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'pca'"
-                       ref="optionFormRef"
-                       :schemas="pcaOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'lda'"
-                       ref="optionFormRef"
-                       :schemas="ldaOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'svd'"
-                       ref="optionFormRef"
-                       :schemas="svdOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'tsne'"
-                       ref="optionFormRef"
-                       :schemas="tsneOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'isomap'"
-                       ref="optionFormRef"
-                       :schemas="isomapOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'lle'"
-                       ref="optionFormRef"
-                       :schemas="lleOptionSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'series'"
-                       ref="optionFormRef"
-                       :schemas="tsSeriesOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'trend'"
-                       ref="optionFormRef"
-                       :schemas="tsTrendOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'diff'"
-                       ref="optionFormRef"
-                       :schemas="tsDiffOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'tsfreq'"
-                       ref="optionFormRef"
-                       :schemas="tsFreqOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'compare'"
-                       ref="optionFormRef"
-                       :schemas="tsCompareOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'autocorr'"
-                       ref="optionFormRef"
-                       :schemas="tsAcfOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'mavg'"
-                       ref="optionFormRef"
-                       :schemas="tsMavgOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'quantile'"
-                       ref="optionFormRef"
-                       :schemas="tsQuantileOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'cycle'"
-                       ref="optionFormRef"
-                       :schemas="tsCycleOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'decomp'"
-                       ref="optionFormRef"
-                       :schemas="tsDecompOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'predict'"
-                       ref="optionFormRef"
-                       :schemas="tsPredictOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'anomaly'"
-                       ref="optionFormRef"
-                       :schemas="tsAnomalyOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-            <BasicForm v-else-if="selectedVisKeys[0] == 'anc'"
-                       ref="optionFormRef"
-                       :schemas="tsAncOptSchema"
-                       :showActionButtonGroup="false"
-                       layout="inline"
-                       @fieldValueChange="handleVisOptionChange">
-            </BasicForm>
-          </div>
-          <div style="height: 1px; border: dotted gray 1px"></div>
-          <div id="chartContainer" style="width: 100%; height: 800px; overflow: scroll" />
-          <!--img :src="'data:image/png;base64,' + anaImgs[selectedVisKeys[0]]" style="height: 700px; padding: 10px 0px 0px 10px" /-->
+          <div id="chartContainer" style="width: 100%; height: 850px; overflow: scroll" />
         </div>
           </Col>
           <Col :md="rightPanelSize" :sm="24">
@@ -357,102 +73,264 @@
                            :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
                            resultField="records"
                            @change="handleDatasetChange" />
-            <div style="height: 800px; overflow-y: scroll;">
-              <Menu mode="inline"
-                    :multiple="false"
-                    v-model:selectedKeys="selectedVisKeys"
-                    :open-keys="openVisKeys"
-                    style="width: 100%"
-                    :forceRender="true"
-                    @click="handleSubVisSwitch"
-                    @openChange="handleVisChange">
-                <SubMenu key="stat">
-                  <template #icon>
-                    <Avatar src="/resource/img/ml/eda-stats.png" shape="square" style="width: 32px" />
-                  </template>
-                  <template #title>
-                    Statistics
-                  </template>
-                  <MenuItem key="overall">Overall</MenuItem>
-                  <MenuItem key="box">Box plot</MenuItem>
-                  <MenuItem key="violin">Violin plot</MenuItem>
-                  <MenuItem key="anova">ANOVA</MenuItem>
-                  <MenuItem key="outlier">Outlier</MenuItem>
-                </SubMenu>
-                <SubMenu key="dists">
-                  <template #icon>
-                    <Avatar src="/resource/img/ml/eda-dists.png" shape="square" style="width: 32px" />
-                  </template>
-                  <template #title>
-                    Distribution
-                  </template>
-                  <MenuItem key="hist">Histogram</MenuItem>
-                  <MenuItem key="kde">Kernel density</MenuItem>
-                  <MenuItem key="ridge">Ridge plot</MenuItem>
-                  <MenuItem key="freq">Frequency</MenuItem>
-                </SubMenu>
-                <SubMenu key="corr">
-                  <template #icon>
-                    <Avatar src="/resource/img/ml/eda-corr.png" shape="square" style="width: 32px" />
-                  </template>
-                  <template #title>
-                    Correlation
-                  </template>
-                  <MenuItem key="ccm">Coeff Matrix</MenuItem>
-                  <MenuItem key="scatters">Scatter Matrix</MenuItem>
-                  <MenuItem key="pair">Pairwise plot</MenuItem>
-                  <MenuItem key="curve">Corr Curves</MenuItem>
-                  <MenuItem key="scatter">Scatter plot</MenuItem>
-                </SubMenu>
-                <SubMenu key="selection">
-                  <template #icon>
-                    <Avatar src="/resource/img/ml/eda-selection.png" shape="square" style="width: 32px" />
-                  </template>
-                  <template #title>
-                    Feature Selection
-                  </template>
-                  <MenuItem key="corrfilter">Corr Filter</MenuItem>
-                  <MenuItem key="modeleval">Model Evaluation</MenuItem>
-                  <MenuItem key="itersearch">Iterative Search</MenuItem>
-                  <MenuItem key="autodetect">Auto detection</MenuItem>
-                </SubMenu>
-                <SubMenu key="reduction">
-                  <template #icon>
-                    <Avatar src="/resource/img/ml/eda-reduction.png" shape="square" style="width: 32px" />
-                  </template>
-                  <template #title>
-                    Dim Reduction
-                  </template>
-                  <MenuItem key="pca">PCA</MenuItem>
-                  <MenuItem key="svd">SVD</MenuItem>
-                  <MenuItem key="lda">LDA</MenuItem>
-                  <MenuItem key="lle">LLE</MenuItem>
-                  <MenuItem key="tsne">t-SNE</MenuItem>
-                  <MenuItem key="isomap">ISOMAP</MenuItem>
-                </SubMenu>
-                <SubMenu key="ts">
-                  <template #icon>
-                    <Avatar src="/resource/img/ml/eda-ts.png" shape="square" style="width: 32px" />
-                  </template>
-                  <template #title>
-                    Time Series
-                  </template>
-                  <MenuItem key="series">Series</MenuItem>
-                  <MenuItem key="tsfreq">Frequency</MenuItem>
-                  <MenuItem key="trend">Trending</MenuItem>
-                  <MenuItem key="mavg">Moving average</MenuItem>
-                  <MenuItem key="quantile">Quantile</MenuItem>
-                  <MenuItem key="diff">Differencing</MenuItem>
-                  <MenuItem key="compare">Comparison</MenuItem>
-                  <MenuItem key="autocorr">Stationarity</MenuItem>
-                  <MenuItem key="cycle">Periodicity</MenuItem>
-                  <MenuItem key="decomp">Decomposition</MenuItem>
-                  <MenuItem key="predict">Prediction</MenuItem>
-                  <MenuItem key="anomaly">Anomaly detection</MenuItem>
-                  <MenuItem key="anc">Noise Reduction</MenuItem>
-                </SubMenu>
-              </Menu>
+            <div :style="{height: '400px'}" >
+              <Tree
+                :tree-data="edaVisTree"
+                v-model:selectedKeys="selectedVisKeys"
+                :expanded-keys="openVisKeys"
+                :height="400"
+                @select="handleSubVisSwitch"
+                @expand="handleVisChange"
+              />
             </div>
+            <Divider />
+            <BasicForm v-if="selectedVisKeys[0] == 'box'"
+                       ref="optionFormRef"
+                       :schemas="statBoxOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'violin'"
+                       ref="optionFormRef"
+                       :schemas="statViolinOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'anova'"
+                       ref="optionFormRef"
+                       :schemas="statAnovaOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'outlier'"
+                       ref="optionFormRef"
+                       :schemas="outlierQtMethodSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'quantile'"
+                       ref="optionFormRef"
+                       :schemas="outlierQtOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'zscore'"
+                       ref="optionFormRef"
+                       :schemas="outlierZsOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'dbscan'"
+                       ref="optionFormRef"
+                       :schemas="outlierDbscanOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'svm'"
+                       ref="optionFormRef"
+                       :schemas="outlierSvmOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'outlier' && (rawData.config.outlier.method == 'knn' || rawData.config.outlier.method == 'lof')"
+                       ref="optionFormRef"
+                       :schemas="outlierKnnOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'outlier' && (rawData.config.outlier.method == 'cof' || rawData.config.outlier.method == 'iforest' || rawData.config.outlier.method == 'som' || rawData.config.outlier.method == 'vae')"
+                       ref="optionFormRef"
+                       :schemas="outlierCofOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'hist'"
+                       ref="optionFormRef"
+                       :schemas="distHistOptSchema"
+                       :showActionButtonGroup="false"
+
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'kde'"
+                       ref="optionFormRef"
+                       :schemas="kdeOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'freq'"
+                       ref="optionFormRef"
+                       :schemas="freqOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'ccm'"
+                       ref="optionFormRef"
+                       :schemas="ccmOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'pair'"
+                       ref="optionFormRef"
+                       :schemas="corrPairOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'scatter'"
+                       ref="optionFormRef"
+                       :schemas="corrSingleScatterOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'scatters'"
+                       ref="optionFormRef"
+                       :schemas="corrScatterMatrixOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'curve'"
+                       ref="optionFormRef"
+                       :schemas="corrCurveOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'corrfilter'"
+                       ref="optionFormRef"
+                       :schemas="featureFilterOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'modeleval'"
+                       ref="optionFormRef"
+                       :schemas="featureModelOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'itersearch'"
+                       ref="optionFormRef"
+                       :schemas="featureSearchOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'autodetect'"
+                       ref="optionFormRef"
+                       :schemas="featureDetectOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'pca'"
+                       ref="optionFormRef"
+                       :schemas="pcaOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'lda'"
+                       ref="optionFormRef"
+                       :schemas="ldaOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'svd'"
+                       ref="optionFormRef"
+                       :schemas="svdOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'tsne'"
+                       ref="optionFormRef"
+                       :schemas="tsneOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'isomap'"
+                       ref="optionFormRef"
+                       :schemas="isomapOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'lle'"
+                       ref="optionFormRef"
+                       :schemas="lleOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'series'"
+                       ref="optionFormRef"
+                       :schemas="tsSeriesOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'trend'"
+                       ref="optionFormRef"
+                       :schemas="tsTrendOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'diff'"
+                       ref="optionFormRef"
+                       :schemas="tsDiffOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'tsfreq'"
+                       ref="optionFormRef"
+                       :schemas="tsFreqOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'compare'"
+                       ref="optionFormRef"
+                       :schemas="tsCompareOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'autocorr'"
+                       ref="optionFormRef"
+                       :schemas="tsAcfOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'mavg'"
+                       ref="optionFormRef"
+                       :schemas="tsMavgOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'quantile'"
+                       ref="optionFormRef"
+                       :schemas="tsQuantileOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'cycle'"
+                       ref="optionFormRef"
+                       :schemas="tsCycleOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'decomp'"
+                       ref="optionFormRef"
+                       :schemas="tsDecompOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'predict'"
+                       ref="optionFormRef"
+                       :schemas="tsPredictOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'anomaly'"
+                       ref="optionFormRef"
+                       :schemas="tsAnomalyOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'anc'"
+                       ref="optionFormRef"
+                       :schemas="tsAncOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
           </div>
           </Col>
 </Row>
@@ -489,11 +367,11 @@
 
 <script lang="ts" setup name="DetailForm">
   import { h, reactive, ref } from 'vue';
-  import { BasicForm, FormActionType } from '/@/components/Form/index';
+  import { BasicForm, FormActionType, useForm } from '/@/components/Form/index';
   import {
-    formInfoSchema, histOptionSchema, kdeOptionSchema, boxOptionSchema, violinOptionSchema,
+    formInfoSchema, edaVisTree, histOptionSchema, kdeOptionSchema, boxOptionSchema, violinOptionSchema,
     ccmOptionSchema, freqOptionSchema, anovaOptionSchema, pairOptionSchema, scatterMatrixOptionSchema, curveOptionSchema,
-    outlierKnnOptionSchema, eda_cfg_default, outlierQtOptionSchema, outlierZsOptionSchema,
+    outlierKnnOptionSchema, eda_cfg_default, outlierQtOptionSchema, outlierZsOptionSchema, outlierQtMethodSchema,
     outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
     featureModelOptionSchema, featureSearchOptionSchema, featureDetectOptionSchema, tsSeriesOptionSchema, tsTrendOptionSchema, tsDiffOptionSchema,
     tsFreqOptionSchema, tsCompareOptionSchema, tsAcfOptionSchema, tsMavgOptionSchema, tsQuantileOptionSchema, tsCycleOptionSchema, tsDecompOptionSchema,
@@ -514,12 +392,10 @@
     Row,
     Col,
     Menu,
-    SubMenu,
     MenuItem,
-    Avatar,
-    Tag
+    Tree,
+    Divider
   } from 'ant-design-vue';
-  import { Icon } from '/@/components/Icon';
   import { API_ML_DATASET_EXECUTE, API_ML_DATASET_TREE, API_ML_DATASET_GET } from '/@/api/ml/dataset';
   import { cloneDeep } from 'lodash-es';
   import { ApiSelect } from '/@/components/Form';
@@ -606,8 +482,10 @@
       rawData.value.config = cloneDeep(clonedEdaCfg);
     }
 
+    openVisKeys.value = ['stat'];
+    selectedVisKeys.value = ['overview'];
     if (data && data.id) {
-      buildChart('overall', rawData.value.config['overall']);
+      buildChart('overview', rawData.value.config['overview']);
     }
 
     handleDatasetChange(data.datasetId);
@@ -798,6 +676,11 @@
           tsSeriesOptSchema[4].defaultValue = tsSeriesOptSchema[4].componentProps.options[0].value;
           rawData.value.config.series['cat'] = tsSeriesOptSchema[4].defaultValue;
         }
+
+        openVisKeys.value = ['stat'];
+        selectedVisKeys.value = ['overview'];
+        buildChart('overview', rawData.value.config['overview']);
+
       });
     }
   };
@@ -830,9 +713,29 @@
   * show different chart when click different vis option
   */
   const handleSubVisSwitch = (menu: any) => {
-    // reset config to default
-    rawData.value.config[menu.key] = cloneDeep(clonedEdaCfg[menu.key]);
-    buildChart(menu.key, rawData.value.config[menu.key]);
+    if(menu != null && menu.length > 0){
+      let key = menu[0];
+      // reset config to default
+      rawData.value.config[key] = cloneDeep(clonedEdaCfg[key]);
+      buildChart(key, rawData.value.config[key]);
+    }
+  };
+
+  async function handleKindOptChange(key: string, value: string) {
+    const visKind = selectedVisKeys.value[0];
+    let cfg = rawData.value.config[visKind];
+    if (value == undefined || value == '') {
+      delete cfg[key];
+    } else {
+      cfg[key] = value;
+      if(key == 'method'){
+        if(cfg['threshold']){
+          delete cfg['threshold'];
+        }
+      }
+    }
+
+    buildChart(visKind, cfg);
   };
 
   /*

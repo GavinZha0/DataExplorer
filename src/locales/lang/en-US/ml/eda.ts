@@ -78,10 +78,15 @@ export default {
         sigma: 'Sigma coff',
         cont_ratio: 'Contamination',
         distance: 'Distance',
+        radius: 'Radius',
+        min_samples: 'Min samples',
         metric: 'Metric',
         kernel: 'Kernel',
-        umap: 'UMAP',
+        disp: 'Display',
+        batch: 'Batch size',
+        epoch: 'Epoch',
         d3: '3D',
+        dim: 'Dim',
         threshold: 'Threshold',
       },
       hist: {
@@ -145,10 +150,18 @@ export default {
       },
       tsne: {
         dim: 'Dim',
+        metric: 'Metric',
+        neighbor: 'Neighbors',
+        perplex: 'Perplexity'
+      },
+      umap: {
+        dim: 'Dim',
+        metric: 'Metric',
         perplex: 'Perplexity'
       },
       isomap: {
         dim: 'Dim',
+        metric: 'Metric',
         neighbor: 'Neighbors'
       },
       lle: {

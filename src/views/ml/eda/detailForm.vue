@@ -73,12 +73,12 @@
                            :fieldNames="{ key: 'id', label: 'name', value: 'id' }"
                            resultField="records"
                            @change="handleDatasetChange" />
-            <div :style="{height: '400px'}" >
+            <div :style="{height: '450px'}" >
               <Tree
                 :tree-data="edaVisTree"
                 v-model:selectedKeys="selectedVisKeys"
                 :expanded-keys="openVisKeys"
-                :height="400"
+                :height="460"
                 @select="handleSubVisSwitch"
                 @expand="handleVisChange"
               />
@@ -132,13 +132,19 @@
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'vae'"
+                       ref="optionFormRef"
+                       :schemas="outlierVaeOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
             <BasicForm v-if="selectedVisKeys[0] == 'outlier' && (rawData.config.outlier.method == 'knn' || rawData.config.outlier.method == 'lof')"
                        ref="optionFormRef"
                        :schemas="outlierKnnOptionSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
-            <BasicForm v-if="selectedVisKeys[0] == 'outlier' && (rawData.config.outlier.method == 'cof' || rawData.config.outlier.method == 'iforest' || rawData.config.outlier.method == 'som' || rawData.config.outlier.method == 'vae')"
+            <BasicForm v-if="selectedVisKeys[0] == 'outlier' && (rawData.config.outlier.method == 'cof' || rawData.config.outlier.method == 'iforest' || rawData.config.outlier.method == 'som')"
                        ref="optionFormRef"
                        :schemas="outlierCofOptionSchema"
                        :showActionButtonGroup="false"
@@ -166,6 +172,12 @@
             <BasicForm v-if="selectedVisKeys[0] == 'ccm'"
                        ref="optionFormRef"
                        :schemas="ccmOptionSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'cov'"
+                       ref="optionFormRef"
+                       :schemas="covOptionSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
@@ -369,9 +381,9 @@
   import { h, reactive, ref } from 'vue';
   import { BasicForm, FormActionType, useForm } from '/@/components/Form/index';
   import {
-    formInfoSchema, edaVisTree, histOptionSchema, kdeOptionSchema, boxOptionSchema, violinOptionSchema,
+    formInfoSchema, edaVisTree, histOptionSchema, kdeOptionSchema, boxOptionSchema, violinOptionSchema, covOptionSchema, 
     ccmOptionSchema, freqOptionSchema, anovaOptionSchema, pairOptionSchema, scatterMatrixOptionSchema, curveOptionSchema,
-    outlierKnnOptionSchema, eda_cfg_default, outlierQtOptionSchema, outlierZsOptionSchema, outlierQtMethodSchema,
+    outlierKnnOptionSchema, eda_cfg_default, outlierQtOptionSchema, outlierZsOptionSchema, outlierQtMethodSchema, outlierVaeOptionSchema,
     outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
     featureModelOptionSchema, featureSearchOptionSchema, featureDetectOptionSchema, tsSeriesOptionSchema, tsTrendOptionSchema, tsDiffOptionSchema,
     tsFreqOptionSchema, tsCompareOptionSchema, tsAcfOptionSchema, tsMavgOptionSchema, tsQuantileOptionSchema, tsCycleOptionSchema, tsDecompOptionSchema,

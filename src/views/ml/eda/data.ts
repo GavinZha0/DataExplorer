@@ -219,8 +219,12 @@ export const edaVisTree = [
     selectable: false,
     children: [
       {
-        title: 'Coeff Matrix',
+        title: 'CORR Matrix',
         key: 'ccm'
+      },
+      {
+        title: 'COV Matrix',
+        key: 'cov'
       },
       {
         title: 'Scatter Matrix',
@@ -477,8 +481,8 @@ export const outlierQtOptionSchema: FormSchema[] = [
     defaultValue: 1.6,
     componentProps: {
       allowClear: false,
-      min: 1.2,
-      max: 2.5,
+      min: 1,
+      max: 5,
       step: 0.1
     },
     labelWidth: 100,
@@ -495,8 +499,8 @@ export const outlierZsOptionSchema: FormSchema[] = [
     defaultValue: 3,
     componentProps: {
       allowClear: false,
-      min: 2,
-      max: 4,
+      min: 1,
+      max: 5,
       step: 0.1
     },
     labelWidth: 100,
@@ -516,9 +520,11 @@ export const outlierDbscanOptionSchema: FormSchema[] = [
       options: [
         { label: 'Chebyshev', value: 'chebyshev' },
         { label: 'Correlation', value: 'correlation' },
+        { label: 'Cosine', value: 'cosine'},
         { label: 'Euclidean', value: 'euclidean' },
         { label: 'Hamming', value: 'hamming' },
         { label: 'Jaccard', value: 'jaccard' },
+        { label: 'Manhattan', value: 'manhattan'},
         { label: 'Minkowski', value: 'minkowski' }
       ]
     },
@@ -528,21 +534,58 @@ export const outlierDbscanOptionSchema: FormSchema[] = [
   {
     field: 'threshold',
     component: 'InputNumber',
-    label: t('ml.eda.form.vis.outlier.distance'),
+    label: t('ml.eda.form.vis.outlier.radius'),
     defaultValue: 0.5,
     componentProps: {
       allowClear: false,
       min: 0.1,
-      max: 10,
+      max: 50,
       step: 0.1
     },
     labelWidth: 100,
     colProps: { span: 24 }
   },
   {
-    field: 'd3',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.d3'),
+    field: 'min_samples',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.min_samples'),
+    defaultValue: 5,
+    componentProps: {
+      allowClear: false,
+      min: 1,
+      max: 50,
+      step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'disp',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.disp'),
+    defaultValue: 'pca',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'PCA', value: 'pca' },
+        { label: 't-SNE', value: 'tsne' },
+        { label: 'UMAP', value: 'umap' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'dim',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.dim'),
+    defaultValue: 2,
+    componentProps: {
+      allowClear: false,
+      min: 1,
+      max: 8,
+      step: 1
+    },
     labelWidth: 100,
     colProps: { span: 24 }
   },
@@ -572,27 +615,43 @@ export const outlierSvmOptionSchema: FormSchema[] = [
     field: 'threshold',
     component: 'InputNumber',
     label: t('ml.eda.form.vis.outlier.cont_ratio'),
-    defaultValue: 0.05,
+    defaultValue: 0.03,
     componentProps: {
       allowClear: false,
-      min: 0.01,
+      min: 0.001,
       max: 0.5,
-      step: 0.01
+      step: 0.001
     },
     labelWidth: 100,
     colProps: { span: 24 }
   },
   {
-    field: 'umap',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.umap'),
+    field: 'disp',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.disp'),
+    defaultValue: 'pca',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'PCA', value: 'pca' },
+        { label: 't-SNE', value: 'tsne' },
+        { label: 'UMAP', value: 'umap' }
+      ]
+    },
     labelWidth: 100,
     colProps: { span: 24 }
   },
   {
-    field: 'd3',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.d3'),
+    field: 'dim',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.dim'),
+    defaultValue: 2,
+    componentProps: {
+      allowClear: false,
+      min: 1,
+      max: 8,
+      step: 1
+    },
     labelWidth: 100,
     colProps: { span: 24 }
   }
@@ -610,9 +669,11 @@ export const outlierKnnOptionSchema: FormSchema[] = [
       options: [
         { label: 'Chebyshev', value: 'chebyshev' },
         { label: 'Correlation', value: 'correlation' },
+        { label: 'Cosine', value: 'cosine'},
         { label: 'Euclidean', value: 'euclidean' },
         { label: 'Hamming', value: 'hamming' },
         { label: 'Jaccard', value: 'jaccard' },
+        { label: 'Manhattan', value: 'manhattan'},
         { label: 'Minkowski', value: 'minkowski' }
       ]
     },
@@ -623,50 +684,192 @@ export const outlierKnnOptionSchema: FormSchema[] = [
     field: 'threshold',
     component: 'InputNumber',
     label: t('ml.eda.form.vis.outlier.cont_ratio'),
-    defaultValue: 0.05,
+    defaultValue: 0.03,
     componentProps: {
       allowClear: false,
-      min: 0.01,
+      min: 0.001,
       max: 0.5,
-      step: 0.01
+      step: 0.001
     },
     labelWidth: 100,
     colProps: { span: 24 }
   },
   {
-    field: 'd3',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.d3'),
+    field: 'disp',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.disp'),
+    defaultValue: 'pca',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'PCA', value: 'pca' },
+        { label: 't-SNE', value: 'tsne' },
+        { label: 'UMAP', value: 'umap' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'dim',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.dim'),
+    defaultValue: 2,
+    componentProps: {
+      allowClear: false,
+      min: 1,
+      max: 8,
+      step: 1
+    },
     labelWidth: 100,
     colProps: { span: 24 }
   },
 ];
 
-// Outlier COF/iForest/SOM/VAE options
+// Outlier VAE options
+export const outlierVaeOptionSchema: FormSchema[] = [
+  {
+    field: 'threshold',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.cont_ratio'),
+    defaultValue: 0.03,
+    componentProps: {
+      allowClear: false,
+      min: 0.001,
+      max: 0.5,
+      step: 0.001
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'batch',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.batch'),
+    defaultValue: 16,
+    componentProps: {
+      allowClear: false,
+      min: 2,
+      max: 128,
+      step: 4
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'epoch',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.epoch'),
+    defaultValue: 10,
+    componentProps: {
+      allowClear: false,
+      min: 2,
+      max: 100,
+      step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'disp',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.disp'),
+    defaultValue: 'pca',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'PCA', value: 'pca' },
+        { label: 't-SNE', value: 'tsne' },
+        { label: 'UMAP', value: 'umap' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'dim',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.dim'),
+    defaultValue: 2,
+    componentProps: {
+      allowClear: false,
+      min: 1,
+      max: 8,
+      step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+];
+
+// Outlier COF/iForest/SOM
 export const outlierCofOptionSchema: FormSchema[] = [
   {
     field: 'threshold',
     component: 'InputNumber',
     label: t('ml.eda.form.vis.outlier.cont_ratio'),
-    defaultValue: 0.05,
+    defaultValue: 0.03,
     componentProps: {
       allowClear: false,
-      min: 0.01,
+      min: 0.001,
       max: 0.5,
-      step: 0.01
+      step: 0.001
     },
     labelWidth: 100,
     colProps: { span: 24 }
   },
   {
-    field: 'd3',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.outlier.d3'),
+    field: 'metric',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.metric'),
+    defaultValue: 'euclidean',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Chebyshev', value: 'chebyshev' },
+        { label: 'Correlation', value: 'correlation' },
+        { label: 'Cosine', value: 'cosine'},
+        { label: 'Euclidean', value: 'euclidean' },
+        { label: 'Hamming', value: 'hamming' },
+        { label: 'Jaccard', value: 'jaccard' },
+        { label: 'Manhattan', value: 'manhattan'},
+        { label: 'Minkowski', value: 'minkowski' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'disp',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.disp'),
+    defaultValue: 'pca',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'PCA', value: 'pca' },
+        { label: 't-SNE', value: 'tsne' },
+        { label: 'UMAP', value: 'umap' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'dim',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.outlier.dim'),
+    defaultValue: 2,
+    componentProps: {
+      allowClear: false,
+      min: 1,
+      max: 8,
+      step: 1
+    },
     labelWidth: 100,
     colProps: { span: 24 }
   },
 ];
-
 
 // histogram options
 export const histOptionSchema: FormSchema[] = [
@@ -903,6 +1106,19 @@ export const ccmOptionSchema: FormSchema[] = [
     field: 'num',
     component: 'Switch',
     label: t('ml.eda.form.vis.ccm.num'),
+    defaultValue: true,
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
+];
+
+// cov (Covariance Matrix) options
+export const covOptionSchema: FormSchema[] = [
+  {
+    field: 'num',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.ccm.num'),
+    defaultValue: true,
     labelWidth: 100,
     colProps: { span: 24 }
   }
@@ -1018,10 +1234,82 @@ export const tsneOptionSchema: FormSchema[] = [
     colProps: { span: 24 }
   },
   {
+    field: 'metric',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tsne.metric'),
+    defaultValue: 'euclidean',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Chebyshev', value: 'chebyshev' },
+        { label: 'Correlation', value: 'correlation' },
+        { label: 'Euclidean', value: 'euclidean' },
+        { label: 'Hamming', value: 'hamming' },
+        { label: 'Jaccard', value: 'jaccard' },
+        { label: 'Manhattan', value: 'manhattan'},
+        { label: 'Minkowski', value: 'minkowski' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
     field: 'perplex',
     component: 'InputNumber',
     label: t('ml.eda.form.vis.tsne.perplex'),
     defaultValue: 30,
+    componentProps: {
+      allowClear: false,
+      min: 5,
+      max: 50,
+      step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
+];
+
+// UMAP options
+export const umapOptionSchema: FormSchema[] = [
+  {
+    field: 'dim',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.umap.dim'),
+    defaultValue: 2,
+    componentProps: {
+      allowClear: false,
+      min: 0,
+      max: 50,
+      step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'metric',
+    component: 'Select',
+    label: t('ml.eda.form.vis.umap.metric'),
+    defaultValue: 'euclidean',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Chebyshev', value: 'chebyshev' },
+        { label: 'Correlation', value: 'correlation' },
+        { label: 'Euclidean', value: 'euclidean' },
+        { label: 'Hamming', value: 'hamming' },
+        { label: 'Jaccard', value: 'jaccard' },
+        { label: 'Manhattan', value: 'manhattan'},
+        { label: 'Minkowski', value: 'minkowski' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'neighbor',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.umap.neighbor'),
+    defaultValue: 15,
     componentProps: {
       allowClear: false,
       min: 5,
@@ -1045,6 +1333,26 @@ export const isomapOptionSchema: FormSchema[] = [
       min: 0,
       max: 50,
       step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'metric',
+    component: 'Select',
+    label: t('ml.eda.form.vis.isomap.metric'),
+    defaultValue: 'minkowski',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Chebyshev', value: 'chebyshev' },
+        { label: 'Correlation', value: 'correlation' },
+        { label: 'Euclidean', value: 'euclidean' },
+        { label: 'Hamming', value: 'hamming' },
+        { label: 'Jaccard', value: 'jaccard' },
+        { label: 'Manhattan', value: 'manhattan'},
+        { label: 'Minkowski', value: 'minkowski' }
+      ]
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -1272,7 +1580,7 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     component: 'Select',
     label: t('ml.eda.form.vis.tsseries.vf'),
     componentProps: {
-      allowClear: false,
+      allowClear: true,
       options: []
     },
     labelWidth: 100,
@@ -1303,7 +1611,7 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     component: 'Select',
     label: t('ml.eda.form.vis.tsseries.cat'),
     componentProps: {
-      allowClear: false,
+      allowClear: true,
       options: []
     },
     labelWidth: 100,
@@ -2375,7 +2683,8 @@ export const eda_cfg_default = {
   scatter: { pid: 'corr', marg: 'histogram' },
   scatters: { pid: 'corr' },
   pair: { pid: 'corr' },
-  ccm: { pid: 'corr' },
+  ccm: { pid: 'corr', num: true },
+  cov: { pid: 'corr', num: true },
   curve: { pid: 'corr' },
 
   pca: { pid: 'dim' },

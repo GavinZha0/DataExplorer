@@ -1170,7 +1170,7 @@
    function handleColumnTimeline(key: number) {
     // key was set to index when built columns
     let rawField = rawData.value.fields[key];
-    if (rawField.target == undefined && rawField.attr == 'date') {
+    if (rawField.target == undefined && rawField.attr == 'date' && rawField.timeline == undefined) {
       rawField.timeline = true;
       rawData.value.type = 'timeseries';
     } else {

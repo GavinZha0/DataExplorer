@@ -163,9 +163,9 @@
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
-            <BasicForm v-if="selectedVisKeys[0] == 'freq'"
+            <BasicForm v-if="selectedVisKeys[0] == 'volume'"
                        ref="optionFormRef"
-                       :schemas="freqOptionSchema"
+                       :schemas="volumeOptionSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
@@ -382,7 +382,7 @@
   import { BasicForm, FormActionType, useForm } from '/@/components/Form/index';
   import {
     formInfoSchema, edaVisTree, histOptionSchema, kdeOptionSchema, boxOptionSchema, violinOptionSchema, covOptionSchema, 
-    ccmOptionSchema, freqOptionSchema, anovaOptionSchema, pairOptionSchema, scatterMatrixOptionSchema, curveOptionSchema,
+    ccmOptionSchema, volumeOptionSchema, anovaOptionSchema, pairOptionSchema, scatterMatrixOptionSchema, curveOptionSchema,
     outlierKnnOptionSchema, eda_cfg_default, outlierQtOptionSchema, outlierZsOptionSchema, outlierQtMethodSchema, outlierVaeOptionSchema,
     outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
     featureModelOptionSchema, featureSearchOptionSchema, featureDetectOptionSchema, tsSeriesOptionSchema, tsTrendOptionSchema, tsDiffOptionSchema,

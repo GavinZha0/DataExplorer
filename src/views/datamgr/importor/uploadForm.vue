@@ -298,7 +298,7 @@
             v-model:activeKey="activeTabKey"
             default-active-key="config"
             hide-add
-            style="height: 750px"
+            style="height: 850px"
           >
             <a-tab-pane
               key="config"

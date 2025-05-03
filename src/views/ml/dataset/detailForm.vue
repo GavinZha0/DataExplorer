@@ -38,69 +38,71 @@
     <div style="width: 98%; float: left">
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
-        <div class="mr-2 overflow-hidden bg-white" style="border: solid 1px; height: 760px">
-          <div style="width: 100%; height: 380px">
-            <splitpanes>
-              <pane size="20">
-                <div id="codeEditor" style="width: 100%; height: 380px; border: solid 1px">
-                  <CodeEditor border
-                              class="code-mirror"
-                              placeholder="Input custom sql"
-                              v-model:value="rawData.content"
-                              mode="sql" />
-                </div>
-              </pane>
-              <pane size="80">
-                <div id="stats"
-                     ref="statsRef"
-                     style="width: 100%; height: 380px; border: solid 1px">
-                  <span style="font-weight: bold; margin-left: 10px">Field summary</span>
-                  <BasicTable ref="statTableRef"
-                              :size="'small'"
-                              :bordered="true"
-                              :canResize="true"
-                              :show-table-setting="false"
-                              :columns="statColumns[rawData.type]"
-                              :data-source="statFieldList"
-                              :show-index-column="false"
-                              :use-search-form="false"
-                              :pagination="false"
-                              :striped="false"
-                              :scroll="{ x: 300, y: 300 }"
-                              :rowClassName="tableRowColor"
-                              @resizeColumn="(w, col)=>{col.width = w;}">
-                    <template #bodyCell="{ column, record }">
-                      <template v-if="column.key == 'name' && record.target">
-                        <div style="margin-left: 5px; color: red">{{ record.name }}</div>
+          <splitpanes class="default-theme" horizontal style="width: 100%; height: 850px">
+            <pane size="70" style="border: solid 1px;">
+              <splitpanes>
+                <pane size="20">
+                  <div id="codeEditor" style="width: 100%">
+                    <CodeEditor border
+                                class="code-mirror"
+                                placeholder="Input custom sql"
+                                v-model:value="rawData.content"
+                                mode="sql" />
+                  </div>
+                </pane>
+                <pane size="80" style="border: solid 1px">
+                  <div id="stats"
+                      ref="statsRef"
+                      style="width: 100%">
+                    <span style="font-weight: bold; margin-left: 10px">Field summary</span>
+                    <BasicTable ref="statTableRef"
+                                :size="'small'"
+                                :bordered="true"
+                                :ellipsis="true"
+                                :canResize="true"
+                                :show-table-setting="false"
+                                :columns="statColumns[rawData.type]"
+                                :data-source="statFieldList"
+                                :show-index-column="false"
+                                :use-search-form="false"
+                                :pagination="false"
+                                :striped="false"
+                                :scroll="{ x: 300, y: 550}"
+                                :rowClassName="tableRowColor"
+                                @resizeColumn="(w, col)=>{col.width = w;}">
+                      <template #bodyCell="{ column, record }">
+                        <template v-if="column.key == 'name' && record.target">
+                          <div style="margin-left: 5px; color: red">{{ record.name }}</div>
+                        </template>
+                        <template v-if="column.key === 'missing'">
+                          <div v-if="record.missing>0" style="margin-left: 5px; color: orange">{{ record.missing }}</div>
+                          <div v-else style="margin-left: 5px; color: black">{{ record.missing }}</div>
+                        </template>
+                        <template v-if="column.key === 'variance'">
+                          <div v-if="record.variance==0" style="margin-left: 5px; color: orange">{{ record.variance }}</div>
+                          <div v-else style="margin-left: 5px; color: black">{{ record.variance }}</div>
+                        </template>
+                        <template v-else-if="column.key === 'unique'">
+                          <Tag
+                            v-for="(ele, index) in record.unique"
+                            :key="index"
+                            color="green"
+                            style="margin-right: 2px"
+                          >
+                            {{ ele }}
+                          </Tag>
+                        </template>
                       </template>
-                      <template v-if="column.key === 'missing'">
-                        <div v-if="record.missing>0" style="margin-left: 5px; color: orange">{{ record.missing }}</div>
-                        <div v-else style="margin-left: 5px; color: black">{{ record.missing }}</div>
-                      </template>
-                      <template v-if="column.key === 'variance'">
-                        <div v-if="record.variance==0" style="margin-left: 5px; color: orange">{{ record.variance }}</div>
-                        <div v-else style="margin-left: 5px; color: black">{{ record.variance }}</div>
-                      </template>
-                      <template v-else-if="column.key === 'unique'">
-                        <Tag
-                          v-for="(ele, index) in record.unique"
-                          :key="index"
-                          color="green"
-                          style="margin-right: 2px"
-                        >
-                          {{ ele }}
-                        </Tag>
-                      </template>
-                    </template>
-                  </BasicTable>
-                </div>
-              </pane>
-            </splitpanes>
-          </div>
-          <div id="tableDiv" style="width: 100%; height: 360p; margin-top: 5px">
+                    </BasicTable>
+                  </div>
+                </pane>
+              </splitpanes>
+            </pane>
+          <pane size="30" style="border: solid 1px;">
             <BasicTable ref="TableRef"
                         size="small"
                         :bordered="true"
+                        :ellipsis="true"
                         :canResize="true"
                         :show-table-setting="false"
                         :columns="rawData.fields"
@@ -108,13 +110,8 @@
                         :show-index-column="false"
                         :use-search-form="false"
                         :pagination="false"
-                        :scroll="{ x: 300, y: 300 }"
-                        @resizeColumn="
-                        (w, col)=>
-              {
-              col.width = w;
-              }
-              "
+                        :scroll="{ x: 400, y: 500 }"
+                        @resizeColumn="(w, col)=>{col.width = w;}"
               >
               <template #headerCell="{ column }">
                 <HeaderCell :column="column" />
@@ -277,8 +274,8 @@
                 </template>
               </template>
             </BasicTable>
-          </div>
-        </div>
+          </pane>
+        </splitpanes>
         </Col>
         <Col :md="rightPanelSize" :sm="24">
             <div

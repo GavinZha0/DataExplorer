@@ -528,7 +528,7 @@
                 </Button>
               </FormItem>
             </Form>
-            <div id="codeEditor" style="width: 100%; height: 750px; border-top: solid 1px gray">
+            <div id="codeEditor" style="width: 100%; height: 850px; border-top: solid 1px gray">
               <CodeEditor
                 border
                 :readonly="advancedInfo.disabled"

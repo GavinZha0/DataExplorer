@@ -68,7 +68,8 @@ export default {
         cat: '分类域'
       },
       anova: {
-        line: '折线图',
+        style: '图表类型',
+        order: '排序',
         field: '数据域'
       },
       outlier: {
@@ -99,7 +100,7 @@ export default {
         rug: '分布棒',
         ref: '参考线',
       },
-      freq: {
+      volume: {
         pct: '百分比',
         funnel: '漏斗图'
       },

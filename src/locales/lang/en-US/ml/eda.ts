@@ -69,7 +69,8 @@ export default {
         cat: 'Category'
       },
       anova: {
-        line: 'Line style',
+        style: 'Chart style',
+        order: 'Order',
         field: 'Field'
       },
       outlier: {
@@ -99,7 +100,7 @@ export default {
         rug: 'Rug',
         ref: 'Reference',
       },
-      freq: {
+      volume: {
         pct: 'Percentage',
         funnel: 'Funnel'
       },

@@ -43,7 +43,7 @@
               <pane size="70">
                 <splitpanes>
                   <pane size="70">
-                    <div id="codeEditor" style="width: 100%; height: 750px; border: solid 1px">
+                    <div id="codeEditor" style="width: 100%; height: 850px; border: solid 1px">
                       <CodeEditor
                         border
                         class="code-mirror"
@@ -57,7 +57,7 @@
                     <div
                       id="erGraph"
                       ref="erGraphRef"
-                      style="width: 100%; height: 750px; border: solid 1px"
+                      style="width: 100%; height: 850px; border: solid 1px"
                     >
                       <span style="font-weight: bold; margin-left: 10px">Database table fields</span>
                       <BasicTable

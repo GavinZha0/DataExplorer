@@ -1,5 +1,5 @@
 <template>
-  <a-tabs default-active-key="style" hide-add size="small" centered style="height: 750px">
+  <a-tabs default-active-key="style" hide-add size="small" centered style="height: 850px">
     <a-tab-pane key="style" :forceRender="true" :closable="false">
       <template #tab>
         <Tooltip>

@@ -208,8 +208,8 @@ export const edaVisTree = [
         key: 'ridge'
       },
       {
-        title: 'Frequency',
-        key: 'freq'
+        title: 'Data Volume',
+        key: 'volume'
       }
     ]
   },
@@ -437,9 +437,32 @@ export const anovaOptionSchema: FormSchema[] = [
     colProps: { span: 24 }
   },
   {
-    field: 'line',
-    component: 'Switch',
-    label: t('ml.eda.form.vis.anova.line'),
+    field: 'order',
+    component: 'Select',
+    label: t('ml.eda.form.vis.anova.order'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Mean', value: 'mean' },
+        { label: 'StdDev', value: 'std' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'style',
+    component: 'Select',
+    label: t('ml.eda.form.vis.anova.style'),
+    defaultValue: 'bar',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Bar', value: 'bar' },
+        { label: 'Line', value: 'line' },
+        { label: 'Scatter', value: 'scatter' }
+      ]
+    },
     labelWidth: 100,
     colProps: { span: 24 }
   }
@@ -618,9 +641,9 @@ export const outlierSvmOptionSchema: FormSchema[] = [
     defaultValue: 0.03,
     componentProps: {
       allowClear: false,
-      min: 0.001,
+      min: 0.0002,
       max: 0.5,
-      step: 0.001
+      step: 0.0002
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -687,9 +710,9 @@ export const outlierKnnOptionSchema: FormSchema[] = [
     defaultValue: 0.03,
     componentProps: {
       allowClear: false,
-      min: 0.001,
+      min: 0.0002,
       max: 0.5,
-      step: 0.001
+      step: 0.0002
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -735,9 +758,9 @@ export const outlierVaeOptionSchema: FormSchema[] = [
     defaultValue: 0.03,
     componentProps: {
       allowClear: false,
-      min: 0.001,
+      min: 0.0002,
       max: 0.5,
-      step: 0.001
+      step: 0.0002
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -811,9 +834,9 @@ export const outlierCofOptionSchema: FormSchema[] = [
     defaultValue: 0.03,
     componentProps: {
       allowClear: false,
-      min: 0.001,
+      min: 0.0002,
       max: 0.5,
-      step: 0.001
+      step: 0.0002
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -890,9 +913,9 @@ export const histOptionSchema: FormSchema[] = [
     defaultValue: 30,
     componentProps: {
       allowClear: false,
-      min: 10,
-      max: 60,
-      step: 10
+      min: 5,
+      max: 100,
+      step: 5
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -965,19 +988,19 @@ export const kdeOptionSchema: FormSchema[] = [
   }
 ];
 
-// frequency options
-export const freqOptionSchema: FormSchema[] = [
+// data volume options
+export const volumeOptionSchema: FormSchema[] = [
   {
     field: 'pct',
     component: 'Switch',
-    label: t('ml.eda.form.vis.freq.pct'),
+    label: t('ml.eda.form.vis.volume.pct'),
     labelWidth: 100,
     colProps: { span: 24 }
   },
   {
     field: 'funnel',
     component: 'Switch',
-    label: t('ml.eda.form.vis.freq.funnel'),
+    label: t('ml.eda.form.vis.volume.funnel'),
     labelWidth: 100,
     colProps: { span: 24 }
   }
@@ -2678,7 +2701,7 @@ export const eda_cfg_default = {
   hist: { pid: 'dist' },
   kde: { pid: 'dist', ref: 'norm' },
   ridge: { pid: 'dist' },
-  freq: { pid: 'dist' },
+  volume: { pid: 'dist' },
   
   scatter: { pid: 'corr', marg: 'histogram' },
   scatters: { pid: 'corr' },

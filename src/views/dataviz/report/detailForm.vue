@@ -127,7 +127,7 @@
               :style="{
                 borderWidth: '1px',
                 borderColor: 'black',
-                height: '750px',
+                height: '850px',
                 width: '100%',
                 paddingLeft: '5px',
                 paddingRight: '5px',
@@ -168,7 +168,7 @@
               :style="{
                 borderWidth: '1px',
                 borderColor: 'black',
-                height: '750px',
+                height: '850px',
                 width: '100%',
                 paddingLeft: '5px',
                 paddingRight: '5px',
@@ -217,7 +217,7 @@
               :style="{
                 borderWidth: '1px',
                 borderColor: 'black',
-                height: '750px',
+                height: '850px',
                 width: '100%',
                 paddingLeft: '5px',
                 paddingRight: '5px',
@@ -237,7 +237,7 @@
               :style="{
                 borderWidth: '1px',
                 borderColor: 'black',
-                height: '750px',
+                height: '850px',
                 width: '100%',
                 paddingLeft: '5px',
                 paddingRight: '5px',

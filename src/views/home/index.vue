@@ -124,7 +124,7 @@
       </div>
       <a-col :md="rightPanelSize" :sm="24">
         <div class="ml-2 overflow-hidden bg-white">
-          <a-tabs default-active-key="page" hide-add size="middle" centered style="height: 750px">
+          <a-tabs default-active-key="page" hide-add size="middle" centered style="height: 850px">
             <a-tab-pane
               key="page"
               :forceRender="true"

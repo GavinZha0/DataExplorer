@@ -28,7 +28,7 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'type'">
           <img
-            style="width: 32px; heigth: 32px; margin-right: 10px; cursor: pointer;"
+            style="width: 32px; height: 32px; margin-right: 10px; cursor: pointer;"
             :src="'/resource/img/ml/ml-' + record.type + '.png'"
             @click="() => handleEdit(record)"
           >
@@ -116,7 +116,6 @@
   } from '/@/api/ml/dataset';
   import { ApiMlDatasetDataType } from '/@/api/ml/model/dataset';
   import { useUserStore } from '/@/store/modules/user';
-import { cloneDeep } from 'lodash-es';
 
   const { t } = useI18n();
   const [detailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();

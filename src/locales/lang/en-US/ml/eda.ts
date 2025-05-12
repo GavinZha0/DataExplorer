@@ -89,6 +89,7 @@ export default {
         d3: '3D',
         dim: 'Dim',
         threshold: 'Threshold',
+        label: 'Label field'
       },
       hist: {
         kde: 'KDE',
@@ -109,7 +110,9 @@ export default {
         yfield: 'Y field',
         cat: 'Category',
         marg: 'Margin',
-        frac: 'Fraction'
+        frac: 'Fraction',
+        xerror: 'X error',
+        yerror: 'Y error'
       },
       scatters: {
         cat: 'Category'
@@ -139,9 +142,19 @@ export default {
       fdetect: {
         method: 'Method'
       },
+      kmeans: {
+        clusters: 'Clusters',
+        iterations: 'Iterates',
+        tol: 'Tolerance',
+        disp: 'Display',
+        label: 'Label field',
+        cluster: 'Label cluster'
+      },
       pca: {
         dim: 'Dim',
-        kernel: 'Kernel'
+        kernel: 'Kernel',
+        threshold: 'Retention',
+        label: 'Label'
       },
       lda: {
         dim: 'Dim'
@@ -182,7 +195,8 @@ export default {
         cat: 'Category field',
         solo: 'Solo',
         connected: 'Connected',
-        page: 'Page'
+        page: 'Page',
+        gap: 'Gaps only'
       },
       tstrend: {
         tf: 'Time field',
@@ -258,6 +272,31 @@ export default {
         trend: 'Trend',
         season: 'Season',
         damped: 'Damped Trend'
+      },
+      tsanomaly: {
+        tf: 'Time field',
+        period: 'Period',
+        agg: 'Aggregation',
+        vf: 'Value field',
+        algo: 'Algo',
+        trend: 'Trend',
+        season: 'Season',
+        damped: 'Damped Trend',
+        cat: 'Category Field',
+        threshold: 'Threshold'
+      },
+      tssim: {
+        tf: 'Time field',
+        period: 'Period',
+        agg: 'Aggregation',
+        vf: 'Value field',
+        algo: 'Algo',
+        trend: 'Trend',
+        season: 'Season',
+        damped: 'Damped Trend',
+        page: 'Page',
+        threshold: 'Threshold',
+        clusters: 'Clusters'
       },
     },
     create: {

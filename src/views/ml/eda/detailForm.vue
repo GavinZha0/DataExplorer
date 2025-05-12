@@ -25,8 +25,8 @@
     <div style="width: 98%; float: left">
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
-        <div style="width: 100%; height: 850px; border: solid 1px;" :forceRender="true">
-          <div id="chartContainer" style="width: 100%; height: 850px; overflow: scroll" />
+        <div style="width: 100%; height: 900px; border: solid 1px;" :forceRender="true">
+          <div id="chartContainer" style="width: 100%; height: 900px; overflow: scroll" />
         </div>
           </Col>
           <Col :md="rightPanelSize" :sm="24">
@@ -122,31 +122,31 @@
             </BasicForm>
             <BasicForm v-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'dbscan'"
                        ref="optionFormRef"
-                       :schemas="outlierDbscanOptionSchema"
+                       :schemas="outlierDbscanOptSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
             <BasicForm v-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'svm'"
                        ref="optionFormRef"
-                       :schemas="outlierSvmOptionSchema"
+                       :schemas="outlierSvmOptSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
             <BasicForm v-if="selectedVisKeys[0] == 'outlier' && rawData.config.outlier.method == 'vae'"
                        ref="optionFormRef"
-                       :schemas="outlierVaeOptionSchema"
+                       :schemas="outlierVaeOptSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
             <BasicForm v-if="selectedVisKeys[0] == 'outlier' && (rawData.config.outlier.method == 'knn' || rawData.config.outlier.method == 'lof')"
                        ref="optionFormRef"
-                       :schemas="outlierKnnOptionSchema"
+                       :schemas="outlierKnnOptSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
             <BasicForm v-if="selectedVisKeys[0] == 'outlier' && (rawData.config.outlier.method == 'cof' || rawData.config.outlier.method == 'iforest' || rawData.config.outlier.method == 'som')"
                        ref="optionFormRef"
-                       :schemas="outlierCofOptionSchema"
+                       :schemas="outlierCofOptSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
@@ -205,6 +205,12 @@
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'kmeans'"
+                       ref="optionFormRef"
+                       :schemas="clusKmeansOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
             <BasicForm v-if="selectedVisKeys[0] == 'corrfilter'"
                        ref="optionFormRef"
                        :schemas="featureFilterOptionSchema"
@@ -231,7 +237,7 @@
             </BasicForm>
             <BasicForm v-if="selectedVisKeys[0] == 'pca'"
                        ref="optionFormRef"
-                       :schemas="pcaOptionSchema"
+                       :schemas="pcaOptSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
@@ -337,6 +343,12 @@
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
+            <BasicForm v-if="selectedVisKeys[0] == 'similarity'"
+                       ref="optionFormRef"
+                       :schemas="tsSimilarityOptSchema"
+                       :showActionButtonGroup="false"
+                       @fieldValueChange="handleVisOptionChange">
+            </BasicForm>
             <BasicForm v-if="selectedVisKeys[0] == 'anc'"
                        ref="optionFormRef"
                        :schemas="tsAncOptSchema"
@@ -379,7 +391,7 @@
 
 <script lang="ts" setup name="DetailForm">
   import { h, reactive, ref } from 'vue';
-  import { BasicForm, FormActionType, useForm } from '/@/components/Form/index';
+  import { BasicForm, FormActionType } from '/@/components/Form/index';
   import {
     formInfoSchema, edaVisTree, histOptionSchema, kdeOptionSchema, boxOptionSchema, violinOptionSchema, covOptionSchema, 
     ccmOptionSchema, volumeOptionSchema, anovaOptionSchema, pairOptionSchema, scatterMatrixOptionSchema, curveOptionSchema,
@@ -387,7 +399,8 @@
     outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
     featureModelOptionSchema, featureSearchOptionSchema, featureDetectOptionSchema, tsSeriesOptionSchema, tsTrendOptionSchema, tsDiffOptionSchema,
     tsFreqOptionSchema, tsCompareOptionSchema, tsAcfOptionSchema, tsMavgOptionSchema, tsQuantileOptionSchema, tsCycleOptionSchema, tsDecompOptionSchema,
-    tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema, outlierDbscanOptionSchema, outlierCofOptionSchema, tsAnomalyOptionSchema, tsAncOptionSchema
+    tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema, outlierDbscanOptionSchema, outlierCofOptionSchema, tsAnomalyOptionSchema, tsAncOptionSchema,
+    clusKmeansOptionSchema, tsSimilarityOptionSchema
   } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import {
@@ -443,6 +456,15 @@
   let corrCurveOptSchema = cloneDeep(curveOptionSchema);
   let corrSingleScatterOptSchema = cloneDeep(singleScatterOptionSchema);
 
+  let outlierDbscanOptSchema = cloneDeep(outlierDbscanOptionSchema);
+  let outlierSvmOptSchema = cloneDeep(outlierSvmOptionSchema);
+  let outlierKnnOptSchema = cloneDeep(outlierKnnOptionSchema);
+  let outlierVaeOptSchema = cloneDeep(outlierVaeOptionSchema);
+  let outlierCofOptSchema = cloneDeep(outlierCofOptionSchema);
+
+  let clusKmeansOptSchema = cloneDeep(clusKmeansOptionSchema);
+  let pcaOptSchema = cloneDeep(pcaOptionSchema);
+  
   let tsSeriesOptSchema = cloneDeep(tsSeriesOptionSchema);
   let tsTrendOptSchema = cloneDeep(tsTrendOptionSchema);
   let tsDiffOptSchema = cloneDeep(tsDiffOptionSchema);
@@ -455,6 +477,7 @@
   let tsDecompOptSchema = cloneDeep(tsDecompOptionSchema);
   let tsPredictOptSchema = cloneDeep(tsPredictOptionSchema);
   let tsAnomalyOptSchema = cloneDeep(tsAnomalyOptionSchema);
+  let tsSimilarityOptSchema = cloneDeep(tsSimilarityOptionSchema);
   let tsAncOptSchema = cloneDeep(tsAncOptionSchema);
 
   // drawer data initialization
@@ -545,6 +568,15 @@
         corrCurveOptSchema = cloneDeep(curveOptionSchema);
         corrSingleScatterOptSchema = cloneDeep(singleScatterOptionSchema);
 
+        outlierDbscanOptSchema = cloneDeep(outlierDbscanOptionSchema);
+        outlierSvmOptSchema = cloneDeep(outlierSvmOptionSchema);
+        outlierKnnOptSchema = cloneDeep(outlierKnnOptionSchema);
+        outlierVaeOptSchema = cloneDeep(outlierVaeOptionSchema);
+        outlierCofOptSchema = cloneDeep(outlierCofOptionSchema);
+
+        clusKmeansOptSchema = cloneDeep(clusKmeansOptionSchema);
+        pcaOptSchema = cloneDeep(pcaOptionSchema);
+
         tsSeriesOptSchema = cloneDeep(tsSeriesOptionSchema);
         tsTrendOptSchema = cloneDeep(tsTrendOptionSchema);
         tsDiffOptSchema = cloneDeep(tsDiffOptionSchema);
@@ -557,6 +589,7 @@
         tsDecompOptSchema = cloneDeep(tsDecompOptionSchema);
         tsPredictOptSchema = cloneDeep(tsPredictOptionSchema);
         tsAnomalyOptSchema = cloneDeep(tsAnomalyOptionSchema);
+        tsSimilarityOptSchema = cloneDeep(tsSimilarityOptionSchema);
         tsAncOptSchema = cloneDeep(tsAncOptionSchema);
 
         // reinitalize default config
@@ -584,7 +617,17 @@
             tsDecompOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsAnomalyOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
+            tsSimilarityOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsAncOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
+
+            outlierDbscanOptSchema[5].componentProps.options.push({ label: field.name, value: field.name });
+            outlierSvmOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            outlierKnnOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            outlierVaeOptSchema[5].componentProps.options.push({ label: field.name, value: field.name });
+            outlierCofOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+
+            clusKmeansOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            pcaOptSchema[3].componentProps.options.push({ label: field.name, value: field.name });
             
           } else if(field.attr == 'conti' || field.attr == 'disc'){
             // add value field to schema options
@@ -592,6 +635,8 @@
             statAnovaOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             corrSingleScatterOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             corrSingleScatterOptSchema[1].componentProps.options.push({ label: field.name, value: field.name });
+            corrSingleScatterOptSchema[5].componentProps.options.push({ label: field.name, value: field.name });
+            corrSingleScatterOptSchema[6].componentProps.options.push({ label: field.name, value: field.name });
 
             tsSeriesOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsTrendOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
@@ -605,11 +650,14 @@
             tsDecompOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsAnomalyOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
+            tsSimilarityOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsAncOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
           } else if(field.attr == 'cat'){
             // add category field to schema options
             dataset.cf.push(field.name);
             tsSeriesOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            tsAnomalyOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            tsSimilarityOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
             statBoxOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             statViolinOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             statAnovaOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
@@ -618,6 +666,16 @@
             corrPairOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             corrCurveOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             corrSingleScatterOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
+
+            outlierDbscanOptSchema[5].componentProps.options.push({ label: field.name, value: field.name });
+            outlierSvmOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            outlierKnnOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            outlierVaeOptSchema[5].componentProps.options.push({ label: field.name, value: field.name });
+            outlierCofOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+
+            clusKmeansOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            pcaOptSchema[3].componentProps.options.push({ label: field.name, value: field.name });
+            
           }
         }
 
@@ -635,6 +693,7 @@
           tsDecompOptSchema[0].defaultValue = tsDecompOptSchema[0].componentProps.options[0].value;
           tsPredictOptSchema[0].defaultValue = tsPredictOptSchema[0].componentProps.options[0].value;
           tsAnomalyOptSchema[0].defaultValue = tsAnomalyOptSchema[0].componentProps.options[0].value;
+          tsSimilarityOptSchema[0].defaultValue = tsSimilarityOptSchema[0].componentProps.options[0].value;
           tsAncOptSchema[0].defaultValue = tsAncOptSchema[0].componentProps.options[0].value;
 
           rawData.value.config.series['ts'] = tsSeriesOptSchema[0].defaultValue;
@@ -649,6 +708,7 @@
           rawData.value.config.decomp['ts'] = tsDecompOptSchema[0].defaultValue;
           rawData.value.config.predict['ts'] = tsPredictOptSchema[0].defaultValue;
           rawData.value.config.anomaly['ts'] = tsAnomalyOptSchema[0].defaultValue;
+          rawData.value.config.anomaly['ts'] = tsSimilarityOptSchema[0].defaultValue;
           rawData.value.config.anc['ts'] = tsAncOptSchema[0].defaultValue;
         }
 
@@ -666,6 +726,7 @@
           tsDecompOptSchema[2].defaultValue = tsDecompOptSchema[2].componentProps.options[0].value;
           tsPredictOptSchema[2].defaultValue = tsPredictOptSchema[2].componentProps.options[0].value;
           tsAnomalyOptSchema[2].defaultValue = tsAnomalyOptSchema[2].componentProps.options[0].value;
+          tsSimilarityOptSchema[2].defaultValue = tsSimilarityOptSchema[2].componentProps.options[0].value;
           tsAncOptSchema[2].defaultValue = tsAncOptSchema[2].componentProps.options[0].value;
 
           rawData.value.config.series['vf'] = tsSeriesOptSchema[2].defaultValue;
@@ -680,13 +741,18 @@
           rawData.value.config.decomp['vf'] = tsDecompOptSchema[2].defaultValue;
           rawData.value.config.predict['vf'] = tsPredictOptSchema[2].defaultValue;
           rawData.value.config.anomaly['vf'] = tsAnomalyOptSchema[2].defaultValue;
+          rawData.value.config.anomaly['vf'] = tsSimilarityOptSchema[2].defaultValue;
           rawData.value.config.anc['vf'] = tsAncOptSchema[2].defaultValue;
         }
 
         if (tsSeriesOptSchema[4].componentProps.options.length == 1) {
-          // set default value field when only one field
+          // set default category field when only one field
           tsSeriesOptSchema[4].defaultValue = tsSeriesOptSchema[4].componentProps.options[0].value;
+          tsAnomalyOptSchema[4].defaultValue = tsAnomalyOptSchema[4].componentProps.options[0].value;
+          tsSimilarityOptSchema[4].defaultValue = tsSimilarityOptSchema[4].componentProps.options[0].value;
           rawData.value.config.series['cat'] = tsSeriesOptSchema[4].defaultValue;
+          rawData.value.config.anomaly['cat'] = tsAnomalyOptSchema[4].defaultValue;
+          rawData.value.config.similarity['cat'] = tsSimilarityOptSchema[4].defaultValue;
         }
 
         openVisKeys.value = ['stat'];
@@ -753,10 +819,10 @@
   /*
  * Vis option change
  */
-  const handleVisOptionChange = (key: string, value: string) => {
+  const handleVisOptionChange = (key: string, value) => {
     const visKind = selectedVisKeys.value[0];
     let cfg = rawData.value.config[visKind];
-    if (value == undefined || value == '') {
+    if (value == undefined || (value == '' && value != 0)) {
       delete cfg[key];
     } else {
       cfg[key] = value;
@@ -880,11 +946,13 @@
             if (pConfig) {
               pConfig['modeBarButtonsToRemove'] = ['zoomIn', 'zoomOut', 'autoScale', 'select', 'lasso'];
               pConfig['displaylogo'] = false;
+              pConfig['scrollZoom'] = true;
             } else {
               pConfig = {
                 displayModeBar: false,
                 modeBarButtonsToRemove: ['zoomIn', 'zoomOut', 'pan', 'autoScale', 'select', 'lasso'],
-                displaylogo: false
+                displaylogo: false,
+                scrollZoom: true
               }
             }
 

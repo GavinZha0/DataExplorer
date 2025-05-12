@@ -331,7 +331,7 @@ export const formInfoSchema: FormSchema[] = [
   },
 ];
 
-// source form schema
+// csv form schema
 export const formConfigCsvSchema: FormSchema[] = [
   {
     field: 'delimiter',
@@ -415,6 +415,71 @@ export const varModalSchemas: FormSchema[] = [
     label: t('ml.dataset.form.var.value'),
     colProps: { span: 24 },
   },
+];
+
+// transform form schema
+export const formConfigTransformSchema: FormSchema[] = [
+  {
+    field: 'miss',
+    label: t('ml.dataset.form.transform.miss'),
+    component: 'Select',
+    labelWidth: 80,
+    colProps: { span: 24 },
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Drop', value: 'drop' },
+        { label: 'Fill min', value: 'min' },
+        { label: 'Fill max', value: 'max' },
+        { label: 'Fill mean', value: 'mean' },
+        { label: 'Fill median', value: 'median' },
+        { label: 'Fill prev', value: 'prev' },
+        { label: 'Fill next', value: 'next' },
+        { label: 'Fill zero', value: 'zero' }
+      ],
+    },
+  },
+  {
+    field: 'encode',
+    label: t('ml.dataset.form.transform.encode'),
+    component: 'Select',
+    labelWidth: 80,
+    colProps: { span: 24 },
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Ordinal', value: 'ordinal' },
+        { label: 'One-Ho', value: 'onehot' },
+        { label: 'Binary', value: 'binary' },
+        { label: 'Hashing', value: 'hash' },
+        { label: 'Count', value: 'count' },
+        { label: 'Mean', value: 'mean' },
+        { label: 'WOE', value: 'woe' },
+        { label: 'Binning', value: 'bins' },
+        { label: 'Leave One Out', value: 'loo' }
+      ],
+    },
+  },
+  {
+    field: 'scale',
+    label: t('ml.dataset.form.transform.scale'),
+    component: 'Select',
+    labelWidth: 80,
+    colProps: { span: 24 },
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Min-Max', value: 'minmax' },
+        { label: 'Standardization', value: 'std' },
+        { label: 'Normal-L1', value: 'l1' },
+        { label: 'Normal-L2', value: 'l2' },
+        { label: 'Normal-Max', value: 'max' },
+        { label: 'MaxAbs', value: 'abs' },
+        { label: 'Robust', value: 'robust' },
+        { label: 'Logarithm', value: 'log' }
+      ]
+    }
+  }
 ];
 
 

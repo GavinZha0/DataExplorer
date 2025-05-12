@@ -13,6 +13,7 @@ export interface ApiMlDatasetDataType {
   fields: ColumnFieldType[];
   variable?: any[];
   content: string;
+  transform: any;
   fCount: number;
   volume: number;
   pubFlag?: boolean;
@@ -62,6 +63,7 @@ export const initDataset: ApiMlDatasetDataType = {
   variable: [],
   content: '',
   fields: [],
+  transform: null,
   fCount: 0,
   volume: 0,
   sourceId: null,

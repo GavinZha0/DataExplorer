@@ -245,6 +245,29 @@ export const edaVisTree = [
     ]
   },
   {
+    title: 'Clustering',
+    key: 'clustering',
+    selectable: false,
+    children: [
+      {
+        title: 'K-Means',
+        key: 'kmeans'
+      },
+      {
+        title: 'BIRCH',
+        key: 'birch'
+      },
+      {
+        title: 'DBSCAN',
+        key: 'dbscan'
+      },
+      {
+        title: 'CLIQUE',
+        key: 'clique'
+      }
+    ]
+  },
+  {
     title: 'Feature Selection',
     key: 'selection',
     selectable: false,
@@ -350,6 +373,10 @@ export const edaVisTree = [
       {
         title: 'Anomaly detection',
         key: 'anomaly'
+      },
+      {
+        title: 'Similarity detection',
+        key: 'similarity'
       },
       {
         title: 'Noise Reduction',
@@ -505,7 +532,7 @@ export const outlierQtOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       min: 1,
-      max: 5,
+      max: 10,
       step: 0.1
     },
     labelWidth: 100,
@@ -612,6 +639,19 @@ export const outlierDbscanOptionSchema: FormSchema[] = [
     labelWidth: 100,
     colProps: { span: 24 }
   },
+  {
+    field: 'label',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.label'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Index', value: 'index' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
 ];
 
 
@@ -674,6 +714,19 @@ export const outlierSvmOptionSchema: FormSchema[] = [
       min: 1,
       max: 8,
       step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'label',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.label'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Index', value: 'index' }
+      ]
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -747,6 +800,19 @@ export const outlierKnnOptionSchema: FormSchema[] = [
     labelWidth: 100,
     colProps: { span: 24 }
   },
+  {
+    field: 'label',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.label'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Index', value: 'index' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
 ];
 
 // Outlier VAE options
@@ -823,6 +889,19 @@ export const outlierVaeOptionSchema: FormSchema[] = [
     labelWidth: 100,
     colProps: { span: 24 }
   },
+  {
+    field: 'label',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.label'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Index', value: 'index' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
 ];
 
 // Outlier COF/iForest/SOM
@@ -892,6 +971,19 @@ export const outlierCofOptionSchema: FormSchema[] = [
     labelWidth: 100,
     colProps: { span: 24 }
   },
+  {
+    field: 'label',
+    component: 'Select',
+    label: t('ml.eda.form.vis.outlier.label'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Index', value: 'index' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
 ];
 
 // histogram options
@@ -1079,7 +1171,27 @@ export const singleScatterOptionSchema: FormSchema[] = [
     },
     labelWidth: 100,
     colProps: { span: 24 }
-  }
+  },
+  {
+    field: 'xerror',
+    component: 'Select',
+    label: t('ml.eda.form.vis.scatter.xerror'),
+    componentProps: {
+      options: []
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'yerror',
+    component: 'Select',
+    label: t('ml.eda.form.vis.scatter.yerror'),
+    componentProps: {
+      options: []
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
 ];
 
 // pair plot options
@@ -1168,6 +1280,93 @@ export const curveOptionSchema: FormSchema[] = [
   }
 ];
 
+// Clustering K-Means options
+export const clusKmeansOptionSchema: FormSchema[] = [
+  {
+    field: 'clusters',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.kmeans.clusters'),
+    defaultValue: 2,
+    componentProps: {
+      allowClear: false,
+      min: 1,
+      max: 50,
+      step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'iterations',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.kmeans.iterations'),
+    defaultValue: 300,
+    componentProps: {
+      allowClear: false,
+      min: 100,
+      max: 1000,
+      step: 50
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'tol',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.kmeans.tol'),
+    defaultValue: 0.0001,
+    componentProps: {
+      allowClear: false,
+      min: 0.00001,
+      max: 0.1,
+      step: 0.0001
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'disp',
+    component: 'Select',
+    label: t('ml.eda.form.vis.kmeans.disp'),
+    defaultValue: 'pca',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'PCA', value: 'pca' },
+        { label: 't-SNE', value: 'tsne' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'label',
+    component: 'Select',
+    label: t('ml.eda.form.vis.kmeans.label'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Index', value: 'index' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'cluster',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.kmeans.cluster'),
+    componentProps: {
+      allowClear: true,
+      min: 0,
+      max: 50,
+      step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+];
+
 // PCA options
 export const pcaOptionSchema: FormSchema[] = [
   {
@@ -1197,6 +1396,34 @@ export const pcaOptionSchema: FormSchema[] = [
         { label: 'rbf', value: 'rbf' },
         { label: 'sigmoid', value: 'sigmoid' },
         { label: 'cosine', value: 'cosine' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'threshold',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.pca.threshold'),
+    defaultValue: 0.95,
+    componentProps: {
+      allowClear: true,
+      min: 0.5,
+      max: 1,
+      step: 0.001
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'label',
+    component: 'Select',
+    label: t('ml.eda.form.vis.pca.label'),
+    defaultValue: 'index',
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Index', value: 'index' }
       ]
     },
     labelWidth: 100,
@@ -1659,14 +1886,21 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     defaultValue: true,
     label: t('ml.eda.form.vis.tsseries.connected'),
     labelWidth: 100,
-    colProps: { span: 24 }
+    colProps: { span: 12 }
   },
   {
     field: 'solo',
     component: 'Switch',
     label: t('ml.eda.form.vis.tsseries.solo'),
     labelWidth: 100,
-    colProps: { span: 24 }
+    colProps: { span: 12 }
+  },
+  {
+    field: 'gap',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.tsseries.gap'),
+    labelWidth: 100,
+    colProps: { span: 12 }
   }
 ];
 
@@ -2494,7 +2728,7 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
   {
     field: 'tf',
     component: 'Select',
-    label: t('ml.eda.form.vis.tspredict.tf'),
+    label: t('ml.eda.form.vis.tsanomaly.tf'),
     componentProps: {
       allowClear: false,
       options: []
@@ -2505,7 +2739,7 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
   {
     field: 'period',
     component: 'Select',
-    label: t('ml.eda.form.vis.tspredict.period'),
+    label: t('ml.eda.form.vis.tsanomaly.period'),
     componentProps: {
       allowClear: true,
       options: [
@@ -2525,7 +2759,7 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
   {
     field: 'vf',
     component: 'Select',
-    label: t('ml.eda.form.vis.tspredict.vf'),
+    label: t('ml.eda.form.vis.tsanomaly.vf'),
     componentProps: {
       allowClear: false,
       options: []
@@ -2536,7 +2770,7 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
   {
     field: 'agg',
     component: 'Select',
-    label: t('ml.eda.form.vis.tspredict.agg'),
+    label: t('ml.eda.form.vis.tsanomaly.agg'),
     defaultValue: 'mean',
     componentProps: {
       allowClear: false,
@@ -2554,15 +2788,27 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
     colProps: { span: 24 }
   },
   {
+    field: 'cat',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tsanomaly.cat'),
+    componentProps: {
+      allowClear: true,
+      options: []
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
     field: 'method',
     component: 'Select',
-    label: t('ml.eda.form.vis.tspredict.algo'),
+    label: t('ml.eda.form.vis.tsanomaly.algo'),
     defaultValue: 'zscore',
     componentProps: {
       allowClear: false,
       options: [
         { label: 'Quantile', value: 'quantile' },
         { label: 'Zscore', value: 'zscore' },
+        { label: 'Gaps', value: 'gaps' },
         { label: 'Difference', value: 'diff' },
         { label: 'Rolling StdD', value: 'rolling' },
         { label: 'DBSCAN', value: 'dbscan' },
@@ -2581,7 +2827,7 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
   {
     field: 'threshold',
     component: 'InputNumber',
-    label: t('ml.eda.form.vis.outlier.threshold'),
+    label: t('ml.eda.form.vis.tsanomaly.threshold'),
     defaultValue: 3,
     componentProps: {
       allowClear: false,
@@ -2594,6 +2840,128 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
   }
 ];
 
+// Similarity detection
+export const tsSimilarityOptionSchema: FormSchema[] = [
+  {
+    field: 'tf',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tssim.tf'),
+    componentProps: {
+      allowClear: false,
+      options: []
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'period',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tssim.period'),
+    componentProps: {
+      allowClear: true,
+      options: [
+        { label: 'Year', value: 'YS' },
+        { label: 'Quarater', value: 'QS' },
+        { label: 'Month', value: 'MS' },
+        { label: 'Week', value: 'W' },
+        { label: 'Day', value: 'D' },
+        { label: 'Hour', value: 'h' },
+        { label: 'Minute', value: 'min' },
+        { label: 'Second', value: 's' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'vf',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tssim.vf'),
+    componentProps: {
+      allowClear: false,
+      options: []
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'agg',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tssim.agg'),
+    defaultValue: 'mean',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Mean', value: 'mean' },
+        { label: 'Median', value: 'median' },
+        { label: 'Sum', value: 'sum' },
+        { label: 'Min', value: 'min' },
+        { label: 'Max', value: 'max' },
+        { label: 'Std Dev', value: 'std' },
+        { label: 'Count', value: 'count' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'cat',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tsseries.cat'),
+    componentProps: {
+      allowClear: true,
+      options: []
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'method',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tssim.algo'),
+    defaultValue: 'kmeans',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'K-Means', value: 'kmeans' },
+        { label: 'DBSCAN', value: 'dbscan' },
+        { label: 'HDBSCAN', value: 'hdbscan' },
+        { label: 'DWT', value: 'dwt' },
+        { label: 'K-Shape', value: 'kshape' },
+        { label: 'AutoEncoder', value: 'ae' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'clusters',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.tssim.clusters'),
+    defaultValue: 2,
+    componentProps: {
+      allowClear: false,
+      min: 2,
+      max: 50,
+      step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'page',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.tssim.page'),
+    defaultValue: 0,
+    componentProps: {
+      allowClear: false,
+      min: 0,
+      max: 100,
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  }
+];
 
 // ts active noice reduction(ANC) options
 export const tsAncOptionSchema: FormSchema[] = [
@@ -2710,7 +3078,10 @@ export const eda_cfg_default = {
   cov: { pid: 'corr', num: true },
   curve: { pid: 'corr' },
 
-  pca: { pid: 'dim' },
+  kmeans: { pid: 'clustering' },
+  dbscan: { pid: 'clustering' },
+
+  pca: { pid: 'dim', threshold: 0.95 },
   ica: { pid: 'dim' },
   svd: { pid: 'dim' },
   lda: { pid: 'dim' },
@@ -2734,6 +3105,7 @@ export const eda_cfg_default = {
   decomp: { pid: 'ts', period: 'D', agg: 'mean', algo: 'stl' },
   predict: { pid: 'ts', period: 'D', agg: 'mean', algo: 'ets' },
   anomaly: { pid: 'ts', agg: 'mean', method: 'zscore' },
+  similarity: { pid: 'ts', agg: 'mean', method: 'kmeans' },
   anc: { pid: 'ts', agg: 'mean', method: 'fft' },
   quantile: { pid: 'ts', period: 'D', agg: 'mean' }
 };

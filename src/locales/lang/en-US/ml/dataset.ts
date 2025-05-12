@@ -50,13 +50,19 @@ export default {
       group: 'Group',
       sorter: 'Sorter',
       filter: 'Filter',
-      csv: 'CSV'
+      csv: 'CSV',
+      transform: 'Transform'
     },
     csv: {
       delimiter: 'Delimiter',
       comma: 'Comma (,)',
       colon: 'Colon (:)',
       tab: 'Tab (\\t)',
+    },
+    transform: {
+      miss: 'Missing',
+      encode: 'Encoding',
+      scale: 'Scaling'
     },
     var: {
       new: 'Create Variable',

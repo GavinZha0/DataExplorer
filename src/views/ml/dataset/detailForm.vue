@@ -425,17 +425,19 @@
                   ref="configFormCsvRef"
                   :schemas="formConfigCsvSchema"
                   :showActionButtonGroup="false"
-                  layout="vertical"
                   >
-                  <template #group="{ model, field }">
-                    <ApiSelect
-                      :api="API_ML_DATASET_GROUPS"
-                      mode="tags"
-                      v-model:value="model[field]"
-                      resultField="records"
-                      @change="handleDatasetGroupChange"
-                    />
-                  </template>
+                </BasicForm>
+              </fieldset>
+              <fieldset class="filesets">
+                <legend style="padding: 0.5em; width: auto; font-size: 15px; font-weight: bold">
+                  {{ t('ml.dataset.form.config.transform') }}
+                </legend>
+                  <BasicForm
+                  ref="configFormTransformRef"
+                  :schemas="formConfigTransformSchema"
+                  :showActionButtonGroup="false"
+                  @fieldValueChange="handleTransformChange"
+                  >
                 </BasicForm>
               </fieldset>
             </div>  
@@ -493,7 +495,7 @@
 <script lang="ts" setup name="DetailForm">
   import { computed, h, reactive, ref, unref } from 'vue';
   import { BasicForm, FormActionType } from '/@/components/Form/index';
-  import { dataStatColumns, imgStatColumns, formInfoSchema, formConfigCsvSchema } from './data';
+  import { dataStatColumns, imgStatColumns, formInfoSchema, formConfigCsvSchema, formConfigTransformSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { BasicTable } from '/@/components/Table';
   import HeaderCell from '/@/components/Table/src/components/HeaderCell.vue';
@@ -585,6 +587,7 @@
       lineHeight: '30px',
     });
   const infoFormRef = ref<Nullable<FormActionType>>(null);
+  const configFormTransformRef = ref<Nullable<FormActionType>>(null);
   const datasourceInfo = ref<any>({
     groupSourceTree: [],
     selectedSource: { id: -1 },
@@ -606,11 +609,19 @@
       infoFormRef.value.resetFields();
     }
 
+    if (configFormTransformRef.value) {
+      configFormTransformRef.value.resetFields();
+    }
+
     setDrawerProps({ confirmLoading: false });
 
     // pass received data to info form
     if (infoFormRef.value) {
-      await infoFormRef.value.setFieldsValue(data);
+      infoFormRef.value.setFieldsValue(data);
+    }
+
+    if (configFormTransformRef.value && data.transform) {
+      await configFormTransformRef.value.setFieldsValue(data.transform);
     }
 
     datasourceInfo.value.groupSourceTree = [];
@@ -762,6 +773,27 @@
           return;
         }
       }
+    }
+  };
+
+    /*
+   * transform is changed
+   */
+  const handleTransformChange = (key: any, value: any) => {
+    if(rawData.value.transform==undefined || rawData.value.transform==null){
+      rawData.value.transform = {};
+    }
+
+    if(value==undefined || value==null || value==''){
+      if(rawData.value.transform.hasOwnProperty(key)){
+        delete rawData.value.transform[key];
+      }
+    } else {
+      rawData.value.transform[key] = value;
+    }
+
+    if(Object.keys(rawData.value.transform).length === 0){
+      rawData.value.transform = undefined;
     }
   };
 
@@ -1285,7 +1317,6 @@
       rawData.value.group = values.group;
 
       let clonedData = cloneDeep(unref(rawData));
-      clonedData.transform = undefined;
       clonedData.target = [];
       let fCount = 0;
       for (let item of clonedData.fields) {

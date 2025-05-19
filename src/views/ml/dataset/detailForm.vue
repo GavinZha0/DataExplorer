@@ -54,7 +54,7 @@
                   <div id="stats"
                       ref="statsRef"
                       style="width: 100%">
-                    <span style="font-weight: bold; margin-left: 10px">Field summary</span>
+                    <span style="font-weight: bold; margin-left: 10px">{{summaryTitle}}</span>
                     <BasicTable ref="statTableRef"
                                 :size="'small'"
                                 :bordered="true"
@@ -598,6 +598,7 @@
   const selectedSourceField = ref<any>({id:[], name:''});
   const expandedSourceField = ref<any>({id:[], name:''});
   const statColumns = ref<any>({data: dataStatColumns, timeseries: dataStatColumns, image: imgStatColumns});
+  const summaryTitle = ref<string>('Field summary');
 
   // Variable modal definition
   const [registerVarModal, { openModal: openVarModal }] = useModal();
@@ -1048,6 +1049,7 @@
         datasetInfo.total = response.total;
         rawData.value.volume = response.total;
         rawData.value.fields = mergeConfig(response.stat, rawData.value.fields);
+        summaryTitle.value = `Field summary (${response.stat.length})`;
         buildColumns();
       });
 

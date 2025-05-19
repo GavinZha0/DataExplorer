@@ -189,8 +189,8 @@ export default {
         period: '周期',
         agg: '聚合',
         vf: '值域',
-        diff: '比较间隔',
-        step: '阶数',
+        lag: '间隔',
+        order: '阶数',
         solo: '分开显示'
       },
       tsfreq: {
@@ -220,12 +220,14 @@ export default {
         vf: '值域',
         win: '比较窗口'
       },
-      tsbox: {
+      tsdist: {
         tf: '时间域',
         period: '周期',
         agg: '聚合',
         vf: '值域',
-        violin: '小提琴图'
+        disp: '显示类型',
+        outlier: '离群点',
+        cat: '分类域',
       },
       tscycle: {
         tf: '时间域',
@@ -240,7 +242,8 @@ export default {
         agg: '聚合',
         vf: '值域',
         algo: '算法',
-        robust: 'Robust'
+        robust: 'Robust',
+        sp: '季节周期'
       },
       tspredict: {
         tf: '时间域',

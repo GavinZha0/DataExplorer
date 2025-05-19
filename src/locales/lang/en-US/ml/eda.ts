@@ -196,7 +196,8 @@ export default {
         solo: 'Solo',
         connected: 'Connected',
         page: 'Page',
-        gap: 'Gaps only'
+        gap: 'Gaps only',
+        filter: 'Filter'
       },
       tstrend: {
         tf: 'Time field',
@@ -211,8 +212,8 @@ export default {
         period: 'Period',
         agg: 'Aggregation',
         vf: 'Value field',
-        diff: 'Diff gap',
-        step: 'Step',
+        lag: 'Lag',
+        order: 'Order',
         solo: 'Solo'
       },
       tsfreq: {
@@ -232,7 +233,8 @@ export default {
         period: 'Period',
         agg: 'Aggregation',
         vf: 'Value field',
-        lag: 'Lag'
+        lag: 'Lag',
+        order: 'Order'
       },
       tsma: {
         tf: 'Time field',
@@ -241,12 +243,14 @@ export default {
         vf: 'Value field',
         win: 'Win'
       },
-      tsbox: {
+      tsdist: {
         tf: 'Time field',
         period: 'Period',
         agg: 'Aggregation',
         vf: 'Value field',
-        violin: 'Violin'
+        disp: 'Display',
+        outlier: 'Outliers',
+        cat: 'Category field'
       },
       tscycle: {
         tf: 'Time field',
@@ -261,7 +265,8 @@ export default {
         agg: 'Aggregation',
         vf: 'Value field',
         algo: 'Algo',
-        robust: 'Robust'
+        robust: 'Robust',
+        sp: 'Season period'
       },
       tspredict: {
         tf: 'Time field',

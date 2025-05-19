@@ -335,16 +335,16 @@ export const edaVisTree = [
         key: 'tsfreq'
       },
       {
+        title: 'Distribution',
+        key: 'tsdist'
+      },
+      {
         title: 'Trending',
         key: 'trend'
       },
       {
         title: 'Moving average',
         key: 'mavg'
-      },
-      {
-        title: 'Quantile',
-        key: 'quantile'
       },
       {
         title: 'Differencing',
@@ -371,11 +371,11 @@ export const edaVisTree = [
         key: 'predict'
       },
       {
-        title: 'Anomaly detection',
+        title: 'Anomaly',
         key: 'anomaly'
       },
       {
-        title: 'Similarity detection',
+        title: 'Similarity',
         key: 'similarity'
       },
       {
@@ -1831,6 +1831,7 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.tsseries.vf'),
     componentProps: {
       allowClear: true,
+      mode: 'multiple',
       options: []
     },
     labelWidth: 100,
@@ -1862,20 +1863,18 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.tsseries.cat'),
     componentProps: {
       allowClear: true,
+      mode: 'multiple',
       options: []
     },
     labelWidth: 100,
     colProps: { span: 24 }
   },
   {
-    field: 'page',
-    component: 'InputNumber',
-    label: t('ml.eda.form.vis.tsseries.page'),
-    defaultValue: 0,
+    field: 'filter',
+    component: 'Input',
+    label: t('ml.eda.form.vis.tsseries.filter'),
     componentProps: {
-      allowClear: false,
-      min: 0,
-      max: 100,
+      allowClear: true
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -1895,6 +1894,7 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     labelWidth: 100,
     colProps: { span: 12 }
   },
+  /*
   {
     field: 'gap',
     component: 'Switch',
@@ -1902,6 +1902,7 @@ export const tsSeriesOptionSchema: FormSchema[] = [
     labelWidth: 100,
     colProps: { span: 12 }
   }
+  */
 ];
 
 // ts Trend options
@@ -2031,6 +2032,7 @@ export const tsDiffOptionSchema: FormSchema[] = [
     component: 'Select',
     label: t('ml.eda.form.vis.tsdiff.vf'),
     componentProps: {
+      mode: 'multiple',
       options: []
     },
     labelWidth: 100,
@@ -2057,9 +2059,9 @@ export const tsDiffOptionSchema: FormSchema[] = [
     colProps: { span: 24 }
   },
   {
-    field: 'diff',
+    field: 'lag',
     component: 'InputNumber',
-    label: t('ml.eda.form.vis.tsdiff.diff'),
+    label: t('ml.eda.form.vis.tsdiff.lag'),
     defaultValue: 1,
     componentProps: {
       allowClear: false,
@@ -2071,9 +2073,9 @@ export const tsDiffOptionSchema: FormSchema[] = [
     colProps: { span: 24 }
   },
   {
-    field: 'step',
+    field: 'order',
     component: 'InputNumber',
-    label: t('ml.eda.form.vis.tsdiff.step'),
+    label: t('ml.eda.form.vis.tsdiff.order'),
     defaultValue: 1,
     componentProps: {
       allowClear: false,
@@ -2305,6 +2307,19 @@ export const tsAcfOptionSchema: FormSchema[] = [
     },
     labelWidth: 100,
     colProps: { span: 24 }
+  },
+  {
+    field: 'order',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.tsacf.order'),
+    componentProps: {
+      allowClear: true,
+      min: 0,
+      max: 20,
+      step: 1
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
   }
 ];
 
@@ -2388,12 +2403,12 @@ export const tsMavgOptionSchema: FormSchema[] = [
   }
 ];
 
-// ts Box/Violin options
-export const tsQuantileOptionSchema: FormSchema[] = [
+// ts distribution options
+export const tsDistributionOptionSchema: FormSchema[] = [
   {
     field: 'tf',
     component: 'Select',
-    label: t('ml.eda.form.vis.tsbox.tf'),
+    label: t('ml.eda.form.vis.tsdist.tf'),
     componentProps: {
       allowClear: false,
       options: []
@@ -2404,7 +2419,7 @@ export const tsQuantileOptionSchema: FormSchema[] = [
   {
     field: 'period',
     component: 'Select',
-    label: t('ml.eda.form.vis.tsbox.period'),
+    label: t('ml.eda.form.vis.tsdist.period'),
     defaultValue: 'D',
     componentProps: {
       allowClear: false,
@@ -2414,7 +2429,7 @@ export const tsQuantileOptionSchema: FormSchema[] = [
         { label: 'Month', value: 'M' },
         { label: 'Week', value: 'W' },
         { label: 'Day', value: 'D' },
-        { label: 'Hour', value: 'H' },
+        { label: 'Hour', value: 'h' },
         { label: 'Minute', value: 'min' },
         { label: 'Second', value: 's' }
       ]
@@ -2425,7 +2440,7 @@ export const tsQuantileOptionSchema: FormSchema[] = [
   {
     field: 'vf',
     component: 'Select',
-    label: t('ml.eda.form.vis.tsbox.vf'),
+    label: t('ml.eda.form.vis.tsdist.vf'),
     componentProps: {
       allowClear: false,
       options: []
@@ -2434,9 +2449,36 @@ export const tsQuantileOptionSchema: FormSchema[] = [
     colProps: { span: 24 }
   },
   {
-    field: 'violin',
+    field: 'cat',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tsdist.cat'),
+    componentProps: {
+      allowClear: true,
+      options: []
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'disp',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tsdist.disp'),
+    defaultValue: 'mean',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'Mean+Std', value: 'mean' },
+        { label: 'Box', value: 'box' },
+        { label: 'Violin', value: 'violin' },
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'outlier',
     component: 'Switch',
-    label: t('ml.eda.form.vis.tsbox.violin'),
+    label: t('ml.eda.form.vis.tsdist.outlier'),
     labelWidth: 100,
     colProps: { span: 24 }
   }
@@ -2550,7 +2592,8 @@ export const tsDecompOptionSchema: FormSchema[] = [
         { label: 'Month', value: 'MS' },
         { label: 'Week', value: 'W' },
         { label: 'Day', value: 'D' },
-        { label: 'Hour', value: 'h' }
+        { label: 'Hour', value: 'h' },
+        { label: 'Minute', value: 'min' }
       ]
     },
     labelWidth: 100,
@@ -2595,10 +2638,23 @@ export const tsDecompOptionSchema: FormSchema[] = [
     componentProps: {
       allowClear: false,
       options: [
-        { label: 'Seasonal-Trend decomp', value: 'stl' },
-        { label: 'Additive', value: 'add' },
-        { label: 'Multiplicative', value: 'multi' }
+        { label: 'STL-LOESS', value: 'stl' },
+        { label: 'MV-Additive', value: 'add' },
+        { label: 'MV-Multiplicative', value: 'multi' }
       ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'sp',
+    component: 'InputNumber',
+    label: t('ml.eda.form.vis.tsdecomp.sp'),
+    componentProps: {
+      allowClear: true,
+      min: 1,
+      max: 60,
+      step: 1
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -2833,7 +2889,7 @@ export const tsAnomalyOptionSchema: FormSchema[] = [
       allowClear: false,
       min: 0.0,
       max: 10,
-      step: 0.01
+      step: 0.001
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -2878,7 +2934,7 @@ export const tsSimilarityOptionSchema: FormSchema[] = [
     component: 'Select',
     label: t('ml.eda.form.vis.tssim.vf'),
     componentProps: {
-      allowClear: false,
+      allowClear: true,
       options: []
     },
     labelWidth: 100,
@@ -2944,19 +3000,6 @@ export const tsSimilarityOptionSchema: FormSchema[] = [
       min: 2,
       max: 50,
       step: 1
-    },
-    labelWidth: 100,
-    colProps: { span: 24 }
-  },
-  {
-    field: 'page',
-    component: 'InputNumber',
-    label: t('ml.eda.form.vis.tssim.page'),
-    defaultValue: 0,
-    componentProps: {
-      allowClear: false,
-      min: 0,
-      max: 100,
     },
     labelWidth: 100,
     colProps: { span: 24 }
@@ -3107,7 +3150,7 @@ export const eda_cfg_default = {
   anomaly: { pid: 'ts', agg: 'mean', method: 'zscore' },
   similarity: { pid: 'ts', agg: 'mean', method: 'kmeans' },
   anc: { pid: 'ts', agg: 'mean', method: 'fft' },
-  quantile: { pid: 'ts', period: 'D', agg: 'mean' }
+  tsdist: { pid: 'ts', period: 'D' }
 };
 
 export const statSchemas: DescItem[] = [

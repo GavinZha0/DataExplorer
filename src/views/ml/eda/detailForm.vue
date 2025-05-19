@@ -25,8 +25,8 @@
     <div style="width: 98%; float: left">
       <Row type="flex" :gutter="4">
         <Col :md="24 - rightPanelSize" :sm="24">
-        <div style="width: 100%; height: 900px; border: solid 1px;" :forceRender="true">
-          <div id="chartContainer" style="width: 100%; height: 900px; overflow: scroll" />
+        <div style="width: 100%; height: 1000px; border: solid 1px;" :forceRender="true">
+          <div id="chartContainer" style="width: 100%; height: 1000px; overflow: scroll" />
         </div>
           </Col>
           <Col :md="rightPanelSize" :sm="24">
@@ -313,9 +313,9 @@
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
-            <BasicForm v-if="selectedVisKeys[0] == 'quantile'"
+            <BasicForm v-if="selectedVisKeys[0] == 'tsdist'"
                        ref="optionFormRef"
-                       :schemas="tsQuantileOptSchema"
+                       :schemas="tsDistributionOptSchema"
                        :showActionButtonGroup="false"
                        @fieldValueChange="handleVisOptionChange">
             </BasicForm>
@@ -398,7 +398,7 @@
     outlierKnnOptionSchema, eda_cfg_default, outlierQtOptionSchema, outlierZsOptionSchema, outlierQtMethodSchema, outlierVaeOptionSchema,
     outlierSvmOptionSchema, pcaOptionSchema, ldaOptionSchema, tsneOptionSchema, isomapOptionSchema, lleOptionSchema, featureFilterOptionSchema,
     featureModelOptionSchema, featureSearchOptionSchema, featureDetectOptionSchema, tsSeriesOptionSchema, tsTrendOptionSchema, tsDiffOptionSchema,
-    tsFreqOptionSchema, tsCompareOptionSchema, tsAcfOptionSchema, tsMavgOptionSchema, tsQuantileOptionSchema, tsCycleOptionSchema, tsDecompOptionSchema,
+    tsFreqOptionSchema, tsCompareOptionSchema, tsAcfOptionSchema, tsMavgOptionSchema, tsDistributionOptionSchema, tsCycleOptionSchema, tsDecompOptionSchema,
     tsPredictOptionSchema, singleScatterOptionSchema, svdOptionSchema, outlierDbscanOptionSchema, outlierCofOptionSchema, tsAnomalyOptionSchema, tsAncOptionSchema,
     clusKmeansOptionSchema, tsSimilarityOptionSchema
   } from './data';
@@ -472,7 +472,7 @@
   let tsCompareOptSchema = cloneDeep(tsCompareOptionSchema);
   let tsAcfOptSchema = cloneDeep(tsAcfOptionSchema);
   let tsMavgOptSchema = cloneDeep(tsMavgOptionSchema);
-  let tsQuantileOptSchema = cloneDeep(tsQuantileOptionSchema);
+  let tsDistributionOptSchema = cloneDeep(tsDistributionOptionSchema);
   let tsCycleOptSchema = cloneDeep(tsCycleOptionSchema);
   let tsDecompOptSchema = cloneDeep(tsDecompOptionSchema);
   let tsPredictOptSchema = cloneDeep(tsPredictOptionSchema);
@@ -584,7 +584,7 @@
         tsCompareOptSchema = cloneDeep(tsCompareOptionSchema);
         tsAcfOptSchema = cloneDeep(tsAcfOptionSchema);
         tsMavgOptSchema = cloneDeep(tsMavgOptionSchema);
-        tsQuantileOptSchema = cloneDeep(tsQuantileOptionSchema);
+        tsDistributionOptSchema = cloneDeep(tsDistributionOptionSchema);
         tsCycleOptSchema = cloneDeep(tsCycleOptionSchema);
         tsDecompOptSchema = cloneDeep(tsDecompOptionSchema);
         tsPredictOptSchema = cloneDeep(tsPredictOptionSchema);
@@ -612,7 +612,7 @@
             tsCompareOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsAcfOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsMavgOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
-            tsQuantileOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
+            tsDistributionOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsCycleOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsDecompOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
@@ -645,7 +645,7 @@
             tsCompareOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsAcfOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsMavgOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
-            tsQuantileOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
+            tsDistributionOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsCycleOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsDecompOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
             tsPredictOptSchema[2].componentProps.options.push({ label: field.name, value: field.name });
@@ -656,6 +656,7 @@
             // add category field to schema options
             dataset.cf.push(field.name);
             tsSeriesOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            tsDistributionOptSchema[3].componentProps.options.push({ label: field.name, value: field.name });
             tsAnomalyOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
             tsSimilarityOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
             statBoxOptSchema[0].componentProps.options.push({ label: field.name, value: field.name });
@@ -688,7 +689,7 @@
           tsCompareOptSchema[0].defaultValue = tsCompareOptSchema[0].componentProps.options[0].value;
           tsAcfOptSchema[0].defaultValue = tsAcfOptSchema[0].componentProps.options[0].value;
           tsMavgOptSchema[0].defaultValue = tsMavgOptSchema[0].componentProps.options[0].value;
-          tsQuantileOptSchema[0].defaultValue = tsQuantileOptSchema[0].componentProps.options[0].value;
+          tsDistributionOptSchema[0].defaultValue = tsDistributionOptSchema[0].componentProps.options[0].value;
           tsCycleOptSchema[0].defaultValue = tsCycleOptSchema[0].componentProps.options[0].value;
           tsDecompOptSchema[0].defaultValue = tsDecompOptSchema[0].componentProps.options[0].value;
           tsPredictOptSchema[0].defaultValue = tsPredictOptSchema[0].componentProps.options[0].value;
@@ -699,7 +700,7 @@
           rawData.value.config.series['ts'] = tsSeriesOptSchema[0].defaultValue;
           rawData.value.config.trend['ts'] = tsTrendOptSchema[0].defaultValue;
           rawData.value.config.diff['ts'] = tsDiffOptSchema[0].defaultValue;
-          rawData.value.config.quantile['ts'] = tsQuantileOptSchema[0].defaultValue;
+          rawData.value.config.tsdist['ts'] = tsDistributionOptSchema[0].defaultValue;
           rawData.value.config.compare['ts'] = tsCompareOptSchema[0].defaultValue;
           rawData.value.config.mavg['ts'] = tsMavgOptSchema[0].defaultValue;
           rawData.value.config.tsfreq['ts'] = tsFreqOptSchema[0].defaultValue;
@@ -721,7 +722,7 @@
           tsCompareOptSchema[2].defaultValue = tsCompareOptSchema[2].componentProps.options[0].value;
           tsAcfOptSchema[2].defaultValue = tsAcfOptSchema[2].componentProps.options[0].value;
           tsMavgOptSchema[2].defaultValue = tsMavgOptSchema[2].componentProps.options[0].value;
-          tsQuantileOptSchema[2].defaultValue = tsQuantileOptSchema[2].componentProps.options[0].value;
+          tsDistributionOptSchema[2].defaultValue = tsDistributionOptSchema[2].componentProps.options[0].value;
           tsCycleOptSchema[2].defaultValue = tsCycleOptSchema[2].componentProps.options[0].value;
           tsDecompOptSchema[2].defaultValue = tsDecompOptSchema[2].componentProps.options[0].value;
           tsPredictOptSchema[2].defaultValue = tsPredictOptSchema[2].componentProps.options[0].value;
@@ -736,7 +737,7 @@
           rawData.value.config.compare['vf'] = tsCompareOptSchema[2].defaultValue;
           rawData.value.config.autocorr['vf'] = tsAcfOptSchema[2].defaultValue;
           rawData.value.config.mavg['vf'] = tsMavgOptSchema[2].defaultValue;
-          rawData.value.config.quantile['vf'] = tsQuantileOptSchema[2].defaultValue;
+          rawData.value.config.tsdist['vf'] = tsDistributionOptSchema[2].defaultValue;
           rawData.value.config.cycle['vf'] = tsCycleOptSchema[2].defaultValue;
           rawData.value.config.decomp['vf'] = tsDecompOptSchema[2].defaultValue;
           rawData.value.config.predict['vf'] = tsPredictOptSchema[2].defaultValue;

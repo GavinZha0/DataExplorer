@@ -181,8 +181,11 @@ export default {
         period: '周期',
         agg: '聚合',
         vf: '值域',
+        cat: '分类域',
+        algo: '算法',
         frac: '平滑系数',
-        connected: '断点连续'
+        connected: '断点连续',
+        diff: '差异比较'
       },
       tsdiff: {
         tf: '时间域',
@@ -254,7 +257,32 @@ export default {
         trend: '周期性',
         season: '季节性',
         damped: '趋势衰减'
-      }
+      },
+      tsanomaly: {
+        tf: '时间域',
+        period: '周期',
+        agg: '聚合',
+        vf: '值域',
+        algo: '算法',
+        trend: '周期性',
+        season: '季节性',
+        damped: '趋势衰减',
+        cat: '分类域',
+        threshold: '阈值'
+      },
+      tssim: {
+        tf: '时间域',
+        period: '周期',
+        agg: '聚合',
+        vf: '值域',
+        algo: '算法',
+        trend: '周期性',
+        season: '季节性',
+        damped: '趋势衰减',
+        threshold: '阈值',
+        clusters: '簇',
+        d2: '二维散点'
+      },
     },
     create: {
       info: 'Info',

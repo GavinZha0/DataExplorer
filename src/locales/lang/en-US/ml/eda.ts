@@ -204,8 +204,11 @@ export default {
         period: 'Period',
         agg: 'Aggregation',
         vf: 'Value field',
-        frac: 'Fraction',
-        connected: 'Connected'
+        cat: 'Category field',
+        algo: 'Algo',
+        frac: 'Smoothing',
+        connected: 'Connected',
+        diff: 'Difference'
       },
       tsdiff: {
         tf: 'Time field',
@@ -301,7 +304,8 @@ export default {
         damped: 'Damped Trend',
         page: 'Page',
         threshold: 'Threshold',
-        clusters: 'Clusters'
+        clusters: 'Clusters',
+        d2: '2D scatter'
       },
     },
     create: {

@@ -1971,6 +1971,34 @@ export const tsTrendOptionSchema: FormSchema[] = [
     colProps: { span: 24 }
   },
   {
+    field: 'cat',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tstrend.cat'),
+    componentProps: {
+      allowClear: true,
+      options: []
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'method',
+    component: 'Select',
+    label: t('ml.eda.form.vis.tstrend.algo'),
+    defaultValue: 'ols',
+    componentProps: {
+      allowClear: false,
+      options: [
+        { label: 'OLS', value: 'ols' },
+        { label: 'Lowess', value: 'lowess' },
+        { label: 'Rolling', value: 'rolling' },
+        { label: 'Ewm', value: 'ewm' }
+      ]
+    },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
     field: 'frac',
     component: 'InputNumber',
     label: t('ml.eda.form.vis.tstrend.frac'),
@@ -1987,9 +2015,16 @@ export const tsTrendOptionSchema: FormSchema[] = [
   {
     field: 'connected',
     component: 'Switch',
-    label: t('ml.eda.form.vis.tsseries.connected'),
+    label: t('ml.eda.form.vis.tstrend.connected'),
     labelWidth: 100,
-    colProps: { span: 24 }
+    colProps: { span: 12 }
+  },
+  {
+    field: 'diff',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.tstrend.diff'),
+    labelWidth: 100,
+    colProps: { span: 12 }
   }
 ];
 
@@ -2935,6 +2970,7 @@ export const tsSimilarityOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.tssim.vf'),
     componentProps: {
       allowClear: true,
+      mode: 'multiple',
       options: []
     },
     labelWidth: 100,
@@ -2966,6 +3002,7 @@ export const tsSimilarityOptionSchema: FormSchema[] = [
     label: t('ml.eda.form.vis.tsseries.cat'),
     componentProps: {
       allowClear: true,
+      mode: 'multiple',
       options: []
     },
     labelWidth: 100,
@@ -3001,6 +3038,13 @@ export const tsSimilarityOptionSchema: FormSchema[] = [
       max: 50,
       step: 1
     },
+    labelWidth: 100,
+    colProps: { span: 24 }
+  },
+  {
+    field: 'd2',
+    component: 'Switch',
+    label: t('ml.eda.form.vis.tssim.d2'),
     labelWidth: 100,
     colProps: { span: 24 }
   }

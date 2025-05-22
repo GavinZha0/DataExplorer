@@ -656,6 +656,7 @@
             // add category field to schema options
             dataset.cf.push(field.name);
             tsSeriesOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
+            tsTrendOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
             tsDistributionOptSchema[3].componentProps.options.push({ label: field.name, value: field.name });
             tsAnomalyOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
             tsSimilarityOptSchema[4].componentProps.options.push({ label: field.name, value: field.name });
